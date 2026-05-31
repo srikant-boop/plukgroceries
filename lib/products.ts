@@ -199,7 +199,7 @@ export const products: Product[] = [
     image: "/products/romaine-lettuce.webp",
     unit: "3 pack (340 g)",
     stock: 30,
-    ourPrice: 11.25,
+    ourPrice: 9.0,
     wholesalerPrice: 9.0,
     competitors: [
       { store: "Voila", price: 9.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
