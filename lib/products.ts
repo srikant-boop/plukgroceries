@@ -161,6 +161,7 @@ export const products: Product[] = [
     competitors: [
       { store: "Voila", price: 4.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA" },
     ],
+    brand: "Gen V",
     supplierId: "terra-freska",
     organic: true,
   },

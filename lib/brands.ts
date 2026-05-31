@@ -1,5 +1,6 @@
-// Brands appear on the wholesaler items (Bananas: Dole, Strawberries:
-// Driscoll's, Yellow Potatoes: Earth Fresh, etc). When a brand has an
+// Brands appear on the wholesaler items (Bananas: Chiquita, Strawberries:
+// Driscoll's, Yellow Potatoes: Earth Fresh, English Cucumber: Gen V, etc).
+// When a brand has an
 // entry here, the brand name on the product detail page links to its
 // brand page. Brands without an entry are shown as plain text.
 
@@ -52,6 +53,19 @@ export const brands: Brand[] = [
       { label: "Website", href: "https://earthfreshfoods.com" },
       { label: "Instagram", href: "https://www.instagram.com/earthfresh/" },
       { label: "Facebook", href: "https://www.facebook.com/earthfresh" },
+    ],
+  },
+  {
+    slug: "gen-v",
+    name: "Gen V",
+    tagline: "Eat true to your values — Quebec greenhouse produce",
+    story:
+      "Cultures Gen V is a family-run Canadian greenhouse grower with more than 360,000 square metres across St-Jérôme, Portneuf, Sainte-Clotilde, and Ham-Nord, Quebec. Formerly Hydroserre, the Terrault family took over in 2008 and rebranded as Gen V in 2023. They grow organic English cucumbers, mini cucumbers, peppers, tomatoes, and hydroponic lettuce year-round — supplying Eastern Canada and the US from greenhouses near major city centres.",
+    location: "Sainte-Clotilde, Quebec",
+    logo: undefined,
+    links: [
+      { label: "Website", href: "https://gen-v.com/en" },
+      { label: "Instagram", href: "https://www.instagram.com/culturesgenv/" },
     ],
   },
   {
