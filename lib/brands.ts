@@ -62,7 +62,7 @@ export const brands: Brand[] = [
     story:
       "Cultures Gen V is a family-run Canadian greenhouse grower with more than 360,000 square metres across St-Jérôme, Portneuf, Sainte-Clotilde, and Ham-Nord, Quebec. Formerly Hydroserre, the Terrault family took over in 2008 and rebranded as Gen V in 2023. They grow organic English cucumbers, mini cucumbers, peppers, tomatoes, and hydroponic lettuce year-round — supplying Eastern Canada and the US from greenhouses near major city centres.",
     location: "Sainte-Clotilde, Quebec",
-    logo: undefined,
+    logo: "/brands/gen-v.svg",
     links: [
       { label: "Website", href: "https://gen-v.com/en" },
       { label: "Instagram", href: "https://www.instagram.com/culturesgenv/" },
