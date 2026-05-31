@@ -22,6 +22,8 @@ export type Supplier = {
   type: SupplierType;
   tagline: string;
   story: string;
+  /** Short maker/farmer story on Discover product pages. Factual only. */
+  discoverBlurb?: string;
   location?: string;
   image?: string;
   // Brand logo — local path under /public/suppliers/ (e.g. "/suppliers/foo.png").
@@ -38,7 +40,7 @@ export const suppliers: Supplier[] = [
     type: "wholesaler",
     tagline: "Organic wholesale · Ontario Food Terminal, stall #237",
     story:
-      "Terra Freska is a Woodbridge-based produce wholesaler with a permanent stall at the Ontario Food Terminal. They specialize in certified-organic fruit and vegetables for restaurants and independent grocers across the GTA — the same cases you'd see on a chef's loading dock, sold by the case or half-case.\n\nFor Pluk drops we buy from Terra Freska the morning of pickup: inspect on the floor, load cold, and run straight to the community handoff. Most of the organic produce in this week's catalogue came through their stall. When the box shows a brand (Earth Fresh, Foxy, Dole), that's what's on the case — we pass the name through so you know what you're getting.",
+      "Terra Freska is a Woodbridge-based produce wholesaler with a permanent stall at the Ontario Food Terminal (stall #237). They sell certified-organic fruit and vegetables wholesale to restaurants and independent grocers across the GTA.\n\nWhen a product in our shop lists Terra Freska as the supplier, we bought it through their stall. If the case shows a brand name, we pass it through in our records — it is not always shown on the product page.",
     location: "1 Royal Gate Blvd, Woodbridge, ON · OFT stall #237",
     logo: "/suppliers/terra-freska.png",
     links: [
@@ -96,8 +98,10 @@ export const suppliers: Supplier[] = [
     name: "Backed By Bees",
     type: "maker",
     tagline: "Burlington apiary · \"Good for you. Good for nature too.\"",
+    discoverBlurb:
+      "Backed By Bees run a farm store at 6214 Appleby Line in Burlington. They jar raw honey and make Honey Soda™, a lightly sparkling drink sweetened with wildflower honey. When we carry their products, we sell at the same price as their shop — no markup.",
     story:
-      "Backed By Bees keep hives across the GTA and run a farm store on Appleby Line in Burlington — about ten minutes up the QEW from Oakville. Honey goes from hive to jar without heating or blending; they also brew Honey Soda™, a lightly sparkling drink sweetened with wildflower honey instead of cane sugar.\n\nTheir bees pollinate roughly 32,000 acres of Ontario farmland each season, including fields that grow produce we buy for Pluk. When we have a batch from the farm, we list it as a Find: neighbour pick, same price they charge us — no markup.\n\nFarm store: 6214 Appleby Line. Shop the full honey-and-hive line at backedbybees.com.",
+      "Backed By Bees keep hives across the GTA and run a farm store on Appleby Line in Burlington. Honey is bottled raw — unheated and unfiltered. They also make Honey Soda™, a lightly sparkling drink sweetened with wildflower honey.\n\n6214 Appleby Line, Burlington. backedbybees.com.",
     location: "6214 Appleby Line, Burlington, ON",
     logo: "/suppliers/backed-by-bees.jpg",
     links: [

@@ -110,9 +110,10 @@ doesn't do it; we shouldn't either.
   + description + metadata strip + **comparison table** at the bottom.
   No "You save X%" headline. No per-row "Save $X vs" bullets above the
   table. The table itself carries the comparison data — that's enough.
-- **Detail page (Discover items):** no comparison table at all. The
-  supplier link in the metadata strip is the access point to the maker
-  story (don't duplicate the story prose).
+- **Detail page (Discover items):** no comparison table. Short maker story
+  on the page (`discoverBlurb` on the supplier — factual only). Link to
+  the full supplier profile for the rest. Product copy is product facts
+  only; no unverifiable sourcing or marketing claims.
 - **Cart:** basket-level "you're saving" widget stays — one summary, at
   the moment of payment, not on every product surface. Includes specials
   (basket-level honesty without per-item framing).

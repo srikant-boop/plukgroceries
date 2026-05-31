@@ -71,11 +71,26 @@ export default async function ProductPage({
 
         <AddToCart productId={product.id} />
 
-        <div className="text-sm leading-relaxed text-foreground/85 space-y-3">
-          {product.longDescription.split(/\n\n+/).map((para) => (
-            <p key={para.slice(0, 48)}>{para}</p>
-          ))}
-        </div>
+        {product.special && supplier && (
+          <section className="text-sm leading-relaxed text-foreground/85 space-y-3">
+            <p className="eyebrow">About {supplier.name}</p>
+            <p>{supplier.discoverBlurb ?? supplier.story.split(/\n\n+/)[0]}</p>
+            <Link
+              href={`/suppliers/${supplier.slug}`}
+              className="inline-block text-xs underline underline-offset-4 hover:text-accent"
+            >
+              Read full story →
+            </Link>
+          </section>
+        )}
+
+        {product.longDescription.trim() && (
+          <div className="text-sm leading-relaxed text-foreground/85 space-y-3">
+            {product.longDescription.split(/\n\n+/).map((para) => (
+              <p key={para.slice(0, 48)}>{para}</p>
+            ))}
+          </div>
+        )}
 
         <dl className="grid grid-cols-2 gap-4 text-sm border-y border-line py-4">
           <div>
@@ -105,9 +120,7 @@ export default async function ProductPage({
           </div>
         </dl>
 
-        {/* Comparison table is savings framing — wrong frame for Discover
-            items. Discover items rely on the supplier link in the metadata
-            strip above for the maker story (we don't duplicate it here). */}
+        {/* Comparison table is savings framing — wrong frame for Discover items. */}
         {!product.special && hasCompetitors && (
           <PriceCompareTable product={product} />
         )}

@@ -3,4 +3,4 @@
 // keeps the full bio and the homepage Discover paragraph stays tight.
 
 export const currentDropNote =
-  "Two from Backed By Bees up the QEW in Burlington — their hives work the farms our produce comes from. Their raw honey, gold and slow. And Honey Soda: sparkling water, sweetened with their own honey instead of cane sugar.";
+  "Two from Backed By Bees in Burlington — their raw honey and Honey Soda. Same prices as their farm store.";
