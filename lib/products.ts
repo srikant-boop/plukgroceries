@@ -128,7 +128,7 @@ export const products: Product[] = [
   {
     id: "yellow-potatoes",
     slug: "yellow-potatoes",
-    name: "Organic Yellow Potatoes",
+    name: "Yellow Potatoes",
     shortDescription: "Creamy, 3 lb bag",
     longDescription:
       "Creamy yellow-fleshed potatoes. Hold their shape boiled, fluff up roasted.",
@@ -149,7 +149,7 @@ export const products: Product[] = [
   {
     id: "tomatoes-on-the-vine",
     slug: "tomatoes-on-the-vine",
-    name: "Organic Tomatoes on the Vine",
+    name: "Tomatoes on the Vine",
     shortDescription: "Greenhouse, 1.5 lb",
     longDescription:
       "Vine-ripened greenhouse tomatoes. Picked deep red, never gas-ripened.",
@@ -169,7 +169,7 @@ export const products: Product[] = [
   {
     id: "english-cucumbers",
     slug: "english-cucumbers",
-    name: "Organic English Cucumber",
+    name: "English Cucumber",
     shortDescription: "Long, seedless",
     longDescription:
       "One long English cucumber — thin skin, almost seedless, crisp through the middle.",
@@ -190,7 +190,7 @@ export const products: Product[] = [
   {
     id: "carrots",
     slug: "carrots",
-    name: "Organic Carrots",
+    name: "Carrots",
     shortDescription: "Sweet, 2 lb bag",
     longDescription:
       "Two pounds of medium carrots — sweet, snappy, perfect for snacking, soups, or roasting.",
@@ -211,7 +211,7 @@ export const products: Product[] = [
   {
     id: "romaine-lettuce",
     slug: "romaine-lettuce",
-    name: "Organic Romaine Lettuce",
+    name: "Romaine Lettuce",
     shortDescription: "Hearts, 3 pack",
     longDescription:
       "Three crisp romaine hearts — the spine of a proper Caesar, hearty enough to grill.",
@@ -221,9 +221,9 @@ export const products: Product[] = [
     stock: 30,
     wholesalerPrice: 9.0,
     markupMultiplier: 1,
-    ourPrice: 9.0,
+    ourPrice: 8.99,
     competitors: [
-      { store: "Voila", price: 9.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
+      { store: "Voila", price: 8.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Foxy",
@@ -232,7 +232,7 @@ export const products: Product[] = [
   {
     id: "broccoli-crowns",
     slug: "broccoli-crowns",
-    name: "Organic Broccoli Crowns",
+    name: "Broccoli Crowns",
     shortDescription: "Fresh, per crown",
     longDescription:
       "One fresh broccoli crown — florets with a short stem, ready to wash and break down for the pan.",
@@ -254,7 +254,7 @@ export const products: Product[] = [
   {
     id: "bananas",
     slug: "bananas",
-    name: "Organic Bananas",
+    name: "Bananas",
     shortDescription: "Just-ripe, 6-10 count",
     longDescription:
       "A bunch of bananas delivered at peak ripeness — not too green, not too spotted.",
@@ -275,7 +275,7 @@ export const products: Product[] = [
   {
     id: "gala-apples",
     slug: "gala-apples",
-    name: "Organic Gala Apples",
+    name: "Gala Apples",
     shortDescription: "Sweet, crisp, 3 lb",
     longDescription:
       "Three pounds of Gala apples — mild, sweet, and crisp. The everyday apple that pleases everyone.",
@@ -295,7 +295,7 @@ export const products: Product[] = [
   {
     id: "clementines",
     slug: "clementines",
-    name: "Organic Clementines",
+    name: "Clementines",
     shortDescription: "Easy-peel, 2 lb box",
     longDescription:
       "A 2 lb box of seedless clementines — small, sweet, easy to peel. The fruit kids actually eat.",
@@ -315,7 +315,7 @@ export const products: Product[] = [
   {
     id: "strawberries",
     slug: "strawberries",
-    name: "Organic Strawberries",
+    name: "Strawberries",
     shortDescription: "Sweet, 1 lb clamshell",
     longDescription:
       "A 1 lb clamshell of strawberries — picked ripe, kept cold until they reach you.",
