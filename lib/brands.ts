@@ -1,5 +1,6 @@
-// Brands appear on the wholesaler items (Bananas: Chiquita, Strawberries:
-// Driscoll's, Yellow Potatoes: Earth Fresh, English Cucumber: Gen V, etc).
+// Brands appear on the wholesaler items (Bananas: Dole, Strawberries:
+// Driscoll's, Carrots: Cal-Organic, Yellow Potatoes: Earth Fresh, English
+// Cucumber: Gen V, etc).
 // When a brand has an
 // entry here, the brand name on the product detail page links to its
 // brand page. Brands without an entry are shown as plain text.
@@ -56,16 +57,29 @@ export const brands: Brand[] = [
     ],
   },
   {
+    slug: "cal-organic",
+    name: "Cal-Organic",
+    tagline: "Certified organic since 1984",
+    story:
+      "Cal-Organic Farms started in 1984 with a quarter acre of lettuce in Lamont, California — the Duncan family's bet that organic could scale without cutting corners. Now a division of Grimmway Farms, they grow more than 65 seasonal and year-round vegetables on certified organic acreage across California, Colorado, Washington, Florida, and Georgia. Organic carrots are one of their flagship lines; everything is grown 100% in the USA.",
+    location: "Lamont, California",
+    logo: "/brands/cal-organic.png",
+    links: [
+      { label: "Website", href: "https://calorganicfarms.com" },
+      { label: "Instagram", href: "https://www.instagram.com/calorganicfarms/" },
+    ],
+  },
+  {
     slug: "gen-v",
     name: "Gen V",
     tagline: "Eat true to your values — Quebec greenhouse produce",
     story:
       "Cultures Gen V is a family-run Canadian greenhouse grower with more than 360,000 square metres across St-Jérôme, Portneuf, Sainte-Clotilde, and Ham-Nord, Quebec. Formerly Hydroserre, the Terrault family took over in 2008 and rebranded as Gen V in 2023. They grow organic English cucumbers, mini cucumbers, peppers, tomatoes, and hydroponic lettuce year-round — supplying Eastern Canada and the US from greenhouses near major city centres.",
     location: "Sainte-Clotilde, Quebec",
-    logo: "/brands/gen-v.svg",
+    logo: "/brands/gen-v.png",
     links: [
       { label: "Website", href: "https://gen-v.com/en" },
-      { label: "Instagram", href: "https://www.instagram.com/culturesgenv/" },
+      { label: "Instagram", href: "https://www.instagram.com/genv_cultures/" },
     ],
   },
   {

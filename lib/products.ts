@@ -115,7 +115,7 @@ export const products: Product[] = [
     longDescription:
       "Creamy yellow-fleshed potatoes. Hold their shape boiled, fluff up roasted.",
     category: "Vegetables & Cooking Staples",
-    image: "/products/yellow-potatoes.jpg",
+    image: "/products/yellow-potatoes.webp",
     unit: "3 lb bag",
     stock: 40,
     ourPrice: 7.19,
@@ -181,6 +181,7 @@ export const products: Product[] = [
     competitors: [
       { store: "Voila", price: 5.99, unit: "908 g", url: "https://voila.ca/products/organic-carrots-908-g/112284EA" },
     ],
+    brand: "Cal-Organic",
     supplierId: "pfennings-organic",
     organic: true,
   },
@@ -241,7 +242,7 @@ export const products: Product[] = [
       { store: "Voila", price: 3.79, unit: "6-10 count", url: "https://voila.ca/products/organic-bananas-bunch-6-10-count-ripe-in-3-4-days/833423EA" },
     ],
     supplierId: "terra-freska",
-    brand: "Chiquita",
+    brand: "Dole",
   },
   {
     id: "gala-apples",
