@@ -61,8 +61,10 @@ export default async function SupplierPage({
       </header>
 
       <section className="grid gap-10 lg:grid-cols-[2fr_1fr] mb-16">
-        <div className="text-base leading-relaxed text-foreground/85">
-          {supplier.story}
+        <div className="text-base leading-relaxed text-foreground/85 space-y-4">
+          {supplier.story.split(/\n\n+/).map((para) => (
+            <p key={para.slice(0, 48)}>{para}</p>
+          ))}
         </div>
         {supplier.links.length > 0 && (
           <aside className="border border-line p-6 bg-surface h-fit">
@@ -76,7 +78,7 @@ export default async function SupplierPage({
                   rel="noopener noreferrer"
                   className="hover:text-accent transition-colors"
                 >
-                  <SocialIcon href={l.href} size={22} />
+                  <SocialIcon href={l.href} label={l.label} size={22} />
                 </a>
               ))}
             </div>

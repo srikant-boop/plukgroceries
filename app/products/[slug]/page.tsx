@@ -71,9 +71,11 @@ export default async function ProductPage({
 
         <AddToCart productId={product.id} />
 
-        <p className="text-sm leading-relaxed text-foreground/85">
-          {product.longDescription}
-        </p>
+        <div className="text-sm leading-relaxed text-foreground/85 space-y-3">
+          {product.longDescription.split(/\n\n+/).map((para) => (
+            <p key={para.slice(0, 48)}>{para}</p>
+          ))}
+        </div>
 
         <dl className="grid grid-cols-2 gap-4 text-sm border-y border-line py-4">
           <div>

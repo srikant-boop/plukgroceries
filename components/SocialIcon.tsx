@@ -27,15 +27,18 @@ const TITLE: Record<Kind, string> = {
 
 export function SocialIcon({
   href,
+  label,
   size = 22,
   className = "",
 }: {
   href: string;
+  /** Overrides the default icon title (e.g. supplier link label). */
+  label?: string;
   size?: number;
   className?: string;
 }) {
   const kind = kindForHref(href);
-  const title = TITLE[kind];
+  const title = label?.trim() || TITLE[kind];
   const common = {
     width: size,
     height: size,

@@ -2,7 +2,7 @@
 //   - "farmer"      a named grower we buy direct from
 //   - "wholesaler"  a stall/distributor (e.g. the Ontario Food Terminal)
 // Each supplier gets a /suppliers/{slug} profile page so customers can
-// see who they're actually buying from.
+// see who you're actually buying from.
 
 export type SupplierType =
   | "farmer"
@@ -30,22 +30,23 @@ export type Supplier = {
   links: SupplierLink[];
 };
 
-// Placeholder seed suppliers. Replace names, stories, and links with real
-// ones as you sign each supplier up.
 export const suppliers: Supplier[] = [
   {
     id: "terra-freska",
     slug: "terra-freska",
     name: "Terra Freska Produce",
     type: "wholesaler",
-    tagline: "Rooted in freshness — organic wholesale, Woodbridge",
+    tagline: "Organic wholesale · Ontario Food Terminal, stall #237",
     story:
-      "Terra Freska is a wholesale produce distributor specializing in organic fruit and vegetables, based in Woodbridge with a stall (#237) at the Ontario Food Terminal. They supply restaurants and independent grocers across the GTA. Items we buy from Terra Freska are picked up at the Terminal the morning of each drop, kept cold, and dropped to you within hours.",
+      "Terra Freska is a Woodbridge-based produce wholesaler with a permanent stall at the Ontario Food Terminal. They specialize in certified-organic fruit and vegetables for restaurants and independent grocers across the GTA — the same cases you'd see on a chef's loading dock, sold by the case or half-case.\n\nFor Pluk drops we buy from Terra Freska the morning of pickup: inspect on the floor, load cold, and run straight to the community handoff. Most of the organic produce in this week's catalogue came through their stall. When the box shows a brand (Earth Fresh, Foxy, Dole), that's what's on the case — we pass the name through so you know what you're getting.",
     location: "1 Royal Gate Blvd, Woodbridge, ON · OFT stall #237",
     logo: "/suppliers/terra-freska.png",
     links: [
       { label: "Website", href: "https://www.terrafreska.com" },
-      { label: "Instagram @rootedinfreshness", href: "https://www.instagram.com/rootedinfreshness/" },
+      {
+        label: "Instagram @rootedinfreshness",
+        href: "https://www.instagram.com/rootedinfreshness/",
+      },
     ],
   },
   {
@@ -53,41 +54,39 @@ export const suppliers: Supplier[] = [
     slug: "northrose-orchard",
     name: "Northrose Orchard",
     type: "farmer",
-    tagline: "Family apple orchard, Niagara escarpment",
+    tagline: "Apple orchard · Niagara escarpment",
     story:
-      "Northrose has been growing Galas, Honeycrisps, and Ambrosias on the Niagara escarpment for two generations. We pick up cold-stored bins direct from the orchard and pass them on the same week — no warehousing in between.",
+      "Northrose grows Galas, Honeycrisps, and Ambrosias on the Niagara escarpment — a family orchard for two generations. When we can get cold-stored bins direct from the farm at a price that beats the terminal, we do; otherwise apples in the shop come through Terra Freska and we say so on the product page.\n\nNo warehouse sit: orchard to our pickup window within the week.",
     location: "Vineland, ON",
-    links: [
-      { label: "Website", href: "https://example.com" },
-      { label: "Instagram", href: "https://instagram.com/example" },
-    ],
+    links: [],
   },
   {
     id: "forest-glen-berries",
     slug: "forest-glen-berries",
     name: "Forest Glen Berries",
     type: "farmer",
-    tagline: "Ontario strawberries, in season only",
+    tagline: "Strawberries · Beamsville, in season",
     story:
-      "A small berry farm we work with from June through September. When their strawberries are in, we list them; the rest of the year strawberries come from Terra Freska so the page stays honest about origin.",
+      "A small berry farm in Beamsville we work with from June through September. When their strawberries are in, we list them as a Find; off-season strawberries in the catalogue come from Terra Freska at the terminal so we're never vague about origin.",
     location: "Beamsville, ON",
-    links: [
-      { label: "Instagram", href: "https://instagram.com/example" },
-    ],
+    links: [],
   },
   {
     id: "pfennings-organic",
     slug: "pfennings-organic",
     name: "Pfenning's Organic Farms",
     type: "farmer-wholesaler",
-    tagline: "Community Enriched Agriculture — New Hamburg since 1981",
+    tagline: "Certified organic · New Hamburg since 1981",
     story:
-      "Pfenning's grow over 700 acres of certified-organic vegetables in New Hamburg, and also pack, import, and distribute organic produce from a network of other growers year-round. Family-run since 1981, with a compliance team that manages their own organic certification and monitors every vendor they work with. We use them for the items where certified-organic is worth the small premium — leafy greens, peppers, and roots.",
+      "Pfenning's farm more than 700 acres of certified-organic vegetables in New Hamburg and also pack, import, and distribute organic produce from a network of growers year-round. Family-run since 1981, with their own compliance team managing certification and auditing every vendor they handle.\n\nWe reach for Pfenning's when certified-organic is worth the small premium on the item — carrots, peppers, roots — and the terminal price lines up. Same cold-chain story as Terra Freska: bought wholesale, dropped to you the same day we pick up.",
     location: "1209 Waterloo Street, New Hamburg, ON",
     logo: "/suppliers/pfennings-organic.png",
     links: [
       { label: "Website", href: "https://pfenningsfarms.ca" },
-      { label: "Instagram @pfenningsfarm", href: "https://www.instagram.com/pfenningsfarm/" },
+      {
+        label: "Instagram @pfenningsfarm",
+        href: "https://www.instagram.com/pfenningsfarm/",
+      },
       { label: "Facebook", href: "https://www.facebook.com/pfenningsfarm" },
     ],
   },
@@ -95,19 +94,18 @@ export const suppliers: Supplier[] = [
     id: "backed-by-bees",
     slug: "backed-by-bees",
     name: "Backed By Bees",
-    type: "farmer",
-    tagline: "Burlington beekeepers — \"Good for you. Good for nature too.\"",
+    type: "maker",
+    tagline: "Burlington apiary · \"Good for you. Good for nature too.\"",
     story:
-      "Backed By Bees keep hives across the GTA and turn the honey into raw jars, mead, and their signature Honey Soda™ — lightly sparkling, sweetened with wildflower honey instead of cane sugar. Their hives pollinate around 32,000 acres of Ontario farmland, including fields we buy produce from. Farm store at 6214 Appleby Line, Burlington — ten minutes up the QEW from us.",
+      "Backed By Bees keep hives across the GTA and run a farm store on Appleby Line in Burlington — about ten minutes up the QEW from Oakville. Honey goes from hive to jar without heating or blending; they also brew Honey Soda™, a lightly sparkling drink sweetened with wildflower honey instead of cane sugar.\n\nTheir bees pollinate roughly 32,000 acres of Ontario farmland each season, including fields that grow produce we buy for Pluk. When we have a batch from the farm, we list it as a Find: neighbour pick, same price they charge us — no markup.\n\nFarm store: 6214 Appleby Line. Shop the full honey-and-hive line at backedbybees.com.",
     location: "6214 Appleby Line, Burlington, ON",
     logo: "/suppliers/backed-by-bees.jpg",
     links: [
       { label: "Website", href: "https://www.backedbybees.com" },
       {
-        label: "Honey & hive products",
-        href: "https://backedbybees.com/collections/honey-and-hive",
+        label: "Instagram @backedbybees",
+        href: "https://www.instagram.com/backedbybees/",
       },
-      { label: "Instagram @backedbybees", href: "https://www.instagram.com/backedbybees/" },
       { label: "Facebook", href: "https://www.facebook.com/backedbybees/" },
     ],
   },
