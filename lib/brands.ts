@@ -1,9 +1,5 @@
-// Brands appear on the wholesaler items (Bananas: Dole, Strawberries:
-// Driscoll's, Carrots: Cal-Organic, Yellow Potatoes: Earth Fresh, English
-// Cucumber: Gen V, etc).
-// When a brand has an
-// entry here, the brand name on the product detail page links to its
-// brand page. Brands without an entry are shown as plain text.
+// Internal sourcing reference for packer/label names on wholesale boxes.
+// Not used on the customer-facing storefront — Pluk is the only public brand.
 
 export type BrandLink = {
   label: string;

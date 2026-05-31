@@ -40,7 +40,7 @@ export const suppliers: Supplier[] = [
     type: "wholesaler",
     tagline: "Rooted in freshness — organic wholesale, Woodbridge",
     story:
-      "Terra Freska is a wholesale produce distributor specializing in organic fruit and vegetables, based in Woodbridge with a stall (#237) at the Ontario Food Terminal. They supply restaurants and independent grocers across the GTA. Items we buy from Terra Freska are picked up at the Terminal the morning of each drop, kept cold, and dropped to you within hours. When a product has its own brand on the box (Chiquita, Sunkist, etc.) we list that too — what you see is what we paid for.",
+      "Terra Freska is a wholesale produce distributor specializing in organic fruit and vegetables, based in Woodbridge with a stall (#237) at the Ontario Food Terminal. They supply restaurants and independent grocers across the GTA. Items we buy from Terra Freska are picked up at the Terminal the morning of each drop, kept cold, and dropped to you within hours.",
     location: "1 Royal Gate Blvd, Woodbridge, ON · OFT stall #237",
     logo: "/suppliers/terra-freska.png",
     links: [

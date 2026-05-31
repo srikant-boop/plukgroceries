@@ -6,6 +6,8 @@ export type CompetitorPrice = {
   price: number;
   unit: string;
   url?: string;
+  // Voila produce comparables are organic SKUs — flag so the table labels them.
+  organic?: boolean;
 };
 
 export type Product = {
@@ -23,8 +25,8 @@ export type Product = {
   wholesalerPrice: number;
   competitors: CompetitorPrice[];
   supplierId?: string;
-  // The brand on the box at the wholesaler (e.g. Chiquita, Sunkist). Skip
-  // for direct-from-farmer items or anything that ships unbranded.
+  // Packer/label on the box at the wholesaler — internal ops only, not shown
+  // on the storefront (Pluk is the customer-facing brand).
   brand?: string;
   // When set, this item is featured as a "special" for the current drop —
   // typically something from a neighbouring farm. The string is the badge
@@ -110,7 +112,7 @@ export const products: Product[] = [
   {
     id: "yellow-potatoes",
     slug: "yellow-potatoes",
-    name: "Yellow Potatoes",
+    name: "Organic Yellow Potatoes",
     shortDescription: "Creamy, 3 lb bag",
     longDescription:
       "Creamy yellow-fleshed potatoes. Hold their shape boiled, fluff up roasted.",
@@ -121,7 +123,7 @@ export const products: Product[] = [
     ourPrice: 7.19,
     wholesalerPrice: 5.75,
     competitors: [
-      { store: "Voila", price: 7.99, unit: "1.36 kg", url: "https://voila.ca/products/organic-potatoes-yellow-1-36-kg/472128EA" },
+      { store: "Voila", price: 7.99, unit: "1.36 kg", url: "https://voila.ca/products/organic-potatoes-yellow-1-36-kg/472128EA", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Earth Fresh",
@@ -130,7 +132,7 @@ export const products: Product[] = [
   {
     id: "tomatoes-on-the-vine",
     slug: "tomatoes-on-the-vine",
-    name: "Tomatoes on the Vine",
+    name: "Organic Tomatoes on the Vine",
     shortDescription: "Greenhouse, 1.5 lb",
     longDescription:
       "Vine-ripened greenhouse tomatoes. Picked deep red, never gas-ripened.",
@@ -141,14 +143,15 @@ export const products: Product[] = [
     ourPrice: 6.8,
     wholesalerPrice: 5.44,
     competitors: [
-      { store: "Voila", price: 8.99, unit: "4-6 count", url: "https://voila.ca/products/organic-tomatoes-on-the-vine-4-6-counts/1408309EA" },
+      { store: "Voila", price: 8.99, unit: "4-6 count", url: "https://voila.ca/products/organic-tomatoes-on-the-vine-4-6-counts/1408309EA", organic: true },
     ],
     supplierId: "terra-freska",
+    organic: true,
   },
   {
     id: "english-cucumbers",
     slug: "english-cucumbers",
-    name: "English Cucumber",
+    name: "Organic English Cucumber",
     shortDescription: "Long, seedless",
     longDescription:
       "One long English cucumber — thin skin, almost seedless, crisp through the middle.",
@@ -159,7 +162,7 @@ export const products: Product[] = [
     ourPrice: 2.5,
     wholesalerPrice: 2.0,
     competitors: [
-      { store: "Voila", price: 4.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA" },
+      { store: "Voila", price: 2.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA", organic: true },
     ],
     brand: "Gen V",
     supplierId: "terra-freska",
@@ -168,7 +171,7 @@ export const products: Product[] = [
   {
     id: "carrots",
     slug: "carrots",
-    name: "Carrots",
+    name: "Organic Carrots",
     shortDescription: "Sweet, 2 lb bag",
     longDescription:
       "Two pounds of medium carrots — sweet, snappy, perfect for snacking, soups, or roasting.",
@@ -179,7 +182,7 @@ export const products: Product[] = [
     ourPrice: 3.86,
     wholesalerPrice: 3.08,
     competitors: [
-      { store: "Voila", price: 5.99, unit: "908 g", url: "https://voila.ca/products/organic-carrots-908-g/112284EA" },
+      { store: "Voila", price: 5.99, unit: "908 g", url: "https://voila.ca/products/organic-carrots-908-g/112284EA", organic: true },
     ],
     brand: "Cal-Organic",
     supplierId: "pfennings-organic",
@@ -188,26 +191,27 @@ export const products: Product[] = [
   {
     id: "romaine-lettuce",
     slug: "romaine-lettuce",
-    name: "Romaine Lettuce",
+    name: "Organic Romaine Lettuce",
     shortDescription: "Hearts, 3 pack",
     longDescription:
       "Three crisp romaine hearts — the spine of a proper Caesar, hearty enough to grill.",
     category: "Vegetables & Cooking Staples",
     image: "/products/romaine-lettuce.webp",
-    unit: "3 pack",
+    unit: "3 pack (340 g)",
     stock: 30,
-    ourPrice: 4.07,
-    wholesalerPrice: 3.25,
+    ourPrice: 11.25,
+    wholesalerPrice: 9.0,
     competitors: [
-      { store: "Voila", price: 8.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA" },
+      { store: "Voila", price: 9.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
     ],
     supplierId: "terra-freska",
+    brand: "Foxy",
     organic: true,
   },
   {
     id: "broccoli-crowns",
     slug: "broccoli-crowns",
-    name: "Broccoli Crowns",
+    name: "Organic Broccoli Crowns",
     shortDescription: "Fresh, per crown",
     longDescription:
       "One fresh broccoli crown — florets with a short stem, ready to wash and break down for the pan.",
@@ -218,7 +222,7 @@ export const products: Product[] = [
     ourPrice: 4.11,
     wholesalerPrice: 3.29,
     competitors: [
-      { store: "Voila", price: 8.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA" },
+      { store: "Voila", price: 9.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA", organic: true },
     ],
     supplierId: "terra-freska",
     organic: true,
@@ -228,7 +232,7 @@ export const products: Product[] = [
   {
     id: "bananas",
     slug: "bananas",
-    name: "Bananas",
+    name: "Organic Bananas",
     shortDescription: "Just-ripe, 6-10 count",
     longDescription:
       "A bunch of bananas delivered at peak ripeness — not too green, not too spotted.",
@@ -239,15 +243,16 @@ export const products: Product[] = [
     ourPrice: 3.45,
     wholesalerPrice: 2.76,
     competitors: [
-      { store: "Voila", price: 3.79, unit: "6-10 count", url: "https://voila.ca/products/organic-bananas-bunch-6-10-count-ripe-in-3-4-days/833423EA" },
+      { store: "Voila", price: 3.79, unit: "6-10 count", url: "https://voila.ca/products/organic-bananas-bunch-6-10-count-ripe-in-3-4-days/833423EA", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Dole",
+    organic: true,
   },
   {
     id: "gala-apples",
     slug: "gala-apples",
-    name: "Gala Apples",
+    name: "Organic Gala Apples",
     shortDescription: "Sweet, crisp, 3 lb",
     longDescription:
       "Three pounds of Gala apples — mild, sweet, and crisp. The everyday apple that pleases everyone.",
@@ -258,14 +263,15 @@ export const products: Product[] = [
     ourPrice: 8.97,
     wholesalerPrice: 7.17,
     competitors: [
-      { store: "Voila", price: 8.99, unit: "1.36 kg", url: "https://voila.ca/products/lil-snapper-organic-apples-gala-1-36-kg/674671EA" },
+      { store: "Voila", price: 9.99, unit: "1.36 kg", url: "https://voila.ca/products/lil-snapper-organic-apples-gala-1-36-kg/674671EA", organic: true },
     ],
-    supplierId: "northrose-orchard",
+    supplierId: "terra-freska",
+    organic: true,
   },
   {
     id: "clementines",
     slug: "clementines",
-    name: "Clementines",
+    name: "Organic Clementines",
     shortDescription: "Easy-peel, 2 lb box",
     longDescription:
       "A 2 lb box of seedless clementines — small, sweet, easy to peel. The fruit kids actually eat.",
@@ -276,14 +282,15 @@ export const products: Product[] = [
     ourPrice: 7.34,
     wholesalerPrice: 5.87,
     competitors: [
-      { store: "Voila", price: 8.49, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA" },
+      { store: "Voila", price: 8.49, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
     ],
     supplierId: "terra-freska",
+    organic: true,
   },
   {
     id: "strawberries",
     slug: "strawberries",
-    name: "Strawberries",
+    name: "Organic Strawberries",
     shortDescription: "Sweet, 1 lb clamshell",
     longDescription:
       "A 1 lb clamshell of strawberries — picked ripe, kept cold until they reach you.",
@@ -294,7 +301,7 @@ export const products: Product[] = [
     ourPrice: 9.07,
     wholesalerPrice: 7.25,
     competitors: [
-      { store: "Voila", price: 9.99, unit: "454 g", url: "https://voila.ca/products/organic-strawberries-454-g/14837EA" },
+      { store: "Voila", price: 9.99, unit: "454 g", url: "https://voila.ca/products/organic-strawberries-454-g/14837EA", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Driscoll's",

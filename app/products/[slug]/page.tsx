@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getBrandByName } from "@/lib/brands";
 import { getProduct, products, pricePerLbLabel } from "@/lib/products";
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
@@ -27,8 +26,6 @@ export default async function ProductPage({
   const supplier = product.supplierId
     ? getSupplierById(product.supplierId)
     : null;
-  const brand = product.brand ? getBrandByName(product.brand) : null;
-
   return (
     <article className="grid gap-10 lg:grid-cols-2 lg:gap-16">
       <div className="relative aspect-[4/5] bg-surface">
@@ -78,32 +75,11 @@ export default async function ProductPage({
           {product.longDescription}
         </p>
 
-        <dl
-          className={`grid gap-4 text-sm border-y border-line py-4 ${
-            product.brand ? "grid-cols-3" : "grid-cols-2"
-          }`}
-        >
+        <dl className="grid grid-cols-2 gap-4 text-sm border-y border-line py-4">
           <div>
             <dt className="eyebrow mb-1">Unit</dt>
             <dd>{product.unit}</dd>
           </div>
-          {product.brand && (
-            <div>
-              <dt className="eyebrow mb-1">Brand</dt>
-              <dd>
-                {brand ? (
-                  <Link
-                    href={`/brands/${brand.slug}`}
-                    className="underline underline-offset-4 hover:text-accent"
-                  >
-                    {product.brand}
-                  </Link>
-                ) : (
-                  product.brand
-                )}
-              </dd>
-            </div>
-          )}
           <div>
             <dt className="eyebrow mb-1">
               {supplier?.type === "wholesaler"
