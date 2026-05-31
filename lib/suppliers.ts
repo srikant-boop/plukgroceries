@@ -98,11 +98,15 @@ export const suppliers: Supplier[] = [
     type: "farmer",
     tagline: "Burlington beekeepers — \"Good for you. Good for nature too.\"",
     story:
-      "Backed By Bees keep hives across the GTA and turn the honey into raw jars, mead, and their signature Honey Soda™ — sparkling and sweetened with honey instead of cane sugar. Their hives pollinate around 32,000 acres of Ontario farmland, including a few we buy produce from. They're our neighbours in Burlington, ten minutes up the QEW.",
-    location: "Burlington, ON",
+      "Backed By Bees keep hives across the GTA and turn the honey into raw jars, mead, and their signature Honey Soda™ — lightly sparkling, sweetened with wildflower honey instead of cane sugar. Their hives pollinate around 32,000 acres of Ontario farmland, including fields we buy produce from. Farm store at 6214 Appleby Line, Burlington — ten minutes up the QEW from us.",
+    location: "6214 Appleby Line, Burlington, ON",
     logo: "/suppliers/backed-by-bees.jpg",
     links: [
       { label: "Website", href: "https://www.backedbybees.com" },
+      {
+        label: "Honey & hive products",
+        href: "https://backedbybees.com/collections/honey-and-hive",
+      },
       { label: "Instagram @backedbybees", href: "https://www.instagram.com/backedbybees/" },
       { label: "Facebook", href: "https://www.facebook.com/backedbybees/" },
     ],

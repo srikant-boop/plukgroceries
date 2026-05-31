@@ -21,8 +21,11 @@ export type Product = {
   imageAlt?: string;
   unit: string;
   stock: number;
-  ourPrice: number;
   wholesalerPrice: number;
+  // Internal ops: retail = wholesalerPrice × markupMultiplier (e.g. 1.25 =
+  // 25% on cost, 1.0 = pass-through). Never shown on the storefront.
+  markupMultiplier: number;
+  ourPrice: number;
   competitors: CompetitorPrice[];
   supplierId?: string;
   // Packer/label on the box at the wholesaler — internal ops only, not shown
@@ -39,9 +42,22 @@ export type Product = {
   tags?: string[];
 };
 
+/** Standard produce markup: cost × 1.25. Internal ops only. */
+export const DEFAULT_MARKUP_MULTIPLIER = 1.25;
+
+/** Derive retail from wholesale cost (round to cents). Internal ops only. */
+export const retailFromWholesale = (
+  wholesalerPrice: number,
+  markupMultiplier: number,
+): number =>
+  Math.round(wholesalerPrice * markupMultiplier * 100) / 100;
+
 export const margin = (p: Product) => p.ourPrice - p.wholesalerPrice;
 export const marginPct = (p: Product) =>
   p.wholesalerPrice > 0 ? (margin(p) / p.ourPrice) * 100 : 0;
+/** Markup on cost, e.g. multiplier 1.25 → 25%. Internal ops only. */
+export const markupOnCostPct = (p: Product) =>
+  (p.markupMultiplier - 1) * 100;
 
 export const cheapestCompetitor = (p: Product) =>
   p.competitors.reduce<CompetitorPrice | null>(
@@ -120,8 +136,9 @@ export const products: Product[] = [
     image: "/products/yellow-potatoes.webp",
     unit: "3 lb bag",
     stock: 40,
-    ourPrice: 7.19,
     wholesalerPrice: 5.75,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 7.19,
     competitors: [
       { store: "Voila", price: 7.99, unit: "1.36 kg", url: "https://voila.ca/products/organic-potatoes-yellow-1-36-kg/472128EA", organic: true },
     ],
@@ -140,8 +157,9 @@ export const products: Product[] = [
     image: unsplash("1592924357228-91a4daadcfea"),
     unit: "4-6 count",
     stock: 40,
-    ourPrice: 6.8,
     wholesalerPrice: 5.44,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 6.8,
     competitors: [
       { store: "Voila", price: 8.99, unit: "4-6 count", url: "https://voila.ca/products/organic-tomatoes-on-the-vine-4-6-counts/1408309EA", organic: true },
     ],
@@ -159,8 +177,9 @@ export const products: Product[] = [
     image: "/products/english-cucumbers.jpg",
     unit: "1 count",
     stock: 45,
-    ourPrice: 2.5,
     wholesalerPrice: 2.0,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 2.5,
     competitors: [
       { store: "Voila", price: 2.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA", organic: true },
     ],
@@ -179,8 +198,9 @@ export const products: Product[] = [
     image: "/products/carrots.jpg",
     unit: "2 lb bag",
     stock: 40,
-    ourPrice: 3.86,
     wholesalerPrice: 3.08,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 3.86,
     competitors: [
       { store: "Voila", price: 5.99, unit: "908 g", url: "https://voila.ca/products/organic-carrots-908-g/112284EA", organic: true },
     ],
@@ -199,8 +219,9 @@ export const products: Product[] = [
     image: "/products/romaine-lettuce.webp",
     unit: "3 pack (340 g)",
     stock: 30,
-    ourPrice: 9.0,
     wholesalerPrice: 9.0,
+    markupMultiplier: 1,
+    ourPrice: 9.0,
     competitors: [
       { store: "Voila", price: 9.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
     ],
@@ -219,8 +240,9 @@ export const products: Product[] = [
     image: "/products/broccoli-crowns.avif",
     unit: "1 crown",
     stock: 30,
-    ourPrice: 4.11,
     wholesalerPrice: 3.29,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 4.11,
     competitors: [
       { store: "Voila", price: 9.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA", organic: true },
     ],
@@ -240,8 +262,9 @@ export const products: Product[] = [
     image: "/products/bananas.avif",
     unit: "6-10 count",
     stock: 60,
-    ourPrice: 3.45,
     wholesalerPrice: 2.76,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 3.45,
     competitors: [
       { store: "Voila", price: 3.79, unit: "6-10 count", url: "https://voila.ca/products/organic-bananas-bunch-6-10-count-ripe-in-3-4-days/833423EA", organic: true },
     ],
@@ -260,8 +283,9 @@ export const products: Product[] = [
     image: unsplash("1619546813926-a78fa6372cd2"),
     unit: "3 lb bag",
     stock: 30,
-    ourPrice: 8.97,
     wholesalerPrice: 7.17,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 8.97,
     competitors: [
       { store: "Voila", price: 9.99, unit: "1.36 kg", url: "https://voila.ca/products/lil-snapper-organic-apples-gala-1-36-kg/674671EA", organic: true },
     ],
@@ -279,8 +303,9 @@ export const products: Product[] = [
     image: "/products/clementines.webp",
     unit: "2 lb box (907 g)",
     stock: 30,
-    ourPrice: 7.34,
     wholesalerPrice: 5.87,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 7.34,
     competitors: [
       { store: "Voila", price: 8.49, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
     ],
@@ -298,8 +323,9 @@ export const products: Product[] = [
     image: "/products/strawberries.png",
     unit: "1 lb clamshell (454 g)",
     stock: 30,
-    ourPrice: 9.07,
     wholesalerPrice: 7.25,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 9.07,
     competitors: [
       { store: "Voila", price: 9.99, unit: "454 g", url: "https://voila.ca/products/organic-strawberries-454-g/14837EA", organic: true },
     ],
@@ -312,17 +338,20 @@ export const products: Product[] = [
   {
     id: "honey-soda",
     slug: "honey-soda",
-    name: "Honey Soda",
-    shortDescription: "Sparkling, honey-sweetened, 355 ml",
+    name: "Honey Soda™",
+    shortDescription: "Wildflower honey, lightly sparkling, one can",
     longDescription:
-      "Backed By Bees brews this in Burlington from raw honey instead of cane sugar — sparkling, light, naturally sweet. One 355 ml glass bottle. Their hives also pollinate a chunk of the farmland our produce comes from.",
+      "Backed By Bees brew Honey Soda™ at their Burlington apiary from farm-fresh wildflower honey — no cane sugar, no added flavours or dyes. One 355 ml can: lightly sparkling, gluten-free, caffeine-free, about 80 calories. Every can helps fund the hives that pollinate Ontario farmland, including some of the fields behind our produce.",
     category: "Beverages",
     image: "https://backedbybees.com/cdn/shop/files/IMG_4691_edited_1200x.jpg",
-    unit: "355 ml bottle",
+    imageAlt: "Backed By Bees Honey Soda can",
+    unit: "355 ml can",
     stock: 36,
-    ourPrice: 4.49,
     wholesalerPrice: 3.0,
+    markupMultiplier: 1.5,
+    ourPrice: 4.49,
     competitors: [
+      { store: "Backed By Bees", price: 3.29, unit: "355 ml can", url: "https://backedbybees.com/products/honey-soda" },
       { store: "Whole Foods", price: 5.99, unit: "355 ml" },
       { store: "Farm Boy", price: 4.99, unit: "355 ml" },
     ],
@@ -335,16 +364,19 @@ export const products: Product[] = [
     id: "raw-honey",
     slug: "raw-honey",
     name: "Raw Honey",
-    shortDescription: "Unpasteurised, 500 g jar",
+    shortDescription: "Hive to jar, unheated, 500 g",
     longDescription:
-      "Raw, unpasteurised honey from Backed By Bees' hives across the GTA — including a few that work the fields supplying our produce. Crystallises naturally; warm the jar in tap water to liquefy.",
+      "Backed By Bees raw honey goes straight from the hive to the jar — unheated, unfiltered, and never blended. Sourced from wildflower nectar across Halton Region; colour shifts with the season. Rich and spreadable when soft; crystallises naturally in the jar. Warm the closed jar in tap water to liquefy.",
     category: "Pantry",
     image: "https://backedbybees.com/cdn/shop/files/IMG_4274_edited_1200x.jpg",
+    imageAlt: "Backed By Bees raw honey jar",
     unit: "500 g jar",
     stock: 24,
-    ourPrice: 14.99,
     wholesalerPrice: 10.0,
+    markupMultiplier: 1.5,
+    ourPrice: 14.99,
     competitors: [
+      { store: "Backed By Bees", price: 11.99, unit: "500 g jar", url: "https://backedbybees.com/products/keepin-it-real-raw" },
       { store: "Whole Foods", price: 19.99, unit: "500 g" },
       { store: "Farm Boy", price: 16.99, unit: "500 g" },
     ],
