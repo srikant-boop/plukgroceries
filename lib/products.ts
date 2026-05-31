@@ -115,7 +115,7 @@ export const products: Product[] = [
     longDescription:
       "Creamy yellow-fleshed potatoes. Hold their shape boiled, fluff up roasted.",
     category: "Vegetables & Cooking Staples",
-    image: "/products/yellow-potatoes.webp",
+    image: "/products/yellow-potatoes.jpg",
     unit: "3 lb bag",
     stock: 40,
     ourPrice: 7.19,
