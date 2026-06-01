@@ -234,6 +234,8 @@ export type EventLogEntry = RecentActivity & {
   productId?: string;
 };
 
+export type TimelineEventCounts = Record<AnalyticsEventType, number>;
+
 export type TimelineBucket = {
   /** Start of bucket (ms) */
   startMs: number;
@@ -245,6 +247,8 @@ export type TimelineBucket = {
   purchases: number;
   totalEvents: number;
   sessions: number;
+  /** Count per funnel event for stacked charts */
+  events: TimelineEventCounts;
 };
 
 export type SessionInsights = {
@@ -420,6 +424,10 @@ function eventToLogEntry(row: StoredEvent): EventLogEntry {
   };
 }
 
+function emptyEventCounts(): TimelineEventCounts {
+  return Object.fromEntries(ANALYTICS_EVENTS.map((e) => [e, 0])) as TimelineEventCounts;
+}
+
 function formatBucketTimeLabel(atMs: number, includeDate: boolean): { label: string; shortLabel: string } {
   const { date, time } = formatTorontoDateTime(atMs);
   const hm = time.slice(0, 5);
@@ -452,6 +460,7 @@ function buildTimelineFromEvents(
       purchases: 0,
       totalEvents: 0,
       sessions: 0,
+      events: emptyEventCounts(),
     };
   });
   const sessionSets = buckets.map(() => new Set<string>());
@@ -463,6 +472,7 @@ function buildTimelineFromEvents(
     const b = buckets[idx]!;
     const ss = sessionSets[idx]!;
     b.totalEvents += 1;
+    b.events[row.type] += 1;
     if (row.type === "page_view") b.pageViews += 1;
     if (row.type === "add_to_cart") b.adds += 1;
     if (row.type === "begin_checkout" || row.type === "checkout_start") {
@@ -492,6 +502,7 @@ function buildTimelineFromDays(days: DayFunnel[]): TimelineBucket[] {
       purchases: d.counts.purchase,
       totalEvents: ANALYTICS_EVENTS.reduce((s, e) => s + d.counts[e], 0),
       sessions: d.visitors,
+      events: { ...d.counts },
     }));
 }
 
