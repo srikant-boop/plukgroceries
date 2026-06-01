@@ -2,17 +2,25 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart, hydrateLines, cartTotal } from "@/lib/cart";
 import { money } from "@/lib/format";
 import { CartSavings } from "@/components/CartSavings";
+import { track } from "@/lib/analytics-client";
 
 export default function CartPage() {
   const lines = useCart((s) => s.lines);
   const setQty = useCart((s) => s.setQty);
   const remove = useCart((s) => s.remove);
   const [hydrated, setHydrated] = useState(false);
+  const trackedView = useRef(false);
   useEffect(() => setHydrated(true), []);
+
+  useEffect(() => {
+    if (!hydrated || lines.length === 0 || trackedView.current) return;
+    trackedView.current = true;
+    track("view_cart", { qty: lines.length });
+  }, [hydrated, lines.length]);
 
   if (!hydrated) {
     return <div className="py-20 text-center text-muted">Loading…</div>;

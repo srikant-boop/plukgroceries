@@ -9,6 +9,7 @@ import {
   type Order,
 } from "@/lib/orders";
 import { sendOrderEmail } from "@/lib/email";
+import { recordPurchase } from "@/lib/analytics";
 
 export const runtime = "nodejs";
 
@@ -87,6 +88,7 @@ export async function POST(req: Request) {
 
   try {
     await saveOrder(order);
+    await recordPurchase();
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Storage error";
     console.error("[stripe webhook] saveOrder failed", err);

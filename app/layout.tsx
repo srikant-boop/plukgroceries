@@ -3,8 +3,10 @@ import Link from "next/link";
 import { CartBadge } from "@/components/CartBadge";
 import { Leaf } from "@/components/Leaf";
 import { SocialIcon } from "@/components/SocialIcon";
+import { AnalyticsProvider } from "@/components/AnalyticsProvider";
 import {
   DEFAULT_DESCRIPTION,
+  FACEBOOK_APP_ID,
   OG_IMAGE_ALT,
   OG_IMAGE_URL,
   SITE_NAME,
@@ -25,6 +27,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: `${SITE_NAME} — A weekly market drop`,
   description: DEFAULT_DESCRIPTION,
+  ...(FACEBOOK_APP_ID ? { facebook: { appId: FACEBOOK_APP_ID } } : {}),
   openGraph: {
     type: "website",
     locale: "en_CA",
@@ -58,8 +61,12 @@ export default function RootLayout({
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={OG_IMAGE_ALT} />
         <link rel="image_src" href={OG_IMAGE_URL} />
+        {FACEBOOK_APP_ID ? (
+          <meta property="fb:app_id" content={FACEBOOK_APP_ID} />
+        ) : null}
       </head>
       <body className="min-h-screen flex flex-col">
+        <AnalyticsProvider>
         <header className="border-b border-line bg-background">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
             <Link
@@ -108,6 +115,7 @@ export default function RootLayout({
             </a>
           </div>
         </footer>
+        </AnalyticsProvider>
       </body>
     </html>
   );

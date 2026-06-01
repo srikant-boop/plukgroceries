@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
+import { track } from "@/lib/analytics-client";
 
 export function AddToCart({ productId }: { productId: string }) {
   const add = useCart((s) => s.add);
@@ -36,7 +37,10 @@ export function AddToCart({ productId }: { productId: string }) {
         <button
           type="button"
           className="btn flex-1 sm:flex-none"
-          onClick={() => add(productId, qty)}
+          onClick={() => {
+            add(productId, qty);
+            track("add_to_cart", { productId, qty });
+          }}
         >
           Add to cart
         </button>

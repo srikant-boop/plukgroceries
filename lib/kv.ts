@@ -8,6 +8,12 @@ export type KvClient = {
   zadd(key: string, score: number, member: string): Promise<void>;
   zrangeRev(key: string, start: number, stop: number): Promise<string[]>;
   mget(keys: string[]): Promise<(string | null)[]>;
+  incr(key: string): Promise<number>;
+  hincrby(key: string, field: string, increment: number): Promise<number>;
+  hgetall(key: string): Promise<Record<string, string>>;
+  sadd(key: string, ...members: string[]): Promise<void>;
+  scard(key: string): Promise<number>;
+  expire(key: string, seconds: number): Promise<void>;
 };
 
 let _upstash: UpstashRedis | null = null;
@@ -94,6 +100,28 @@ function upstashAdapter(r: UpstashRedis): KvClient {
       const raws = await r.mget<(string | null)[]>(...keys);
       return raws.map((v) => (v == null ? null : String(v)));
     },
+    async incr(key) {
+      return r.incr(key);
+    },
+    async hincrby(key, field, increment) {
+      return r.hincrby(key, field, increment);
+    },
+    async hgetall(key) {
+      const raw = await r.hgetall<Record<string, string>>(key);
+      return raw ?? {};
+    },
+    async sadd(key, ...members) {
+      if (members.length === 0) return;
+      for (const member of members) {
+        await r.sadd(key, member);
+      }
+    },
+    async scard(key) {
+      return r.scard(key);
+    },
+    async expire(key, seconds) {
+      await r.expire(key, seconds);
+    },
   };
 }
 
@@ -118,6 +146,26 @@ function tcpAdapter(client: RedisClientType): KvClient {
     async mget(keys) {
       if (keys.length === 0) return [];
       return client.mGet(keys);
+    },
+    async incr(key) {
+      return client.incr(key);
+    },
+    async hincrby(key, field, increment) {
+      return client.hIncrBy(key, field, increment);
+    },
+    async hgetall(key) {
+      const raw = await client.hGetAll(key);
+      return raw ?? {};
+    },
+    async sadd(key, ...members) {
+      if (members.length === 0) return;
+      await client.sAdd(key, members);
+    },
+    async scard(key) {
+      return client.sCard(key);
+    },
+    async expire(key, seconds) {
+      await client.expire(key, seconds);
     },
   };
 }

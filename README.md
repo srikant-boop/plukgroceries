@@ -55,8 +55,17 @@ vercel deploy --prod
 | `ORDER_NOTIFICATION_EMAIL` | No | Your inbox |
 | `RESEND_FROM_EMAIL` | No | e.g. `Pluk <orders@yourdomain.com>` |
 | `ADMIN_PASSWORD` | No | Protects `/admin` |
+| `FACEBOOK_APP_ID` | No | Meta App ID for `fb:app_id` (Facebook link debugger) |
 
 Redeploy after saving env vars.
+
+### Facebook link preview (`fb:app_id`)
+
+Link previews work without this. To clear the **Missing fb:app_id** warning in [Sharing Debugger](https://developers.facebook.com/tools/debug/):
+
+1. [developers.facebook.com](https://developers.facebook.com/) → **My Apps** → **Create App** → **Other** → **Business** (name it e.g. Pluk).
+2. **Settings → Basic** → copy **App ID** (numeric).
+3. Add `FACEBOOK_APP_ID` to Vercel Production env, redeploy, **Scrape Again**.
 
 ### 3. Local webhook testing
 

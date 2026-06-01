@@ -36,6 +36,12 @@ export default async function AdminPage() {
           <Stat label="Pending" value={String(pending.length)} />
           <Stat label="Fulfilled" value={String(done.length)} />
           <Stat label="Revenue" value={money(revenue)} />
+          <a
+            href="/admin/analytics"
+            className="self-end underline underline-offset-4 hover:text-accent"
+          >
+            Insights →
+          </a>
         </div>
       </header>
 

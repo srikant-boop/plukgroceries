@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { type Product, cheapestCompetitor } from "@/lib/products";
 import { money } from "@/lib/format";
+import { track } from "@/lib/analytics-client";
 
 export function ProductCard({ product }: { product: Product }) {
   // Strike through the CHEAPEST competitor — not the highest — so we only
@@ -11,7 +14,11 @@ export function ProductCard({ product }: { product: Product }) {
   const showCompare =
     !product.special && cheapest && cheapest.price > product.ourPrice;
   return (
-    <Link href={`/products/${product.slug}`} className="group block">
+    <Link
+      href={`/products/${product.slug}`}
+      className="group block"
+      onClick={() => track("product_click", { productId: product.id })}
+    >
       <div className="relative aspect-[4/5] overflow-hidden bg-surface">
         <Image
           src={product.image}

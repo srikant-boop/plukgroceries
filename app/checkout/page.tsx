@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart, hydrateLines, cartTotal } from "@/lib/cart";
 import { money } from "@/lib/format";
 import { CartSavings } from "@/components/CartSavings";
 import { pickupSpots, getPickupSpot } from "@/lib/pickup";
+import { track } from "@/lib/analytics-client";
 
 export default function CheckoutPage() {
   const lines = useCart((s) => s.lines);
@@ -23,6 +24,13 @@ export default function CheckoutPage() {
   const items = useMemo(() => hydrateLines(lines), [lines]);
   const total = cartTotal(items);
   const spot = getPickupSpot(pickupSpotId);
+  const trackedBegin = useRef(false);
+
+  useEffect(() => {
+    if (!hydrated || items.length === 0 || trackedBegin.current) return;
+    trackedBegin.current = true;
+    track("begin_checkout", { qty: items.length });
+  }, [hydrated, items.length]);
 
   if (!hydrated) {
     return <div className="py-20 text-center text-muted">Loading…</div>;
@@ -51,6 +59,7 @@ export default function CheckoutPage() {
     if (!spot) return;
     setSubmitting(true);
     setError(null);
+    track("checkout_start", { qty: items.length });
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",

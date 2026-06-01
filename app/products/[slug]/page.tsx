@@ -6,6 +6,7 @@ import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { PriceCompareTable } from "@/components/PriceCompareTable";
 import { AddToCart } from "@/components/AddToCart";
+import { ProductViewTracker } from "@/components/ProductViewTracker";
 
 export const dynamicParams = false;
 
@@ -28,6 +29,7 @@ export default async function ProductPage({
     : null;
   return (
     <article className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <ProductViewTracker productId={product.id} />
       <div className="relative aspect-[4/5] bg-surface">
         <Image
           src={product.image}
