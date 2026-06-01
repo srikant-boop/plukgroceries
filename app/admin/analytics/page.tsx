@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { ActivityTimelineChart } from "@/app/admin/ActivityTimelineChart";
 import { AnalyticsRangeSelect } from "@/app/admin/AnalyticsRangeSelect";
 import { EventLogTable } from "@/app/admin/EventLogTable";
+import { MarkupInsightsPanel } from "@/app/admin/MarkupInsightsPanel";
 import {
   ANALYTICS_EVENTS,
   funnelRate,
@@ -10,6 +11,7 @@ import {
   parseAnalyticsRange,
 } from "@/lib/analytics";
 import { listOrders } from "@/lib/orders";
+import { buildProductMarkupInsights } from "@/lib/markup-insights";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -35,14 +37,20 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
 
   let summary = null;
   let orderCount = 0;
+  let paidOrders: Awaited<ReturnType<typeof listOrders>> = [];
   let error: string | null = null;
 
   try {
     summary = await getAnalyticsSummary(range);
-    const orders = await listOrders(500);
-    orderCount = orders.filter((o) => o.paid).length;
   } catch (e) {
     error = e instanceof Error ? e.message : "Storage unavailable";
+  }
+
+  try {
+    paidOrders = (await listOrders(500)).filter((o) => o.paid);
+    orderCount = paidOrders.length;
+  } catch {
+    // Orders optional for markup panel if analytics already failed
   }
 
   const t = summary?.totals;
@@ -50,6 +58,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
   const peakMax = summary?.peakHours[0]?.total ?? 1;
   const rangeLabel = summary?.rangeLabel ?? "Last 7 days";
   const isRolling = range === "30m" || range === "1h" || range === "6h" || range === "24h";
+  const markupRows = buildProductMarkupInsights(paidOrders);
 
   return (
     <div>
@@ -95,6 +104,10 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           {summary.trackingSinceLabel} ET). Browse the shop to generate a test
           event, or try a longer range.
         </p>
+      )}
+
+      {markupRows.length > 0 && (
+        <MarkupInsightsPanel rows={markupRows} paidOrderCount={orderCount} />
       )}
 
       {summary && t && (
