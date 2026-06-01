@@ -1,5 +1,18 @@
 import { getProductById } from "@/lib/products";
 import { getKv, isStorageConfigured } from "@/lib/kv";
+import {
+  analyticsRangeLabel,
+  analyticsRangeMs,
+  type AnalyticsRange,
+  RANGE_DAYS,
+} from "@/lib/analytics-ranges";
+
+export type { AnalyticsRange } from "@/lib/analytics-ranges";
+export {
+  ANALYTICS_RANGE_OPTIONS,
+  analyticsRangeLabel,
+  parseAnalyticsRange,
+} from "@/lib/analytics-ranges";
 
 /** Funnel steps stored as daily counters in Redis (America/Toronto dates). */
 export const ANALYTICS_EVENTS = [
@@ -15,6 +28,14 @@ export const ANALYTICS_EVENTS = [
 
 export type AnalyticsEventType = (typeof ANALYTICS_EVENTS)[number];
 
+type StoredEvent = {
+  at: number;
+  type: AnalyticsEventType;
+  path?: string;
+  productId?: string;
+  sessionId?: string;
+};
+
 export type AnalyticsPayload = {
   type: AnalyticsEventType;
   sessionId?: string;
@@ -25,7 +46,7 @@ export type AnalyticsPayload = {
 
 const TTL_SECONDS = 90 * 24 * 60 * 60;
 const RECENT_KEY = "pluk:analytics:recent";
-const RECENT_MAX = 400;
+const RECENT_MAX = 2000;
 const TORONTO = "America/Toronto";
 
 type TorontoParts = { date: string; hour: number; time: string };
@@ -99,6 +120,7 @@ async function appendRecent(
     type: payload.type,
     path: payload.path,
     productId: payload.productId,
+    sessionId: payload.sessionId,
   });
   await kv.zadd(RECENT_KEY, at, member);
   await kv.expire(RECENT_KEY, TTL_SECONDS);
@@ -213,6 +235,9 @@ export type ProductStat = {
 };
 
 export type AnalyticsSummary = {
+  range: AnalyticsRange;
+  rangeLabel: string;
+  visitors: number;
   days: DayFunnel[];
   totals: Record<AnalyticsEventType, number>;
   topProducts: ProductStat[];
@@ -316,39 +341,196 @@ function recentDetail(type: AnalyticsEventType, productId?: string, path?: strin
   return EVENT_LABELS[type];
 }
 
-async function readRecentActivity(
+async function readAllRecentEvents(
   kv: Awaited<ReturnType<typeof getKv>>,
-  limit = 40,
-): Promise<RecentActivity[]> {
-  const raw = await kv.zrangeRev(RECENT_KEY, 0, limit - 1);
-  const out: RecentActivity[] = [];
+): Promise<StoredEvent[]> {
+  const raw = await kv.zrangeRev(RECENT_KEY, 0, RECENT_MAX - 1);
+  const out: StoredEvent[] = [];
   for (const line of raw) {
     try {
-      const row = JSON.parse(line) as {
-        at: number;
-        type: AnalyticsEventType;
-        path?: string;
-        productId?: string;
-      };
-      if (!row.at || !row.type) continue;
-      const { date, time } = formatTorontoDateTime(row.at);
-      out.push({
-        at: row.at,
-        date,
-        time,
-        type: row.type,
-        detail: recentDetail(row.type, row.productId, row.path),
-      });
+      const row = JSON.parse(line) as StoredEvent;
+      if (row.at && row.type) out.push(row);
     } catch {
-      // skip corrupt rows
+      // skip
     }
   }
   return out;
 }
 
-/** Admin dashboard: last N calendar days (Toronto), funnel + time breakdown. */
-export async function getAnalyticsSummary(days = 7): Promise<AnalyticsSummary> {
-  const kv = await getKv();
+function emptyTotals(): Record<AnalyticsEventType, number> {
+  return Object.fromEntries(ANALYTICS_EVENTS.map((e) => [e, 0])) as Record<
+    AnalyticsEventType,
+    number
+  >;
+}
+
+function eventToActivity(row: StoredEvent): RecentActivity {
+  const { date, time } = formatTorontoDateTime(row.at);
+  return {
+    at: row.at,
+    date,
+    time,
+    type: row.type,
+    detail: recentDetail(row.type, row.productId, row.path),
+  };
+}
+
+function aggregateRollingEvents(
+  events: StoredEvent[],
+  range: AnalyticsRange,
+): Pick<
+  AnalyticsSummary,
+  "totals" | "topProducts" | "hourlyByDay" | "peakHours" | "recentActivity" | "visitors" | "days"
+> {
+  const totals = emptyTotals();
+  const sessions = new Set<string>();
+  const productAcc = new Map<string, { views: number; adds: number }>();
+  const hourMap = new Map<
+    string,
+    { date: string; hour: number; label: string; sessions: Set<string>; counts: Record<AnalyticsEventType, number> }
+  >();
+  const peakAcc = Array.from({ length: 24 }, (_, hour) => ({
+    hour,
+    label: formatHourLabel(hour),
+    pageViews: 0,
+    adds: 0,
+    checkouts: 0,
+    purchases: 0,
+    total: 0,
+  }));
+
+  const useMinuteBuckets = range === "30m" || range === "1h";
+
+  for (const row of events) {
+    totals[row.type] += 1;
+    if (row.sessionId) sessions.add(row.sessionId);
+
+    if (row.productId) {
+      if (row.type === "add_to_cart") {
+        mergeProductHash(productAcc, row.productId, "adds", 1);
+      } else if (
+        row.type === "product_view" ||
+        row.type === "product_click"
+      ) {
+        mergeProductHash(productAcc, row.productId, "views", 1);
+      }
+    }
+
+    const { date, time } = formatTorontoDateTime(row.at);
+    const hour = Number.parseInt(time.slice(0, 2), 10);
+    const bucketKey = useMinuteBuckets
+      ? `${date} ${time.slice(0, 5)}`
+      : `${date}-${hour}`;
+    const bucketLabel = useMinuteBuckets ? time.slice(0, 5) : formatHourLabel(hour);
+
+    let slot = hourMap.get(bucketKey);
+    if (!slot) {
+      slot = {
+        date,
+        hour,
+        label: bucketLabel,
+        sessions: new Set(),
+        counts: emptyTotals(),
+      };
+      hourMap.set(bucketKey, slot);
+    }
+    slot.counts[row.type] += 1;
+    if (row.sessionId) slot.sessions.add(row.sessionId);
+
+    const ph = peakAcc[hour]!;
+    ph.total += 1;
+    if (row.type === "page_view") ph.pageViews += 1;
+    if (row.type === "add_to_cart") ph.adds += 1;
+    if (row.type === "begin_checkout" || row.type === "checkout_start") {
+      ph.checkouts += 1;
+    }
+    if (row.type === "purchase") ph.purchases += 1;
+  }
+
+  const byDate = new Map<string, HourSlot[]>();
+  for (const slot of hourMap.values()) {
+    const list = byDate.get(slot.date) ?? [];
+    list.push({
+      hour: slot.hour,
+      label: slot.label,
+      sessions: slot.sessions.size,
+      counts: slot.counts,
+    });
+    byDate.set(slot.date, list);
+  }
+
+  const hourlyByDay: DayHourly[] = [...byDate.entries()]
+    .sort(([a], [b]) => b.localeCompare(a))
+    .map(([date, hours]) => ({
+      date,
+      hours: hours.sort((a, b) => a.label.localeCompare(b.label)),
+    }));
+
+  const topProducts: ProductStat[] = [...productAcc.entries()]
+    .map(([productId, { views, adds }]) => {
+      const p = getProductById(productId);
+      return {
+        productId,
+        name: p?.name ?? productId,
+        views,
+        adds,
+      };
+    })
+    .sort((a, b) => b.views + b.adds * 2 - (a.views + a.adds * 2))
+    .slice(0, 12);
+
+  const peakHours = peakAcc
+    .filter((h) => h.total > 0)
+    .sort((a, b) => b.total - a.total);
+
+  const days: DayFunnel[] = [
+    {
+      date: "Selected window",
+      visitors: sessions.size,
+      counts: totals,
+    },
+  ];
+
+  return {
+    totals,
+    visitors: sessions.size,
+    days,
+    topProducts,
+    hourlyByDay,
+    peakHours,
+    recentActivity: events.slice(0, 50).map(eventToActivity),
+  };
+}
+
+async function readRecentActivity(
+  kv: Awaited<ReturnType<typeof getKv>>,
+  opts: { limit?: number; dayList?: string[]; cutoffMs?: number } = {},
+): Promise<RecentActivity[]> {
+  const { limit = 40, dayList, cutoffMs } = opts;
+  const events = await readAllRecentEvents(kv);
+  const daySet = dayList ? new Set(dayList) : null;
+
+  const filtered = events.filter((row) => {
+    if (cutoffMs != null && row.at < cutoffMs) return false;
+    if (daySet) {
+      const { date } = formatTorontoDateTime(row.at);
+      if (!daySet.has(date)) return false;
+    }
+    return true;
+  });
+
+  return filtered.slice(0, limit).map(eventToActivity);
+}
+
+async function getCalendarSummary(
+  kv: Awaited<ReturnType<typeof getKv>>,
+  days: number,
+): Promise<
+  Pick<
+    AnalyticsSummary,
+    "days" | "totals" | "topProducts" | "hourlyByDay" | "peakHours" | "recentActivity" | "visitors"
+  >
+> {
   const dayList = datesBack(days);
   const funnelDays: DayFunnel[] = [];
   const hourlyByDay: DayHourly[] = [];
@@ -361,9 +543,7 @@ export async function getAnalyticsSummary(days = 7): Promise<AnalyticsSummary> {
     purchases: 0,
     total: 0,
   }));
-  const totals = Object.fromEntries(
-    ANALYTICS_EVENTS.map((e) => [e, 0]),
-  ) as Record<AnalyticsEventType, number>;
+  const totals = emptyTotals();
   const productAcc = new Map<string, { views: number; adds: number }>();
 
   for (const day of dayList) {
@@ -413,15 +593,45 @@ export async function getAnalyticsSummary(days = 7): Promise<AnalyticsSummary> {
     .filter((h) => h.total > 0)
     .sort((a, b) => b.total - a.total);
 
-  const now = formatTorontoDateTime(Date.now());
+  const visitors = funnelDays.reduce((s, d) => s + d.visitors, 0);
 
   return {
     days: funnelDays,
     totals,
+    visitors,
     topProducts,
     hourlyByDay,
     peakHours,
-    recentActivity: await readRecentActivity(kv),
+    recentActivity: await readRecentActivity(kv, { limit: 50, dayList }),
+  };
+}
+
+/** Admin dashboard for a selected time window (Toronto ET). */
+export async function getAnalyticsSummary(
+  range: AnalyticsRange = "7d",
+): Promise<AnalyticsSummary> {
+  const kv = await getKv();
+  const now = formatTorontoDateTime(Date.now());
+  const ms = analyticsRangeMs(range);
+
+  if (ms != null) {
+    const cutoff = Date.now() - ms;
+    const all = await readAllRecentEvents(kv);
+    const filtered = all.filter((e) => e.at >= cutoff);
+    const rolled = aggregateRollingEvents(filtered, range);
+    return {
+      range,
+      rangeLabel: analyticsRangeLabel(range),
+      ...rolled,
+      nowToronto: `${now.date} ${now.time} ET`,
+    };
+  }
+
+  const cal = await getCalendarSummary(kv, RANGE_DAYS[range]);
+  return {
+    range,
+    rangeLabel: analyticsRangeLabel(range),
+    ...cal,
     nowToronto: `${now.date} ${now.time} ET`,
   };
 }

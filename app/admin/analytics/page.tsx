@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { AnalyticsRangeSelect } from "@/app/admin/AnalyticsRangeSelect";
 import {
   ANALYTICS_EVENTS,
   funnelRate,
   getAnalyticsSummary,
+  parseAnalyticsRange,
 } from "@/lib/analytics";
 import { listOrders } from "@/lib/orders";
 
@@ -20,13 +23,20 @@ const STEP_LABELS: Record<(typeof ANALYTICS_EVENTS)[number], string> = {
   purchase: "Orders paid",
 };
 
-export default async function AdminAnalyticsPage() {
+type PageProps = {
+  searchParams: Promise<{ range?: string }>;
+};
+
+export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const range = parseAnalyticsRange(params.range);
+
   let summary = null;
   let orderCount = 0;
   let error: string | null = null;
 
   try {
-    summary = await getAnalyticsSummary(7);
+    summary = await getAnalyticsSummary(range);
     const orders = await listOrders(500);
     orderCount = orders.filter((o) => o.paid).length;
   } catch (e) {
@@ -34,22 +44,27 @@ export default async function AdminAnalyticsPage() {
   }
 
   const t = summary?.totals;
-  const visitors = summary?.days.reduce((s, d) => s + d.visitors, 0) ?? 0;
+  const visitors = summary?.visitors ?? 0;
   const peakMax = summary?.peakHours[0]?.total ?? 1;
+  const rangeLabel = summary?.rangeLabel ?? "Last 7 days";
+  const isRolling = range === "30m" || range === "1h" || range === "6h" || range === "24h";
 
   return (
     <div>
-      <header className="mb-10 flex items-baseline justify-between flex-wrap gap-3">
+      <header className="mb-10 flex items-start justify-between flex-wrap gap-4">
         <div>
           <p className="eyebrow mb-2">Admin</p>
           <h1 className="text-3xl">Insights</h1>
           <p className="text-sm text-muted mt-2 max-w-xl">
-            Last 7 days · Toronto (ET) · anonymous sessions. Funnel +
-            <strong> when</strong> people browse (hourly). Updated{" "}
+            {rangeLabel} · Toronto (ET) · anonymous sessions. Funnel +
+            <strong> when</strong> people browse. Updated{" "}
             {summary?.nowToronto ?? "—"}.
           </p>
         </div>
-        <div className="flex gap-4 text-sm">
+        <div className="flex flex-col items-end gap-3 text-sm">
+          <Suspense fallback={null}>
+            <AnalyticsRangeSelect current={range} />
+          </Suspense>
           <Link
             href="/admin"
             className="underline underline-offset-4 hover:text-accent"
@@ -65,11 +80,26 @@ export default async function AdminAnalyticsPage() {
         </div>
       )}
 
+      {summary && t && summary.totals.page_view === 0 && isRolling && (
+        <p className="text-sm text-muted mb-8 border border-line p-4">
+          No activity in this window yet. Short ranges only include events
+          recorded after the hourly analytics update — try{" "}
+          <strong>Last 7 days</strong> for older traffic, or browse the shop
+          yourself to generate a test event.
+        </p>
+      )}
+
       {summary && t && (
         <>
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-12">
-            <StatCard label="Unique sessions (7d)" value={String(visitors)} />
-            <StatCard label="Add to cart (7d)" value={String(t.add_to_cart)} />
+            <StatCard
+              label={`Unique sessions (${rangeLabel.toLowerCase()})`}
+              value={String(visitors)}
+            />
+            <StatCard
+              label={`Add to cart (${rangeLabel.toLowerCase()})`}
+              value={String(t.add_to_cart)}
+            />
             <StatCard
               label="Checkout → paid"
               value={funnelRate(t.purchase, t.checkout_start)}
@@ -85,6 +115,9 @@ export default async function AdminAnalyticsPage() {
           {summary.recentActivity.length > 0 && (
             <section className="mb-12">
               <h2 className="text-xl mb-4">Recent activity</h2>
+              <p className="text-xs text-muted mb-4">
+                Latest events in the selected range (newest first, Eastern time).
+              </p>
               <div className="border border-line overflow-x-auto max-h-80 overflow-y-auto">
                 <table className="w-full text-sm">
                   <thead className="sticky top-0 bg-background">
@@ -117,10 +150,13 @@ export default async function AdminAnalyticsPage() {
 
           {summary.peakHours.length > 0 && (
             <section className="mb-12">
-              <h2 className="text-xl mb-2">Busiest hours (7 days combined)</h2>
+              <h2 className="text-xl mb-2">
+                Busiest hours ({rangeLabel.toLowerCase()})
+              </h2>
               <p className="text-xs text-muted mb-4">
-                When Oakville shoppers tend to hit the site — all days rolled up
-                by hour of day.
+                {isRolling
+                  ? "Activity in the selected window, grouped by hour of day (ET)."
+                  : "When Oakville shoppers tend to hit the site — all days in range rolled up by hour."}
               </p>
               <div className="border border-line overflow-x-auto">
                 <table className="w-full text-sm">
@@ -167,7 +203,7 @@ export default async function AdminAnalyticsPage() {
           )}
 
           <section className="mb-12">
-            <h2 className="text-xl mb-4">Funnel (7 days)</h2>
+            <h2 className="text-xl mb-4">Funnel ({rangeLabel.toLowerCase()})</h2>
             <div className="border border-line overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -198,7 +234,11 @@ export default async function AdminAnalyticsPage() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-xl mb-4">Daily breakdown</h2>
+            <h2 className="text-xl mb-4">
+              {isRolling && summary.days.length === 1
+                ? "Window summary"
+                : "Daily breakdown"}
+            </h2>
             <div className="border border-line overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
@@ -244,7 +284,7 @@ export default async function AdminAnalyticsPage() {
           <section className="mb-12">
             <h2 className="text-xl mb-2">Hourly breakdown</h2>
             <p className="text-xs text-muted mb-4">
-              Only hours with activity are shown. Times are Eastern (Toronto).
+              Only buckets with activity are shown. Times are Eastern (Toronto).
             </p>
             {summary.hourlyByDay.every((d) => d.hours.length === 0) ? (
               <p className="text-sm text-muted">
@@ -262,7 +302,9 @@ export default async function AdminAnalyticsPage() {
                           <thead>
                             <tr className="border-b border-line text-muted">
                               <th className="p-2 text-left font-normal">
-                                Hour (ET)
+                                {isRolling && (range === "30m" || range === "1h")
+                                  ? "Time (ET)"
+                                  : "Hour (ET)"}
                               </th>
                               <th className="p-2 text-right font-normal">
                                 Sessions
@@ -293,7 +335,7 @@ export default async function AdminAnalyticsPage() {
                           <tbody>
                             {day.hours.map((slot) => (
                               <tr
-                                key={`${day.date}-${slot.hour}`}
+                                key={`${day.date}-${slot.hour}-${slot.label}`}
                                 className="border-b border-line/60"
                               >
                                 <td className="p-2 whitespace-nowrap">
@@ -337,7 +379,9 @@ export default async function AdminAnalyticsPage() {
           </section>
 
           <section>
-            <h2 className="text-xl mb-4">Top products (7 days)</h2>
+            <h2 className="text-xl mb-4">
+              Top products ({rangeLabel.toLowerCase()})
+            </h2>
             {summary.topProducts.length === 0 ? (
               <p className="text-sm text-muted">No product activity yet.</p>
             ) : (
