@@ -31,9 +31,9 @@ export type OrderLine = {
 
   /** Wholesaler / pack cost per unit (CAD). */
   wholesalerPrice: number;
-  /** e.g. 1.25 = 25% markup on cost. */
+  /** e.g. 1.20 = 20% markup on cost. */
   markupMultiplier: number;
-  /** Markup on cost as percent, e.g. 25. */
+  /** Markup on cost as percent, e.g. 20. */
   markupOnCostPct: number;
   /** Catalogue retail per unit at order time. */
   ourPrice: number;

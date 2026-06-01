@@ -30,8 +30,8 @@ export type Product = {
   unit: string;
   stock: number;
   wholesalerPrice: number;
-  // Internal ops: retail = wholesalerPrice × markupMultiplier (e.g. 1.25 =
-  // 25% on cost, 1.0 = pass-through). Never shown on the storefront.
+  // Internal ops: retail = wholesalerPrice × markupMultiplier (e.g. 1.20 =
+  // 20% on cost, 1.0 = pass-through). Never shown on the storefront.
   markupMultiplier: number;
   ourPrice: number;
   competitors: CompetitorPrice[];
@@ -49,10 +49,8 @@ export type Product = {
   tags?: string[];
 };
 
-/** Standard produce markup: cost × 1.25. Internal ops only. */
-export const DEFAULT_MARKUP_MULTIPLIER = 1.25;
-/** Temporary higher markup on select produce (cost × 1.30). Internal ops only. */
-export const ELEVATED_MARKUP_MULTIPLIER = 1.3;
+/** Standard produce markup: cost × 1.20 (Aldi-style ~20% on cost). Internal ops only. */
+export const DEFAULT_MARKUP_MULTIPLIER = 1.2;
 
 /** Derive retail from wholesale cost (round to cents). Internal ops only. */
 export const retailFromWholesale = (
@@ -64,7 +62,7 @@ export const retailFromWholesale = (
 export const margin = (p: Product) => p.ourPrice - p.wholesalerPrice;
 export const marginPct = (p: Product) =>
   p.wholesalerPrice > 0 ? (margin(p) / p.ourPrice) * 100 : 0;
-/** Markup on cost, e.g. multiplier 1.25 → 25%. Internal ops only. */
+/** Markup on cost, e.g. multiplier 1.20 → 20%. Internal ops only. */
 export const markupOnCostPct = (p: Product) =>
   (p.markupMultiplier - 1) * 100;
 
@@ -147,7 +145,7 @@ export const products: Product[] = [
     stock: 40,
     wholesalerPrice: 5.75,
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 7.19,
+    ourPrice: 6.9,
     competitors: [
       { store: "Voila", price: 7.99, unit: "3 lb", url: "https://voila.ca/products/organic-potatoes-yellow-1-36-kg/472128EA", organic: true },
     ],
@@ -167,8 +165,8 @@ export const products: Product[] = [
     unit: "4-6 count",
     stock: 40,
     wholesalerPrice: 5.44,
-    markupMultiplier: ELEVATED_MARKUP_MULTIPLIER,
-    ourPrice: 7.07,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 6.53,
     competitors: [
       { store: "Voila", price: 8.99, unit: "4-6 count", url: "https://voila.ca/products/organic-tomatoes-on-the-vine-4-6-counts/1408309EA", organic: true },
     ],
@@ -187,8 +185,8 @@ export const products: Product[] = [
     unit: "1 count",
     stock: 45,
     wholesalerPrice: 2.0,
-    markupMultiplier: ELEVATED_MARKUP_MULTIPLIER,
-    ourPrice: 2.6,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 2.4,
     competitors: [
       { store: "Voila", price: 4.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA", organic: true },
     ],
@@ -208,8 +206,8 @@ export const products: Product[] = [
     unit: "2 lb bag",
     stock: 40,
     wholesalerPrice: 3.08,
-    markupMultiplier: ELEVATED_MARKUP_MULTIPLIER,
-    ourPrice: 4.0,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 3.7,
     competitors: [
       { store: "Voila", price: 5.99, unit: "2 lb", url: "https://voila.ca/products/organic-carrots-908-g/112284EA", organic: true },
     ],
@@ -250,8 +248,8 @@ export const products: Product[] = [
     unit: "1 crown",
     stock: 30,
     wholesalerPrice: 3.29,
-    markupMultiplier: ELEVATED_MARKUP_MULTIPLIER,
-    ourPrice: 4.28,
+    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
+    ourPrice: 3.95,
     competitors: [
       { store: "Voila", price: 8.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA", organic: true },
     ],
@@ -273,7 +271,7 @@ export const products: Product[] = [
     stock: 60,
     wholesalerPrice: 2.76,
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 3.45,
+    ourPrice: 3.31,
     competitors: [
       { store: "Voila", price: 3.79, unit: "6-10 count", url: "https://voila.ca/products/organic-bananas-bunch-6-10-count-ripe-in-3-4-days/833423EA", organic: true },
     ],
@@ -294,7 +292,7 @@ export const products: Product[] = [
     stock: 30,
     wholesalerPrice: 7.17,
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 8.97,
+    ourPrice: 8.6,
     competitors: [
       { store: "Voila", price: 8.99, unit: "1.36 kg", url: "https://voila.ca/products/lil-snapper-organic-apples-gala-1-36-kg/674671EA", organic: true },
     ],
@@ -314,7 +312,7 @@ export const products: Product[] = [
     stock: 30,
     wholesalerPrice: 5.87,
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 7.34,
+    ourPrice: 7.04,
     competitors: [
       { store: "Voila", price: 8.49, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
     ],
@@ -334,7 +332,7 @@ export const products: Product[] = [
     stock: 30,
     wholesalerPrice: 7.25,
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 9.07,
+    ourPrice: 8.7,
     competitors: [
       { store: "Voila", price: 9.99, unit: "454 g", url: "https://voila.ca/products/organic-strawberries-454-g/14837EA", organic: true },
     ],

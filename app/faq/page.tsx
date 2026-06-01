@@ -52,8 +52,8 @@ const faqs: FaqItem[] = [
           time, but the idea stays the same: fewer products, more volume on
           each. Because everything is pre-ordered before the drop, we
           buy exactly what was bought — no unsold inventory, no spoilage,
-          no waste markup baked into your price. Our markup is ~25%, vs ~40%
-          at many big supermarkets.
+          no waste markup baked into your price. Our markup is ~20% — in line
+          with Aldi — vs ~40% at many big supermarkets.
         </p>
         <p className="mt-3">
           Most weeks that lands us 20–40% below premium grocery chains and
