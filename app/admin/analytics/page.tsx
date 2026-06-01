@@ -58,9 +58,16 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           <p className="eyebrow mb-2">Admin</p>
           <h1 className="text-3xl">Insights</h1>
           <p className="text-sm text-muted mt-2 max-w-xl">
-            {rangeLabel} · Toronto (ET) · anonymous sessions. Funnel +
-            <strong> when</strong> people browse. Updated{" "}
-            {summary?.nowToronto ?? "—"}.
+            {rangeLabel} · Toronto (ET) · anonymous sessions. Per-event log
+            since <strong>{summary?.trackingSinceLabel ?? "—"} ET</strong>.
+            {summary?.windowUnifiedToTracking && (
+              <>
+                {" "}
+                All time ranges show the same window until enough history
+                exists beyond that start.
+              </>
+            )}{" "}
+            Updated {summary?.nowToronto ?? "—"}.
           </p>
         </div>
         <div className="flex flex-col items-end gap-3 text-sm">
@@ -84,10 +91,9 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
 
       {summary && t && summary.totals.page_view === 0 && isRolling && (
         <p className="text-sm text-muted mb-8 border border-line p-4">
-          No activity in this window yet. Short ranges only include events
-          recorded after the hourly analytics update — try{" "}
-          <strong>Last 7 days</strong> for older traffic, or browse the shop
-          yourself to generate a test event.
+          No activity in this window yet (since{" "}
+          {summary.trackingSinceLabel} ET). Browse the shop to generate a test
+          event, or try a longer range.
         </p>
       )}
 

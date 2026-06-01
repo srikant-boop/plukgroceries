@@ -7,6 +7,12 @@ export type KvClient = {
   get(key: string): Promise<string | null>;
   zadd(key: string, score: number, member: string): Promise<void>;
   zrangeRev(key: string, start: number, stop: number): Promise<string[]>;
+  /** Lowest scores first (oldest members in a time-ordered zset). */
+  zrangeWithScores(
+    key: string,
+    start: number,
+    stop: number,
+  ): Promise<{ member: string; score: number }[]>;
   mget(keys: string[]): Promise<(string | null)[]>;
   incr(key: string): Promise<number>;
   hincrby(key: string, field: string, increment: number): Promise<number>;
@@ -78,6 +84,20 @@ async function getTcp(): Promise<RedisClientType> {
   return _tcpConnecting;
 }
 
+function parseZrangeWithScores(raw: unknown): { member: string; score: number }[] {
+  if (!Array.isArray(raw)) return [];
+  const out: { member: string; score: number }[] = [];
+  for (let i = 0; i < raw.length; i += 2) {
+    const member = raw[i];
+    const score = raw[i + 1];
+    if (typeof member !== "string") continue;
+    const n = typeof score === "number" ? score : Number.parseFloat(String(score));
+    if (!Number.isFinite(n)) continue;
+    out.push({ member, score: n });
+  }
+  return out;
+}
+
 function upstashAdapter(r: UpstashRedis): KvClient {
   return {
     async ping() {
@@ -96,6 +116,10 @@ function upstashAdapter(r: UpstashRedis): KvClient {
     async zrangeRev(key, start, stop) {
       const ids = await r.zrange<string[]>(key, start, stop, { rev: true });
       return ids ?? [];
+    },
+    async zrangeWithScores(key, start, stop) {
+      const raw = await r.zrange(key, start, stop, { withScores: true });
+      return parseZrangeWithScores(raw);
     },
     async mget(keys) {
       if (keys.length === 0) return [];
@@ -150,6 +174,10 @@ function tcpAdapter(client: RedisClientType): KvClient {
     },
     async zrangeRev(key, start, stop) {
       return client.zRange(key, start, stop, { REV: true });
+    },
+    async zrangeWithScores(key, start, stop) {
+      const raw = await client.zRangeWithScores(key, start, stop);
+      return raw.map((row) => ({ member: row.value, score: row.score }));
     },
     async mget(keys) {
       if (keys.length === 0) return [];

@@ -62,3 +62,20 @@ export function timelineBucketCount(range: AnalyticsRange): number {
       return 12;
   }
 }
+
+/** When the per-event log went live (Toronto). Override with ANALYTICS_TRACKING_SINCE. */
+export const ANALYTICS_TRACKING_SINCE_DEFAULT_MS = Date.parse(
+  "2026-06-01T17:45:00-04:00",
+);
+
+/** Optional override for when per-event tracking started (ISO 8601). */
+export function analyticsTrackingSinceFromEnv(): number | null {
+  const raw = process.env.ANALYTICS_TRACKING_SINCE?.trim();
+  if (!raw) return null;
+  const ms = Date.parse(raw);
+  return Number.isFinite(ms) ? ms : null;
+}
+
+export function getAnalyticsTrackingSinceMs(): number {
+  return analyticsTrackingSinceFromEnv() ?? ANALYTICS_TRACKING_SINCE_DEFAULT_MS;
+}

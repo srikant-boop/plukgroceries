@@ -4,6 +4,8 @@ import {
   analyticsRangeLabel,
   analyticsRangeMs,
   type AnalyticsRange,
+  analyticsTrackingSinceFromEnv,
+  getAnalyticsTrackingSinceMs,
   RANGE_DAYS,
   timelineBucketCount,
 } from "@/lib/analytics-ranges";
@@ -280,6 +282,14 @@ export type ProductStat = {
 export type AnalyticsSummary = {
   range: AnalyticsRange;
   rangeLabel: string;
+  /** Per-event tracking start, formatted for display (Toronto ET). */
+  trackingSinceLabel: string;
+  /** False until the first event exists in the log (no clamping yet). */
+  trackingActive: boolean;
+  /** True when the selected range would extend before tracking started. */
+  windowClampedToTracking: boolean;
+  /** When clamped, every range uses the same window (since tracking started → now). */
+  windowUnifiedToTracking: boolean;
   visitors: number;
   days: DayFunnel[];
   totals: Record<AnalyticsEventType, number>;
@@ -317,6 +327,68 @@ export function formatTorontoDateTime(at: number): { date: string; time: string 
     date: `${get("year")}-${get("month")}-${get("day")}`,
     time: `${get("hour")}:${get("minute")}:${get("second")}`,
   };
+}
+
+export function formatTrackingSinceLabel(atMs: number): string {
+  const { date, time } = formatTorontoDateTime(atMs);
+  return `${date} ${time.slice(0, 5)}`;
+}
+
+function torontoDayStartMs(date: string): number {
+  const [y, m, d] = date.split("-").map(Number);
+  let ms = Date.UTC(y, m - 1, d, 17, 0, 0);
+  for (let n = 0; n < 72; n++) {
+    const p = torontoParts(new Date(ms));
+    if (p.date === date && p.hour === 0) {
+      const parts = p.time.split(":").map((x) => Number.parseInt(x, 10));
+      const mm = parts[1] ?? 0;
+      const ss = parts[2] ?? 0;
+      return ms - (mm * 60 + ss) * 1000;
+    }
+    let adjustHours = 0 - p.hour;
+    if (p.date < date) adjustHours += 24;
+    if (p.date > date) adjustHours -= 24;
+    ms += adjustHours * 3_600_000;
+  }
+  return ms;
+}
+
+function resolveAnalyticsTrackingSince(): {
+  ms: number;
+  label: string;
+} {
+  const ms = getAnalyticsTrackingSinceMs();
+  return { ms, label: formatTrackingSinceLabel(ms) };
+}
+
+function resolveEffectiveWindow(
+  range: AnalyticsRange,
+  trackingSinceMs: number,
+  nowMs: number,
+): { windowStartMs: number; windowEndMs: number; clamped: boolean } {
+  const rangeMs = analyticsRangeMs(range);
+  const requestedStart =
+    rangeMs != null
+      ? nowMs - rangeMs
+      : torontoDayStartMs(datesBack(RANGE_DAYS[range]).at(-1) ?? dateKey());
+  const clamped = requestedStart < trackingSinceMs;
+  return {
+    windowStartMs: clamped ? trackingSinceMs : requestedStart,
+    windowEndMs: nowMs,
+    clamped,
+  };
+}
+
+function dayFunnelFromEvents(date: string, events: StoredEvent[]): DayFunnel {
+  const counts = emptyTotals();
+  const sessions = new Set<string>();
+  for (const e of events) {
+    const { date: eventDate } = formatTorontoDateTime(e.at);
+    if (eventDate !== date) continue;
+    counts[e.type] += 1;
+    if (e.sessionId) sessions.add(e.sessionId);
+  }
+  return { date, visitors: sessions.size, counts };
 }
 
 async function readDay(kv: Awaited<ReturnType<typeof getKv>>, day: string): Promise<DayFunnel> {
@@ -758,6 +830,7 @@ async function getCalendarSummary(
   kv: Awaited<ReturnType<typeof getKv>>,
   days: number,
   range: AnalyticsRange,
+  trackingSinceMs: number,
 ): Promise<
   Pick<
     AnalyticsSummary,
@@ -773,7 +846,14 @@ async function getCalendarSummary(
     | "sessionInsights"
   >
 > {
-  const dayList = datesBack(days);
+  const trackingStartDate = formatTorontoDateTime(trackingSinceMs).date;
+  const dayList = datesBack(days).filter((d) => d >= trackingStartDate);
+  const allEvents = await readAllRecentEvents(kv);
+  const rangedEvents = eventsInWindow(allEvents, {
+    cutoffMs: trackingSinceMs,
+    dayList,
+  });
+
   const funnelDays: DayFunnel[] = [];
   const hourlyByDay: DayHourly[] = [];
   const peakAcc = Array.from({ length: 24 }, (_, hour) => ({
@@ -789,10 +869,24 @@ async function getCalendarSummary(
   const productAcc = new Map<string, { views: number; adds: number }>();
 
   for (const day of dayList) {
-    const row = await readDay(kv, day);
+    const row =
+      day === trackingStartDate
+        ? dayFunnelFromEvents(day, rangedEvents)
+        : await readDay(kv, day);
     funnelDays.push(row);
     const hours = await readDayHours(kv, day);
-    hourlyByDay.push({ date: day, hours });
+    if (day === trackingStartDate) {
+      const startHour = Number.parseInt(
+        formatTorontoDateTime(trackingSinceMs).time.slice(0, 2),
+        10,
+      );
+      hourlyByDay.push({
+        date: day,
+        hours: hours.filter((slot) => slot.hour >= startHour),
+      });
+    } else {
+      hourlyByDay.push({ date: day, hours });
+    }
 
     for (const slot of hours) {
       const ph = peakAcc[slot.hour]!;
@@ -837,8 +931,6 @@ async function getCalendarSummary(
 
   const visitors = funnelDays.reduce((s, d) => s + d.visitors, 0);
   const timeline = buildTimelineFromDays(funnelDays);
-  const allEvents = await readAllRecentEvents(kv);
-  const rangedEvents = eventsInWindow(allEvents, { dayList });
   const eventLog = rangedEvents
     .sort((a, b) => b.at - a.at)
     .map(eventToLogEntry);
@@ -864,26 +956,55 @@ export async function getAnalyticsSummary(
 ): Promise<AnalyticsSummary> {
   const kv = await getKv();
   const now = formatTorontoDateTime(Date.now());
-  const ms = analyticsRangeMs(range);
+  const { ms: trackingSinceMs, label: trackingSinceLabel } =
+    resolveAnalyticsTrackingSince();
+  const nowMs = Date.now();
+  const { windowStartMs, windowEndMs, clamped: windowClampedToTracking } =
+    resolveEffectiveWindow(range, trackingSinceMs, nowMs);
+  const windowUnifiedToTracking = windowClampedToTracking;
+  const rangeLabel = windowClampedToTracking
+    ? `Since ${trackingSinceLabel} ET`
+    : analyticsRangeLabel(range);
 
-  if (ms != null) {
-    const cutoff = Date.now() - ms;
-    const nowMs = Date.now();
+  const useEventWindow =
+    windowClampedToTracking || analyticsRangeMs(range) != null;
+
+  if (useEventWindow) {
     const all = await readAllRecentEvents(kv);
-    const filtered = all.filter((e) => e.at >= cutoff);
-    const rolled = aggregateRollingEvents(filtered, range, cutoff, nowMs);
+    const filtered = all.filter(
+      (e) => e.at >= windowStartMs && e.at < windowEndMs,
+    );
+    const rolled = aggregateRollingEvents(
+      filtered,
+      range,
+      windowStartMs,
+      windowEndMs,
+    );
     return {
       range,
-      rangeLabel: analyticsRangeLabel(range),
+      rangeLabel,
+      trackingSinceLabel,
+      trackingActive: true,
+      windowClampedToTracking,
+      windowUnifiedToTracking,
       ...rolled,
       nowToronto: `${now.date} ${now.time} ET`,
     };
   }
 
-  const cal = await getCalendarSummary(kv, RANGE_DAYS[range], range);
+  const cal = await getCalendarSummary(
+    kv,
+    RANGE_DAYS[range],
+    range,
+    trackingSinceMs,
+  );
   return {
     range,
-    rangeLabel: analyticsRangeLabel(range),
+    rangeLabel,
+    trackingSinceLabel,
+    trackingActive: true,
+    windowClampedToTracking: false,
+    windowUnifiedToTracking: false,
     ...cal,
     nowToronto: `${now.date} ${now.time} ET`,
   };
