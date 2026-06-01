@@ -298,7 +298,7 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 7.34,
     competitors: [
-      { store: "Voila", price: 10.99, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
+      { store: "Voila", price: 8.49, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
     ],
     supplierId: "terra-freska",
     organic: true,
