@@ -25,8 +25,9 @@ export function MarkupInsightsPanel({
       <h2 className="text-xl mb-2">Markup &amp; price changes</h2>
       <p className="text-xs text-muted mb-4 max-w-3xl">
         Internal only. Target {markupTargetLabel} on wholesale (Aldi ballpark).
-        Lines show markup % per SKU over the selected range; hover a bucket to
-        compare all SKUs at once. Stacked bars for units and revenue.
+        One line per SKU, including flat tiers (e.g. Romaine pass-through);
+        Discover Find items omitted. Hover a bucket to compare all SKUs. Stacked
+        bars for units and revenue.
         {paidOrderCount === 0 && " No paid orders yet — use Units / Revenue toggles when sales land."}
       </p>
 

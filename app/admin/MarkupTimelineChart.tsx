@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import {
   bucketSkuValue,
   formatMarkupPct,
+  isMarkupChartSku,
   MARKUP_BAR_SCALE_PCT,
   type MarkupMetric,
   type MarkupSkuMeta,
@@ -18,6 +19,21 @@ const METRICS: { id: MarkupMetric; label: string }[] = [
 
 const CHART_H = 176;
 const PAD = { top: 12, right: 8, bottom: 4, left: 32 };
+/** Separate overlapping flat lines in SVG units (display only). */
+const LINE_LANE_PX = 3.5;
+
+function laneOffset(skuIdx: number, total: number): number {
+  return (skuIdx - (total - 1) / 2) * LINE_LANE_PX;
+}
+
+function skuMarkupConstant(
+  buckets: MarkupTimelineBucket[],
+  productId: string,
+): boolean {
+  if (buckets.length === 0) return true;
+  const first = buckets[0]!.markupPct[productId] ?? 0;
+  return buckets.every((b) => (b.markupPct[productId] ?? 0) === first);
+}
 
 function formatMetricValue(metric: MarkupMetric, value: number): string {
   if (metric === "markupPct") return `${formatMarkupPct(value)}%`;
@@ -35,7 +51,7 @@ function MarkupLineChart({
   const [hoverBucketIdx, setHoverBucketIdx] = useState<number | null>(null);
 
   const activeSkus = useMemo(
-    () => skus.filter((s) => !s.passThrough),
+    () => skus.filter(isMarkupChartSku),
     [skus],
   );
 
@@ -60,16 +76,24 @@ function MarkupLineChart({
 
   const series = useMemo(
     () =>
-      activeSkus.map((sku) => ({
-        sku,
-        points: buckets.map((b, i) => ({
-          i,
-          x: xAt(i),
-          y: yAt(b.markupPct[sku.productId] ?? 0),
-          pct: b.markupPct[sku.productId] ?? 0,
-          label: b.label,
-        })),
-      })),
+      activeSkus.map((sku, skuIdx) => {
+        const constant = skuMarkupConstant(buckets, sku.productId);
+        const offset = laneOffset(skuIdx, activeSkus.length);
+        return {
+          sku,
+          constant,
+          points: buckets.map((b, i) => {
+            const pct = b.markupPct[sku.productId] ?? 0;
+            return {
+              i,
+              x: xAt(i),
+              y: yAt(pct) + offset,
+              pct,
+              label: b.label,
+            };
+          }),
+        };
+      }),
     [activeSkus, buckets, innerW, innerH, yMax],
   );
 
@@ -193,7 +217,7 @@ function MarkupLineChart({
           />
         )}
 
-        {series.map(({ sku, points }) => {
+        {series.map(({ sku, points, constant }) => {
           const polyline = points.map((p) => `${p.x},${p.y}`).join(" ");
 
           return (
@@ -203,10 +227,12 @@ function MarkupLineChart({
                   points={polyline}
                   fill="none"
                   stroke={sku.color}
-                  strokeWidth={2}
+                  strokeWidth={constant ? 1.5 : 2}
+                  strokeDasharray={constant ? "5 3" : undefined}
                   strokeLinejoin="round"
                   strokeLinecap="round"
                   pointerEvents="none"
+                  opacity={constant ? 0.85 : 1}
                 />
               )}
               {points.map((p, i) => {
@@ -228,6 +254,10 @@ function MarkupLineChart({
           );
         })}
       </svg>
+      <p className="text-[10px] text-muted mt-2">
+        Dashed lines = flat markup across the range. Lines are offset slightly when
+        values match so each SKU stays visible. Discover Find items omitted.
+      </p>
     </div>
   );
 }
@@ -246,10 +276,12 @@ export function MarkupTimelineChart({
 
   const activeSkus = useMemo(() => {
     if (metric === "markupPct") {
-      return skus.filter((s) => !s.passThrough);
+      return skus.filter(isMarkupChartSku);
     }
-    return skus.filter((s) =>
-      buckets.some((b) => bucketSkuValue(b, s.productId, metric) > 0),
+    return skus.filter(
+      (s) =>
+        isMarkupChartSku(s) &&
+        buckets.some((b) => bucketSkuValue(b, s.productId, metric) > 0),
     );
   }, [buckets, skus, metric]);
 
@@ -298,15 +330,26 @@ export function MarkupTimelineChart({
 
       {activeSkus.length > 0 && (
         <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4 text-[10px] text-muted">
-          {activeSkus.map((sku) => (
-            <span key={sku.productId} className="inline-flex items-center gap-1.5">
+          {activeSkus.map((sku) => {
+            const flat =
+              metric === "markupPct" &&
+              skuMarkupConstant(buckets, sku.productId);
+            return (
               <span
-                className="inline-block w-2.5 h-2.5 rounded-sm shrink-0"
-                style={{ backgroundColor: sku.color }}
-              />
-              {sku.name}
-            </span>
-          ))}
+                key={sku.productId}
+                className="inline-flex items-center gap-1.5"
+              >
+                <span
+                  className="inline-block w-2.5 h-2.5 rounded-sm shrink-0"
+                  style={{ backgroundColor: sku.color }}
+                />
+                {sku.name}
+                {flat && (
+                  <span className="text-muted/70">(flat)</span>
+                )}
+              </span>
+            );
+          })}
         </div>
       )}
 

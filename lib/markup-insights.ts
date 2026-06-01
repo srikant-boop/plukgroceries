@@ -46,8 +46,16 @@ export type MarkupSkuMeta = {
   productId: string;
   name: string;
   color: string;
+  /** Wholesale pass-through (markup ×1). */
   passThrough: boolean;
+  /** Discover / Find shelf — omitted from markup chart for now. */
+  discoverFind: boolean;
 };
+
+/** SKUs to plot on the markup % timeline (excludes Discover Find). */
+export function isMarkupChartSku(meta: MarkupSkuMeta): boolean {
+  return !meta.discoverFind;
+}
 
 export type MarkupTimelineBucket = {
   startMs: number;
@@ -218,6 +226,7 @@ export function buildMarkupTimeSeries(
     name: p.name,
     color: skuColor(i),
     passThrough: p.markupMultiplier <= 1,
+    discoverFind: p.special === "Find",
   }));
 
   const buckets: MarkupTimelineBucket[] = bucketDefs.map((b) => ({
