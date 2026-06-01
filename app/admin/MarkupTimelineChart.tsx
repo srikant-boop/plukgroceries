@@ -19,20 +19,12 @@ const METRICS: { id: MarkupMetric; label: string }[] = [
 
 const CHART_H = 176;
 const PAD = { top: 12, right: 8, bottom: 4, left: 32 };
-/** Separate overlapping flat lines in SVG units (display only). */
-const LINE_LANE_PX = 3.5;
 
-function laneOffset(skuIdx: number, total: number): number {
-  return (skuIdx - (total - 1) / 2) * LINE_LANE_PX;
-}
-
-function skuMarkupConstant(
-  buckets: MarkupTimelineBucket[],
+function markupSeriesKey(
   productId: string,
-): boolean {
-  if (buckets.length === 0) return true;
-  const first = buckets[0]!.markupPct[productId] ?? 0;
-  return buckets.every((b) => (b.markupPct[productId] ?? 0) === first);
+  buckets: MarkupTimelineBucket[],
+): string {
+  return buckets.map((b) => b.markupPct[productId] ?? 0).join("|");
 }
 
 function formatMetricValue(metric: MarkupMetric, value: number): string {
@@ -74,28 +66,31 @@ function MarkupLineChart({
 
   const yAt = (pct: number) => PAD.top + innerH - (pct / yMax) * innerH;
 
-  const series = useMemo(
-    () =>
-      activeSkus.map((sku, skuIdx) => {
-        const constant = skuMarkupConstant(buckets, sku.productId);
-        const offset = laneOffset(skuIdx, activeSkus.length);
-        return {
-          sku,
-          constant,
-          points: buckets.map((b, i) => {
-            const pct = b.markupPct[sku.productId] ?? 0;
-            return {
-              i,
-              x: xAt(i),
-              y: yAt(pct) + offset,
-              pct,
-              label: b.label,
-            };
-          }),
-        };
-      }),
-    [activeSkus, buckets, innerW, innerH, yMax],
-  );
+  const lineGroups = useMemo(() => {
+    const byKey = new Map<string, MarkupSkuMeta[]>();
+    for (const sku of activeSkus) {
+      const key = markupSeriesKey(sku.productId, buckets);
+      const list = byKey.get(key) ?? [];
+      list.push(sku);
+      byKey.set(key, list);
+    }
+    return [...byKey.values()].map((group) => {
+      const lead = group[0]!;
+      return {
+        skus: group,
+        color: lead.color,
+        points: buckets.map((b, i) => {
+          const pct = b.markupPct[lead.productId] ?? 0;
+          return {
+            i,
+            x: xAt(i),
+            y: yAt(pct),
+            pct,
+          };
+        }),
+      };
+    });
+  }, [activeSkus, buckets, innerW, innerH, yMax]);
 
   const yTicks = useMemo(() => {
     const step = yMax <= 25 ? 5 : 10;
@@ -217,33 +212,32 @@ function MarkupLineChart({
           />
         )}
 
-        {series.map(({ sku, points, constant }) => {
-          const polyline = points.map((p) => `${p.x},${p.y}`).join(" ");
+        {lineGroups.map((group) => {
+          const polyline = group.points.map((p) => `${p.x},${p.y}`).join(" ");
+          const groupKey = group.skus.map((s) => s.productId).join("-");
 
           return (
-            <g key={sku.productId}>
+            <g key={groupKey}>
               {buckets.length > 1 && (
                 <polyline
                   points={polyline}
                   fill="none"
-                  stroke={sku.color}
-                  strokeWidth={constant ? 1.5 : 2}
-                  strokeDasharray={constant ? "5 3" : undefined}
+                  stroke={group.color}
+                  strokeWidth={2}
                   strokeLinejoin="round"
                   strokeLinecap="round"
                   pointerEvents="none"
-                  opacity={constant ? 0.85 : 1}
                 />
               )}
-              {points.map((p, i) => {
-                const active = hoverBucketIdx === i;
+              {group.points.map((p) => {
+                const active = hoverBucketIdx === p.i;
                 return (
                   <circle
-                    key={`${sku.productId}-${i}`}
+                    key={`${groupKey}-${p.i}`}
                     cx={p.x}
                     cy={p.y}
                     r={active ? 5 : 3.5}
-                    fill={sku.color}
+                    fill={group.color}
                     stroke="var(--background, #fff)"
                     strokeWidth={active ? 2 : 1.5}
                     pointerEvents="none"
@@ -254,10 +248,6 @@ function MarkupLineChart({
           );
         })}
       </svg>
-      <p className="text-[10px] text-muted mt-2">
-        Dashed lines = flat markup across the range. Lines are offset slightly when
-        values match so each SKU stays visible. Discover Find items omitted.
-      </p>
     </div>
   );
 }
@@ -328,29 +318,25 @@ export function MarkupTimelineChart({
         ))}
       </div>
 
-      {activeSkus.length > 0 && (
+      {activeSkus.length > 0 && metric !== "markupPct" && (
         <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4 text-[10px] text-muted">
-          {activeSkus.map((sku) => {
-            const flat =
-              metric === "markupPct" &&
-              skuMarkupConstant(buckets, sku.productId);
-            return (
+          {activeSkus.map((sku) => (
+            <span key={sku.productId} className="inline-flex items-center gap-1.5">
               <span
-                key={sku.productId}
-                className="inline-flex items-center gap-1.5"
-              >
-                <span
-                  className="inline-block w-2.5 h-2.5 rounded-sm shrink-0"
-                  style={{ backgroundColor: sku.color }}
-                />
-                {sku.name}
-                {flat && (
-                  <span className="text-muted/70">(flat)</span>
-                )}
-              </span>
-            );
-          })}
+                className="inline-block w-2.5 h-2.5 rounded-sm shrink-0"
+                style={{ backgroundColor: sku.color }}
+              />
+              {sku.name}
+            </span>
+          ))}
         </div>
+      )}
+
+      {metric === "markupPct" && (
+        <p className="text-[10px] text-muted mb-4">
+          SKUs on the same markup tier share one line. Hover any bucket to see every
+          product and its markup %.
+        </p>
       )}
 
       <div className="border border-line p-4 pt-6">
