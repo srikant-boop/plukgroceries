@@ -5,6 +5,7 @@ import {
   analyticsRangeMs,
   type AnalyticsRange,
   RANGE_DAYS,
+  timelineBucketCount,
 } from "@/lib/analytics-ranges";
 
 export type { AnalyticsRange } from "@/lib/analytics-ranges";
@@ -227,6 +228,44 @@ export type RecentActivity = {
   detail: string;
 };
 
+export type EventLogEntry = RecentActivity & {
+  sessionId?: string;
+  path?: string;
+  productId?: string;
+};
+
+export type TimelineBucket = {
+  /** Start of bucket (ms) */
+  startMs: number;
+  label: string;
+  shortLabel: string;
+  pageViews: number;
+  adds: number;
+  checkouts: number;
+  purchases: number;
+  totalEvents: number;
+  sessions: number;
+};
+
+export type SessionInsights = {
+  /** Sessions with at least one tracked event */
+  totalSessions: number;
+  /** Viewed a product but never added to cart */
+  browsedNoAdd: number;
+  /** Added to cart but never opened checkout */
+  addedNoCheckout: number;
+  /** Opened checkout but never clicked Pay */
+  checkoutNoPay: number;
+  /** Clicked Pay (Stripe) — purchase may not tie to same session */
+  clickedPay: number;
+  /** Sessions that reached add_to_cart */
+  reachedAdd: number;
+  /** Sessions that opened cart page */
+  reachedCart: number;
+  /** Sessions that opened checkout */
+  reachedCheckout: number;
+};
+
 export type ProductStat = {
   productId: string;
   name: string;
@@ -244,6 +283,9 @@ export type AnalyticsSummary = {
   hourlyByDay: DayHourly[];
   peakHours: PeakHour[];
   recentActivity: RecentActivity[];
+  timeline: TimelineBucket[];
+  eventLog: EventLogEntry[];
+  sessionInsights: SessionInsights | null;
   nowToronto: string;
 };
 
@@ -364,6 +406,158 @@ function emptyTotals(): Record<AnalyticsEventType, number> {
   >;
 }
 
+function eventToLogEntry(row: StoredEvent): EventLogEntry {
+  const { date, time } = formatTorontoDateTime(row.at);
+  return {
+    at: row.at,
+    date,
+    time,
+    type: row.type,
+    detail: recentDetail(row.type, row.productId, row.path),
+    sessionId: row.sessionId,
+    path: row.path,
+    productId: row.productId,
+  };
+}
+
+function formatBucketTimeLabel(atMs: number, includeDate: boolean): { label: string; shortLabel: string } {
+  const { date, time } = formatTorontoDateTime(atMs);
+  const hm = time.slice(0, 5);
+  if (includeDate) {
+    const short = `${date.slice(5)} ${hm}`;
+    return { label: `${date} ${hm}`, shortLabel: short };
+  }
+  return { label: hm, shortLabel: hm };
+}
+
+function buildTimelineFromEvents(
+  events: StoredEvent[],
+  windowStartMs: number,
+  windowEndMs: number,
+  bucketCount: number,
+  includeDateOnLabels: boolean,
+): TimelineBucket[] {
+  const span = Math.max(windowEndMs - windowStartMs, 1);
+  const bucketMs = span / bucketCount;
+  const buckets: TimelineBucket[] = Array.from({ length: bucketCount }, (_, i) => {
+    const startMs = windowStartMs + i * bucketMs;
+    const { label, shortLabel } = formatBucketTimeLabel(startMs, includeDateOnLabels);
+    return {
+      startMs,
+      label,
+      shortLabel,
+      pageViews: 0,
+      adds: 0,
+      checkouts: 0,
+      purchases: 0,
+      totalEvents: 0,
+      sessions: 0,
+    };
+  });
+  const sessionSets = buckets.map(() => new Set<string>());
+
+  for (const row of events) {
+    if (row.at < windowStartMs || row.at >= windowEndMs) continue;
+    let idx = Math.floor((row.at - windowStartMs) / bucketMs);
+    if (idx >= bucketCount) idx = bucketCount - 1;
+    const b = buckets[idx]!;
+    const ss = sessionSets[idx]!;
+    b.totalEvents += 1;
+    if (row.type === "page_view") b.pageViews += 1;
+    if (row.type === "add_to_cart") b.adds += 1;
+    if (row.type === "begin_checkout" || row.type === "checkout_start") {
+      b.checkouts += 1;
+    }
+    if (row.type === "purchase") b.purchases += 1;
+    if (row.sessionId) ss.add(row.sessionId);
+  }
+
+  for (let i = 0; i < bucketCount; i++) {
+    buckets[i]!.sessions = sessionSets[i]!.size;
+  }
+
+  return buckets;
+}
+
+function buildTimelineFromDays(days: DayFunnel[]): TimelineBucket[] {
+  return [...days]
+    .reverse()
+    .map((d) => ({
+      startMs: 0,
+      label: d.date,
+      shortLabel: d.date.slice(5),
+      pageViews: d.counts.page_view,
+      adds: d.counts.add_to_cart,
+      checkouts: d.counts.begin_checkout + d.counts.checkout_start,
+      purchases: d.counts.purchase,
+      totalEvents: ANALYTICS_EVENTS.reduce((s, e) => s + d.counts[e], 0),
+      sessions: d.visitors,
+    }));
+}
+
+function computeSessionInsights(events: StoredEvent[]): SessionInsights | null {
+  const bySession = new Map<string, Set<AnalyticsEventType>>();
+  for (const e of events) {
+    if (!e.sessionId) continue;
+    const set = bySession.get(e.sessionId) ?? new Set();
+    set.add(e.type);
+    bySession.set(e.sessionId, set);
+  }
+  if (bySession.size === 0) return null;
+
+  const hasProductInterest = (s: Set<AnalyticsEventType>) =>
+    s.has("product_view") || s.has("product_click");
+  const hasCheckout = (s: Set<AnalyticsEventType>) =>
+    s.has("begin_checkout") || s.has("checkout_start");
+
+  let browsedNoAdd = 0;
+  let addedNoCheckout = 0;
+  let checkoutNoPay = 0;
+  let clickedPay = 0;
+  let reachedAdd = 0;
+  let reachedCart = 0;
+  let reachedCheckout = 0;
+
+  for (const steps of bySession.values()) {
+    if (steps.has("add_to_cart")) reachedAdd++;
+    if (steps.has("view_cart")) reachedCart++;
+    if (hasCheckout(steps)) reachedCheckout++;
+    if (steps.has("checkout_start")) clickedPay++;
+
+    if (hasProductInterest(steps) && !steps.has("add_to_cart")) browsedNoAdd++;
+    if (steps.has("add_to_cart") && !hasCheckout(steps)) addedNoCheckout++;
+    if (steps.has("begin_checkout") && !steps.has("checkout_start")) {
+      checkoutNoPay++;
+    }
+  }
+
+  return {
+    totalSessions: bySession.size,
+    browsedNoAdd,
+    addedNoCheckout,
+    checkoutNoPay,
+    clickedPay,
+    reachedAdd,
+    reachedCart,
+    reachedCheckout,
+  };
+}
+
+function eventsInWindow(
+  events: StoredEvent[],
+  opts: { cutoffMs?: number; dayList?: string[] },
+): StoredEvent[] {
+  const daySet = opts.dayList ? new Set(opts.dayList) : null;
+  return events.filter((row) => {
+    if (opts.cutoffMs != null && row.at < opts.cutoffMs) return false;
+    if (daySet) {
+      const { date } = formatTorontoDateTime(row.at);
+      if (!daySet.has(date)) return false;
+    }
+    return true;
+  });
+}
+
 function eventToActivity(row: StoredEvent): RecentActivity {
   const { date, time } = formatTorontoDateTime(row.at);
   return {
@@ -378,9 +572,20 @@ function eventToActivity(row: StoredEvent): RecentActivity {
 function aggregateRollingEvents(
   events: StoredEvent[],
   range: AnalyticsRange,
+  windowStartMs: number,
+  windowEndMs: number,
 ): Pick<
   AnalyticsSummary,
-  "totals" | "topProducts" | "hourlyByDay" | "peakHours" | "recentActivity" | "visitors" | "days"
+  | "totals"
+  | "topProducts"
+  | "hourlyByDay"
+  | "peakHours"
+  | "recentActivity"
+  | "visitors"
+  | "days"
+  | "timeline"
+  | "eventLog"
+  | "sessionInsights"
 > {
   const totals = emptyTotals();
   const sessions = new Set<string>();
@@ -491,6 +696,19 @@ function aggregateRollingEvents(
     },
   ];
 
+  const bucketCount = timelineBucketCount(range);
+  const timeline = buildTimelineFromEvents(
+    events,
+    windowStartMs,
+    windowEndMs,
+    bucketCount,
+    range === "24h" || range === "6h",
+  );
+  const eventLog = [...events]
+    .sort((a, b) => b.at - a.at)
+    .map(eventToLogEntry);
+  const sessionInsights = computeSessionInsights(events);
+
   return {
     totals,
     visitors: sessions.size,
@@ -498,7 +716,10 @@ function aggregateRollingEvents(
     topProducts,
     hourlyByDay,
     peakHours,
-    recentActivity: events.slice(0, 50).map(eventToActivity),
+    recentActivity: eventLog.slice(0, 50),
+    timeline,
+    eventLog,
+    sessionInsights,
   };
 }
 
@@ -525,10 +746,20 @@ async function readRecentActivity(
 async function getCalendarSummary(
   kv: Awaited<ReturnType<typeof getKv>>,
   days: number,
+  range: AnalyticsRange,
 ): Promise<
   Pick<
     AnalyticsSummary,
-    "days" | "totals" | "topProducts" | "hourlyByDay" | "peakHours" | "recentActivity" | "visitors"
+    | "days"
+    | "totals"
+    | "topProducts"
+    | "hourlyByDay"
+    | "peakHours"
+    | "recentActivity"
+    | "visitors"
+    | "timeline"
+    | "eventLog"
+    | "sessionInsights"
   >
 > {
   const dayList = datesBack(days);
@@ -594,6 +825,13 @@ async function getCalendarSummary(
     .sort((a, b) => b.total - a.total);
 
   const visitors = funnelDays.reduce((s, d) => s + d.visitors, 0);
+  const timeline = buildTimelineFromDays(funnelDays);
+  const allEvents = await readAllRecentEvents(kv);
+  const rangedEvents = eventsInWindow(allEvents, { dayList });
+  const eventLog = rangedEvents
+    .sort((a, b) => b.at - a.at)
+    .map(eventToLogEntry);
+  const sessionInsights = computeSessionInsights(rangedEvents);
 
   return {
     days: funnelDays,
@@ -602,7 +840,10 @@ async function getCalendarSummary(
     topProducts,
     hourlyByDay,
     peakHours,
-    recentActivity: await readRecentActivity(kv, { limit: 50, dayList }),
+    recentActivity: eventLog.slice(0, 50),
+    timeline,
+    eventLog,
+    sessionInsights,
   };
 }
 
@@ -616,9 +857,10 @@ export async function getAnalyticsSummary(
 
   if (ms != null) {
     const cutoff = Date.now() - ms;
+    const nowMs = Date.now();
     const all = await readAllRecentEvents(kv);
     const filtered = all.filter((e) => e.at >= cutoff);
-    const rolled = aggregateRollingEvents(filtered, range);
+    const rolled = aggregateRollingEvents(filtered, range, cutoff, nowMs);
     return {
       range,
       rangeLabel: analyticsRangeLabel(range),
@@ -627,7 +869,7 @@ export async function getAnalyticsSummary(
     };
   }
 
-  const cal = await getCalendarSummary(kv, RANGE_DAYS[range]);
+  const cal = await getCalendarSummary(kv, RANGE_DAYS[range], range);
   return {
     range,
     rangeLabel: analyticsRangeLabel(range),

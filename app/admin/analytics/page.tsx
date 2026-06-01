@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { ActivityTimelineChart } from "@/app/admin/ActivityTimelineChart";
 import { AnalyticsRangeSelect } from "@/app/admin/AnalyticsRangeSelect";
+import { EventLogTable } from "@/app/admin/EventLogTable";
 import {
   ANALYTICS_EVENTS,
   funnelRate,
@@ -112,41 +114,73 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             />
           </section>
 
-          {summary.recentActivity.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-xl mb-2">Activity over time</h2>
+            <p className="text-xs text-muted mb-4">
+              How traffic changes across the selected window. Hover a bar for
+              counts; switch metrics with the buttons below the title.
+            </p>
+            <ActivityTimelineChart
+              buckets={summary.timeline}
+              rangeLabel={rangeLabel}
+            />
+          </section>
+
+          {summary.sessionInsights && (
             <section className="mb-12">
-              <h2 className="text-xl mb-4">Recent activity</h2>
+              <h2 className="text-xl mb-2">Drop-off &amp; abandonment</h2>
               <p className="text-xs text-muted mb-4">
-                Latest events in the selected range (newest first, Eastern time).
+                Per anonymous session in this range (from event log). Paid orders
+                from Stripe may not share the same session ID as the browser.
               </p>
-              <div className="border border-line overflow-x-auto max-h-80 overflow-y-auto">
-                <table className="w-full text-sm">
-                  <thead className="sticky top-0 bg-background">
-                    <tr className="border-b border-line text-left text-muted">
-                      <th className="p-3 font-normal">Date</th>
-                      <th className="p-3 font-normal">Time (ET)</th>
-                      <th className="p-3 font-normal">Event</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {summary.recentActivity.map((row) => (
-                      <tr
-                        key={`${row.at}-${row.type}-${row.detail}`}
-                        className="border-b border-line/60"
-                      >
-                        <td className="p-3 tabular-nums whitespace-nowrap">
-                          {row.date}
-                        </td>
-                        <td className="p-3 tabular-nums whitespace-nowrap">
-                          {row.time}
-                        </td>
-                        <td className="p-3">{row.detail}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-6">
+                <AbandonCard
+                  label="Browsed, never added"
+                  count={summary.sessionInsights.browsedNoAdd}
+                  total={summary.sessionInsights.totalSessions}
+                  hint="Saw a product, no add to cart"
+                />
+                <AbandonCard
+                  label="Added, never checkout"
+                  count={summary.sessionInsights.addedNoCheckout}
+                  total={summary.sessionInsights.reachedAdd}
+                  hint="Cart abandonment (no checkout page)"
+                />
+                <AbandonCard
+                  label="Checkout, never Pay"
+                  count={summary.sessionInsights.checkoutNoPay}
+                  total={summary.sessionInsights.reachedCheckout}
+                  hint="Opened checkout, didn’t click Pay"
+                />
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-sm border border-line p-4">
+                <MiniStat
+                  label="Sessions tracked"
+                  value={String(summary.sessionInsights.totalSessions)}
+                />
+                <MiniStat
+                  label="Reached add to cart"
+                  value={String(summary.sessionInsights.reachedAdd)}
+                />
+                <MiniStat
+                  label="Opened cart page"
+                  value={String(summary.sessionInsights.reachedCart)}
+                />
+                <MiniStat
+                  label="Clicked Pay"
+                  value={String(summary.sessionInsights.clickedPay)}
+                />
               </div>
             </section>
           )}
+
+          <section className="mb-12">
+            <h2 className="text-xl mb-4">Event log</h2>
+            <EventLogTable
+              events={summary.eventLog}
+              totalInRange={summary.eventLog.length}
+            />
+          </section>
 
           {summary.peakHours.length > 0 && (
             <section className="mb-12">
@@ -431,6 +465,37 @@ function StatCard({
       <div className="eyebrow mb-1">{label}</div>
       <div className="text-2xl tabular-nums">{value}</div>
       {hint && <p className="text-xs text-muted mt-1">{hint}</p>}
+    </div>
+  );
+}
+
+function AbandonCard({
+  label,
+  count,
+  total,
+  hint,
+}: {
+  label: string;
+  count: number;
+  total: number;
+  hint: string;
+}) {
+  return (
+    <div className="border border-line p-4">
+      <div className="eyebrow mb-1">{label}</div>
+      <div className="text-2xl tabular-nums">{count}</div>
+      <p className="text-xs text-muted mt-1">
+        {funnelRate(count, total)} of {total} · {hint}
+      </p>
+    </div>
+  );
+}
+
+function MiniStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div className="text-muted text-xs mb-0.5">{label}</div>
+      <div className="tabular-nums text-lg">{value}</div>
     </div>
   );
 }

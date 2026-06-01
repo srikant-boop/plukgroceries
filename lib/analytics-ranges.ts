@@ -1,5 +1,5 @@
 /** Time window options for admin Insights (client-safe — no Redis imports). */
-export type AnalyticsRange = "30m" | "1h" | "6h" | "24h" | "7d" | "30d";
+export type AnalyticsRange = "30m" | "1h" | "6h" | "24h" | "7d";
 
 export const ANALYTICS_RANGE_OPTIONS: {
   id: AnalyticsRange;
@@ -10,7 +10,6 @@ export const ANALYTICS_RANGE_OPTIONS: {
   { id: "6h", label: "Last 6 hours" },
   { id: "24h", label: "Last 24 hours" },
   { id: "7d", label: "Last 7 days" },
-  { id: "30d", label: "Last 30 days" },
 ];
 
 const RANGE_MS: Record<AnalyticsRange, number | null> = {
@@ -19,7 +18,6 @@ const RANGE_MS: Record<AnalyticsRange, number | null> = {
   "6h": 6 * 60 * 60 * 1000,
   "24h": 24 * 60 * 60 * 1000,
   "7d": null,
-  "30d": null,
 };
 
 export const RANGE_DAYS: Record<AnalyticsRange, number> = {
@@ -28,7 +26,6 @@ export const RANGE_DAYS: Record<AnalyticsRange, number> = {
   "6h": 1,
   "24h": 2,
   "7d": 7,
-  "30d": 30,
 };
 
 export function parseAnalyticsRange(raw?: string): AnalyticsRange {
@@ -46,4 +43,22 @@ export function analyticsRangeMs(range: AnalyticsRange): number | null {
 
 export function isRollingAnalyticsRange(range: AnalyticsRange): boolean {
   return RANGE_MS[range] != null;
+}
+
+/** Target number of timeline bars for each range (metrics over time). */
+export function timelineBucketCount(range: AnalyticsRange): number {
+  switch (range) {
+    case "30m":
+      return 6;
+    case "1h":
+      return 12;
+    case "6h":
+      return 12;
+    case "24h":
+      return 24;
+    case "7d":
+      return 7;
+    default:
+      return 12;
+  }
 }
