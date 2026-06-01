@@ -8,6 +8,8 @@ import {
   getAnalyticsTrackingSinceMs,
   RANGE_DAYS,
   timelineBucketCount,
+  timelineGranularity,
+  type TimelineGranularity,
 } from "@/lib/analytics-ranges";
 
 export type { AnalyticsRange } from "@/lib/analytics-ranges";
@@ -500,40 +502,167 @@ function emptyEventCounts(): TimelineEventCounts {
   return Object.fromEntries(ANALYTICS_EVENTS.map((e) => [e, 0])) as TimelineEventCounts;
 }
 
-function formatBucketTimeLabel(atMs: number, includeDate: boolean): { label: string; shortLabel: string } {
-  const { date, time } = formatTorontoDateTime(atMs);
-  const hm = time.slice(0, 5);
-  if (includeDate) {
-    const short = `${date.slice(5)} ${hm}`;
-    return { label: `${date} ${hm}`, shortLabel: short };
+function torontoDatesInWindow(windowStartMs: number, windowEndMs: number): string[] {
+  const dates: string[] = [];
+  const seen = new Set<string>();
+  for (let ms = windowStartMs; ms < windowEndMs; ms += 3_600_000) {
+    const { date } = formatTorontoDateTime(ms);
+    if (!seen.has(date)) {
+      seen.add(date);
+      dates.push(date);
+    }
   }
+  const endDate = formatTorontoDateTime(Math.max(windowStartMs, windowEndMs - 1)).date;
+  if (!seen.has(endDate)) dates.push(endDate);
+  return dates.sort();
+}
+
+function windowSpansMultipleDays(windowStartMs: number, windowEndMs: number): boolean {
+  return torontoDatesInWindow(windowStartMs, windowEndMs).length > 1;
+}
+
+function formatDayBucketLabel(date: string): { label: string; shortLabel: string } {
+  const startMs = torontoDayStartMs(date);
+  const label = new Intl.DateTimeFormat("en-US", {
+    timeZone: TORONTO,
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  }).format(new Date(startMs));
+  const shortLabel = new Intl.DateTimeFormat("en-US", {
+    timeZone: TORONTO,
+    weekday: "short",
+  }).format(new Date(startMs));
+  return { label, shortLabel };
+}
+
+function formatHourBucketLabel(
+  atMs: number,
+  multiDay: boolean,
+): { label: string; shortLabel: string } {
+  const { date, time } = formatTorontoDateTime(atMs);
+  const hour = Number.parseInt(time.slice(0, 2), 10);
+  const hourLabel = formatHourLabel(hour);
+  if (!multiDay) {
+    return { label: hourLabel, shortLabel: hourLabel };
+  }
+  const md = date.slice(5).replace("-", "/");
+  return { label: `${date} ${hourLabel}`, shortLabel: `${md} ${hourLabel}` };
+}
+
+function formatMinuteBucketLabel(atMs: number): { label: string; shortLabel: string } {
+  const hm = formatTorontoDateTime(atMs).time.slice(0, 5);
   return { label: hm, shortLabel: hm };
+}
+
+function resolveTimelineBucketCount(
+  range: AnalyticsRange,
+  granularity: TimelineGranularity,
+  windowStartMs: number,
+  windowEndMs: number,
+): number {
+  const spanMs = Math.max(windowEndMs - windowStartMs, 1);
+  const maxBuckets = timelineBucketCount(range);
+
+  if (granularity === "day") {
+    return Math.max(1, torontoDatesInWindow(windowStartMs, windowEndMs).length);
+  }
+  if (granularity === "hour") {
+    const hourBuckets = Math.ceil(spanMs / 3_600_000);
+    return Math.max(1, Math.min(maxBuckets, hourBuckets));
+  }
+  const rangeMs = analyticsRangeMs(range) ?? spanMs;
+  const idealBucketMs = rangeMs / maxBuckets;
+  const needed = Math.ceil(spanMs / idealBucketMs);
+  return Math.max(1, Math.min(maxBuckets, needed));
+}
+
+function emptyTimelineBucket(
+  startMs: number,
+  label: string,
+  shortLabel: string,
+): TimelineBucket {
+  return {
+    startMs,
+    label,
+    shortLabel,
+    pageViews: 0,
+    adds: 0,
+    checkouts: 0,
+    purchases: 0,
+    totalEvents: 0,
+    sessions: 0,
+    events: emptyEventCounts(),
+  };
+}
+
+function addEventToBucket(b: TimelineBucket, row: StoredEvent, sessionSet: Set<string>) {
+  b.totalEvents += 1;
+  b.events[row.type] += 1;
+  if (row.type === "page_view") b.pageViews += 1;
+  if (row.type === "add_to_cart") b.adds += 1;
+  if (row.type === "begin_checkout" || row.type === "checkout_start") {
+    b.checkouts += 1;
+  }
+  if (row.type === "purchase") b.purchases += 1;
+  if (row.sessionId) sessionSet.add(row.sessionId);
+}
+
+function buildTimelineByDay(
+  events: StoredEvent[],
+  windowStartMs: number,
+  windowEndMs: number,
+): TimelineBucket[] {
+  const dates = torontoDatesInWindow(windowStartMs, windowEndMs);
+  const buckets = dates.map((date) => {
+    const { label, shortLabel } = formatDayBucketLabel(date);
+    return emptyTimelineBucket(torontoDayStartMs(date), label, shortLabel);
+  });
+  const dateIndex = new Map(dates.map((d, i) => [d, i]));
+  const sessionSets = buckets.map(() => new Set<string>());
+
+  for (const row of events) {
+    if (row.at < windowStartMs || row.at >= windowEndMs) continue;
+    const { date } = formatTorontoDateTime(row.at);
+    const idx = dateIndex.get(date);
+    if (idx == null) continue;
+    addEventToBucket(buckets[idx]!, row, sessionSets[idx]!);
+  }
+
+  for (let i = 0; i < buckets.length; i++) {
+    buckets[i]!.sessions = sessionSets[i]!.size;
+  }
+  return buckets;
 }
 
 function buildTimelineFromEvents(
   events: StoredEvent[],
+  range: AnalyticsRange,
   windowStartMs: number,
   windowEndMs: number,
-  bucketCount: number,
-  includeDateOnLabels: boolean,
 ): TimelineBucket[] {
+  const granularity = timelineGranularity(range);
+  if (granularity === "day") {
+    return buildTimelineByDay(events, windowStartMs, windowEndMs);
+  }
+
+  const bucketCount = resolveTimelineBucketCount(
+    range,
+    granularity,
+    windowStartMs,
+    windowEndMs,
+  );
   const span = Math.max(windowEndMs - windowStartMs, 1);
   const bucketMs = span / bucketCount;
+  const multiDay = windowSpansMultipleDays(windowStartMs, windowEndMs);
+
   const buckets: TimelineBucket[] = Array.from({ length: bucketCount }, (_, i) => {
     const startMs = windowStartMs + i * bucketMs;
-    const { label, shortLabel } = formatBucketTimeLabel(startMs, includeDateOnLabels);
-    return {
-      startMs,
-      label,
-      shortLabel,
-      pageViews: 0,
-      adds: 0,
-      checkouts: 0,
-      purchases: 0,
-      totalEvents: 0,
-      sessions: 0,
-      events: emptyEventCounts(),
-    };
+    const { label, shortLabel } =
+      granularity === "minute"
+        ? formatMinuteBucketLabel(startMs)
+        : formatHourBucketLabel(startMs, multiDay);
+    return emptyTimelineBucket(startMs, label, shortLabel);
   });
   const sessionSets = buckets.map(() => new Set<string>());
 
@@ -541,17 +670,7 @@ function buildTimelineFromEvents(
     if (row.at < windowStartMs || row.at >= windowEndMs) continue;
     let idx = Math.floor((row.at - windowStartMs) / bucketMs);
     if (idx >= bucketCount) idx = bucketCount - 1;
-    const b = buckets[idx]!;
-    const ss = sessionSets[idx]!;
-    b.totalEvents += 1;
-    b.events[row.type] += 1;
-    if (row.type === "page_view") b.pageViews += 1;
-    if (row.type === "add_to_cart") b.adds += 1;
-    if (row.type === "begin_checkout" || row.type === "checkout_start") {
-      b.checkouts += 1;
-    }
-    if (row.type === "purchase") b.purchases += 1;
-    if (row.sessionId) ss.add(row.sessionId);
+    addEventToBucket(buckets[idx]!, row, sessionSets[idx]!);
   }
 
   for (let i = 0; i < bucketCount; i++) {
@@ -564,18 +683,21 @@ function buildTimelineFromEvents(
 function buildTimelineFromDays(days: DayFunnel[]): TimelineBucket[] {
   return [...days]
     .reverse()
-    .map((d) => ({
-      startMs: 0,
-      label: d.date,
-      shortLabel: d.date.slice(5),
-      pageViews: d.counts.page_view,
-      adds: d.counts.add_to_cart,
-      checkouts: d.counts.begin_checkout + d.counts.checkout_start,
-      purchases: d.counts.purchase,
-      totalEvents: ANALYTICS_EVENTS.reduce((s, e) => s + d.counts[e], 0),
-      sessions: d.visitors,
-      events: { ...d.counts },
-    }));
+    .map((d) => {
+      const { label, shortLabel } = formatDayBucketLabel(d.date);
+      return {
+        startMs: torontoDayStartMs(d.date),
+        label,
+        shortLabel,
+        pageViews: d.counts.page_view,
+        adds: d.counts.add_to_cart,
+        checkouts: d.counts.begin_checkout + d.counts.checkout_start,
+        purchases: d.counts.purchase,
+        totalEvents: ANALYTICS_EVENTS.reduce((s, e) => s + d.counts[e], 0),
+        sessions: d.visitors,
+        events: { ...d.counts },
+      };
+    });
 }
 
 function computeSessionInsights(events: StoredEvent[]): SessionInsights | null {
@@ -779,13 +901,11 @@ function aggregateRollingEvents(
     },
   ];
 
-  const bucketCount = timelineBucketCount(range);
   const timeline = buildTimelineFromEvents(
     events,
+    range,
     windowStartMs,
     windowEndMs,
-    bucketCount,
-    range === "24h" || range === "6h",
   );
   const eventLog = [...events]
     .sort((a, b) => b.at - a.at)

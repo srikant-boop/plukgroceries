@@ -76,6 +76,8 @@ export function ActivityTimelineChart({
     [buckets, metric],
   );
   const max = Math.max(1, ...values);
+  const labelStep =
+    buckets.length > 14 ? Math.ceil(buckets.length / 7) : 1;
 
   const activeLayers = useMemo(
     () =>
@@ -181,13 +183,15 @@ export function ActivityTimelineChart({
           })}
         </div>
         <div className="flex gap-px sm:gap-1 mt-2 border-t border-line/60 pt-2">
-          {buckets.map((bucket) => (
+          {buckets.map((bucket, i) => (
             <div
               key={`label-${bucket.startMs}`}
               className="flex-1 min-w-0 text-center"
             >
               <span className="text-[9px] sm:text-[10px] text-muted tabular-nums leading-tight block truncate">
-                {bucket.shortLabel}
+                {i % labelStep === 0 || i === buckets.length - 1
+                  ? bucket.shortLabel
+                  : ""}
               </span>
             </div>
           ))}

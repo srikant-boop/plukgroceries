@@ -63,6 +63,24 @@ export function timelineBucketCount(range: AnalyticsRange): number {
   }
 }
 
+/** How timeline x-axis labels are grouped for each dropdown range. */
+export type TimelineGranularity = "minute" | "hour" | "day";
+
+export function timelineGranularity(range: AnalyticsRange): TimelineGranularity {
+  switch (range) {
+    case "30m":
+    case "1h":
+      return "minute";
+    case "6h":
+    case "24h":
+      return "hour";
+    case "7d":
+      return "day";
+    default:
+      return "hour";
+  }
+}
+
 /** When the per-event log went live (Toronto). Override with ANALYTICS_TRACKING_SINCE. */
 export const ANALYTICS_TRACKING_SINCE_DEFAULT_MS = Date.parse(
   "2026-06-01T17:45:00-04:00",
