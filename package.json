@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "verify:voila": "node scripts/fetch-voila-prices.mjs"
+    "verify:voila": "node scripts/verify-voila-prices-l6m0s2.mjs"
   },
   "dependencies": {
     "@upstash/redis": "^1.38.0",
