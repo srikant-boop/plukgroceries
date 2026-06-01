@@ -11,7 +11,7 @@ import {
   parseAnalyticsRange,
 } from "@/lib/analytics";
 import { listOrders } from "@/lib/orders";
-import { buildProductMarkupInsights } from "@/lib/markup-insights";
+import { buildProductMarkupInsights, buildMarkupTimeSeries } from "@/lib/markup-insights";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -59,6 +59,14 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
   const rangeLabel = summary?.rangeLabel ?? "Last 7 days";
   const isRolling = range === "30m" || range === "1h" || range === "6h" || range === "24h";
   const markupRows = buildProductMarkupInsights(paidOrders);
+  const markupTimeSeries = buildMarkupTimeSeries(
+    paidOrders,
+    summary?.timeline?.map((b) => ({
+      startMs: b.startMs,
+      label: b.label,
+      shortLabel: b.shortLabel,
+    })),
+  );
 
   return (
     <div>
@@ -107,7 +115,12 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
       )}
 
       {markupRows.length > 0 && (
-        <MarkupInsightsPanel rows={markupRows} paidOrderCount={orderCount} />
+        <MarkupInsightsPanel
+          rows={markupRows}
+          paidOrderCount={orderCount}
+          timeSeries={markupTimeSeries}
+          rangeLabel={rangeLabel}
+        />
       )}
 
       {summary && t && (

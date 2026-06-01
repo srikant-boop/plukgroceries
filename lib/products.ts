@@ -64,7 +64,7 @@ export const marginPct = (p: Product) =>
   p.wholesalerPrice > 0 ? (margin(p) / p.ourPrice) * 100 : 0;
 /** Markup on cost, e.g. multiplier 1.20 → 20%. Internal ops only. */
 export const markupOnCostPct = (p: Product) =>
-  (p.markupMultiplier - 1) * 100;
+  Math.round((p.markupMultiplier - 1) * 1000) / 10;
 
 export const cheapestCompetitor = (p: Product) =>
   p.competitors.reduce<CompetitorPrice | null>(

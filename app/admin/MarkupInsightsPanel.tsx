@@ -1,9 +1,13 @@
 import { money } from "@/lib/format";
 import {
+  formatMarkupChangePp,
+  formatMarkupPct,
   MARKUP_BAR_SCALE_PCT,
   markupTargetLabel,
+  type MarkupTimeSeries,
   type ProductMarkupInsight,
 } from "@/lib/markup-insights";
+import { MarkupTimelineChart } from "@/app/admin/MarkupTimelineChart";
 
 function barWidth(pct: number): string {
   const clamped = Math.max(0, Math.min(pct, MARKUP_BAR_SCALE_PCT));
@@ -21,7 +25,7 @@ function MarkupBar({
 }) {
   return (
     <div
-      className="h-2.5 bg-surface rounded overflow-hidden min-w-[80px]"
+      className="h-2.5 bg-surface rounded overflow-hidden min-w-[72px] flex-1"
       title={title}
     >
       <div
@@ -34,18 +38,16 @@ function MarkupBar({
   );
 }
 
-function formatMarkupChange(pp: number): string {
-  if (pp === 0) return "—";
-  const sign = pp > 0 ? "+" : "";
-  return `${sign}${pp.toFixed(pp % 1 === 0 ? 0 : 1)} pp`;
-}
-
 export function MarkupInsightsPanel({
   rows,
   paidOrderCount,
+  timeSeries,
+  rangeLabel,
 }: {
   rows: ProductMarkupInsight[];
   paidOrderCount: number;
+  timeSeries: MarkupTimeSeries;
+  rangeLabel: string;
 }) {
   const changed = rows.filter((r) => r.markupChangePp !== 0);
   const passThrough = rows.filter((r) => r.passThrough);
@@ -56,22 +58,29 @@ export function MarkupInsightsPanel({
       <p className="text-xs text-muted mb-4 max-w-3xl">
         Internal only. Bars show markup on wholesale cost (target{" "}
         {markupTargetLabel}, Aldi ballpark). Grey = previous catalogue tier; green
-        = live. Order columns split paid units by price at checkout — use with
-        Insights above to see if lower markup correlates with adds and orders.
+        = live. Timeline uses one color per SKU — catalogue tier before the
+        reduction, order snapshots when units sold. Order columns split paid
+        units by price at checkout.
         {paidOrderCount === 0 && " No paid orders yet to correlate."}
       </p>
 
+      <MarkupTimelineChart
+        buckets={timeSeries.buckets}
+        skus={timeSeries.skus}
+        rangeLabel={rangeLabel}
+      />
+
       <div className="border border-line overflow-x-auto">
-        <table className="w-full text-sm min-w-[720px]">
+        <table className="w-full text-sm min-w-[720px] table-fixed">
           <thead>
             <tr className="border-b border-line text-left text-muted">
-              <th className="p-3 font-normal">Product</th>
-              <th className="p-3 font-normal w-28">Prev markup</th>
-              <th className="p-3 font-normal w-28">Now</th>
-              <th className="p-3 font-normal text-right">Δ markup</th>
-              <th className="p-3 font-normal text-right">Price</th>
-              <th className="p-3 font-normal text-right">Units @ old</th>
-              <th className="p-3 font-normal text-right">Units @ new</th>
+              <th className="p-3 font-normal w-[28%]">Product</th>
+              <th className="p-3 font-normal w-[18%]">Prev markup</th>
+              <th className="p-3 font-normal w-[18%]">Now</th>
+              <th className="p-3 font-normal text-right w-[10%]">Δ markup</th>
+              <th className="p-3 font-normal text-right w-[14%]">Price</th>
+              <th className="p-3 font-normal text-right w-[6%]">Units @ old</th>
+              <th className="p-3 font-normal text-right w-[6%]">Units @ new</th>
             </tr>
           </thead>
           <tbody>
@@ -82,31 +91,31 @@ export function MarkupInsightsPanel({
                   <div className="text-xs text-muted">{row.category}</div>
                 </td>
                 <td className="p-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
                     <MarkupBar
                       pct={row.previousMarkupPct}
                       tone="previous"
-                      title={`${row.previousMarkupPct}% on cost`}
+                      title={`${formatMarkupPct(row.previousMarkupPct)}% on cost`}
                     />
-                    <span className="text-xs tabular-nums text-muted w-10 shrink-0">
-                      {row.previousMarkupPct}%
+                    <span className="text-xs tabular-nums text-muted shrink-0 w-11 text-right">
+                      {formatMarkupPct(row.previousMarkupPct)}%
                     </span>
                   </div>
                 </td>
                 <td className="p-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
                     <MarkupBar
                       pct={row.currentMarkupPct}
                       tone="current"
-                      title={`${row.currentMarkupPct}% on cost`}
+                      title={`${formatMarkupPct(row.currentMarkupPct)}% on cost`}
                     />
-                    <span className="text-xs tabular-nums w-10 shrink-0">
-                      {row.currentMarkupPct}%
+                    <span className="text-xs tabular-nums shrink-0 w-11 text-right">
+                      {formatMarkupPct(row.currentMarkupPct)}%
                     </span>
                   </div>
                 </td>
-                <td className="p-3 text-right tabular-nums text-accent">
-                  {formatMarkupChange(row.markupChangePp)}
+                <td className="p-3 text-right tabular-nums text-accent whitespace-nowrap">
+                  {formatMarkupChangePp(row.markupChangePp)}
                 </td>
                 <td className="p-3 text-right tabular-nums whitespace-nowrap">
                   <span className="text-muted line-through">
@@ -139,7 +148,9 @@ export function MarkupInsightsPanel({
               <li key={row.productId} className="flex justify-between gap-4">
                 <span>{row.name}</span>
                 <span className="tabular-nums text-muted">
-                  {money(row.currentPrice)} · {row.unitsAtPreviousMarkup + row.unitsAtCurrentMarkup} units sold
+                  {money(row.currentPrice)} ·{" "}
+                  {row.unitsAtPreviousMarkup + row.unitsAtCurrentMarkup} units
+                  sold
                 </span>
               </li>
             ))}
