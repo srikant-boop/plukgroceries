@@ -238,7 +238,7 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 4.11,
     competitors: [
-      { store: "Voila", price: 9.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA", organic: true },
+      { store: "Voila", price: 8.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA", organic: true },
     ],
     supplierId: "terra-freska",
     organic: true,
