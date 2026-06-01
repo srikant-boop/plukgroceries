@@ -534,10 +534,6 @@ function torontoDatesInWindow(windowStartMs: number, windowEndMs: number): strin
   return dates.sort();
 }
 
-function windowSpansMultipleDays(windowStartMs: number, windowEndMs: number): boolean {
-  return torontoDatesInWindow(windowStartMs, windowEndMs).length > 1;
-}
-
 function formatDayBucketLabel(date: string): { label: string; shortLabel: string } {
   const startMs = torontoDayStartMs(date);
   const label = new Intl.DateTimeFormat("en-US", {
@@ -550,23 +546,61 @@ function formatDayBucketLabel(date: string): { label: string; shortLabel: string
   return { label, shortLabel };
 }
 
-function formatHourBucketLabel(
-  atMs: number,
-  multiDay: boolean,
-): { label: string; shortLabel: string } {
+function formatHourBucketLabel(atMs: number): { label: string; shortLabel: string } {
   const { date, time } = formatTorontoDateTime(atMs);
   const hour = Number.parseInt(time.slice(0, 2), 10);
   const hourLabel = formatHourLabel(hour);
-  if (!multiDay) {
-    return { label: hourLabel, shortLabel: hourLabel };
-  }
-  const md = date.slice(5).replace("-", "/");
-  return { label: `${date} ${hourLabel}`, shortLabel: `${md} ${hourLabel}` };
+  return { label: `${date} ${hourLabel}`, shortLabel: hourLabel };
 }
 
 function formatMinuteBucketLabel(atMs: number): { label: string; shortLabel: string } {
-  const hm = formatTorontoDateTime(atMs).time.slice(0, 5);
-  return { label: hm, shortLabel: hm };
+  const { date, time } = formatTorontoDateTime(atMs);
+  const hour = Number.parseInt(time.slice(0, 2), 10);
+  const minute = time.slice(3, 5);
+  const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+  const ampm = hour < 12 ? "AM" : "PM";
+  const shortLabel = `${hour12}:${minute}`;
+  return { label: `${date} ${hour12}:${minute} ${ampm}`, shortLabel };
+}
+
+/** Floor an instant to a Toronto wall-clock step (5 min, 60 min, etc.). */
+function torontoWallClockFloorMs(atMs: number, stepMinutes: number): number {
+  const { time } = formatTorontoDateTime(atMs);
+  const parts = time.split(":").map((x) => Number.parseInt(x, 10));
+  const minute = parts[1] ?? 0;
+  const second = parts[2] ?? 0;
+  const flooredMinute =
+    stepMinutes >= 60 ? 0 : Math.floor(minute / stepMinutes) * stepMinutes;
+  const minuteDelta = minute - flooredMinute;
+  return atMs - (minuteDelta * 60 + second) * 1000 - (atMs % 1000);
+}
+
+function assignEventsToAlignedBuckets(
+  events: StoredEvent[],
+  buckets: TimelineBucket[],
+  bucketMs: number,
+  axisEndMs: number,
+): void {
+  const sessionSets = buckets.map(() => new Set<string>());
+  const rangeStart = buckets[0]?.startMs ?? 0;
+
+  for (const row of events) {
+    if (row.at < rangeStart || row.at >= axisEndMs) continue;
+    let idx = buckets.length - 1;
+    for (let i = 0; i < buckets.length; i++) {
+      const start = buckets[i]!.startMs;
+      const end = i < buckets.length - 1 ? buckets[i + 1]!.startMs : axisEndMs;
+      if (row.at >= start && row.at < end) {
+        idx = i;
+        break;
+      }
+    }
+    addEventToBucket(buckets[idx]!, row, sessionSets[idx]!);
+  }
+
+  for (let i = 0; i < buckets.length; i++) {
+    buckets[i]!.sessions = sessionSets[i]!.size;
+  }
 }
 
 function resolveTimelineBucketCount(
@@ -653,31 +687,28 @@ function buildTimelineFromEvents(
   }
 
   const bucketCount = resolveTimelineBucketCount(range, granularity);
-  const span = Math.max(axisEndMs - axisStartMs, 1);
-  const bucketMs = span / bucketCount;
-  const multiDay = windowSpansMultipleDays(axisStartMs, axisEndMs);
 
+  if (granularity === "hour") {
+    const hourMs = 3_600_000;
+    const endHourStart = torontoWallClockFloorMs(axisEndMs, 60);
+    const buckets: TimelineBucket[] = Array.from({ length: bucketCount }, (_, i) => {
+      const startMs = endHourStart - (bucketCount - 1 - i) * hourMs;
+      const { label, shortLabel } = formatHourBucketLabel(startMs);
+      return emptyTimelineBucket(startMs, label, shortLabel);
+    });
+    assignEventsToAlignedBuckets(events, buckets, hourMs, axisEndMs);
+    return buckets;
+  }
+
+  const stepMinutes = 5;
+  const stepMs = stepMinutes * 60 * 1000;
+  const endStepStart = torontoWallClockFloorMs(axisEndMs, stepMinutes);
   const buckets: TimelineBucket[] = Array.from({ length: bucketCount }, (_, i) => {
-    const startMs = axisStartMs + i * bucketMs;
-    const { label, shortLabel } =
-      granularity === "minute"
-        ? formatMinuteBucketLabel(startMs)
-        : formatHourBucketLabel(startMs, multiDay);
+    const startMs = endStepStart - (bucketCount - 1 - i) * stepMs;
+    const { label, shortLabel } = formatMinuteBucketLabel(startMs);
     return emptyTimelineBucket(startMs, label, shortLabel);
   });
-  const sessionSets = buckets.map(() => new Set<string>());
-
-  for (const row of events) {
-    if (row.at < axisStartMs || row.at >= axisEndMs) continue;
-    let idx = Math.floor((row.at - axisStartMs) / bucketMs);
-    if (idx >= bucketCount) idx = bucketCount - 1;
-    addEventToBucket(buckets[idx]!, row, sessionSets[idx]!);
-  }
-
-  for (let i = 0; i < bucketCount; i++) {
-    buckets[i]!.sessions = sessionSets[i]!.size;
-  }
-
+  assignEventsToAlignedBuckets(events, buckets, stepMs, axisEndMs);
   return buckets;
 }
 

@@ -77,7 +77,7 @@ export function ActivityTimelineChart({
   );
   const max = Math.max(1, ...values);
   const labelStep =
-    buckets.length > 14 ? Math.ceil(buckets.length / 7) : 1;
+    buckets.length <= 12 ? 1 : buckets.length <= 24 ? 2 : Math.ceil(buckets.length / 12);
 
   const activeLayers = useMemo(
     () =>
