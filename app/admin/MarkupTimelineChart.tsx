@@ -32,6 +32,14 @@ function MarkupLineChart({
   buckets: MarkupTimelineBucket[];
   skus: MarkupSkuMeta[];
 }) {
+  const [tip, setTip] = useState<{
+    sku: MarkupSkuMeta;
+    pct: number;
+    label: string;
+    xPct: number;
+    yPct: number;
+  } | null>(null);
+
   const activeSkus = useMemo(
     () =>
       skus.filter(
@@ -61,6 +69,21 @@ function MarkupLineChart({
 
   const yAt = (pct: number) => PAD.top + innerH - (pct / yMax) * innerH;
 
+  const series = useMemo(
+    () =>
+      activeSkus.map((sku) => ({
+        sku,
+        points: buckets.map((b, i) => ({
+          i,
+          x: xAt(i),
+          y: yAt(b.markupPct[sku.productId] ?? 0),
+          pct: b.markupPct[sku.productId] ?? 0,
+          label: b.label,
+        })),
+      })),
+    [activeSkus, buckets, innerW, innerH, yMax],
+  );
+
   const yTicks = useMemo(() => {
     const step = yMax <= 25 ? 5 : 10;
     const ticks: number[] = [];
@@ -68,76 +91,174 @@ function MarkupLineChart({
     return ticks;
   }, [yMax]);
 
+  const distToSegment = (
+    px: number,
+    py: number,
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+  ) => {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    if (dx === 0 && dy === 0) return Math.hypot(px - x1, py - y1);
+    const t = Math.max(
+      0,
+      Math.min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)),
+    );
+    return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+  };
+
+  const pickNearest = (mx: number, my: number) => {
+    const hitRadius = 22;
+    let best: typeof tip = null;
+    let bestDist = hitRadius;
+
+    for (const { sku, points } of series) {
+      for (const p of points) {
+        if (p.pct <= 0) continue;
+        const d = Math.hypot(p.x - mx, p.y - my);
+        if (d < bestDist) {
+          bestDist = d;
+          best = {
+            sku,
+            pct: p.pct,
+            label: p.label,
+            xPct: (p.x / 1000) * 100,
+            yPct: (p.y / CHART_H) * 100,
+          };
+        }
+      }
+      for (let i = 0; i < points.length - 1; i++) {
+        const a = points[i]!;
+        const b = points[i + 1]!;
+        if (a.pct <= 0 && b.pct <= 0) continue;
+        const d = distToSegment(mx, my, a.x, a.y, b.x, b.y);
+        if (d < bestDist) {
+          bestDist = d;
+          const nearer = d < Math.hypot(mx - a.x, my - a.y) ? a : b;
+          best = {
+            sku,
+            pct: nearer.pct,
+            label: nearer.label,
+            xPct: (nearer.x / 1000) * 100,
+            yPct: (nearer.y / CHART_H) * 100,
+          };
+        }
+      }
+    }
+    return best;
+  };
+
+  const handlePointerMove = (
+    e: React.PointerEvent<SVGSVGElement> | React.MouseEvent<SVGSVGElement>,
+  ) => {
+    const svg = e.currentTarget;
+    const rect = svg.getBoundingClientRect();
+    const mx = ((e.clientX - rect.left) / rect.width) * 1000;
+    const my = ((e.clientY - rect.top) / rect.height) * CHART_H;
+    setTip(pickNearest(mx, my));
+  };
+
+  const hoveredSkuId = tip?.sku.productId ?? null;
+
   return (
-    <svg
-      viewBox={`0 0 1000 ${CHART_H}`}
-      className="w-full h-44"
-      role="img"
-      aria-label="Markup percent by SKU over time"
-    >
-      {yTicks.map((tick) => (
-        <g key={tick}>
-          <line
-            x1={PAD.left}
-            y1={yAt(tick)}
-            x2={1000 - PAD.right}
-            y2={yAt(tick)}
-            stroke="currentColor"
-            strokeOpacity={0.08}
-          />
-          <text
-            x={PAD.left - 6}
-            y={yAt(tick) + 3}
-            textAnchor="end"
-            className="fill-muted text-[10px]"
-            style={{ fontSize: 10 }}
-          >
-            {tick}%
-          </text>
-        </g>
-      ))}
-
-      {activeSkus.map((sku) => {
-        const points = buckets.map((b, i) => ({
-          x: xAt(i),
-          y: yAt(b.markupPct[sku.productId] ?? 0),
-          pct: b.markupPct[sku.productId] ?? 0,
-          label: b.label,
-        }));
-
-        const polyline = points.map((p) => `${p.x},${p.y}`).join(" ");
-
-        return (
-          <g key={sku.productId}>
-            {buckets.length > 1 && (
-              <polyline
-                points={polyline}
-                fill="none"
-                stroke={sku.color}
-                strokeWidth={2}
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-            )}
-            {points.map((p, i) =>
-              p.pct > 0 ? (
-                <circle
-                  key={`${sku.productId}-${i}`}
-                  cx={p.x}
-                  cy={p.y}
-                  r={buckets.length > 24 ? 2.5 : 3.5}
-                  fill={sku.color}
-                  stroke="var(--background, #fff)"
-                  strokeWidth={1}
-                >
-                  <title>{`${p.label}\n${sku.name}: ${formatMarkupPct(p.pct)}%`}</title>
-                </circle>
-              ) : null,
-            )}
+    <div className="relative">
+      {tip && (
+        <div
+          className="absolute z-10 pointer-events-none -translate-x-1/2 -translate-y-full mb-1 px-2.5 py-1.5 text-xs bg-foreground text-background shadow-sm border border-line/20 max-w-[220px]"
+          style={{ left: `${tip.xPct}%`, top: `${tip.yPct}%` }}
+        >
+          <div className="flex items-center gap-1.5 font-medium">
+            <span
+              className="inline-block w-2 h-2 rounded-full shrink-0"
+              style={{ backgroundColor: tip.sku.color }}
+            />
+            {tip.sku.name}
+          </div>
+          <div className="tabular-nums text-background/80 mt-0.5">
+            {formatMarkupPct(tip.pct)}% · {tip.label}
+          </div>
+        </div>
+      )}
+      <svg
+        viewBox={`0 0 1000 ${CHART_H}`}
+        className="w-full h-44 cursor-crosshair"
+        role="img"
+        aria-label="Markup percent by SKU over time"
+        onMouseMove={handlePointerMove}
+        onMouseLeave={() => setTip(null)}
+      >
+        {yTicks.map((tick) => (
+          <g key={tick}>
+            <line
+              x1={PAD.left}
+              y1={yAt(tick)}
+              x2={1000 - PAD.right}
+              y2={yAt(tick)}
+              stroke="currentColor"
+              strokeOpacity={0.08}
+            />
+            <text
+              x={PAD.left - 6}
+              y={yAt(tick) + 3}
+              textAnchor="end"
+              className="fill-muted text-[10px]"
+              style={{ fontSize: 10 }}
+            >
+              {tick}%
+            </text>
           </g>
-        );
-      })}
-    </svg>
+        ))}
+
+        {series.map(({ sku, points }) => {
+          const polyline = points.map((p) => `${p.x},${p.y}`).join(" ");
+          const highlighted = hoveredSkuId === sku.productId;
+
+          return (
+            <g key={sku.productId} opacity={hoveredSkuId && !highlighted ? 0.35 : 1}>
+              {buckets.length > 1 && (
+                <>
+                  <polyline
+                    points={polyline}
+                    fill="none"
+                    stroke={sku.color}
+                    strokeWidth={14}
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    strokeOpacity={0}
+                    pointerEvents="stroke"
+                  />
+                  <polyline
+                    points={polyline}
+                    fill="none"
+                    stroke={sku.color}
+                    strokeWidth={highlighted ? 3 : 2}
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    pointerEvents="none"
+                  />
+                </>
+              )}
+              {points.map((p, i) =>
+                p.pct > 0 ? (
+                  <circle
+                    key={`${sku.productId}-${i}`}
+                    cx={p.x}
+                    cy={p.y}
+                    r={highlighted ? 5 : 4}
+                    fill={sku.color}
+                    stroke="var(--background, #fff)"
+                    strokeWidth={1.5}
+                    pointerEvents="none"
+                  />
+                ) : null,
+              )}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
   );
 }
 
