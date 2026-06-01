@@ -3,12 +3,43 @@ import Link from "next/link";
 import { CartBadge } from "@/components/CartBadge";
 import { Leaf } from "@/components/Leaf";
 import { SocialIcon } from "@/components/SocialIcon";
+import {
+  DEFAULT_DESCRIPTION,
+  OG_IMAGE_ALT,
+  OG_IMAGE_URL,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site";
 import "./globals.css";
 
+const OG_IMAGE = {
+  url: OG_IMAGE_URL,
+  secureUrl: OG_IMAGE_URL,
+  type: "image/png",
+  width: 1200,
+  height: 630,
+  alt: OG_IMAGE_ALT,
+};
+
 export const metadata: Metadata = {
-  title: "Pluk — A weekly market drop",
-  description:
-    "A small weekly market — top-grade produce, pantry, and small-batch finds from people we know. Picked up at a community spot in Oakville, paid by card at checkout.",
+  metadataBase: new URL(SITE_URL),
+  title: `${SITE_NAME} — A weekly market drop`,
+  description: DEFAULT_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    locale: "en_CA",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — A weekly market drop`,
+    description: DEFAULT_DESCRIPTION,
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — A weekly market drop`,
+    description: DEFAULT_DESCRIPTION,
+    images: [OG_IMAGE_URL],
+  },
 };
 
 export default function RootLayout({
@@ -18,6 +49,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Explicit og:image for Facebook (must match a real, deployed static URL). */}
+        <meta property="og:image" content={OG_IMAGE_URL} />
+        <meta property="og:image:secure_url" content={OG_IMAGE_URL} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={OG_IMAGE_ALT} />
+        <link rel="image_src" href={OG_IMAGE_URL} />
+      </head>
       <body className="min-h-screen flex flex-col">
         <header className="border-b border-line bg-background">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">

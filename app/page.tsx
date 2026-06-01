@@ -9,8 +9,6 @@ import { Leaf } from "@/components/Leaf";
 export default function Home() {
   const cats = categories();
   const specials = specialProducts();
-  // If all the special items share one supplier, surface a "read full story"
-  // link to their profile. Multiple suppliers → skip the link.
   const specialSupplierIds = Array.from(
     new Set(specials.map((p) => p.supplierId).filter(Boolean)),
   );
@@ -20,40 +18,35 @@ export default function Home() {
       : null;
   return (
     <div>
-      <section className="relative -mx-6 -mt-10 mb-12 overflow-hidden">
-        <div className="relative h-[420px] sm:h-[520px] lg:h-[560px]">
+      <section className="relative -mx-6 -mt-10 mb-12 overflow-hidden border-b border-line">
+        <div className="relative min-h-[400px] sm:min-h-[440px]">
           <Image
-            src="https://images.unsplash.com/photo-1768734837803-54eb8c83e080?auto=format&fit=crop&w=2000&q=80"
-            alt="Baskets of fresh vegetables at a farmers market stall"
+            src="/hero-weekly-drops.jpg"
+            alt="Fresh vegetables and honey on a linen table in warm morning light"
             fill
             priority
             sizes="100vw"
-            className="object-cover"
+            className="object-cover object-[72%_center]"
           />
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-r from-background via-background/92 to-background/30"
+            className="absolute inset-0 bg-gradient-to-r from-background from-30% via-background/92 via-50% to-transparent"
           />
         </div>
         <div className="absolute inset-0 flex items-center px-6 sm:px-10">
-          <div className="max-w-2xl">
-            <p className="eyebrow mb-3">Weekly drops · Top-grade fresh</p>
-            <h1 className="text-3xl sm:text-5xl leading-[1.05] mb-5">
-              Real food and the makers behind it.
-            </h1>
-            <p className="text-foreground/85 text-base sm:text-lg leading-relaxed max-w-xl mb-6">
-              Top-grade produce, pantry, and the occasional handmade thing.
-              Picked up at a community spot each week.
+          <div className="max-w-xl py-10">
+            <p className="eyebrow mb-4 inline-flex items-center gap-2">
+              <Leaf size={14} className="text-accent" aria-hidden />
+              Oakville · Weekly drops
             </p>
-            <a
-              href="https://www.facebook.com/share/g/1cRmroAoyr/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-baseline gap-2 text-sm border-b border-foreground pb-0.5 hover:opacity-70"
-            >
-              Join the Oakville group for the next drop date
-              <span aria-hidden>→</span>
-            </a>
+            <h1 className="text-3xl sm:text-[3.25rem] leading-[1.06] mb-5">
+              A weekly drop of good food.
+            </h1>
+            <p className="text-base sm:text-lg leading-relaxed text-foreground/80">
+              Each week, a short list — produce, pantry, and sometimes
+              something from a neighbour: a jar of honey, a bottle you
+              haven&apos;t tried yet. Pick up at a community spot in Oakville.
+            </p>
           </div>
         </div>
       </section>
@@ -63,9 +56,8 @@ export default function Home() {
           <div className="mb-6 flex items-baseline justify-between gap-3 border-b border-line pb-3">
             <div className="flex items-baseline gap-3">
               <Leaf size={16} className="text-accent" />
-              <h2 className="text-2xl">Discover</h2>
+              <h2 className="text-2xl">This week</h2>
             </div>
-            <span className="eyebrow">This drop</span>
           </div>
           <div className="grid gap-8 sm:grid-cols-[1fr_2fr] mb-2">
             <div className="text-sm leading-relaxed text-foreground/85">
@@ -75,7 +67,7 @@ export default function Home() {
                   href={`/suppliers/${sharedSupplier.slug}`}
                   className="mt-3 inline-block text-xs underline underline-offset-4 hover:text-accent"
                 >
-                  Meet {sharedSupplier.name} →
+                  Read their story →
                 </Link>
               )}
             </div>

@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pluk — weekly Oakville grocery drop
 
-## Getting Started
+Next.js storefront at [plukgroceries.vercel.app](https://plukgroceries.vercel.app).
 
-First, run the development server:
+## Local dev
+
+```bash
+npm install
+cp .env.example .env.local   # then fill in keys (see below)
+npm run dev
+```
+
+## Pay with card (Stripe)
+
+Checkout is already wired: `POST /api/checkout` → Stripe Checkout → `POST /api/webhooks/stripe` saves the order to KV and optionally emails you.
+
+This is **not** the old [Roots](https://github.com/) app pattern (Go API + Stripe Connect for event hosts). Pluk uses simple **Stripe Checkout** on this Next.js app — same idea as Roots’ store checkout, but implemented here in TypeScript.
+
+### 1. Stripe Dashboard
+
+1. Create or open a [Stripe account](https://dashboard.stripe.com) (Canada).
+2. **Developers → API keys** → copy the **Secret key** (`sk_test_…` for testing).
+3. **Developers → Webhooks → Add endpoint**
+   - URL: `https://plukgroceries.vercel.app/api/webhooks/stripe`
+   - Event: `checkout.session.completed`
+   - Copy the **Signing secret** (`whsec_…`).
+
+Use **test mode** until you have run a full test order; then repeat webhook + keys for **live mode**.
+
+### 2. Vercel env vars
+
+In the Vercel project → **Settings → Environment Variables** (Production + Preview):
+
+| Variable | Required | Notes |
+|----------|----------|--------|
+| `STRIPE_SECRET_KEY` | Yes | `sk_test_…` or `sk_live_…` |
+| `STRIPE_WEBHOOK_SECRET` | Yes | From the webhook above |
+| `KV_REST_API_URL` | Yes* | From Upstash **REST API** (or link Storage below) |
+| `KV_REST_API_TOKEN` | Yes* | Same |
+| `REDIS_URL` | Alt | If Vercel only injects TCP Redis, set this instead |
+
+\*At least one of the KV pair **or** `REDIS_URL` must be set on **Production**.
+
+**Link database on Vercel:** Project → **Storage** → your Upstash Redis → **Connect to project** → choose **Production** → redeploy.
+
+**Verify after deploy:** open `https://plukgroceries.vercel.app/api/health/storage` — should be `{"ok":true,"storage":"connected"}`. If you see `not_configured`, env vars are still missing on Production.
+
+**Sync from your machine** (after `vercel login` + `vercel link`):
+
+```bash
+npm run vercel:sync-env
+vercel deploy --prod
+```
+| `RESEND_API_KEY` | No | Order notification email |
+| `ORDER_NOTIFICATION_EMAIL` | No | Your inbox |
+| `RESEND_FROM_EMAIL` | No | e.g. `Pluk <orders@yourdomain.com>` |
+| `ADMIN_PASSWORD` | No | Protects `/admin` |
+
+Redeploy after saving env vars.
+
+### 3. Local webhook testing
+
+Terminal 1:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Terminal 2:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run stripe:listen
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Put the `whsec_…` printed by the CLI into `.env.local` as `STRIPE_WEBHOOK_SECRET` (it changes each time you run listen unless you use a fixed Stripe CLI endpoint).
 
-## Learn More
+### 4. Test checkout
 
-To learn more about Next.js, take a look at the following resources:
+1. Add items → **Checkout** → fill name, email, phone, pickup spot.
+2. **Pay with card** → use `4242 4242 4242 4242`, any future expiry, any CVC.
+3. Success page clears the cart.
+4. Confirm the order appears at `/admin` (set `ADMIN_PASSWORD` first).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If payment works but **no order in admin**, Stripe’s webhook is probably returning **503** (`Order storage not configured`). Fix storage env vars, redeploy, then **Resend** the failed event in Stripe → Webhooks.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Check `/api/health/storage` and Vercel function logs for `/api/webhooks/stripe`.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run verify:voila` — spot-check Voilà prices for L6M0S2 (needs Playwright).

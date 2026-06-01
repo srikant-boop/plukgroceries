@@ -1,5 +1,10 @@
 // Product schema mirrors what an Excel/CSV upload will provide later.
 // One row per SKU. `competitors` is open-ended so adding stores stays cheap.
+//
+// Identifiers (how grocers usually think about it):
+//   uuid     — immutable system key (never changes; use on orders & imports)
+//   slug/id  — human URL + cart key (may change if you rename a product)
+//   Future: gtin/upc (barcode), plu (produce), supplierItemCode (wholesaler)
 
 export type CompetitorPrice = {
   store: string;
@@ -11,6 +16,9 @@ export type CompetitorPrice = {
 };
 
 export type Product = {
+  /** Immutable catalogue UUID — primary key for orders & inventory. */
+  uuid: string;
+  /** Same as slug today; used in URLs, cart, and Stripe metadata. */
   id: string;
   slug: string;
   name: string;
@@ -31,9 +39,8 @@ export type Product = {
   // Packer/label on the box at the wholesaler — internal ops only, not shown
   // on the storefront (Pluk is the customer-facing brand).
   brand?: string;
-  // When set, this item is featured as a "special" for the current drop —
-  // typically something from a neighbouring farm. The string is the badge
-  // label, e.g. "Neighbour pick".
+  // When set, item is in the homepage Discover section (rotating drop pick).
+  // Value is internal only — not shown on the storefront.
   special?: string;
   // Certified organic. Per BRAND.md: only set when the specific item is —
   // organic is no longer a brand-wide promise.
@@ -44,6 +51,8 @@ export type Product = {
 
 /** Standard produce markup: cost × 1.25. Internal ops only. */
 export const DEFAULT_MARKUP_MULTIPLIER = 1.25;
+/** Temporary higher markup on select produce (cost × 1.30). Internal ops only. */
+export const ELEVATED_MARKUP_MULTIPLIER = 1.3;
 
 /** Derive retail from wholesale cost (round to cents). Internal ops only. */
 export const retailFromWholesale = (
@@ -124,14 +133,15 @@ const unsplash = (id: string) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1200&q=80`;
 
 export const products: Product[] = [
-  // ─── Vegetables & Cooking Staples ──────────────────────────────
+  // ─── Vegetables ──────────────────────────────
   {
+    uuid: "8f08b890-1a5c-4187-bd65-24b11ad582d7",
     id: "yellow-potatoes",
     slug: "yellow-potatoes",
     name: "Yellow Potatoes",
     shortDescription: "Creamy yellow flesh, 3 lb bag",
     longDescription: "",
-    category: "Vegetables & Cooking Staples",
+    category: "Vegetables",
     image: "/products/yellow-potatoes.webp",
     unit: "3 lb bag",
     stock: 40,
@@ -139,25 +149,26 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 7.19,
     competitors: [
-      { store: "Voila", price: 7.99, unit: "1.36 kg", url: "https://voila.ca/products/organic-potatoes-yellow-1-36-kg/472128EA", organic: true },
+      { store: "Voila", price: 7.99, unit: "3 lb", url: "https://voila.ca/products/organic-potatoes-yellow-1-36-kg/472128EA", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Earth Fresh",
     organic: true,
   },
   {
+    uuid: "444843d4-b40e-4771-8e0f-c39d188f12dc",
     id: "tomatoes-on-the-vine",
     slug: "tomatoes-on-the-vine",
     name: "Tomatoes on the Vine",
     shortDescription: "Greenhouse, on the vine",
     longDescription: "",
-    category: "Vegetables & Cooking Staples",
+    category: "Vegetables",
     image: unsplash("1592924357228-91a4daadcfea"),
     unit: "4-6 count",
     stock: 40,
     wholesalerPrice: 5.44,
-    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 6.8,
+    markupMultiplier: ELEVATED_MARKUP_MULTIPLIER,
+    ourPrice: 7.07,
     competitors: [
       { store: "Voila", price: 8.99, unit: "4-6 count", url: "https://voila.ca/products/organic-tomatoes-on-the-vine-4-6-counts/1408309EA", organic: true },
     ],
@@ -165,18 +176,19 @@ export const products: Product[] = [
     organic: true,
   },
   {
+    uuid: "63274256-65a9-428d-8b73-1b4e363045ad",
     id: "english-cucumbers",
     slug: "english-cucumbers",
     name: "English Cucumber",
     shortDescription: "Long, one count",
     longDescription: "",
-    category: "Vegetables & Cooking Staples",
+    category: "Vegetables",
     image: "/products/english-cucumbers.jpg",
     unit: "1 count",
     stock: 45,
     wholesalerPrice: 2.0,
-    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 2.5,
+    markupMultiplier: ELEVATED_MARKUP_MULTIPLIER,
+    ourPrice: 2.6,
     competitors: [
       { store: "Voila", price: 4.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA", organic: true },
     ],
@@ -185,32 +197,34 @@ export const products: Product[] = [
     organic: true,
   },
   {
+    uuid: "a64efff2-3853-467b-9319-4545f4595c10",
     id: "carrots",
     slug: "carrots",
     name: "Carrots",
     shortDescription: "2 lb bag",
     longDescription: "",
-    category: "Vegetables & Cooking Staples",
+    category: "Vegetables",
     image: "/products/carrots.jpg",
     unit: "2 lb bag",
     stock: 40,
     wholesalerPrice: 3.08,
-    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 3.86,
+    markupMultiplier: ELEVATED_MARKUP_MULTIPLIER,
+    ourPrice: 4.0,
     competitors: [
-      { store: "Voila", price: 5.99, unit: "908 g", url: "https://voila.ca/products/organic-carrots-908-g/112284EA", organic: true },
+      { store: "Voila", price: 5.99, unit: "2 lb", url: "https://voila.ca/products/organic-carrots-908-g/112284EA", organic: true },
     ],
     brand: "Cal-Organic",
-    supplierId: "pfennings-organic",
+    supplierId: "terra-freska",
     organic: true,
   },
   {
+    uuid: "da4a96f2-4dc0-465e-b12f-6ff0872e86a3",
     id: "romaine-lettuce",
     slug: "romaine-lettuce",
     name: "Romaine Lettuce",
     shortDescription: "Three hearts, 340 g",
     longDescription: "",
-    category: "Vegetables & Cooking Staples",
+    category: "Vegetables",
     image: "/products/romaine-lettuce.webp",
     unit: "3 pack (340 g)",
     stock: 30,
@@ -218,25 +232,26 @@ export const products: Product[] = [
     markupMultiplier: 1,
     ourPrice: 8.99,
     competitors: [
-      { store: "Voila", price: 9.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
+      { store: "Voila", price: 8.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Foxy",
     organic: true,
   },
   {
+    uuid: "a13c2375-83ba-4040-a888-177c62a9d760",
     id: "broccoli-crowns",
     slug: "broccoli-crowns",
     name: "Broccoli Crowns",
     shortDescription: "One crown",
     longDescription: "",
-    category: "Vegetables & Cooking Staples",
+    category: "Vegetables",
     image: "/products/broccoli-crowns.avif",
     unit: "1 crown",
     stock: 30,
     wholesalerPrice: 3.29,
-    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 4.11,
+    markupMultiplier: ELEVATED_MARKUP_MULTIPLIER,
+    ourPrice: 4.28,
     competitors: [
       { store: "Voila", price: 8.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA", organic: true },
     ],
@@ -246,6 +261,7 @@ export const products: Product[] = [
 
   // ─── Fruits ────────────────────────────────────────────────────
   {
+    uuid: "ffb9224d-9df4-465e-8b6a-6ca0acc95531",
     id: "bananas",
     slug: "bananas",
     name: "Bananas",
@@ -266,6 +282,7 @@ export const products: Product[] = [
     organic: true,
   },
   {
+    uuid: "4ff8e3c7-318c-4cb9-8891-3d94f51962f2",
     id: "gala-apples",
     slug: "gala-apples",
     name: "Gala Apples",
@@ -279,12 +296,13 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 8.97,
     competitors: [
-      { store: "Voila", price: 9.99, unit: "1.36 kg", url: "https://voila.ca/products/lil-snapper-organic-apples-gala-1-36-kg/674671EA", organic: true },
+      { store: "Voila", price: 8.99, unit: "1.36 kg", url: "https://voila.ca/products/lil-snapper-organic-apples-gala-1-36-kg/674671EA", organic: true },
     ],
     supplierId: "terra-freska",
     organic: true,
   },
   {
+    uuid: "1d668541-9979-46d9-b4a1-d95cfc946485",
     id: "clementines",
     slug: "clementines",
     name: "Clementines",
@@ -304,6 +322,7 @@ export const products: Product[] = [
     organic: true,
   },
   {
+    uuid: "6db2b209-03af-4dd3-802a-2d9cc6edcde8",
     id: "strawberries",
     slug: "strawberries",
     name: "Strawberries",
@@ -326,15 +345,18 @@ export const products: Product[] = [
 
   // ─── Beverages ─────────────────────────────────────────────────
   {
+    uuid: "b8033818-0682-4cac-9cd8-bf835bf05f45",
     id: "honey-soda",
     slug: "honey-soda",
     name: "Honey Soda™",
-    shortDescription: "355 ml can",
+    shortDescription:
+      "Their own sparkling drink — wildflower honey, light fizz, nothing fussy on the label.",
     longDescription:
-      "Lightly sparkling. Sweetened with wildflower honey. No added flavourings or dyes. Gluten free. Caffeine free. 80 calories per can.",
+      "Lightly sparkling, with sweetness from wildflower honey rather than cane sugar. No added flavours or dyes. Gluten-free, caffeine-free, about 80 calories per 355 ml can.",
     category: "Beverages",
-    image: "https://backedbybees.com/cdn/shop/files/IMG_4691_edited_1200x.jpg",
-    imageAlt: "Backed By Bees Honey Soda can",
+    image: "/products/honey-soda.webp",
+    imageAlt:
+      "Backed By Bees Original Honey Soda can — 355 ml, all natural, made from real honey",
     unit: "355 ml can",
     stock: 36,
     wholesalerPrice: 3.29,
@@ -347,15 +369,18 @@ export const products: Product[] = [
 
   // ─── Pantry (specials from neighbouring farms this drop) ───────
   {
+    uuid: "df2d2985-c29b-4977-bf0c-c22ded169214",
     id: "raw-honey",
     slug: "raw-honey",
     name: "Raw Honey",
-    shortDescription: "500 g jar",
+    shortDescription:
+      "Raw wildflower honey from their hives — never heated, never filtered.",
     longDescription:
-      "Unheated, unfiltered wildflower honey from Halton Region. Colour and flavour vary by season.",
+      "Straight from the hive in Halton Region: unheated and unfiltered so it keeps the taste of whatever was blooming that season. Colour and flavour shift with the year — that’s the point.",
     category: "Pantry",
-    image: "https://backedbybees.com/cdn/shop/files/IMG_4274_edited_1200x.jpg",
-    imageAlt: "Backed By Bees raw honey jar",
+    image: "/products/raw-honey.webp",
+    imageAlt:
+      "Backed By Bees raw honey jar — Bee Keepin' it Real, 500 g Ontario No. 1 golden",
     unit: "500 g jar",
     stock: 24,
     wholesalerPrice: 11.99,
@@ -372,6 +397,9 @@ export const getProduct = (slug: string) =>
 
 export const getProductById = (id: string) =>
   products.find((p) => p.id === id);
+
+export const getProductByUuid = (uuid: string) =>
+  products.find((p) => p.uuid === uuid);
 
 export const categories = () =>
   Array.from(new Set(products.map((p) => p.category)));

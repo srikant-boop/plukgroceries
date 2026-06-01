@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthorized } from "@/lib/admin-auth";
-import { getOrder, markFulfilled } from "@/lib/orders";
+import { clearAllOrders } from "@/lib/orders";
 
 export const runtime = "nodejs";
+
+const CONFIRM_PHRASE = "DELETE ALL ORDERS";
 
 export async function POST(req: Request) {
   if (!process.env.ADMIN_PASSWORD?.trim()) {
@@ -15,21 +17,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let body: { id?: string; fulfilled?: boolean };
+  let body: { confirm?: string };
   try {
-    body = (await req.json()) as { id?: string; fulfilled?: boolean };
+    body = (await req.json()) as { confirm?: string };
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { id, fulfilled } = body;
-  if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
-
-  const existing = await getOrder(id);
-  if (!existing) {
-    return NextResponse.json({ error: "Order not found" }, { status: 404 });
+  if (body.confirm !== CONFIRM_PHRASE) {
+    return NextResponse.json(
+      {
+        error: `Type exactly "${CONFIRM_PHRASE}" to confirm.`,
+      },
+      { status: 400 },
+    );
   }
 
-  await markFulfilled(id, !!fulfilled);
-  return NextResponse.json({ ok: true });
+  const { deleted } = await clearAllOrders();
+  return NextResponse.json({ ok: true, deleted });
 }

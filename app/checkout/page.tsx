@@ -13,6 +13,7 @@ export default function CheckoutPage() {
   useEffect(() => setHydrated(true), []);
 
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [pickupSpotId, setPickupSpotId] = useState<string>(pickupSpots[0].id);
@@ -38,7 +39,13 @@ export default function CheckoutPage() {
     );
   }
 
-  const canPlace = !!(name.trim() && phone.trim() && spot && !submitting);
+  const canPlace = !!(
+    name.trim() &&
+    email.trim() &&
+    phone.trim() &&
+    spot &&
+    !submitting
+  );
 
   const handlePlace = async () => {
     if (!spot) return;
@@ -49,7 +56,7 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer: { name, phone, notes },
+          customer: { name, email, phone, notes },
           pickupSpotId,
           lines: items.map((i) => ({ productId: i.productId, qty: i.qty })),
         }),
@@ -75,6 +82,14 @@ export default function CheckoutPage() {
           <fieldset className="space-y-4">
             <legend className="eyebrow mb-3">Your details</legend>
             <Field label="Name" value={name} onChange={setName} required />
+            <Field
+              label="Email"
+              value={email}
+              onChange={setEmail}
+              required
+              type="email"
+              placeholder="you@example.com"
+            />
             <Field
               label="Phone"
               value={phone}
@@ -159,7 +174,7 @@ export default function CheckoutPage() {
             <span>Total</span>
             <span className="tabular-nums">{money(total)}</span>
           </div>
-          <CartSavings items={items} />
+          <CartSavings items={items} showVoilaDeliveryNote />
           {spot && (
             <p className="mt-5 text-xs text-muted leading-relaxed">
               Pickup at <span className="text-foreground">{spot.name}</span>,{" "}

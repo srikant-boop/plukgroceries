@@ -9,7 +9,6 @@ export function PriceCompareTable({ product }: { product: Product }) {
     .map((c) => ({
       label: c.store,
       price: c.price,
-      unit: c.organic ? `${c.unit} · organic` : c.unit,
       url: c.url,
       delta: c.price - product.ourPrice, // positive = Pluk is cheaper
     }))
@@ -31,7 +30,6 @@ export function PriceCompareTable({ product }: { product: Product }) {
                 </span>
               </span>
             </td>
-            <td className="px-5 py-3 text-xs text-muted">{product.unit}</td>
             <td className="px-5 py-3 text-right tabular-nums">
               {money(product.ourPrice)}
             </td>
@@ -61,7 +59,6 @@ export function PriceCompareTable({ product }: { product: Product }) {
                     r.label
                   )}
                 </td>
-                <td className="px-5 py-3 text-xs text-muted">{r.unit}</td>
                 <td className="px-5 py-3 text-right tabular-nums">
                   {money(r.price)}
                 </td>

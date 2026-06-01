@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProduct, products, pricePerLbLabel } from "@/lib/products";
-import { getSupplierById, supplierIntroLabel } from "@/lib/suppliers";
+import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { PriceCompareTable } from "@/components/PriceCompareTable";
 import { AddToCart } from "@/components/AddToCart";
@@ -49,12 +49,6 @@ export default async function ProductPage({
               Certified organic
             </p>
           )}
-          {product.special && supplier && (
-            <p className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-wider text-accent">
-              <span className="inline-block w-6 border-t border-accent" />
-              {product.special} · from {supplier.name}
-            </p>
-          )}
         </div>
 
         <div className="border-b border-line pb-6">
@@ -70,19 +64,6 @@ export default async function ProductPage({
         </div>
 
         <AddToCart productId={product.id} />
-
-        {product.special && supplier && (
-          <section className="text-sm leading-relaxed text-foreground/85 space-y-3">
-            <p className="eyebrow">{supplierIntroLabel(supplier)}</p>
-            <p>{supplier.discoverBlurb ?? supplier.story.split(/\n\n+/)[0]}</p>
-            <Link
-              href={`/suppliers/${supplier.slug}`}
-              className="inline-block text-xs underline underline-offset-4 hover:text-accent"
-            >
-              Get to know them →
-            </Link>
-          </section>
-        )}
 
         {product.longDescription.trim() && (
           <div className="text-sm leading-relaxed text-foreground/85 space-y-3">

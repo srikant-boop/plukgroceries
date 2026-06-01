@@ -40,7 +40,7 @@ export const suppliers: Supplier[] = [
     type: "wholesaler",
     tagline: "Organic wholesale · Ontario Food Terminal, stall #237",
     story:
-      "Most weeks, our produce passes through Terra Freska — a Woodbridge wholesaler with a permanent stall at the Ontario Food Terminal (#237). They built their name on certified-organic fruit and vegetables for restaurants and small grocers across the GTA.\n\nWhen Terra Freska is on a product page, that’s where we bought it that week. If the case shows a brand name, we keep it in our records even when it isn’t on the storefront.",
+      "Terra Freska is a Woodbridge wholesaler with a permanent stall at the Ontario Food Terminal — stall #237. They built their name on certified-organic fruit and vegetables, buying from growers and supplying restaurants and small grocers across the GTA.\n\nEarly mornings at the terminal, their team is grading, packing, and moving what came in overnight. The kind of operation small shops rely on when they want organic produce without the long warehouse chain.",
     location: "1 Royal Gate Blvd, Woodbridge, ON · OFT stall #237",
     logo: "/suppliers/terra-freska.png",
     links: [
@@ -103,11 +103,11 @@ export const suppliers: Supplier[] = [
     slug: "backed-by-bees",
     name: "Backed By Bees",
     type: "maker",
-    tagline: "Burlington apiary · \"Good for you. Good for nature too.\"",
+    tagline: "Farm store on Appleby Line · Burlington",
     discoverBlurb:
-      "This drop we wanted you to know Backed By Bees — beekeepers in Burlington with a farm store on Appleby Line that feels like a neighbourhood stop. Raw honey from the hive, and Honey Soda, their own sparkling drink sweetened with wildflower honey.",
+      "A farm store on Appleby Line — raw honey and their own Honey Soda.",
     story:
-      "Backed By Bees are beekeepers across the GTA, with a farm store at 6214 Appleby Line in Burlington where neighbours drop in for honey and a drink called Honey Soda. The honey stays raw — never heated, never filtered — so it keeps whatever was blooming that season.\n\nHoney Soda is their invention: light fizz, wildflower honey, nothing fussy on the label. The kind of maker we're glad to share when they land in Discover.",
+      "There is a farm store on Appleby Line in Burlington, about ten minutes up the QEW — Backed By Bees. They tend hives across the GTA.\n\nThe honey is never heated or filtered. Each jar tastes like what was blooming that season, so no two are quite the same.\n\nThey also make Honey Soda — a gentle fizz, sweetened with their wildflower honey.",
     location: "6214 Appleby Line, Burlington, ON",
     logo: "/suppliers/backed-by-bees.jpg",
     links: [
@@ -127,8 +127,8 @@ export const getSupplier = (slug: string) =>
 export const getSupplierById = (id: string) =>
   suppliers.find((s) => s.id === id);
 
-/** Eyebrow for intro copy — warm for farmers/makers, neutral for wholesalers. */
-export function supplierIntroLabel(supplier: Supplier): string {
-  if (supplier.type === "wholesaler") return `About ${supplier.name}`;
-  return `Meet ${supplier.name}`;
+/** Optional eyebrow above supplier story — omitted for makers (name in H1 is enough). */
+export function supplierIntroLabel(supplier: Supplier): string | null {
+  if (supplier.type === "maker") return null;
+  return `About ${supplier.name}`;
 }

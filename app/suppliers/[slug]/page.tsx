@@ -6,6 +6,22 @@ import { products } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 import { SocialIcon } from "@/components/SocialIcon";
 
+/** Short label beside icon — avoids noisy handles in the sidebar. */
+function linkLabel(href: string, label: string): string {
+  const l = label.toLowerCase();
+  if (l.startsWith("instagram")) return "Instagram";
+  if (l.startsWith("facebook")) return "Facebook";
+  if (l === "website" || l.startsWith("website")) return "Website";
+  try {
+    const h = new URL(href).hostname.replace(/^www\./, "");
+    if (h.includes("instagram.com")) return "Instagram";
+    if (h.includes("facebook.com")) return "Facebook";
+  } catch {
+    /* use label */
+  }
+  return label;
+}
+
 export const dynamicParams = false;
 
 export function generateStaticParams() {
@@ -34,7 +50,9 @@ export default async function SupplierPage({
     <article>
       <header className="border-b border-line pb-10 mb-12 grid gap-6 sm:grid-cols-[1fr_auto] sm:items-end">
         <div>
-          <p className="eyebrow mb-3">{TYPE_LABEL[supplier.type]}</p>
+          {supplier.type !== "maker" && (
+            <p className="eyebrow mb-3">{TYPE_LABEL[supplier.type]}</p>
+          )}
           <h1 className="text-4xl sm:text-5xl mb-3 leading-[1.05]">
             {supplier.name}
           </h1>
@@ -62,36 +80,69 @@ export default async function SupplierPage({
 
       <section className="grid gap-10 lg:grid-cols-[2fr_1fr] mb-16">
         <div>
-          <p className="eyebrow mb-4">{supplierIntroLabel(supplier)}</p>
-          <div className="text-base leading-relaxed text-foreground/85 space-y-4">
+          {supplierIntroLabel(supplier) && (
+            <p className="eyebrow mb-4">{supplierIntroLabel(supplier)}</p>
+          )}
+          <div className="text-base leading-relaxed text-foreground/90 space-y-5">
             {supplier.story.split(/\n\n+/).map((para) => (
               <p key={para.slice(0, 48)}>{para}</p>
             ))}
           </div>
         </div>
-        {supplier.links.length > 0 && (
-          <aside className="border border-line p-6 bg-surface h-fit">
-            <p className="eyebrow mb-4">Find them</p>
-            <div className="flex flex-wrap gap-4 text-foreground">
-              {supplier.links.map((l) => (
+        {(supplier.links.length > 0 || supplier.location) && (
+          <aside className="border border-line p-6 bg-surface h-fit space-y-4">
+            {supplier.location && (
+              <div>
+                <p className="eyebrow mb-2">
+                  {supplier.type === "maker" ? "Their shop" : "Location"}
+                </p>
+                <p className="text-sm leading-relaxed text-foreground/90">
+                  {supplier.location}
+                </p>
                 <a
-                  key={l.href}
-                  href={l.href}
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(supplier.location)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-accent transition-colors"
+                  className="text-sm underline underline-offset-4 mt-2 inline-block hover:text-accent"
                 >
-                  <SocialIcon href={l.href} label={l.label} size={22} />
+                  Directions ↗
                 </a>
-              ))}
-            </div>
+              </div>
+            )}
+            {supplier.links.length > 0 && (
+              <div>
+                <p className="eyebrow mb-2">Online</p>
+                <ul className="space-y-3 text-sm">
+                  {supplier.links.map((l) => (
+                    <li key={l.href}>
+                      <a
+                        href={l.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2.5 text-foreground/90 hover:text-accent transition-colors"
+                      >
+                        <SocialIcon
+                          href={l.href}
+                          label={l.label}
+                          size={18}
+                          className="shrink-0 opacity-80"
+                        />
+                        <span className="underline underline-offset-4">
+                          {linkLabel(l.href, l.label)}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </aside>
         )}
       </section>
 
       {supplier.location && (
         <section className="mb-16">
-          <p className="eyebrow mb-3">On the map</p>
+          <p className="eyebrow mb-3">Where to find them</p>
           <div className="aspect-[3/1] overflow-hidden border border-line bg-surface">
             <iframe
               src={`https://www.google.com/maps?q=${encodeURIComponent(supplier.location)}&output=embed`}

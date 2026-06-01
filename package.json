@@ -6,13 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "verify:voila": "node scripts/verify-voila-prices-l6m0s2.mjs"
+    "verify:voila": "node scripts/verify-voila-prices-l6m0s2.mjs",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+    "vercel:sync-env": "bash scripts/sync-env-to-vercel.sh",
+    "orders:clear": "node scripts/clear-orders.mjs"
   },
   "dependencies": {
     "@upstash/redis": "^1.38.0",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "redis": "^6.0.0",
     "resend": "^6.12.4",
     "stripe": "^22.2.0",
     "zustand": "^5.0.14"

@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import type { Order } from "./orders";
+import { orderLineSubtotal } from "./order-snapshot";
 import { getPickupSpot } from "./pickup";
 
 let _resend: Resend | null = null;
@@ -25,7 +26,7 @@ export async function sendOrderEmail(order: Order): Promise<void> {
   const lines = order.lines
     .map(
       (l) =>
-        `<tr><td>${l.qty}× ${escape(l.name)}</td><td>${escape(l.unit)}</td><td style="text-align:right;font-variant-numeric:tabular-nums">${money(l.unitPrice * l.qty)}</td></tr>`,
+        `<tr><td>${l.qty}× ${escape(l.name)} <span style="color:#6b6b66">(${escape(l.sku ?? l.productId)}${l.productUuid ? ` · ${escape(l.productUuid)}` : ""})</span></td><td>${escape(l.unit)}</td><td style="text-align:right;font-variant-numeric:tabular-nums">${money(orderLineSubtotal(l))}</td></tr>`,
     )
     .join("");
 
@@ -55,6 +56,11 @@ export async function sendOrderEmail(order: Order): Promise<void> {
         <tr><td colspan="2" style="border-top:1px solid #e6e2d8;padding-top:8px"><strong>Total</strong></td>
             <td style="border-top:1px solid #e6e2d8;padding-top:8px;text-align:right;font-variant-numeric:tabular-nums"><strong>${money(order.total)}</strong></td></tr>
       </table>
+      ${
+        order.totalMargin != null && order.totalMargin > 0
+          ? `<p style="font-size:12px;color:#6b6b66;margin-top:8px">Internal: wholesale ${money(order.totalWholesaleCost ?? 0)} · margin ${money(order.totalMargin)}</p>`
+          : ""
+      }
 
       <p style="margin-top:24px"><a href="https://plukgroceries.vercel.app/admin">Open in admin →</a></p>
     </div>

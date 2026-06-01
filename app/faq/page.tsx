@@ -26,90 +26,106 @@ const faqs: FaqItem[] = [
   },
   {
     q: "How often are drops?",
-    a: "Weekly. The two spots run on different days so most weeks you'll have a choice between an evening and a weekend slot.",
+    a: "Weekly. Both spots are on Sunday with two pickup windows — pick the time that works for you at checkout.",
   },
   {
     q: "Are these items high quality?",
-    a: "Yes. Every listing features top-grade fresh produce inspected directly on the wholesale floor. We don't buy close-to-expiry inventory or second-rate items. By bypassing retail storefronts, we deliver peak freshness at near-wholesale prices. Certified organic options will always be clearly labeled.",
+    a: "Yes. Every listing features top-grade fresh produce inspected directly on the wholesale floor. We don't buy close-to-expiry inventory or second-rate items. With a shorter path from growers to your pickup bag, we aim for peak freshness at near-wholesale prices. Certified organic options will always be clearly labeled.",
   },
   {
     q: "How do you try to keep prices low?",
     a: (
       <>
         <p>
-          Four levers: direct sourcing, tiny catalog, pre-orders, thin
+          Four levers: a short supply chain, tiny catalog, pre-orders, thin
           markup.
         </p>
         <p className="mt-3">
-          Whole Foods has 3–4 markup layers between farm and basket
-          (consolidator → distributor → warehouse → store); we actively
-          try to keep it to zero or one — most items come straight from
-          the farmer, the rest from a single wholesaler. We stock around
-          a dozen items (vs ~40,000 at Whole Foods) so we buy more of
+          Big national grocers often stack 3–4 markup layers between farm and
+          basket (consolidator → distributor → warehouse → store). For now our
+          weekly
+          produce mostly comes through one wholesaler at the Ontario Food
+          Terminal — one hop, not four — and we&apos;re working on more
+          direct-from-farmer lines as we grow. We keep the catalog
+          deliberately small — Aldi-style, not a wall of SKUs. Right now
+          that&apos;s about a dozen items per drop; we may add a few over
+          time, but the idea stays the same: fewer products, more volume on
           each. Because everything is pre-ordered before the drop, we
           buy exactly what was bought — no unsold inventory, no spoilage,
-          no waste markup baked into your price. Markup is ~25%, vs Whole
-          Foods&apos; ~40%.
+          no waste markup baked into your price. Our markup is ~25%, vs ~40%
+          at many big supermarkets.
         </p>
         <p className="mt-3">
-          Lands us 20–40% below Whole Foods and 10–20% below Farm Boy most
-          weeks. When a big store has a sale we lose — we mark it honestly
-          on the page. No membership, no delivery fee.
+          Most weeks that lands us 20–40% below premium grocery chains and
+          10–20% below mid-tier ones. When a major retailer runs a sale we
+          lose — we mark it honestly on the page. No membership, no delivery
+          fee.
         </p>
       </>
     ),
   },
   {
     q: "How do I pay?",
-    a: "Credit card at checkout — Visa, Mastercard, AmEx, Discover, Apple Pay, and Google Pay. Card details are handled on Stripe's secure page; this site never sees them. You're charged when you place the order, not at pickup.",
+    a: "Credit card at checkout — Visa, Mastercard, AmEx, Discover, Apple Pay, and Google Pay. Card details are handled on Stripe's secure page; this site never sees them.",
   },
   {
     q: "Do you deliver to my house?",
-    a: "Not yet. We're running pickup-only while we're small — it keeps the markup thin and the logistics simple. If enough people in one area ask for it, we'll think about adding a delivery slot.",
+    a: "Not for regular drops — pickup-only keeps the markup thin and the logistics simple.",
   },
   {
     q: "Where do you get the food?",
     a: (
       <>
-        Direct from farmers like{" "}
-        <Link
-          href="/suppliers/pfennings-organic"
-          className="underline underline-offset-4 hover:text-accent"
-        >
-          Pfenning&apos;s Organic Farms
-        </Link>{" "}
-        (who grow their own <em>and</em> wholesale to grocers), and from
-        wholesalers like{" "}
+        Right now most of the weekly produce list is sourced through{" "}
         <Link
           href="/suppliers/terra-freska"
           className="underline underline-offset-4 hover:text-accent"
         >
           Terra Freska
-        </Link>{" "}
-        for items we can&apos;t source direct. Every product page shows
-        exactly who supplied it and you can open their profile to see their
-        story and links.
+        </Link>
+        , a wholesaler we buy from at the Ontario Food Terminal — still fewer
+        stops than a big grocery, and we name them on every listing. We&apos;re
+        trying to shift more of the list to named growers over time. The weekly
+        highlight (small-batch honey, pantry finds, and the like) often comes
+        straight from the maker. Every product page shows who supplied that
+        item; open their profile for the full story and links.
       </>
     ),
   },
   {
-    q: "What's in the \"Discover\" section?",
-    a: "Each drop we rotate in one or two small-batch finds — could be a farm jar, a baker's special, a craft, anything healthy and well-priced for what it is. Sometimes from a neighbour up the QEW, sometimes from further afield. Open the FB group for the current pick.",
+    q: "What are the extra items on the homepage each week?",
+    a: "Each drop we rotate in one or two small-batch finds — could be a farm jar, a baker's special, a craft, anything healthy and well-priced for what it is. Sometimes from a neighbour up the QEW, sometimes from further afield.",
   },
   {
     q: "What if I miss the pickup window?",
-    a: "At this scale we can't hold orders or carry them to the next drop — we hand-pack for one pickup window, with no warehousing. If you've placed an order and can't make pickup, please let us know in the Facebook group before the order window closes (usually end of day Thursday).",
+    a: "At this scale we can't hold orders or carry them to the next drop — we hand-pack for one pickup window, with no warehousing. If you know you can't make it, cancel before the order window closes (see below). If pickup day passes and you didn't cancel in time, we can often deliver to your home for a small fee — reach out as soon as you can.",
   },
   {
-    q: "What if something is damaged or low quality?",
-    a: "Tell us at pickup or message us afterwards with a photo — we refund the affected items or replace at the next drop, no arguing. We're hand-packing this stuff so we'd rather you trusted the next order than save a couple of dollars now.",
+    q: "Can I cancel my order?",
+    a: (
+      <>
+        Yes — as long as it&apos;s before the order window closes (usually end
+        of day Thursday), so we haven&apos;t bought or packed your bag yet.
+        After you&apos;ve checked out, message us in the{" "}
+        <a
+          href="https://www.facebook.com/share/g/1cRmroAoyr/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-4 hover:text-accent"
+        >
+          Oakville group on Facebook
+        </a>{" "}
+        with your details. We&apos;ll cancel and refund the
+        full amount to your card.
+      </>
+    ),
   },
 ];
 
 export const metadata = {
   title: "FAQ — Pluk",
   description:
-    "Common questions about Pluk pickup, payment, sourcing, and refunds.",
+    "Common questions about Pluk pickup, payment, cancellations, sourcing, and refunds.",
 };
 
 export default function FAQPage() {

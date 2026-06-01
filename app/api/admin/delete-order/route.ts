@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthorized } from "@/lib/admin-auth";
-import { getOrder, markFulfilled } from "@/lib/orders";
+import { deleteOrder } from "@/lib/orders";
 
 export const runtime = "nodejs";
 
@@ -15,21 +15,21 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let body: { id?: string; fulfilled?: boolean };
+  let body: { id?: string };
   try {
-    body = (await req.json()) as { id?: string; fulfilled?: boolean };
+    body = (await req.json()) as { id?: string };
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { id, fulfilled } = body;
-  if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+  if (!body.id) {
+    return NextResponse.json({ error: "id required" }, { status: 400 });
+  }
 
-  const existing = await getOrder(id);
-  if (!existing) {
+  const deleted = await deleteOrder(body.id);
+  if (!deleted) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
-  await markFulfilled(id, !!fulfilled);
   return NextResponse.json({ ok: true });
 }

@@ -1,12 +1,16 @@
 import { listOrders, type Order } from "@/lib/orders";
 import { getPickupSpot } from "@/lib/pickup";
 import { money } from "@/lib/format";
+import { getAdminPassword } from "@/lib/admin-auth";
+import { AdminClearOrders } from "./AdminClearOrders";
+import { AdminDeleteOrder } from "./AdminDeleteOrder";
 import { AdminFulfillToggle } from "./AdminFulfillToggle";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function AdminPage() {
+  const adminConfigured = Boolean(getAdminPassword());
   let orders: Order[] = [];
   let error: string | null = null;
   try {
@@ -35,10 +39,18 @@ export default async function AdminPage() {
         </div>
       </header>
 
+      {!adminConfigured && (
+        <div className="border border-price-cut p-4 mb-8 text-sm text-price-cut">
+          Set <code className="text-xs">ADMIN_PASSWORD</code> in Vercel (Production),
+          redeploy, then sign in at /admin/login — otherwise &ldquo;Mark
+          fulfilled&rdquo; cannot save.
+        </div>
+      )}
+
       {error && (
         <div className="border border-price-cut p-4 mb-8 text-sm text-price-cut">
-          Couldn&apos;t load orders: {error}. Make sure Vercel KV is enabled
-          and KV_REST_API_URL / KV_REST_API_TOKEN are set.
+          Couldn&apos;t load orders: {error}. Make sure Vercel Storage / REDIS_URL
+          is connected.
         </div>
       )}
 
@@ -54,6 +66,8 @@ export default async function AdminPage() {
           emptyText="Nothing fulfilled yet."
         />
       </div>
+
+      <AdminClearOrders orderCount={orders.length} />
     </div>
   );
 }
@@ -139,7 +153,13 @@ function OrderTable({
                   >
                     {o.paid ? "Paid" : "Unpaid"}
                   </span>
-                  <AdminFulfillToggle id={o.id} fulfilled={o.fulfilled} />
+                  <div className="flex flex-wrap justify-end gap-2">
+                    <AdminFulfillToggle id={o.id} fulfilled={o.fulfilled} />
+                    <AdminDeleteOrder
+                      id={o.id}
+                      customerName={o.customer.name}
+                    />
+                  </div>
                 </div>
               </li>
             );

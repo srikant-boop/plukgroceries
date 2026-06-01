@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { getProductById } from "@/lib/products";
-import { saveOrder, type Order, type OrderLine } from "@/lib/orders";
+import {
+  orderLineTotals,
+  saveOrder,
+  snapshotOrderLine,
+  type Order,
+} from "@/lib/orders";
 import { sendOrderEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
@@ -42,20 +47,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Malformed lines metadata" }, { status: 400 });
   }
 
-  const lines: OrderLine[] = [];
+  const catalogSnapshotAt = new Date().toISOString();
+  const lines = [];
   for (const spec of lineSpecs) {
     const p = getProductById(spec.productId);
     if (!p) continue; // skip silently — product might have been removed
-    lines.push({
-      productId: p.id,
-      name: p.name,
-      unit: p.unit,
-      qty: spec.qty,
-      unitPrice: p.ourPrice,
-    });
+    lines.push(snapshotOrderLine(p, spec.qty, catalogSnapshotAt));
   }
 
-  const subtotal = lines.reduce((s, l) => s + l.unitPrice * l.qty, 0);
+  const { subtotal, totalWholesaleCost, totalMargin } = orderLineTotals(lines);
   const total = (session.amount_total ?? Math.round(subtotal * 100)) / 100;
 
   const order: Order = {
@@ -64,13 +64,19 @@ export async function POST(req: Request) {
     customer: {
       name: md.customerName ?? session.customer_details?.name ?? "",
       phone: md.customerPhone ?? "",
-      email: session.customer_details?.email ?? undefined,
+      email:
+        md.customerEmail ??
+        session.customer_details?.email ??
+        undefined,
       notes: md.customerNotes || undefined,
     },
     pickupSpotId: md.pickupSpotId ?? "",
     lines,
     subtotal,
     total,
+    totalWholesaleCost,
+    totalMargin,
+    catalogSnapshotAt,
     paid: session.payment_status === "paid",
     fulfilled: false,
     stripePaymentIntentId:
@@ -79,14 +85,28 @@ export async function POST(req: Request) {
         : (session.payment_intent?.id ?? undefined),
   };
 
-  await saveOrder(order);
+  try {
+    await saveOrder(order);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Storage error";
+    console.error("[stripe webhook] saveOrder failed", err);
+    if (
+      msg.includes("not configured") ||
+      msg.includes("Storage not configured")
+    ) {
+      return NextResponse.json(
+        { error: "Order storage not configured" },
+        { status: 503 },
+      );
+    }
+    throw err;
+  }
 
   try {
     await sendOrderEmail(order);
   } catch (err) {
     // Don't fail the webhook on email failure — order is already persisted.
-    // Stripe will retry on non-2xx, which would double-persist.
-    console.error("Order email failed", err);
+    console.error("[stripe webhook] Order email failed", err);
   }
 
   return NextResponse.json({ received: true });

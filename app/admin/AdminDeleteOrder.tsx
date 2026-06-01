@@ -3,43 +3,43 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-export function AdminFulfillToggle({
+export function AdminDeleteOrder({
   id,
-  fulfilled,
+  customerName,
 }: {
   id: string;
-  fulfilled: boolean;
+  customerName: string;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [current, setCurrent] = useState(fulfilled);
   const [error, setError] = useState<string | null>(null);
 
-  const toggle = async () => {
-    const next = !current;
+  const remove = async () => {
+    const ok = window.confirm(
+      `Remove the order for ${customerName}? This only deletes it from admin — Stripe is not refunded.`,
+    );
+    if (!ok) return;
+
     setError(null);
-    setCurrent(next);
-    const res = await fetch("/api/admin/fulfill", {
+    const res = await fetch("/api/admin/delete-order", {
       method: "POST",
       credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, fulfilled: next }),
+      body: JSON.stringify({ id }),
     });
+
     if (!res.ok) {
-      setCurrent(!next);
-      let message = "Couldn't update — try signing in again.";
+      let message = "Couldn't remove order.";
       try {
         const data = (await res.json()) as { error?: string };
         if (data.error) message = data.error;
       } catch {
         /* ignore */
       }
-      if (res.status === 401) {
-        message = "Session expired — open /admin/login and sign in again.";
-      }
       setError(message);
       return;
     }
+
     startTransition(() => router.refresh());
   };
 
@@ -47,15 +47,11 @@ export function AdminFulfillToggle({
     <div className="flex flex-col items-end gap-1">
       <button
         type="button"
-        onClick={toggle}
+        onClick={remove}
         disabled={pending}
-        className={`text-xs px-3 py-1 border ${
-          current
-            ? "border-accent text-accent"
-            : "border-foreground text-foreground hover:bg-foreground hover:text-background"
-        }`}
+        className="text-xs px-3 py-1 border border-price-cut text-price-cut hover:bg-price-cut hover:text-background disabled:opacity-40"
       >
-        {pending ? "Saving…" : current ? "✓ Fulfilled" : "Mark fulfilled"}
+        {pending ? "Removing…" : "Remove"}
       </button>
       {error && (
         <p className="text-[10px] text-price-cut max-w-[12rem] text-right leading-snug">

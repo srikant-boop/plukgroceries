@@ -3,4 +3,4 @@
 // keeps the full bio and the homepage Discover paragraph stays tight.
 
 export const currentDropNote =
-  "This drop: Backed By Bees from Burlington — raw honey and Honey Soda from their farm store on Appleby Line. Beekeepers who turned a neighbourhood stop into something worth sharing.";
+  "This week we’re carrying Backed By Bees — beekeepers with a farm store on Appleby Line in Burlington, about ten minutes up the QEW. Raw honey from the hive, never heated. And their Honey Soda, if you want something light and cold.";
