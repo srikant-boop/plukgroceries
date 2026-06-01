@@ -35,6 +35,7 @@ export default async function AdminAnalyticsPage() {
 
   const t = summary?.totals;
   const visitors = summary?.days.reduce((s, d) => s + d.visitors, 0) ?? 0;
+  const peakMax = summary?.peakHours[0]?.total ?? 1;
 
   return (
     <div>
@@ -43,8 +44,9 @@ export default async function AdminAnalyticsPage() {
           <p className="eyebrow mb-2">Admin</p>
           <h1 className="text-3xl">Insights</h1>
           <p className="text-sm text-muted mt-2 max-w-xl">
-            Last 7 days · Toronto time · anonymous sessions (no names). Use this
-            to spot drop-off: views → cart → checkout → pay.
+            Last 7 days · Toronto (ET) · anonymous sessions. Funnel +
+            <strong> when</strong> people browse (hourly). Updated{" "}
+            {summary?.nowToronto ?? "—"}.
           </p>
         </div>
         <div className="flex gap-4 text-sm">
@@ -80,6 +82,90 @@ export default async function AdminAnalyticsPage() {
             />
           </section>
 
+          {summary.recentActivity.length > 0 && (
+            <section className="mb-12">
+              <h2 className="text-xl mb-4">Recent activity</h2>
+              <div className="border border-line overflow-x-auto max-h-80 overflow-y-auto">
+                <table className="w-full text-sm">
+                  <thead className="sticky top-0 bg-background">
+                    <tr className="border-b border-line text-left text-muted">
+                      <th className="p-3 font-normal">Date</th>
+                      <th className="p-3 font-normal">Time (ET)</th>
+                      <th className="p-3 font-normal">Event</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {summary.recentActivity.map((row) => (
+                      <tr
+                        key={`${row.at}-${row.type}-${row.detail}`}
+                        className="border-b border-line/60"
+                      >
+                        <td className="p-3 tabular-nums whitespace-nowrap">
+                          {row.date}
+                        </td>
+                        <td className="p-3 tabular-nums whitespace-nowrap">
+                          {row.time}
+                        </td>
+                        <td className="p-3">{row.detail}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
+
+          {summary.peakHours.length > 0 && (
+            <section className="mb-12">
+              <h2 className="text-xl mb-2">Busiest hours (7 days combined)</h2>
+              <p className="text-xs text-muted mb-4">
+                When Oakville shoppers tend to hit the site — all days rolled up
+                by hour of day.
+              </p>
+              <div className="border border-line overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-line text-left text-muted">
+                      <th className="p-3 font-normal">Hour (ET)</th>
+                      <th className="p-3 font-normal">Activity</th>
+                      <th className="p-3 font-normal text-right">Views</th>
+                      <th className="p-3 font-normal text-right">Adds</th>
+                      <th className="p-3 font-normal text-right">Checkout</th>
+                      <th className="p-3 font-normal text-right">Paid</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {summary.peakHours.map((h) => (
+                      <tr key={h.hour} className="border-b border-line/60">
+                        <td className="p-3 whitespace-nowrap">{h.label}</td>
+                        <td className="p-3 min-w-[140px]">
+                          <div className="h-2 bg-surface rounded overflow-hidden">
+                            <div
+                              className="h-full bg-accent/70"
+                              style={{
+                                width: `${Math.max(4, Math.round((h.total / peakMax) * 100))}%`,
+                              }}
+                            />
+                          </div>
+                        </td>
+                        <td className="p-3 text-right tabular-nums">
+                          {h.pageViews}
+                        </td>
+                        <td className="p-3 text-right tabular-nums">{h.adds}</td>
+                        <td className="p-3 text-right tabular-nums">
+                          {h.checkouts}
+                        </td>
+                        <td className="p-3 text-right tabular-nums">
+                          {h.purchases}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
+
           <section className="mb-12">
             <h2 className="text-xl mb-4">Funnel (7 days)</h2>
             <div className="border border-line overflow-x-auto">
@@ -109,12 +195,6 @@ export default async function AdminAnalyticsPage() {
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-muted mt-3 max-w-2xl">
-              <strong>Cart abandonment</strong> usually shows up between{" "}
-              <em>Add to cart</em> and <em>Pay clicked</em>. If checkout opens
-              but pay is low, people may be leaving on the form. If pay is high
-              but orders are low, check Stripe failures.
-            </p>
           </section>
 
           <section className="mb-12">
@@ -159,6 +239,101 @@ export default async function AdminAnalyticsPage() {
                 </tbody>
               </table>
             </div>
+          </section>
+
+          <section className="mb-12">
+            <h2 className="text-xl mb-2">Hourly breakdown</h2>
+            <p className="text-xs text-muted mb-4">
+              Only hours with activity are shown. Times are Eastern (Toronto).
+            </p>
+            {summary.hourlyByDay.every((d) => d.hours.length === 0) ? (
+              <p className="text-sm text-muted">
+                No hourly data yet — browse the shop after deploy to populate
+                this (older events before this update won&apos;t have times).
+              </p>
+            ) : (
+              <div className="space-y-8">
+                {summary.hourlyByDay.map((day) =>
+                  day.hours.length === 0 ? null : (
+                    <div key={day.date}>
+                      <h3 className="text-sm font-medium mb-2">{day.date}</h3>
+                      <div className="border border-line overflow-x-auto">
+                        <table className="w-full text-xs">
+                          <thead>
+                            <tr className="border-b border-line text-muted">
+                              <th className="p-2 text-left font-normal">
+                                Hour (ET)
+                              </th>
+                              <th className="p-2 text-right font-normal">
+                                Sessions
+                              </th>
+                              <th className="p-2 text-right font-normal">
+                                Pages
+                              </th>
+                              <th className="p-2 text-right font-normal">
+                                Product
+                              </th>
+                              <th className="p-2 text-right font-normal">
+                                Adds
+                              </th>
+                              <th className="p-2 text-right font-normal">
+                                Cart
+                              </th>
+                              <th className="p-2 text-right font-normal">
+                                Checkout
+                              </th>
+                              <th className="p-2 text-right font-normal">
+                                Pay
+                              </th>
+                              <th className="p-2 text-right font-normal">
+                                Paid
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {day.hours.map((slot) => (
+                              <tr
+                                key={`${day.date}-${slot.hour}`}
+                                className="border-b border-line/60"
+                              >
+                                <td className="p-2 whitespace-nowrap">
+                                  {slot.label}
+                                </td>
+                                <td className="p-2 text-right tabular-nums">
+                                  {slot.sessions}
+                                </td>
+                                <td className="p-2 text-right tabular-nums">
+                                  {slot.counts.page_view}
+                                </td>
+                                <td className="p-2 text-right tabular-nums">
+                                  {slot.counts.product_view +
+                                    slot.counts.product_click}
+                                </td>
+                                <td className="p-2 text-right tabular-nums">
+                                  {slot.counts.add_to_cart}
+                                </td>
+                                <td className="p-2 text-right tabular-nums">
+                                  {slot.counts.view_cart}
+                                </td>
+                                <td className="p-2 text-right tabular-nums">
+                                  {slot.counts.begin_checkout}
+                                </td>
+                                <td className="p-2 text-right tabular-nums">
+                                  {slot.counts.checkout_start}
+                                </td>
+                                <td className="p-2 text-right tabular-nums">
+                                  {slot.counts.purchase}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+            )}
           </section>
 
           <section>

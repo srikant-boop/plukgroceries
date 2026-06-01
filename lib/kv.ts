@@ -14,6 +14,8 @@ export type KvClient = {
   sadd(key: string, ...members: string[]): Promise<void>;
   scard(key: string): Promise<number>;
   expire(key: string, seconds: number): Promise<void>;
+  zcard(key: string): Promise<number>;
+  zremrangebyrank(key: string, start: number, stop: number): Promise<void>;
 };
 
 let _upstash: UpstashRedis | null = null;
@@ -122,6 +124,12 @@ function upstashAdapter(r: UpstashRedis): KvClient {
     async expire(key, seconds) {
       await r.expire(key, seconds);
     },
+    async zcard(key) {
+      return r.zcard(key);
+    },
+    async zremrangebyrank(key, start, stop) {
+      await r.zremrangebyrank(key, start, stop);
+    },
   };
 }
 
@@ -166,6 +174,12 @@ function tcpAdapter(client: RedisClientType): KvClient {
     },
     async expire(key, seconds) {
       await client.expire(key, seconds);
+    },
+    async zcard(key) {
+      return client.zCard(key);
+    },
+    async zremrangebyrank(key, start, stop) {
+      await client.zRemRangeByRank(key, start, stop);
     },
   };
 }
