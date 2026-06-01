@@ -58,9 +58,9 @@ export function MarkupInsightsPanel({
       <p className="text-xs text-muted mb-4 max-w-3xl">
         Internal only. Bars show markup on wholesale cost (target{" "}
         {markupTargetLabel}, Aldi ballpark). Grey = previous catalogue tier; green
-        = live. Timeline uses one color per SKU — catalogue tier before the
-        reduction, order snapshots when units sold. Order columns split paid
-        units by price at checkout.
+        = live. Timeline uses one line per SKU (markup %) or stacked bars for
+        units/revenue — catalogue tier before the reduction, order snapshots when
+        units sold. Order columns split paid units by price at checkout.
         {paidOrderCount === 0 && " No paid orders yet to correlate."}
       </p>
 
