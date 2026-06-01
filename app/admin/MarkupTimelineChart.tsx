@@ -32,22 +32,11 @@ function MarkupLineChart({
   buckets: MarkupTimelineBucket[];
   skus: MarkupSkuMeta[];
 }) {
-  const [tip, setTip] = useState<{
-    sku: MarkupSkuMeta;
-    pct: number;
-    label: string;
-    xPct: number;
-    yPct: number;
-  } | null>(null);
+  const [hoverBucketIdx, setHoverBucketIdx] = useState<number | null>(null);
 
   const activeSkus = useMemo(
-    () =>
-      skus.filter(
-        (s) =>
-          !s.passThrough &&
-          buckets.some((b) => (b.markupPct[s.productId] ?? 0) > 0),
-      ),
-    [buckets, skus],
+    () => skus.filter((s) => !s.passThrough),
+    [skus],
   );
 
   const yMax = useMemo(() => {
@@ -91,63 +80,17 @@ function MarkupLineChart({
     return ticks;
   }, [yMax]);
 
-  const distToSegment = (
-    px: number,
-    py: number,
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number,
-  ) => {
-    const dx = x2 - x1;
-    const dy = y2 - y1;
-    if (dx === 0 && dy === 0) return Math.hypot(px - x1, py - y1);
-    const t = Math.max(
-      0,
-      Math.min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)),
-    );
-    return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
-  };
-
-  const pickNearest = (mx: number, my: number) => {
-    const hitRadius = 22;
-    let best: typeof tip = null;
-    let bestDist = hitRadius;
-
-    for (const { sku, points } of series) {
-      for (const p of points) {
-        if (p.pct <= 0) continue;
-        const d = Math.hypot(p.x - mx, p.y - my);
-        if (d < bestDist) {
-          bestDist = d;
-          best = {
-            sku,
-            pct: p.pct,
-            label: p.label,
-            xPct: (p.x / 1000) * 100,
-            yPct: (p.y / CHART_H) * 100,
-          };
-        }
-      }
-      for (let i = 0; i < points.length - 1; i++) {
-        const a = points[i]!;
-        const b = points[i + 1]!;
-        if (a.pct <= 0 && b.pct <= 0) continue;
-        const d = distToSegment(mx, my, a.x, a.y, b.x, b.y);
-        if (d < bestDist) {
-          bestDist = d;
-          const nearer = d < Math.hypot(mx - a.x, my - a.y) ? a : b;
-          best = {
-            sku,
-            pct: nearer.pct,
-            label: nearer.label,
-            xPct: (nearer.x / 1000) * 100,
-            yPct: (nearer.y / CHART_H) * 100,
-          };
-        }
+  const pickBucketIdx = (mx: number) => {
+    let bestIdx = 0;
+    let bestDist = Infinity;
+    for (let i = 0; i < buckets.length; i++) {
+      const d = Math.abs(xAt(i) - mx);
+      if (d < bestDist) {
+        bestDist = d;
+        bestIdx = i;
       }
     }
-    return best;
+    return bestIdx;
   };
 
   const handlePointerMove = (
@@ -156,29 +99,55 @@ function MarkupLineChart({
     const svg = e.currentTarget;
     const rect = svg.getBoundingClientRect();
     const mx = ((e.clientX - rect.left) / rect.width) * 1000;
-    const my = ((e.clientY - rect.top) / rect.height) * CHART_H;
-    setTip(pickNearest(mx, my));
+    setHoverBucketIdx(pickBucketIdx(mx));
   };
 
-  const hoveredSkuId = tip?.sku.productId ?? null;
+  const hoverBucket =
+    hoverBucketIdx != null ? buckets[hoverBucketIdx] : null;
+  const hoverX = hoverBucketIdx != null ? xAt(hoverBucketIdx) : 0;
+  const hoverXPct = (hoverX / 1000) * 100;
+
+  const hoverRows = useMemo(() => {
+    if (hoverBucketIdx == null) return [];
+    const bucket = buckets[hoverBucketIdx];
+    if (!bucket) return [];
+    return activeSkus
+      .map((sku) => ({
+        sku,
+        pct: bucket.markupPct[sku.productId] ?? 0,
+      }))
+      .sort((a, b) => b.pct - a.pct || a.sku.name.localeCompare(b.sku.name));
+  }, [hoverBucketIdx, buckets, activeSkus]);
 
   return (
     <div className="relative">
-      {tip && (
+      {hoverBucket && hoverRows.length > 0 && (
         <div
-          className="absolute z-10 pointer-events-none -translate-x-1/2 -translate-y-full mb-1 px-2.5 py-1.5 text-xs bg-foreground text-background shadow-sm border border-line/20 max-w-[220px]"
-          style={{ left: `${tip.xPct}%`, top: `${tip.yPct}%` }}
+          className="absolute z-10 pointer-events-none -translate-x-1/2 px-2.5 py-2 text-xs bg-foreground text-background shadow-sm border border-line/20 min-w-[180px] max-w-[260px] max-h-52 overflow-y-auto"
+          style={{ left: `${hoverXPct}%`, top: 0 }}
         >
-          <div className="flex items-center gap-1.5 font-medium">
-            <span
-              className="inline-block w-2 h-2 rounded-full shrink-0"
-              style={{ backgroundColor: tip.sku.color }}
-            />
-            {tip.sku.name}
+          <div className="font-medium mb-1.5 pb-1 border-b border-background/20">
+            {hoverBucket.label}
           </div>
-          <div className="tabular-nums text-background/80 mt-0.5">
-            {formatMarkupPct(tip.pct)}% · {tip.label}
-          </div>
+          <ul className="space-y-1">
+            {hoverRows.map(({ sku, pct }) => (
+              <li
+                key={sku.productId}
+                className="flex items-center justify-between gap-3 tabular-nums"
+              >
+                <span className="flex items-center gap-1.5 min-w-0">
+                  <span
+                    className="inline-block w-2 h-2 rounded-full shrink-0"
+                    style={{ backgroundColor: sku.color }}
+                  />
+                  <span className="truncate">{sku.name}</span>
+                </span>
+                <span className="text-background/80 shrink-0">
+                  {formatMarkupPct(pct)}%
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       <svg
@@ -187,7 +156,7 @@ function MarkupLineChart({
         role="img"
         aria-label="Markup percent by SKU over time"
         onMouseMove={handlePointerMove}
-        onMouseLeave={() => setTip(null)}
+        onMouseLeave={() => setHoverBucketIdx(null)}
       >
         {yTicks.map((tick) => (
           <g key={tick}>
@@ -211,49 +180,50 @@ function MarkupLineChart({
           </g>
         ))}
 
+        {hoverBucketIdx != null && (
+          <line
+            x1={hoverX}
+            y1={PAD.top}
+            x2={hoverX}
+            y2={CHART_H - PAD.bottom}
+            stroke="currentColor"
+            strokeOpacity={0.2}
+            strokeDasharray="4 3"
+            pointerEvents="none"
+          />
+        )}
+
         {series.map(({ sku, points }) => {
           const polyline = points.map((p) => `${p.x},${p.y}`).join(" ");
-          const highlighted = hoveredSkuId === sku.productId;
 
           return (
-            <g key={sku.productId} opacity={hoveredSkuId && !highlighted ? 0.35 : 1}>
+            <g key={sku.productId}>
               {buckets.length > 1 && (
-                <>
-                  <polyline
-                    points={polyline}
-                    fill="none"
-                    stroke={sku.color}
-                    strokeWidth={14}
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    strokeOpacity={0}
-                    pointerEvents="stroke"
-                  />
-                  <polyline
-                    points={polyline}
-                    fill="none"
-                    stroke={sku.color}
-                    strokeWidth={highlighted ? 3 : 2}
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    pointerEvents="none"
-                  />
-                </>
+                <polyline
+                  points={polyline}
+                  fill="none"
+                  stroke={sku.color}
+                  strokeWidth={2}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  pointerEvents="none"
+                />
               )}
-              {points.map((p, i) =>
-                p.pct > 0 ? (
+              {points.map((p, i) => {
+                const active = hoverBucketIdx === i;
+                return (
                   <circle
                     key={`${sku.productId}-${i}`}
                     cx={p.x}
                     cy={p.y}
-                    r={highlighted ? 5 : 4}
+                    r={active ? 5 : 3.5}
                     fill={sku.color}
                     stroke="var(--background, #fff)"
-                    strokeWidth={1.5}
+                    strokeWidth={active ? 2 : 1.5}
                     pointerEvents="none"
                   />
-                ) : null,
-              )}
+                );
+              })}
             </g>
           );
         })}
@@ -276,11 +246,7 @@ export function MarkupTimelineChart({
 
   const activeSkus = useMemo(() => {
     if (metric === "markupPct") {
-      return skus.filter(
-        (s) =>
-          !s.passThrough &&
-          buckets.some((b) => (b.markupPct[s.productId] ?? 0) > 0),
-      );
+      return skus.filter((s) => !s.passThrough);
     }
     return skus.filter((s) =>
       buckets.some((b) => bucketSkuValue(b, s.productId, metric) > 0),
