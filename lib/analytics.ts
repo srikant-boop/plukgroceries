@@ -381,6 +381,23 @@ function resolveEffectiveWindow(
   };
 }
 
+/** Full axis span for the selected range (not clamped to tracking start). */
+function resolveRequestedTimelineWindow(
+  range: AnalyticsRange,
+  nowMs: number,
+): { startMs: number; endMs: number } {
+  const rangeMs = analyticsRangeMs(range);
+  if (rangeMs != null) {
+    return { startMs: nowMs - rangeMs, endMs: nowMs };
+  }
+  const oldest = datesBack(RANGE_DAYS[range]).at(-1) ?? dateKey();
+  return { startMs: torontoDayStartMs(oldest), endMs: nowMs };
+}
+
+function calendarDaysOldestFirst(count: number): string[] {
+  return [...datesBack(count)].reverse();
+}
+
 function dayFunnelFromEvents(date: string, events: StoredEvent[]): DayFunnel {
   const counts = emptyTotals();
   const sessions = new Set<string>();
@@ -525,14 +542,11 @@ function formatDayBucketLabel(date: string): { label: string; shortLabel: string
   const startMs = torontoDayStartMs(date);
   const label = new Intl.DateTimeFormat("en-US", {
     timeZone: TORONTO,
-    weekday: "short",
     month: "short",
     day: "numeric",
   }).format(new Date(startMs));
-  const shortLabel = new Intl.DateTimeFormat("en-US", {
-    timeZone: TORONTO,
-    weekday: "short",
-  }).format(new Date(startMs));
+  const [month, day] = date.slice(5).split("-");
+  const shortLabel = `${Number(month)}/${Number(day)}`;
   return { label, shortLabel };
 }
 
@@ -558,23 +572,11 @@ function formatMinuteBucketLabel(atMs: number): { label: string; shortLabel: str
 function resolveTimelineBucketCount(
   range: AnalyticsRange,
   granularity: TimelineGranularity,
-  windowStartMs: number,
-  windowEndMs: number,
 ): number {
-  const spanMs = Math.max(windowEndMs - windowStartMs, 1);
-  const maxBuckets = timelineBucketCount(range);
-
   if (granularity === "day") {
-    return Math.max(1, torontoDatesInWindow(windowStartMs, windowEndMs).length);
+    return RANGE_DAYS[range];
   }
-  if (granularity === "hour") {
-    const hourBuckets = Math.ceil(spanMs / 3_600_000);
-    return Math.max(1, Math.min(maxBuckets, hourBuckets));
-  }
-  const rangeMs = analyticsRangeMs(range) ?? spanMs;
-  const idealBucketMs = rangeMs / maxBuckets;
-  const needed = Math.ceil(spanMs / idealBucketMs);
-  return Math.max(1, Math.min(maxBuckets, needed));
+  return timelineBucketCount(range);
 }
 
 function emptyTimelineBucket(
@@ -610,10 +612,14 @@ function addEventToBucket(b: TimelineBucket, row: StoredEvent, sessionSet: Set<s
 
 function buildTimelineByDay(
   events: StoredEvent[],
-  windowStartMs: number,
-  windowEndMs: number,
+  range: AnalyticsRange,
+  axisStartMs: number,
+  axisEndMs: number,
 ): TimelineBucket[] {
-  const dates = torontoDatesInWindow(windowStartMs, windowEndMs);
+  const dates =
+    range === "7d"
+      ? calendarDaysOldestFirst(RANGE_DAYS["7d"])
+      : torontoDatesInWindow(axisStartMs, axisEndMs);
   const buckets = dates.map((date) => {
     const { label, shortLabel } = formatDayBucketLabel(date);
     return emptyTimelineBucket(torontoDayStartMs(date), label, shortLabel);
@@ -622,7 +628,7 @@ function buildTimelineByDay(
   const sessionSets = buckets.map(() => new Set<string>());
 
   for (const row of events) {
-    if (row.at < windowStartMs || row.at >= windowEndMs) continue;
+    if (row.at < axisStartMs || row.at >= axisEndMs) continue;
     const { date } = formatTorontoDateTime(row.at);
     const idx = dateIndex.get(date);
     if (idx == null) continue;
@@ -638,26 +644,21 @@ function buildTimelineByDay(
 function buildTimelineFromEvents(
   events: StoredEvent[],
   range: AnalyticsRange,
-  windowStartMs: number,
-  windowEndMs: number,
+  axisStartMs: number,
+  axisEndMs: number,
 ): TimelineBucket[] {
   const granularity = timelineGranularity(range);
   if (granularity === "day") {
-    return buildTimelineByDay(events, windowStartMs, windowEndMs);
+    return buildTimelineByDay(events, range, axisStartMs, axisEndMs);
   }
 
-  const bucketCount = resolveTimelineBucketCount(
-    range,
-    granularity,
-    windowStartMs,
-    windowEndMs,
-  );
-  const span = Math.max(windowEndMs - windowStartMs, 1);
+  const bucketCount = resolveTimelineBucketCount(range, granularity);
+  const span = Math.max(axisEndMs - axisStartMs, 1);
   const bucketMs = span / bucketCount;
-  const multiDay = windowSpansMultipleDays(windowStartMs, windowEndMs);
+  const multiDay = windowSpansMultipleDays(axisStartMs, axisEndMs);
 
   const buckets: TimelineBucket[] = Array.from({ length: bucketCount }, (_, i) => {
-    const startMs = windowStartMs + i * bucketMs;
+    const startMs = axisStartMs + i * bucketMs;
     const { label, shortLabel } =
       granularity === "minute"
         ? formatMinuteBucketLabel(startMs)
@@ -667,8 +668,8 @@ function buildTimelineFromEvents(
   const sessionSets = buckets.map(() => new Set<string>());
 
   for (const row of events) {
-    if (row.at < windowStartMs || row.at >= windowEndMs) continue;
-    let idx = Math.floor((row.at - windowStartMs) / bucketMs);
+    if (row.at < axisStartMs || row.at >= axisEndMs) continue;
+    let idx = Math.floor((row.at - axisStartMs) / bucketMs);
     if (idx >= bucketCount) idx = bucketCount - 1;
     addEventToBucket(buckets[idx]!, row, sessionSets[idx]!);
   }
@@ -680,24 +681,33 @@ function buildTimelineFromEvents(
   return buckets;
 }
 
-function buildTimelineFromDays(days: DayFunnel[]): TimelineBucket[] {
-  return [...days]
-    .reverse()
-    .map((d) => {
-      const { label, shortLabel } = formatDayBucketLabel(d.date);
-      return {
-        startMs: torontoDayStartMs(d.date),
-        label,
-        shortLabel,
-        pageViews: d.counts.page_view,
-        adds: d.counts.add_to_cart,
-        checkouts: d.counts.begin_checkout + d.counts.checkout_start,
-        purchases: d.counts.purchase,
-        totalEvents: ANALYTICS_EVENTS.reduce((s, e) => s + d.counts[e], 0),
-        sessions: d.visitors,
-        events: { ...d.counts },
-      };
-    });
+function buildTimelineFromDays(days: DayFunnel[], range: AnalyticsRange): TimelineBucket[] {
+  const datesOldestFirst =
+    range === "7d"
+      ? calendarDaysOldestFirst(RANGE_DAYS["7d"])
+      : [...days].reverse().map((d) => d.date);
+  const byDate = new Map(days.map((d) => [d.date, d]));
+
+  return datesOldestFirst.map((date) => {
+    const d = byDate.get(date) ?? {
+      date,
+      visitors: 0,
+      counts: emptyTotals(),
+    };
+    const { label, shortLabel } = formatDayBucketLabel(date);
+    return {
+      startMs: torontoDayStartMs(date),
+      label,
+      shortLabel,
+      pageViews: d.counts.page_view,
+      adds: d.counts.add_to_cart,
+      checkouts: d.counts.begin_checkout + d.counts.checkout_start,
+      purchases: d.counts.purchase,
+      totalEvents: ANALYTICS_EVENTS.reduce((s, e) => s + d.counts[e], 0),
+      sessions: d.visitors,
+      events: { ...d.counts },
+    };
+  });
 }
 
 function computeSessionInsights(events: StoredEvent[]): SessionInsights | null {
@@ -777,8 +787,8 @@ function eventToActivity(row: StoredEvent): RecentActivity {
 function aggregateRollingEvents(
   events: StoredEvent[],
   range: AnalyticsRange,
-  windowStartMs: number,
-  windowEndMs: number,
+  axisStartMs: number,
+  axisEndMs: number,
 ): Pick<
   AnalyticsSummary,
   | "totals"
@@ -904,8 +914,8 @@ function aggregateRollingEvents(
   const timeline = buildTimelineFromEvents(
     events,
     range,
-    windowStartMs,
-    windowEndMs,
+    axisStartMs,
+    axisEndMs,
   );
   const eventLog = [...events]
     .sort((a, b) => b.at - a.at)
@@ -1050,7 +1060,7 @@ async function getCalendarSummary(
     .sort((a, b) => b.total - a.total);
 
   const visitors = funnelDays.reduce((s, d) => s + d.visitors, 0);
-  const timeline = buildTimelineFromDays(funnelDays);
+  const timeline = buildTimelineFromDays(funnelDays, range);
   const eventLog = rangedEvents
     .sort((a, b) => b.at - a.at)
     .map(eventToLogEntry);
@@ -1081,6 +1091,7 @@ export async function getAnalyticsSummary(
   const nowMs = Date.now();
   const { windowStartMs, windowEndMs, clamped: windowClampedToTracking } =
     resolveEffectiveWindow(range, trackingSinceMs, nowMs);
+  const timelineWindow = resolveRequestedTimelineWindow(range, nowMs);
   const windowUnifiedToTracking = windowClampedToTracking;
   const rangeLabel = windowClampedToTracking
     ? `Since ${trackingSinceLabel} ET`
@@ -1097,8 +1108,8 @@ export async function getAnalyticsSummary(
     const rolled = aggregateRollingEvents(
       filtered,
       range,
-      windowStartMs,
-      windowEndMs,
+      timelineWindow.startMs,
+      timelineWindow.endMs,
     );
     return {
       range,

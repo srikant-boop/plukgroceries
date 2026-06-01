@@ -53,7 +53,7 @@ export function timelineBucketCount(range: AnalyticsRange): number {
     case "1h":
       return 12;
     case "6h":
-      return 12;
+      return 6;
     case "24h":
       return 24;
     case "7d":
