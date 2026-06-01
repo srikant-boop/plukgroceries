@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProduct, products, pricePerLbLabel } from "@/lib/products";
-import { getSupplierById } from "@/lib/suppliers";
+import { getSupplierById, supplierIntroLabel } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { PriceCompareTable } from "@/components/PriceCompareTable";
 import { AddToCart } from "@/components/AddToCart";
@@ -73,13 +73,13 @@ export default async function ProductPage({
 
         {product.special && supplier && (
           <section className="text-sm leading-relaxed text-foreground/85 space-y-3">
-            <p className="eyebrow">About {supplier.name}</p>
+            <p className="eyebrow">{supplierIntroLabel(supplier)}</p>
             <p>{supplier.discoverBlurb ?? supplier.story.split(/\n\n+/)[0]}</p>
             <Link
               href={`/suppliers/${supplier.slug}`}
               className="inline-block text-xs underline underline-offset-4 hover:text-accent"
             >
-              Read full story →
+              Get to know them →
             </Link>
           </section>
         )}

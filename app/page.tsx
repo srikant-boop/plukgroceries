@@ -75,7 +75,7 @@ export default function Home() {
                   href={`/suppliers/${sharedSupplier.slug}`}
                   className="mt-3 inline-block text-xs underline underline-offset-4 hover:text-accent"
                 >
-                  Read {sharedSupplier.name}&apos;s full story →
+                  Meet {sharedSupplier.name} →
                 </Link>
               )}
             </div>
