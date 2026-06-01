@@ -178,7 +178,7 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 2.5,
     competitors: [
-      { store: "Voila", price: 2.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA", organic: true },
+      { store: "Voila", price: 4.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA", organic: true },
     ],
     brand: "Gen V",
     supplierId: "terra-freska",
@@ -218,7 +218,7 @@ export const products: Product[] = [
     markupMultiplier: 1,
     ourPrice: 8.99,
     competitors: [
-      { store: "Voila", price: 8.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
+      { store: "Voila", price: 9.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Foxy",
@@ -298,7 +298,7 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 7.34,
     competitors: [
-      { store: "Voila", price: 8.49, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
+      { store: "Voila", price: 10.99, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
     ],
     supplierId: "terra-freska",
     organic: true,
