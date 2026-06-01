@@ -3,4 +3,4 @@
 // keeps the full bio and the homepage Discover paragraph stays tight.
 
 export const currentDropNote =
-  "This drop we’re introducing Backed By Bees — a Burlington apiary. Their raw honey and Honey Soda at the same price you’d pay at their farm store on Appleby Line.";
+  "This drop we’re introducing Backed By Bees — a Burlington apiary. Raw honey and Honey Soda from their farm store on Appleby Line.";

@@ -80,7 +80,7 @@ export const suppliers: Supplier[] = [
     type: "farmer-wholesaler",
     tagline: "Certified organic · New Hamburg since 1981",
     discoverBlurb:
-      "Meet Pfenning’s — a New Hamburg family farming certified organic since 1981. When you see them on a product, we reached for their carrots or roots because the organic premium was worth it that week.",
+      "Meet Pfenning’s — a New Hamburg family farming certified organic since 1981. Seven hundred acres of their own vegetables, plus a network of growers they pack and distribute year-round.",
     story:
       "We’d like to introduce Pfenning’s Organic Farms — family-run in New Hamburg since 1981, with more than 700 acres of certified-organic vegetables and a distribution network they audit themselves.\n\nWe reach for Pfenning’s when certified organic is worth the small premium on the item — carrots, peppers, roots — and the terminal price lines up. Same pickup-day cold chain as everything else we haul from the terminal.",
     location: "1209 Waterloo Street, New Hamburg, ON",
@@ -101,9 +101,9 @@ export const suppliers: Supplier[] = [
     type: "maker",
     tagline: "Burlington apiary · \"Good for you. Good for nature too.\"",
     discoverBlurb:
-      "This drop we’re introducing Backed By Bees — a Burlington apiary with a farm store on Appleby Line. They jar raw honey and make Honey Soda™, lightly sparkling and sweetened with wildflower honey. We sell at their shop price, no markup.",
+      "This drop we’re introducing Backed By Bees — a Burlington apiary with a farm store on Appleby Line. They jar raw honey and make Honey Soda™, lightly sparkling and sweetened with wildflower honey.",
     story:
-      "We’d like you to meet Backed By Bees. They keep hives across the GTA and run a farm store at 6214 Appleby Line in Burlington. Honey is bottled raw — unheated and unfiltered. Honey Soda™ is their own recipe: light sparkle, wildflower honey, nothing fussy.\n\nWhen you see them in Discover, we’re passing through the same prices as their shop.",
+      "We’d like you to meet Backed By Bees. They keep hives across the GTA and run a farm store at 6214 Appleby Line in Burlington. Honey is bottled raw — unheated and unfiltered. Honey Soda™ is their own recipe: light sparkle, wildflower honey, nothing fussy.",
     location: "6214 Appleby Line, Burlington, ON",
     logo: "/suppliers/backed-by-bees.jpg",
     links: [
