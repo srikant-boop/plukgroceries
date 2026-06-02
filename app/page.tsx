@@ -5,6 +5,7 @@ import { getSupplierById } from "@/lib/suppliers";
 import { currentDropNote } from "@/lib/drop";
 import { SITE_TITLE } from "@/lib/site";
 import { ProductCard } from "@/components/ProductCard";
+import { HowItWorks } from "@/components/HowItWorks";
 import { Leaf } from "@/components/Leaf";
 
 export default function Home() {
@@ -46,80 +47,37 @@ export default function Home() {
             <p className="text-base sm:text-lg leading-relaxed text-foreground/80">
               A weekly drop of good food — a short list of produce, pantry,
               and sometimes something from a neighbour: a jar of honey, a
-              bottle you haven&apos;t tried yet. We keep prices low and show
-              you how each item compares with big national chains.
+              bottle you haven&apos;t tried yet. We keep our prices low and show
+              how we compare for each item against the big national chains.
             </p>
           </div>
         </div>
       </section>
-      <section className="mb-12 border border-line bg-surface p-5 sm:p-6">
-        <div className="mb-4 flex items-baseline gap-3 border-b border-line pb-3">
-          <Leaf size={15} className="text-accent" />
-          <h2 className="text-xl">How it works</h2>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <div className="border border-line bg-background px-4 py-4">
-            <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface">
-              <Image src="/file.svg" alt="" width={16} height={16} aria-hidden />
-            </div>
-            <div className="mb-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
-              1
-            </div>
-            <p className="text-sm leading-relaxed">
-              Add what you want from this week&apos;s short list.
-            </p>
-          </div>
-          <div className="border border-line bg-background px-4 py-4">
-            <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface">
-              <Image src="/window.svg" alt="" width={16} height={16} aria-hidden />
-            </div>
-            <div className="mb-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
-              2
-            </div>
-            <p className="text-sm leading-relaxed">
-              Pick one of our 2 Oakville pickup spots for Sunday. Plans change?
-              Cancel anytime before the order window ends.
-            </p>
-          </div>
-          <div className="border border-line bg-background px-4 py-4">
-            <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface">
-              <Image src="/globe.svg" alt="" width={16} height={16} aria-hidden />
-            </div>
-            <div className="mb-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
-              3
-            </div>
-            <p className="text-sm leading-relaxed">
-              Pay securely with Stripe in under a minute.
-            </p>
-          </div>
-        </div>
-      </section>
+      <HowItWorks />
 
       {specials.length > 0 && (
-        <section className="mb-16">
+        <section id="this-week" className="mb-16">
           <div className="mb-6 flex items-baseline justify-between gap-3 border-b border-line pb-3">
             <div className="flex items-baseline gap-3">
               <Leaf size={16} className="text-accent" />
               <h2 className="text-2xl">This week</h2>
             </div>
           </div>
-          <div className="grid gap-8 sm:grid-cols-[1fr_2fr] mb-2">
-            <div className="text-sm leading-relaxed text-foreground/85">
-              <p>{currentDropNote}</p>
-              {sharedSupplier && (
-                <Link
-                  href={`/suppliers/${sharedSupplier.slug}`}
-                  className="mt-3 inline-block text-xs underline underline-offset-4 hover:text-accent"
-                >
-                  Read their story →
-                </Link>
-              )}
-            </div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-8">
-              {specials.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
+          <div className="mb-6 max-w-2xl text-sm leading-relaxed text-foreground/85">
+            <p>{currentDropNote}</p>
+            {sharedSupplier && (
+              <Link
+                href={`/suppliers/${sharedSupplier.slug}`}
+                className="mt-3 inline-block text-xs underline underline-offset-4 hover:text-accent"
+              >
+                Read their story →
+              </Link>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+            {specials.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
           </div>
         </section>
       )}
