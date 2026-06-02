@@ -63,8 +63,8 @@ export default function Home() {
               <h2 className="text-2xl">This week</h2>
             </div>
           </div>
-          <div className="grid gap-8 lg:grid-cols-[minmax(260px,1fr)_2fr] lg:items-start">
-            <div className="text-sm leading-relaxed text-foreground/85">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 lg:items-start">
+            <div className="col-span-2 sm:col-span-3 lg:col-span-1 text-sm leading-relaxed text-foreground/85">
               <p>{currentDropNote}</p>
               {sharedSupplier && (
                 <Link
@@ -75,11 +75,9 @@ export default function Home() {
                 </Link>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-10">
-              {specials.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
+            {specials.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
           </div>
         </section>
       )}

@@ -3,18 +3,20 @@ import { Leaf } from "@/components/Leaf";
 const steps = [
   {
     sketch: "basket",
-    title: "Build your basket",
-    detail: "Tap Add to cart on anything you want this week.",
+    title: "Add what you'd like",
+    detail: "Browse this week's short list and pop anything into your cart.",
   },
   {
     sketch: "pickup",
-    title: "During checkout: pick your spot",
-    detail: "Choose 1 of 2 Oakville Sunday pickup locations. Cancel before the order window closes.",
+    title: "Pick your spot",
+    detail:
+      "During checkout: pick one of our two Oakville Sunday locations and the time that works for you.",
   },
   {
     sketch: "checkout",
-    title: "Then pay securely",
-    detail: "Finish in under a minute with Stripe.",
+    title: "Pay securely",
+    detail:
+      "Just a minute on your card. Plans change? Cancel anytime before the order window closes. If something isn't right at pickup, tell us — we'll refund you.",
   },
 ] as const;
 
@@ -73,8 +75,9 @@ export function HowItWorks() {
         <Leaf size={15} className="text-accent" />
         <h2 className="text-2xl">How it works</h2>
       </div>
-      <p className="mb-5 text-sm text-muted">
-        Simple flow: add items, choose your pickup during checkout, then pay.
+      <p className="mb-5 max-w-2xl text-sm leading-relaxed text-foreground/75">
+        Add what looks good, choose where you&apos;ll pick up on Sunday, and
+        check out when you&apos;re ready — it only takes a few minutes.
       </p>
       <ol className="grid gap-6 sm:grid-cols-3 sm:gap-5">
         {steps.map((step, i) => (
