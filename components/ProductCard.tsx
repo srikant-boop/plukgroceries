@@ -79,18 +79,18 @@ export function ProductCard({ product }: { product: Product }) {
           )}
         </div>
       </div>
-      <div className="mt-3 flex justify-center">
+      <div className="mt-3">
         {qty <= 0 ? (
           <button
             type="button"
-            className="btn h-10 w-full max-w-[11.5rem] text-sm"
+            className="btn h-10 w-full text-sm"
             onClick={handleAdd}
             aria-label={`Add ${product.name} to cart`}
           >
             Add to cart
           </button>
         ) : (
-          <div className="inline-flex h-10 w-full max-w-[11.5rem] items-center justify-between border border-line bg-surface">
+          <div className="inline-flex h-10 w-full items-center justify-between border border-line bg-surface">
             <button
               type="button"
               className="px-3 py-2 text-lg leading-none hover:bg-background"
