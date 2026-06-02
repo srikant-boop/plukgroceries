@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Leaf } from "@/components/Leaf";
 
 const steps = [
@@ -24,7 +23,7 @@ function StepSketch({ kind }: { kind: "basket" | "pickup" | "checkout" }) {
     return (
       <svg viewBox="0 0 320 240" className="h-full w-full" aria-hidden>
         <rect x="0" y="0" width="320" height="240" fill="#fbfbf9" />
-        <g stroke="#171717" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <g stroke="#4b5563" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" fill="none">
           <rect x="72" y="90" width="176" height="108" rx="10" />
           <path d="M100 90V70c0-28 18-46 60-46s60 18 60 46v20" />
           <path d="M135 118c10 5 16 15 14 26-16 1-27-3-34-12 4-10 11-15 20-14Z" />
@@ -40,7 +39,7 @@ function StepSketch({ kind }: { kind: "basket" | "pickup" | "checkout" }) {
     return (
       <svg viewBox="0 0 320 240" className="h-full w-full" aria-hidden>
         <rect x="0" y="0" width="320" height="240" fill="#fbfbf9" />
-        <g stroke="#171717" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <g stroke="#4b5563" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" fill="none">
           <path d="M160 36c-28 0-50 21-50 49 0 36 50 84 50 84s50-48 50-84c0-28-22-49-50-49Z" />
           <circle cx="160" cy="85" r="16" />
           <path d="M85 200h150" />
@@ -54,7 +53,7 @@ function StepSketch({ kind }: { kind: "basket" | "pickup" | "checkout" }) {
   return (
     <svg viewBox="0 0 320 240" className="h-full w-full" aria-hidden>
       <rect x="0" y="0" width="320" height="240" fill="#fbfbf9" />
-      <g stroke="#171717" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none">
+      <g stroke="#4b5563" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" fill="none">
         <rect x="112" y="28" width="96" height="184" rx="16" />
         <rect x="126" y="50" width="68" height="116" rx="6" />
         <path d="M147 184h26" />
@@ -96,11 +95,6 @@ export function HowItWorks() {
           </li>
         ))}
       </ol>
-      <div className="mt-7">
-        <Link href="#this-week" className="btn h-11 px-6 text-sm">
-          Shop this week's drop
-        </Link>
-      </div>
     </section>
   );
 }
