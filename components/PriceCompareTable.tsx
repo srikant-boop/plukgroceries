@@ -9,7 +9,6 @@ export function PriceCompareTable({ product }: { product: Product }) {
     .map((c) => ({
       label: c.store,
       price: c.price,
-      perLb: c.perLb,
       url: c.url,
       delta: c.price - product.ourPrice, // positive = Pluk is cheaper
     }))
@@ -61,12 +60,7 @@ export function PriceCompareTable({ product }: { product: Product }) {
                   )}
                 </td>
                 <td className="px-5 py-3 text-right tabular-nums">
-                  <span className="block">{money(r.price)}</span>
-                  {r.perLb != null && (
-                    <span className="block text-[11px] text-muted font-normal mt-0.5">
-                      ${r.perLb.toFixed(2)}/lb
-                    </span>
-                  )}
+                  {money(r.price)}
                 </td>
                 <td className="px-5 py-3 text-right text-xs tabular-nums">
                   {plukIsCheaper ? (
