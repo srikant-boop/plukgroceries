@@ -37,10 +37,23 @@ const WEST_GTA_CITIES = [
   { name: "Toronto", lat: 43.6532, lng: -79.3832 },
   { name: "Hamilton", lat: 43.2557, lng: -79.8711 },
   { name: "Brampton", lat: 43.7315, lng: -79.7624 },
+  { name: "Georgetown", lat: 43.6487, lng: -79.9037 },
+  { name: "Ancaster", lat: 43.2187, lng: -79.9872 },
 ] as const;
 
-/** Max distance from a centroid to accept that city label (IP geo is coarse). */
-const CITY_MATCH_MAX_METERS = 55_000;
+/** Prefer a named city when IP is within this radius of a centroid (IP geo is coarse). */
+const CITY_MATCH_MAX_METERS = 120_000;
+
+function isWithinVisitorMapBounds(lat: number, lng: number): boolean {
+  const { north, south, west, east } = VISITOR_MAP_BOUNDS;
+  return lat <= north && lat >= south && lng >= west && lng <= east;
+}
+
+function isUsableCityName(city: string | undefined): city is string {
+  if (!city?.trim()) return false;
+  const normalized = city.trim().toLowerCase();
+  return normalized !== "unknown" && normalized !== "n/a" && normalized !== "null";
+}
 
 /** Nearest west-GTA municipality for approximate IP coordinates. */
 export function cityFromLatLng(lat: number, lng: number): string | undefined {
@@ -49,8 +62,10 @@ export function cityFromLatLng(lat: number, lng: number): string | undefined {
     const dist = geoDistanceMeters({ lat, lng }, c);
     if (!best || dist < best.dist) best = { name: c.name, dist };
   }
-  if (!best || best.dist > CITY_MATCH_MAX_METERS) return undefined;
-  return best.name;
+  if (!best) return undefined;
+  if (best.dist <= CITY_MATCH_MAX_METERS) return best.name;
+  if (isWithinVisitorMapBounds(lat, lng)) return "West GTA";
+  return undefined;
 }
 
 /**
@@ -60,13 +75,15 @@ export function cityFromLatLng(lat: number, lng: number): string | undefined {
 export function resolveVisitorCity(
   geo: Pick<VisitorGeo, "lat" | "lng" | "city" | "region">,
 ): string {
-  const fromHeader = geo.city?.trim();
-  if (fromHeader) return fromHeader;
+  if (isUsableCityName(geo.city)) return geo.city.trim();
   const fromCoords = cityFromLatLng(geo.lat, geo.lng);
   if (fromCoords) return fromCoords;
   const region = geo.region?.trim();
-  if (region) return region;
-  return "Unknown";
+  if (region && region.toLowerCase() !== "unknown") {
+    return region === "ON" ? "Ontario" : region;
+  }
+  if (isWithinVisitorMapBounds(geo.lat, geo.lng)) return "West GTA";
+  return "Outside west GTA";
 }
 
 export function geoFromRequestHeaders(headers: Headers): VisitorGeo | null {
