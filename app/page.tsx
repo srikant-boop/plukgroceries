@@ -46,23 +46,51 @@ export default function Home() {
             <p className="text-base sm:text-lg leading-relaxed text-foreground/80">
               A weekly drop of good food — a short list of produce, pantry,
               and sometimes something from a neighbour: a jar of honey, a
-              bottle you haven&apos;t tried yet. We keep prices sharp every
-              week and show the comparison clearly on each product page. Pick
-              up at a community spot in Oakville.
+              bottle you haven&apos;t tried yet. We keep prices low and show
+              you how each item compares with big national chains.
             </p>
           </div>
         </div>
       </section>
-      <section className="mb-12">
+      <section className="mb-12 border border-line bg-surface p-5 sm:p-6">
+        <div className="mb-4 flex items-baseline gap-3 border-b border-line pb-3">
+          <Leaf size={15} className="text-accent" />
+          <h2 className="text-xl">How it works</h2>
+        </div>
         <div className="grid gap-3 sm:grid-cols-3">
-          <div className="border border-line bg-surface px-4 py-3 text-sm">
-            Free pickup at our 2 Oakville spots every Sunday.
+          <div className="border border-line bg-background px-4 py-4">
+            <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface">
+              <Image src="/file.svg" alt="" width={16} height={16} aria-hidden />
+            </div>
+            <div className="mb-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
+              1
+            </div>
+            <p className="text-sm leading-relaxed">
+              Add what you want from this week&apos;s short list.
+            </p>
           </div>
-          <div className="border border-line bg-surface px-4 py-3 text-sm">
-            Cancel anytime before the order window ends.
+          <div className="border border-line bg-background px-4 py-4">
+            <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface">
+              <Image src="/window.svg" alt="" width={16} height={16} aria-hidden />
+            </div>
+            <div className="mb-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
+              2
+            </div>
+            <p className="text-sm leading-relaxed">
+              Pick one of our 2 Oakville pickup spots for Sunday. Plans change?
+              Cancel anytime before the order window ends.
+            </p>
           </div>
-          <div className="border border-line bg-surface px-4 py-3 text-sm">
-            Secure card checkout powered by Stripe.
+          <div className="border border-line bg-background px-4 py-4">
+            <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface">
+              <Image src="/globe.svg" alt="" width={16} height={16} aria-hidden />
+            </div>
+            <div className="mb-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-[11px] font-medium text-background">
+              3
+            </div>
+            <p className="text-sm leading-relaxed">
+              Pay securely with Stripe in under a minute.
+            </p>
           </div>
         </div>
       </section>
