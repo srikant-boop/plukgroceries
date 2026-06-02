@@ -5,32 +5,62 @@ import Link from "next/link";
 import { type Product, cheapestCompetitor } from "@/lib/products";
 import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
+import { useCart } from "@/lib/cart";
 
 export function ProductCard({ product }: { product: Product }) {
+  const add = useCart((s) => s.add);
+  const setQty = useCart((s) => s.setQty);
+  const qty = useCart(
+    (s) => s.lines.find((l) => l.productId === product.id)?.qty ?? 0,
+  );
+
   // Strike through the CHEAPEST competitor — not the highest — so we only
   // signal a saving when we beat the most honest peer comparison. When we
   // lose to the cheapest, show nothing.
   const cheapest = cheapestCompetitor(product);
   const showCompare =
     !product.special && cheapest && cheapest.price > product.ourPrice;
+
+  const handleAdd = () => {
+    add(product.id, 1);
+    track("add_to_cart", { productId: product.id, qty: 1 });
+  };
+
+  const increment = () => {
+    const next = qty + 1;
+    setQty(product.id, next);
+    track("add_to_cart", { productId: product.id, qty: 1 });
+  };
+
+  const decrement = () => {
+    setQty(product.id, qty - 1);
+  };
+
   return (
-    <Link
-      href={`/products/${product.slug}`}
-      className="group block"
-      onClick={() => track("product_click", { productId: product.id })}
-    >
-      <div className="relative aspect-[4/5] overflow-hidden bg-surface">
-        <Image
-          src={product.image}
-          alt={product.imageAlt ?? product.name}
-          fill
-          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        />
-      </div>
+    <div className="group block">
+      <Link
+        href={`/products/${product.slug}`}
+        onClick={() => track("product_click", { productId: product.id })}
+      >
+        <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+          <Image
+            src={product.image}
+            alt={product.imageAlt ?? product.name}
+            fill
+            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+        </div>
+      </Link>
       <div className="mt-4 flex items-baseline justify-between gap-3">
         <div>
-          <h3 className="text-lg leading-tight">{product.name}</h3>
+          <Link
+            href={`/products/${product.slug}`}
+            className="hover:underline underline-offset-4"
+            onClick={() => track("product_click", { productId: product.id })}
+          >
+            <h3 className="text-lg leading-tight">{product.name}</h3>
+          </Link>
           <p className="text-xs text-muted mt-0.5">{product.unit}</p>
           {product.organic && (
             <p className="text-[10px] uppercase tracking-wider text-accent mt-1">
@@ -47,6 +77,33 @@ export function ProductCard({ product }: { product: Product }) {
           )}
         </div>
       </div>
-    </Link>
+      <div className="mt-3">
+        {qty <= 0 ? (
+          <button type="button" className="btn w-full" onClick={handleAdd}>
+            Add
+          </button>
+        ) : (
+          <div className="inline-flex w-full items-center justify-between border border-line">
+            <button
+              type="button"
+              className="px-3 py-2 hover:bg-background"
+              onClick={decrement}
+              aria-label={`Decrease ${product.name} quantity`}
+            >
+              −
+            </button>
+            <span className="text-sm tabular-nums">{qty}</span>
+            <button
+              type="button"
+              className="px-3 py-2 hover:bg-background"
+              onClick={increment}
+              aria-label={`Increase ${product.name} quantity`}
+            >
+              +
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
