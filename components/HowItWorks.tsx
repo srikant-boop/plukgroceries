@@ -19,21 +19,6 @@ const steps = [
   },
 ] as const;
 
-const assurances = [
-  {
-    title: "Plans change?",
-    detail: "Cancel anytime before the order window closes.",
-  },
-  {
-    title: "Not happy with quality?",
-    detail: "Tell us at pickup time and get a full refund.",
-  },
-  {
-    title: "Can't make it?",
-    detail: "We'll deliver to you for free.",
-  },
-] as const;
-
 function StepSketch({ kind }: { kind: "basket" | "pickup" | "checkout" }) {
   if (kind === "basket") {
     return (
@@ -89,10 +74,12 @@ export function HowItWorks() {
         <Leaf size={15} className="text-accent" />
         <h2 className="text-2xl">How it works</h2>
       </div>
-      <p className="mb-5 text-sm leading-relaxed text-foreground/75">
-        Add what looks good, choose where you&apos;ll pick up on Sunday, and check
-        out when you&apos;re ready — it only takes a few minutes. And if plans
-        change, we&apos;ve got you covered.
+      <p className="mb-6 text-sm leading-relaxed text-foreground/75">
+        Add what looks good, choose your Sunday pickup spot, and check out when
+        you&apos;re ready — it only takes a few minutes. Changes in plan? Cancel
+        before the order window closes. If anything isn&apos;t right at pickup,
+        we&apos;ll make it right with a full refund. Can&apos;t make it?
+        We&apos;ll deliver it to you for free.
       </p>
       <ol className="grid gap-6 sm:grid-cols-3 sm:gap-5">
         {steps.map((step, i) => (
@@ -113,15 +100,6 @@ export function HowItWorks() {
           </li>
         ))}
       </ol>
-      <div className="mt-8 border-t border-line pt-6">
-        <ul className="grid gap-4 sm:grid-cols-3 sm:gap-6">
-          {assurances.map((item) => (
-            <li key={item.title} className="text-sm leading-relaxed text-muted">
-              <span className="text-foreground">{item.title}</span> — {item.detail}
-            </li>
-          ))}
-        </ul>
-      </div>
     </section>
   );
 }
