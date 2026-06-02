@@ -15,8 +15,22 @@ const steps = [
   {
     sketch: "checkout",
     title: "Pay securely",
-    detail:
-      "Secure Stripe checkout — we never store your card. Changes in plan? Cancel anytime before the order window closes. Not happy with quality? Tell us at pickup time and get a full refund. Can't make it? We'll deliver for free.",
+    detail: "Stripe handles checkout — we never store your card on our site.",
+  },
+] as const;
+
+const assurances = [
+  {
+    title: "Plans change?",
+    detail: "Cancel anytime before the order window closes.",
+  },
+  {
+    title: "Not happy with quality?",
+    detail: "Tell us at pickup time and get a full refund.",
+  },
+  {
+    title: "Can't make it?",
+    detail: "We'll deliver to you for free.",
   },
 ] as const;
 
@@ -77,7 +91,8 @@ export function HowItWorks() {
       </div>
       <p className="mb-5 text-sm leading-relaxed text-foreground/75">
         Add what looks good, choose where you&apos;ll pick up on Sunday, and check
-        out when you&apos;re ready — it only takes a few minutes.
+        out when you&apos;re ready — it only takes a few minutes. And if plans
+        change, we&apos;ve got you covered.
       </p>
       <ol className="grid gap-6 sm:grid-cols-3 sm:gap-5">
         {steps.map((step, i) => (
@@ -98,6 +113,15 @@ export function HowItWorks() {
           </li>
         ))}
       </ol>
+      <div className="mt-8 border-t border-line pt-6">
+        <ul className="grid gap-4 sm:grid-cols-3 sm:gap-6">
+          {assurances.map((item) => (
+            <li key={item.title} className="text-sm leading-relaxed text-muted">
+              <span className="text-foreground">{item.title}</span> — {item.detail}
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

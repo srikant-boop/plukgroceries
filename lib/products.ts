@@ -375,7 +375,7 @@ export const products: Product[] = [
     uuid: "b8033818-0682-4cac-9cd8-bf835bf05f45",
     id: "honey-soda",
     slug: "honey-soda",
-    name: "Honey Soda™",
+    name: "Honey Soda",
     shortDescription:
       "Their own sparkling drink — wildflower honey, light fizz, nothing fussy on the label.",
     longDescription:
