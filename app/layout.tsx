@@ -10,6 +10,7 @@ import {
   OG_IMAGE_ALT,
   OG_IMAGE_URL,
   SITE_NAME,
+  SITE_TITLE,
   SITE_URL,
 } from "@/lib/site";
 import "./globals.css";
@@ -25,7 +26,7 @@ const OG_IMAGE = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: `${SITE_NAME} — A weekly market drop`,
+  title: `${SITE_NAME} — ${SITE_TITLE}`,
   description: DEFAULT_DESCRIPTION,
   ...(FACEBOOK_APP_ID ? { facebook: { appId: FACEBOOK_APP_ID } } : {}),
   openGraph: {
@@ -33,13 +34,13 @@ export const metadata: Metadata = {
     locale: "en_CA",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — A weekly market drop`,
+    title: `${SITE_NAME} — ${SITE_TITLE}`,
     description: DEFAULT_DESCRIPTION,
     images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — A weekly market drop`,
+    title: `${SITE_NAME} — ${SITE_TITLE}`,
     description: DEFAULT_DESCRIPTION,
     images: [OG_IMAGE_URL],
   },

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { products, categories, specialProducts } from "@/lib/products";
 import { getSupplierById } from "@/lib/suppliers";
 import { currentDropNote } from "@/lib/drop";
+import { SITE_TITLE } from "@/lib/site";
 import { ProductCard } from "@/components/ProductCard";
 import { Leaf } from "@/components/Leaf";
 
@@ -40,12 +41,14 @@ export default function Home() {
               Oakville · Weekly drops
             </p>
             <h1 className="text-3xl sm:text-[3.25rem] leading-[1.06] mb-5">
-              A weekly drop of good food.
+              {SITE_TITLE}.
             </h1>
             <p className="text-base sm:text-lg leading-relaxed text-foreground/80">
-              Each week, a short list — produce, pantry, and sometimes
-              something from a neighbour: a jar of honey, a bottle you
-              haven&apos;t tried yet. Pick up at a community spot in Oakville.
+              A weekly drop of good food — a short list of produce, pantry,
+              and sometimes something from a neighbour: a jar of honey, a
+              bottle you haven&apos;t tried yet. We keep prices sharp every
+              week and show the comparison clearly on each product page. Pick
+              up at a community spot in Oakville.
             </p>
           </div>
         </div>

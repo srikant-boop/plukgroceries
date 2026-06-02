@@ -3,8 +3,11 @@ export const SITE_URL = "https://plukgroceries.vercel.app";
 
 export const SITE_NAME = "Pluk";
 
+/** Browser tab, Open Graph, and share link title (after site name). */
+export const SITE_TITLE = "Oakville groceries at near-wholesale prices";
+
 export const DEFAULT_DESCRIPTION =
-  "A weekly drop of good food in Oakville — a short list of produce and pantry, with room for a neighbour's jar or bottle. Community pickup.";
+  "Weekly groceries in Oakville at near-wholesale prices — organic produce and pantry with transparent price comparisons. Sunday community pickup.";
 
 /** Static share image — also mirrored as app/opengraph-image.png for Next metadata. */
 export const OG_IMAGE_PATH = "/og-image.png";
