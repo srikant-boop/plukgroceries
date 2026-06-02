@@ -64,7 +64,7 @@ export default function Home() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 lg:items-start">
-            <div className="col-span-2 sm:col-span-3 lg:col-span-1 text-sm leading-relaxed text-foreground/85">
+            <div className="col-span-2 sm:col-span-3 lg:col-span-2 text-sm leading-relaxed text-foreground/85">
               <p>{currentDropNote}</p>
               {sharedSupplier && (
                 <Link
@@ -75,8 +75,13 @@ export default function Home() {
                 </Link>
               )}
             </div>
-            {specials.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {specials.map((p, i) => (
+              <div
+                key={p.id}
+                className={i === 0 ? "lg:col-start-3" : i === 1 ? "lg:col-start-4" : undefined}
+              >
+                <ProductCard product={p} />
+              </div>
             ))}
           </div>
         </section>

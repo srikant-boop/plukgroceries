@@ -53,7 +53,7 @@ export function ProductCard({ product }: { product: Product }) {
         </Link>
       </div>
       <div className="mt-4 flex items-baseline justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <Link
             href={`/products/${product.slug}`}
             className="hover:underline underline-offset-4"
@@ -68,8 +68,10 @@ export function ProductCard({ product }: { product: Product }) {
             </p>
           )}
         </div>
-        <div className="text-right">
-          <p className="text-base tabular-nums">{money(product.ourPrice)}</p>
+        <div className="shrink-0 text-right">
+          <p className="text-base tabular-nums whitespace-nowrap">
+            {money(product.ourPrice)}
+          </p>
           {showCompare && (
             <p className="text-[11px] text-price-cut line-through tabular-nums">
               {money(cheapest!.price)}
