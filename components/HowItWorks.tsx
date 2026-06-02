@@ -74,6 +74,13 @@ export function HowItWorks() {
         <Leaf size={15} className="text-accent" />
         <h2 className="text-2xl">How it works</h2>
       </div>
+      <p className="mb-6 text-sm leading-relaxed text-foreground/75">
+        Add what looks good, choose your Sunday pickup spot, and check out when
+        you&apos;re ready — it only takes a few minutes. Changes in plan? Cancel
+        before the order window closes. If anything isn&apos;t right at pickup,
+        we&apos;ll make it right with a full refund. Can&apos;t make it on
+        pickup day? We&apos;ll deliver it to you for free.
+      </p>
       <ol className="grid gap-6 sm:grid-cols-3 sm:gap-5">
         {steps.map((step, i) => (
           <li key={step.title} className="group">
@@ -93,13 +100,6 @@ export function HowItWorks() {
           </li>
         ))}
       </ol>
-      <p className="mt-6 text-sm leading-relaxed text-foreground/75">
-        Add what looks good, choose your Sunday pickup spot, and check out when
-        you&apos;re ready — it only takes a few minutes. Changes in plan? Cancel
-        before the order window closes. If anything isn&apos;t right at pickup,
-        we&apos;ll make it right with a full refund. Can&apos;t make it?
-        We&apos;ll deliver it to you for free.
-      </p>
     </section>
   );
 }
