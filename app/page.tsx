@@ -53,6 +53,19 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <section className="mb-12">
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="border border-line bg-surface px-4 py-3 text-sm">
+            Free pickup at our 2 Oakville spots every Sunday.
+          </div>
+          <div className="border border-line bg-surface px-4 py-3 text-sm">
+            Cancel anytime before the order window ends.
+          </div>
+          <div className="border border-line bg-surface px-4 py-3 text-sm">
+            Secure card checkout powered by Stripe.
+          </div>
+        </div>
+      </section>
 
       {specials.length > 0 && (
         <section className="mb-16">

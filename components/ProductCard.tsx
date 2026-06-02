@@ -51,37 +51,6 @@ export function ProductCard({ product }: { product: Product }) {
             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
         </Link>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 p-2">
-          {qty <= 0 ? (
-            <button
-              type="button"
-              className="btn pointer-events-auto w-full h-9 text-sm"
-              onClick={handleAdd}
-            >
-              Add
-            </button>
-          ) : (
-            <div className="pointer-events-auto inline-flex h-9 w-full items-center justify-between border border-line bg-background/95 backdrop-blur">
-              <button
-                type="button"
-                className="px-3 py-2 hover:bg-background"
-                onClick={decrement}
-                aria-label={`Decrease ${product.name} quantity`}
-              >
-                −
-              </button>
-              <span className="text-sm tabular-nums">{qty}</span>
-              <button
-                type="button"
-                className="px-3 py-2 hover:bg-background"
-                onClick={increment}
-                aria-label={`Increase ${product.name} quantity`}
-              >
-                +
-              </button>
-            </div>
-          )}
-        </div>
       </div>
       <div className="mt-4 flex items-baseline justify-between gap-3">
         <div>
@@ -107,6 +76,38 @@ export function ProductCard({ product }: { product: Product }) {
             </p>
           )}
         </div>
+      </div>
+      <div className="mt-3">
+        {qty <= 0 ? (
+          <button
+            type="button"
+            className="btn w-full h-10 text-sm"
+            onClick={handleAdd}
+            aria-label={`Add ${product.name} to cart`}
+          >
+            Add to cart
+          </button>
+        ) : (
+          <div className="inline-flex h-10 w-full items-center justify-between border border-line bg-surface">
+            <button
+              type="button"
+              className="px-3 py-2 text-lg leading-none hover:bg-background"
+              onClick={decrement}
+              aria-label={`Decrease ${product.name} quantity`}
+            >
+              −
+            </button>
+            <span className="text-sm tabular-nums">{qty}</span>
+            <button
+              type="button"
+              className="px-3 py-2 text-lg leading-none hover:bg-background"
+              onClick={increment}
+              aria-label={`Increase ${product.name} quantity`}
+            >
+              +
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
