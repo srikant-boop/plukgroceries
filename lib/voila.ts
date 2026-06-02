@@ -1,8 +1,6 @@
-/** Oakville Voilà delivery zone — competitor prices in the catalog match this postal. */
-export const VOILA_POSTAL_CODE = "L6M0S2";
-
-export const VOILA_STORE = "Voila";
-
-/** Shown beside Voilà price comparisons — shelf/delivery prices exclude their fee. */
-export const voilaDeliveryNote =
-  "Voilà charges a delivery fee on top of these prices.";
+/** @deprecated Use lib/sobeys.ts — Voilà rebranded to Sobeys in the storefront. */
+export {
+  SOBEYS_POSTAL_CODE as VOILA_POSTAL_CODE,
+  SOBEYS_STORE as VOILA_STORE,
+  sobeysDeliveryNote as voilaDeliveryNote,
+} from "./sobeys";

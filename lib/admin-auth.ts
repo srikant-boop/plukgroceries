@@ -16,9 +16,12 @@ export function readAdminCookie(cookieHeader: string | null): string | undefined
   return undefined;
 }
 
-export function isAdminAuthorized(cookieHeader: string | null): boolean {
+export function isAdminCookieValue(value: string | undefined): boolean {
   const expected = getAdminPassword();
-  if (!expected) return false;
-  const got = readAdminCookie(cookieHeader);
-  return got === expected;
+  if (!expected || !value) return false;
+  return value === expected;
+}
+
+export function isAdminAuthorized(cookieHeader: string | null): boolean {
+  return isAdminCookieValue(readAdminCookie(cookieHeader));
 }

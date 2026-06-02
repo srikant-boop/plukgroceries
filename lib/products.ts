@@ -11,8 +11,10 @@ export type CompetitorPrice = {
   price: number;
   unit: string;
   url?: string;
-  // Voila produce comparables are organic SKUs — flag so the table labels them.
+  // Sobeys produce comparables are organic SKUs — flag so the table labels them.
   organic?: boolean;
+  /** Shelf per-lb when the store prices by weight (e.g. Loblaws bananas). */
+  perLb?: number;
 };
 
 export type Product = {
@@ -47,6 +49,8 @@ export type Product = {
   organic?: boolean;
   origin?: string;
   tags?: string[];
+  /** Average sell weight in kg when sold by count/bunch (for per-lb shelf labels). */
+  avgWeightKg?: number;
 };
 
 /** Standard produce markup: cost × 1.20 (Aldi-style ~20% on cost). Internal ops only. */
@@ -119,10 +123,15 @@ export const specialProducts = (): Product[] =>
 // (e.g. "3 lb bag", "1 lb"). Returns null for count-based or volume units.
 export const pricePerLbLabel = (p: Product): string | null => {
   const m = p.unit.match(/^([\d.]+)\s*lb/);
-  if (!m) return null;
-  const lbs = parseFloat(m[1]);
-  if (!isFinite(lbs) || lbs <= 0) return null;
-  return `$${(p.ourPrice / lbs).toFixed(2)}/lb`;
+  if (m) {
+    const lbs = parseFloat(m[1]);
+    if (isFinite(lbs) && lbs > 0) return `$${(p.ourPrice / lbs).toFixed(2)}/lb`;
+  }
+  if (p.avgWeightKg && p.avgWeightKg > 0) {
+    const lbs = p.avgWeightKg * 2.2046226218;
+    return `$${(p.ourPrice / lbs).toFixed(2)}/lb`;
+  }
+  return null;
 };
 
 // Unsplash photos — verified-resolving IDs. Swap any URL for your own
@@ -147,7 +156,8 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 6.9,
     competitors: [
-      { store: "Voila", price: 7.99, unit: "3 lb", url: "https://voila.ca/products/organic-potatoes-yellow-1-36-kg/472128EA", organic: true },
+      { store: "Sobeys", price: 7.99, unit: "3 lb", url: "https://voila.ca/products/organic-potatoes-yellow-1-36-kg/472128EA", organic: true },
+      { store: "Loblaws", price: 7.0, unit: "3 lb", url: "https://www.loblaws.ca/en/organic-yellow-potatoes-3lb-bag/p/20075900_EA?storeId=1011", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Earth Fresh",
@@ -168,7 +178,8 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 6.53,
     competitors: [
-      { store: "Voila", price: 8.99, unit: "4-6 count", url: "https://voila.ca/products/organic-tomatoes-on-the-vine-4-6-counts/1408309EA", organic: true },
+      { store: "Sobeys", price: 8.99, unit: "4-6 count", url: "https://voila.ca/products/organic-tomatoes-on-the-vine-4-6-counts/1408309EA", organic: true },
+      { store: "Loblaws", price: 7.92, unit: "4-6 count", url: "https://www.loblaws.ca/en/tomato-on-the-vine-red-1-bunch/p/20127917001_KG?storeId=1011", organic: true },
     ],
     supplierId: "terra-freska",
     organic: true,
@@ -188,7 +199,8 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 2.4,
     competitors: [
-      { store: "Voila", price: 4.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA", organic: true },
+      { store: "Sobeys", price: 4.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA", organic: true },
+      { store: "Loblaws", price: 4.0, unit: "1 ct", url: "https://www.loblaws.ca/en/organic-english-cucumber/p/20080489001_EA?storeId=1011", organic: true },
     ],
     brand: "Gen V",
     supplierId: "terra-freska",
@@ -209,7 +221,8 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 3.7,
     competitors: [
-      { store: "Voila", price: 5.99, unit: "2 lb", url: "https://voila.ca/products/organic-carrots-908-g/112284EA", organic: true },
+      { store: "Sobeys", price: 5.99, unit: "2 lb", url: "https://voila.ca/products/organic-carrots-908-g/112284EA", organic: true },
+      { store: "Loblaws", price: 5.0, unit: "2 lb", url: "https://www.loblaws.ca/en/organic-carrots-2-lb-bag/p/20053421_EA?storeId=1011", organic: true },
     ],
     brand: "Cal-Organic",
     supplierId: "terra-freska",
@@ -230,7 +243,8 @@ export const products: Product[] = [
     markupMultiplier: 1,
     ourPrice: 8.99,
     competitors: [
-      { store: "Voila", price: 8.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
+      { store: "Sobeys", price: 8.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
+      { store: "Loblaws", price: 9.99, unit: "3 ct", url: "https://www.loblaws.ca/en/organic-romaine-lettuce-hearts/p/20599776001_EA?storeId=1011", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Foxy",
@@ -251,7 +265,8 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 3.95,
     competitors: [
-      { store: "Voila", price: 8.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA", organic: true },
+      { store: "Sobeys", price: 8.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA", organic: true },
+      { store: "Loblaws", price: 7.99, unit: "1 ct", url: "https://www.loblaws.ca/en/broccoli/p/20149635001_EA?storeId=1011", organic: true },
     ],
     supplierId: "terra-freska",
     organic: true,
@@ -270,10 +285,20 @@ export const products: Product[] = [
     unit: "6-10 count",
     stock: 60,
     wholesalerPrice: 2.76,
-    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 3.31,
+    // Match Loblaws $1.09/lb × 1.1 kg avg bunch ≈ $2.64 — sold below cost.
+    markupMultiplier: 0.9565,
+    ourPrice: 2.64,
+    avgWeightKg: 1.1,
     competitors: [
-      { store: "Voila", price: 3.79, unit: "6-10 count", url: "https://voila.ca/products/organic-bananas-bunch-6-10-count-ripe-in-3-4-days/833423EA", organic: true },
+      { store: "Sobeys", price: 3.79, unit: "6-10 count", url: "https://voila.ca/products/organic-bananas-bunch-6-10-count-ripe-in-3-4-days/833423EA", organic: true },
+      {
+        store: "Loblaws",
+        price: 2.64,
+        perLb: 1.09,
+        unit: "est. bunch (avg 1.1 kg)",
+        url: "https://www.loblaws.ca/en/organic-bananas-bunch/p/20139509001_KG?storeId=1011",
+        organic: true,
+      },
     ],
     supplierId: "terra-freska",
     brand: "Dole",
@@ -294,7 +319,8 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 8.6,
     competitors: [
-      { store: "Voila", price: 8.99, unit: "1.36 kg", url: "https://voila.ca/products/lil-snapper-organic-apples-gala-1-36-kg/674671EA", organic: true },
+      { store: "Sobeys", price: 8.99, unit: "1.36 kg", url: "https://voila.ca/products/lil-snapper-organic-apples-gala-1-36-kg/674671EA", organic: true },
+      { store: "Loblaws", price: 9.5, unit: "3 lb", url: "https://www.loblaws.ca/en/gala-apples-3-lb-bag/p/20606349001_EA?storeId=1011", organic: true },
     ],
     supplierId: "terra-freska",
     organic: true,
@@ -314,7 +340,8 @@ export const products: Product[] = [
     markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
     ourPrice: 7.04,
     competitors: [
-      { store: "Voila", price: 8.49, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
+      { store: "Sobeys", price: 8.49, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
+      { store: "Loblaws", price: 8.0, unit: "907 g", url: "https://www.loblaws.ca/en/organic-orange/p/20972628001_EA?storeId=1011", organic: true },
     ],
     supplierId: "terra-freska",
     organic: true,
@@ -331,10 +358,12 @@ export const products: Product[] = [
     unit: "1 lb clamshell (454 g)",
     stock: 30,
     wholesalerPrice: 7.25,
-    markupMultiplier: DEFAULT_MARKUP_MULTIPLIER,
-    ourPrice: 8.7,
+    // 10% markup — matches Loblaws Baseline Road shelf price.
+    markupMultiplier: 1.1,
+    ourPrice: 7.98,
     competitors: [
-      { store: "Voila", price: 9.99, unit: "454 g", url: "https://voila.ca/products/organic-strawberries-454-g/14837EA", organic: true },
+      { store: "Sobeys", price: 9.99, unit: "454 g", url: "https://voila.ca/products/organic-strawberries-454-g/14837EA", organic: true },
+      { store: "Loblaws", price: 8.0, unit: "454 g", url: "https://www.loblaws.ca/en/organic-strawberries-1-lb/p/20313872001_EA?storeId=1011", organic: true },
     ],
     supplierId: "terra-freska",
     brand: "Driscoll's",
@@ -357,9 +386,10 @@ export const products: Product[] = [
       "Backed By Bees Original Honey Soda can — 355 ml, all natural, made from real honey",
     unit: "355 ml can",
     stock: 36,
-    wholesalerPrice: 3.29,
-    markupMultiplier: 1,
-    ourPrice: 3.29,
+    // Backed By Bees case: $25.89 / 12 cans
+    wholesalerPrice: 2.16,
+    markupMultiplier: 1.25,
+    ourPrice: 2.7,
     competitors: [],
     supplierId: "backed-by-bees",
     special: "Find",
@@ -381,9 +411,10 @@ export const products: Product[] = [
       "Backed By Bees raw honey jar — Bee Keepin' it Real, 500 g Ontario No. 1 golden",
     unit: "500 g jar",
     stock: 24,
-    wholesalerPrice: 11.99,
-    markupMultiplier: 1,
-    ourPrice: 11.99,
+    // Backed By Bees case: $103.24 / 12 jars
+    wholesalerPrice: 8.6,
+    markupMultiplier: 1.25,
+    ourPrice: 10.75,
     competitors: [],
     supplierId: "backed-by-bees",
     special: "Find",

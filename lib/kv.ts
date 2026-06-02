@@ -18,6 +18,7 @@ export type KvClient = {
   hincrby(key: string, field: string, increment: number): Promise<number>;
   hgetall(key: string): Promise<Record<string, string>>;
   sadd(key: string, ...members: string[]): Promise<void>;
+  smembers(key: string): Promise<string[]>;
   scard(key: string): Promise<number>;
   expire(key: string, seconds: number): Promise<void>;
   zcard(key: string): Promise<number>;
@@ -142,6 +143,10 @@ function upstashAdapter(r: UpstashRedis): KvClient {
         await r.sadd(key, member);
       }
     },
+    async smembers(key) {
+      const raw = await r.smembers<string[]>(key);
+      return raw ?? [];
+    },
     async scard(key) {
       return r.scard(key);
     },
@@ -196,6 +201,9 @@ function tcpAdapter(client: RedisClientType): KvClient {
     async sadd(key, ...members) {
       if (members.length === 0) return;
       await client.sAdd(key, members);
+    },
+    async smembers(key) {
+      return client.sMembers(key);
     },
     async scard(key) {
       return client.sCard(key);

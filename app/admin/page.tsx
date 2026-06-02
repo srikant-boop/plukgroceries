@@ -3,6 +3,8 @@ import { getPickupSpot } from "@/lib/pickup";
 import { money } from "@/lib/format";
 import { getAdminPassword } from "@/lib/admin-auth";
 import { AdminClearOrders } from "./AdminClearOrders";
+import { AdminLogoutLink } from "./AdminLogoutLink";
+import { AdminRegisterSession } from "./AdminRegisterSession";
 import { AdminDeleteOrder } from "./AdminDeleteOrder";
 import { AdminFulfillToggle } from "./AdminFulfillToggle";
 
@@ -27,6 +29,7 @@ export default async function AdminPage() {
 
   return (
     <div>
+      <AdminRegisterSession />
       <header className="mb-10 flex items-baseline justify-between flex-wrap gap-3">
         <div>
           <p className="eyebrow mb-2">Admin</p>
@@ -42,6 +45,7 @@ export default async function AdminPage() {
           >
             Insights →
           </a>
+          <AdminLogoutLink />
         </div>
       </header>
 

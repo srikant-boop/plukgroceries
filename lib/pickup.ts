@@ -9,6 +9,8 @@ export type PickupSpot = {
   area: string; // human label for which side of Oakville this covers
   slot: string; // pickup window, e.g. "Sunday · 4:00 – 5:00 PM"
   mapsHref: string;
+  lat: number;
+  lng: number;
 };
 
 export const pickupSpots: PickupSpot[] = [
@@ -21,6 +23,8 @@ export const pickupSpots: PickupSpot[] = [
     slot: "Sunday · 4:00 – 5:00 PM",
     mapsHref:
       "https://www.google.com/maps/search/?api=1&query=Iroquois+Ridge+Community+Centre+1051+Glenashton+Dr+Oakville",
+    lat: 43.4768,
+    lng: -79.6989,
   },
   {
     id: "sixteen-mile",
@@ -31,6 +35,8 @@ export const pickupSpots: PickupSpot[] = [
     slot: "Sunday · 6:00 – 7:00 PM",
     mapsHref:
       "https://www.google.com/maps/search/?api=1&query=Sixteen+Mile+Sports+Complex+3070+Neyagawa+Blvd+Oakville",
+    lat: 43.4725,
+    lng: -79.7368,
   },
 ];
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Verify Voilà organic competitor prices for postal L6M0S2 (Oakville).
+ * Verify Sobeys (Voilà) organic competitor prices for postal L6M0S2 (Oakville).
  *
  * Setup (run each command separately — do not paste shell comments):
  *   npm install
@@ -18,13 +18,13 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const voilaSrc = readFileSync(join(root, "lib/voila.ts"), "utf8");
-const POSTAL = voilaSrc.match(/VOILA_POSTAL_CODE = "([^"]+)"/)[1];
+const sobeysSrc = readFileSync(join(root, "lib/sobeys.ts"), "utf8");
+const POSTAL = sobeysSrc.match(/SOBEYS_POSTAL_CODE = "([^"]+)"/)[1];
 const POSTAL_FORMATTED = POSTAL.replace(/(.{3})(.{3})/, "$1 $2");
 
 const catalogSrc = readFileSync(join(root, "lib/products.ts"), "utf8");
 const products = [...catalogSrc.matchAll(
-  /name: "([^"]+)"[\s\S]*?store: "Voila", price: ([\d.]+)[\s\S]*?url: "([^"]+)"/g,
+  /name: "([^"]+)"[\s\S]*?store: "Sobeys", price: ([\d.]+)[\s\S]*?url: "([^"]+)"/g,
 )].map((m) => ({
   sku: m[1],
   catalog: Number(m[2]),
@@ -32,7 +32,7 @@ const products = [...catalogSrc.matchAll(
 }));
 
 if (products.length === 0) {
-  console.error("No Voila competitors found in lib/products.ts");
+  console.error("No Sobeys competitors found in lib/products.ts");
   process.exit(1);
 }
 

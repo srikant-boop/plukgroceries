@@ -1,0 +1,134 @@
+/* Leaflet base — scoped under admin visitor map */
+.pluk-visitor-map .leaflet-container {
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: #e8e4dc;
+}
+
+.pluk-visitor-map .leaflet-control-zoom a {
+  color: #1a1a1a;
+  border-color: #e6e2d8;
+}
+
+.pluk-visitor-map .leaflet-control-attribution {
+  font-size: 10px;
+  background: rgba(247, 245, 240, 0.88) !important;
+  color: #6b6b66;
+  padding: 2px 6px;
+}
+
+.pluk-visitor-map .leaflet-popup-content-wrapper {
+  border-radius: 2px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.pluk-visitor-map .leaflet-popup-content {
+  margin: 10px 12px;
+}
+
+.pluk-visitor-map .leaflet-popup-content strong {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.pluk-visitor-map .leaflet-popup-tip {
+  box-shadow: none;
+}
+
+/* Pickup spot pins */
+.pluk-pickup-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.pluk-pickup-pin {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.pluk-pickup-pin__dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background: #b86f4a;
+  border: 2.5px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(184, 111, 74, 0.4);
+}
+
+.pluk-pickup-pin__ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(184, 111, 74, 0.35);
+  border-radius: 50%;
+  animation: pluk-pin-pulse 2.5s ease-out infinite;
+}
+
+@keyframes pluk-pin-pulse {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* Approximate session locations */
+.pluk-session-dot {
+  background: transparent !important;
+  border: none !important;
+}
+
+.pluk-session-dot__inner {
+  width: 8px;
+  height: 8px;
+  background: rgba(74, 124, 158, 0.85);
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Inline map legend swatches */
+.pluk-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: center;
+}
+
+.pluk-map-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pluk-map-legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.pluk-map-legend__swatch--visitor {
+  background: rgba(74, 124, 158, 0.85);
+}
+
+.pluk-map-legend__swatch--pickup {
+  background: #b86f4a;
+}
+
+.pluk-map-legend__swatch--heat {
+  background: linear-gradient(90deg, #eef2eb, #2f3a2a);
+  border-radius: 2px;
+  width: 24px;
+  height: 8px;
+}

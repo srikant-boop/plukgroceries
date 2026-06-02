@@ -4,6 +4,9 @@ import { ActivityTimelineChart } from "@/app/admin/ActivityTimelineChart";
 import { AnalyticsRangeSelect } from "@/app/admin/AnalyticsRangeSelect";
 import { EventLogTable } from "@/app/admin/EventLogTable";
 import { MarkupInsightsPanel } from "@/app/admin/MarkupInsightsPanel";
+import { VisitorHeatMap } from "@/app/admin/VisitorHeatMap";
+import { AdminLogoutLink } from "@/app/admin/AdminLogoutLink";
+import { AdminRegisterSession } from "@/app/admin/AdminRegisterSession";
 import {
   ANALYTICS_EVENTS,
   funnelRate,
@@ -70,6 +73,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
 
   return (
     <div>
+      <AdminRegisterSession />
       <header className="mb-10 flex items-start justify-between flex-wrap gap-4">
         <div>
           <p className="eyebrow mb-2">Admin</p>
@@ -97,6 +101,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           >
             ← Orders
           </Link>
+          <AdminLogoutLink />
         </div>
       </header>
 
@@ -154,6 +159,21 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             </p>
             <ActivityTimelineChart
               buckets={summary.timeline}
+              rangeLabel={rangeLabel}
+            />
+          </section>
+
+          <section className="mb-12">
+            <h2 className="text-xl mb-2">Visitor interest map</h2>
+            <p className="text-xs text-muted mb-4">
+              Passive IP geolocation (no questions asked). One dot per anonymous
+              session — approximate, not exact address. Logged-in admin browsing
+              the shop is not tracked.
+            </p>
+            <VisitorHeatMap
+              points={summary.visitorGeo.points}
+              cityCounts={summary.visitorGeo.cityCounts}
+              sessionCount={visitors}
               rangeLabel={rangeLabel}
             />
           </section>

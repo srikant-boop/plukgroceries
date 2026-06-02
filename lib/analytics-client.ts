@@ -1,8 +1,16 @@
 "use client";
 
 import type { AnalyticsEventType } from "@/lib/analytics";
+import { ANALYTICS_SKIP_COOKIE } from "@/lib/analytics-exclude";
 
 const SESSION_KEY = "pluk_sid";
+
+function hasAnalyticsSkipCookie(): boolean {
+  if (typeof document === "undefined") return false;
+  return document.cookie
+    .split(";")
+    .some((part) => part.trim().startsWith(`${ANALYTICS_SKIP_COOKIE}=1`));
+}
 
 function sessionId(): string {
   if (typeof window === "undefined") return "";
@@ -26,6 +34,7 @@ type TrackProps = {
 /** Fire-and-forget client event (never blocks UI). */
 export function track(type: AnalyticsEventType, props: TrackProps = {}): void {
   if (typeof window === "undefined") return;
+  if (hasAnalyticsSkipCookie()) return;
 
   fetch("/api/analytics", {
     method: "POST",

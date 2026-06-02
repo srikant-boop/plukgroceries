@@ -183,7 +183,7 @@ export default function CheckoutPage() {
             <span>Total</span>
             <span className="tabular-nums">{money(total)}</span>
           </div>
-          <CartSavings items={items} showVoilaDeliveryNote />
+          <CartSavings items={items} showSobeysDeliveryNote />
           {spot && (
             <p className="mt-5 text-xs text-muted leading-relaxed">
               Pickup at <span className="text-foreground">{spot.name}</span>,{" "}

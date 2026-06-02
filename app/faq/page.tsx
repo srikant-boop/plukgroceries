@@ -52,11 +52,10 @@ const faqs: FaqItem[] = [
           time, but the idea stays the same: fewer products, more volume on
           each. Because everything is pre-ordered before the drop, we
           buy exactly what was bought — no unsold inventory, no spoilage,
-          no waste markup baked into your price. On weekly produce we add about
-          20% on our wholesale cost — the same ballpark hard discounters like
-          Aldi aim for (they don&apos;t publish an exact number). Discover
-          picks from local makers are pass-through at cost, with no markup.
-          That compares to roughly 40% stacked markup at many big supermarkets.
+          no waste markup baked into your price. We add about 20–30% on our
+          wholesale cost — the same ballpark hard discounters like Aldi aim
+          for (they don&apos;t publish an exact number). That compares to
+          roughly 40% stacked markup at many big supermarkets.
         </p>
         <p className="mt-3">
           Most weeks that lands us 20–40% below premium grocery chains and

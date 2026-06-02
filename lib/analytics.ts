@@ -1,5 +1,7 @@
 import { getProductById } from "@/lib/products";
-import { getKv, isStorageConfigured } from "@/lib/kv";
+import { deleteKeys, getKv, isStorageConfigured, listZsetMembers, zremMember } from "@/lib/kv";
+import type { VisitorGeo, VisitorGeoPoint, VisitorGeoSummary } from "@/lib/visitor-geo";
+import { geoDistanceMeters, isSameApproxLocation } from "@/lib/visitor-geo";
 import {
   analyticsRangeLabel,
   analyticsRangeMs,
@@ -47,10 +49,13 @@ export type AnalyticsPayload = {
   path?: string;
   productId?: string;
   qty?: number;
+  geo?: VisitorGeo | null;
 };
 
 const TTL_SECONDS = 90 * 24 * 60 * 60;
 const RECENT_KEY = "pluk:analytics:recent";
+const GEO_RECENT_KEY = "pluk:analytics:geo:recent";
+const ADMIN_SESSIONS_KEY = "pluk:analytics:admin_sessions";
 const RECENT_MAX = 2000;
 const TORONTO = "America/Toronto";
 
@@ -111,6 +116,76 @@ function productKey(date: string, event: "product_view" | "add_to_cart") {
   return `pluk:analytics:${date}:product:${event}`;
 }
 
+function sessionGeoKey(sessionId: string) {
+  return `pluk:analytics:geo:session:${sessionId}`;
+}
+
+async function recordSessionGeo(
+  kv: Awaited<ReturnType<typeof getKv>>,
+  sessionId: string,
+  geo: VisitorGeo,
+  at: number,
+): Promise<void> {
+  const markerKey = sessionGeoKey(sessionId);
+  const existing = await kv.get(markerKey);
+  if (existing) return;
+
+  const point: VisitorGeoPoint = {
+    sessionId,
+    lat: geo.lat,
+    lng: geo.lng,
+    city: geo.city,
+    region: geo.region,
+    at,
+  };
+
+  await kv.set(markerKey, JSON.stringify(point));
+  await kv.expire(markerKey, TTL_SECONDS);
+  await kv.zadd(GEO_RECENT_KEY, at, JSON.stringify(point));
+  await kv.expire(GEO_RECENT_KEY, TTL_SECONDS);
+  const n = await kv.zcard(GEO_RECENT_KEY);
+  if (n > RECENT_MAX) {
+    await kv.zremrangebyrank(GEO_RECENT_KEY, 0, n - RECENT_MAX - 1);
+  }
+}
+
+async function readVisitorGeoInWindow(
+  kv: Awaited<ReturnType<typeof getKv>>,
+  windowStartMs: number,
+  windowEndMs: number,
+  excludeNear?: VisitorGeo | null,
+): Promise<VisitorGeoSummary> {
+  const rows = await kv.zrangeWithScores(GEO_RECENT_KEY, 0, -1);
+  const bySession = new Map<string, VisitorGeoPoint>();
+  const cityCounts = new Map<string, number>();
+
+  for (const { member, score } of rows) {
+    if (score < windowStartMs || score >= windowEndMs) continue;
+    try {
+      const row = JSON.parse(member) as VisitorGeoPoint;
+      if (!row.sessionId || !Number.isFinite(row.lat) || !Number.isFinite(row.lng))
+        continue;
+      if (excludeNear && isSameApproxLocation(row, excludeNear)) continue;
+      if (!bySession.has(row.sessionId)) {
+        bySession.set(row.sessionId, { ...row, at: score });
+        const city = row.city?.trim() || "Unknown";
+        cityCounts.set(city, (cityCounts.get(city) ?? 0) + 1);
+      }
+    } catch {
+      // skip
+    }
+  }
+
+  const points = [...bySession.values()];
+  return {
+    points,
+    withGeo: points.length,
+    cityCounts: [...cityCounts.entries()]
+      .map(([city, count]) => ({ city, count }))
+      .sort((a, b) => b.count - a.count),
+  };
+}
+
 async function touchTtl(kv: Awaited<ReturnType<typeof getKv>>, ...keys: string[]) {
   await Promise.all(keys.map((k) => kv.expire(k, TTL_SECONDS)));
 }
@@ -169,6 +244,9 @@ async function bumpMetrics(
   }
 
   await appendRecent(kv, at, payload);
+  if (payload.sessionId && payload.geo) {
+    await recordSessionGeo(kv, payload.sessionId, payload.geo, at);
+  }
   await touchTtl(kv, ...keys);
 }
 
@@ -302,6 +380,7 @@ export type AnalyticsSummary = {
   timeline: TimelineBucket[];
   eventLog: EventLogEntry[];
   sessionInsights: SessionInsights | null;
+  visitorGeo: VisitorGeoSummary;
   nowToronto: string;
 };
 
@@ -478,15 +557,73 @@ function recentDetail(type: AnalyticsEventType, productId?: string, path?: strin
   return EVENT_LABELS[type];
 }
 
+async function getAdminSessionIds(
+  kv: Awaited<ReturnType<typeof getKv>>,
+): Promise<Set<string>> {
+  const members = await kv.smembers(ADMIN_SESSIONS_KEY);
+  return new Set(members);
+}
+
+/** Remember browser sessions used while logged in as admin (excluded from Insights). */
+async function purgeSessionStorage(
+  kv: Awaited<ReturnType<typeof getKv>>,
+  sessionId: string,
+): Promise<void> {
+  for (const line of await listZsetMembers(RECENT_KEY)) {
+    try {
+      const row = JSON.parse(line) as StoredEvent;
+      if (row.sessionId === sessionId) {
+        await zremMember(RECENT_KEY, line);
+      }
+    } catch {
+      // skip
+    }
+  }
+
+  await deleteKeys(sessionGeoKey(sessionId));
+
+  const geoRows = await kv.zrangeWithScores(GEO_RECENT_KEY, 0, -1);
+  for (const { member } of geoRows) {
+    try {
+      const row = JSON.parse(member) as VisitorGeoPoint;
+      if (row.sessionId === sessionId) {
+        await zremMember(GEO_RECENT_KEY, member);
+      }
+    } catch {
+      // skip
+    }
+  }
+}
+
+export async function markAdminSession(sessionId: string | undefined): Promise<void> {
+  if (!sessionId || !isStorageConfigured()) return;
+  const id = sessionId.slice(0, 64);
+  try {
+    const kv = await getKv();
+    await kv.sadd(ADMIN_SESSIONS_KEY, id);
+    await kv.expire(ADMIN_SESSIONS_KEY, TTL_SECONDS);
+    await purgeSessionStorage(kv, id);
+  } catch (err) {
+    console.error("[analytics] mark admin session failed", err);
+  }
+}
+
+function isAdminSession(sessionId: string | undefined, adminIds: Set<string>): boolean {
+  return Boolean(sessionId && adminIds.has(sessionId));
+}
+
 async function readAllRecentEvents(
   kv: Awaited<ReturnType<typeof getKv>>,
 ): Promise<StoredEvent[]> {
+  const adminIds = await getAdminSessionIds(kv);
   const raw = await kv.zrangeRev(RECENT_KEY, 0, RECENT_MAX - 1);
   const out: StoredEvent[] = [];
   for (const line of raw) {
     try {
       const row = JSON.parse(line) as StoredEvent;
-      if (row.at && row.type) out.push(row);
+      if (row.at && row.type && !isAdminSession(row.sessionId, adminIds)) {
+        out.push(row);
+      }
     } catch {
       // skip
     }
@@ -1112,8 +1249,14 @@ async function getCalendarSummary(
 }
 
 /** Admin dashboard for a selected time window (Toronto ET). */
+export type AnalyticsSummaryOptions = {
+  /** Omit geo points near this location (e.g. hide the admin viewer's IP). */
+  excludeGeoNear?: VisitorGeo | null;
+};
+
 export async function getAnalyticsSummary(
   range: AnalyticsRange = "7d",
+  options: AnalyticsSummaryOptions = {},
 ): Promise<AnalyticsSummary> {
   const kv = await getKv();
   const now = formatTorontoDateTime(Date.now());
@@ -1142,6 +1285,12 @@ export async function getAnalyticsSummary(
       timelineWindow.startMs,
       timelineWindow.endMs,
     );
+    const visitorGeo = await readVisitorGeoInWindow(
+      kv,
+      windowStartMs,
+      windowEndMs,
+      options.excludeGeoNear,
+    );
     return {
       range,
       rangeLabel,
@@ -1150,6 +1299,7 @@ export async function getAnalyticsSummary(
       windowClampedToTracking,
       windowUnifiedToTracking,
       ...rolled,
+      visitorGeo,
       nowToronto: `${now.date} ${now.time} ET`,
     };
   }
@@ -1160,6 +1310,15 @@ export async function getAnalyticsSummary(
     range,
     trackingSinceMs,
   );
+  const calWindowStart = torontoDayStartMs(
+    datesBack(RANGE_DAYS[range]).at(-1) ?? dateKey(),
+  );
+  const visitorGeo = await readVisitorGeoInWindow(
+    kv,
+    calWindowStart,
+    nowMs,
+    options.excludeGeoNear,
+  );
   return {
     range,
     rangeLabel,
@@ -1168,8 +1327,74 @@ export async function getAnalyticsSummary(
     windowClampedToTracking: false,
     windowUnifiedToTracking: false,
     ...cal,
+    visitorGeo,
     nowToronto: `${now.date} ${now.time} ET`,
   };
+}
+
+/** Remove all stored visitor map points (geo zset + per-session keys). */
+export async function clearAllVisitorGeo(): Promise<{
+  removed: number;
+  sessionKeysDeleted: number;
+}> {
+  if (!isStorageConfigured()) {
+    return { removed: 0, sessionKeysDeleted: 0 };
+  }
+
+  const kv = await getKv();
+  const rows = await kv.zrangeWithScores(GEO_RECENT_KEY, 0, -1);
+  let removed = 0;
+  let sessionKeysDeleted = 0;
+
+  for (const { member } of rows) {
+    try {
+      const row = JSON.parse(member) as VisitorGeoPoint;
+      await zremMember(GEO_RECENT_KEY, member);
+      removed += 1;
+      if (row.sessionId) {
+        await deleteKeys(sessionGeoKey(row.sessionId));
+        sessionKeysDeleted += 1;
+      }
+    } catch {
+      await zremMember(GEO_RECENT_KEY, member);
+      removed += 1;
+    }
+  }
+
+  return { removed, sessionKeysDeleted };
+}
+
+/** Remove map points within radiusM of a location (e.g. your current IP). */
+export async function purgeVisitorGeoNear(
+  center: { lat: number; lng: number },
+  radiusM = 2_500,
+): Promise<{ removed: number; sessionKeysDeleted: number }> {
+  if (!isStorageConfigured()) {
+    return { removed: 0, sessionKeysDeleted: 0 };
+  }
+
+  const kv = await getKv();
+  const rows = await kv.zrangeWithScores(GEO_RECENT_KEY, 0, -1);
+  let removed = 0;
+  let sessionKeysDeleted = 0;
+
+  for (const { member } of rows) {
+    try {
+      const row = JSON.parse(member) as VisitorGeoPoint;
+      if (!Number.isFinite(row.lat) || !Number.isFinite(row.lng)) continue;
+      if (geoDistanceMeters(row, center) > radiusM) continue;
+      await zremMember(GEO_RECENT_KEY, member);
+      removed += 1;
+      if (row.sessionId) {
+        await deleteKeys(sessionGeoKey(row.sessionId));
+        sessionKeysDeleted += 1;
+      }
+    } catch {
+      // skip malformed
+    }
+  }
+
+  return { removed, sessionKeysDeleted };
 }
 
 export function funnelRate(numerator: number, denominator: number): string {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ADMIN_COOKIE, getAdminPassword } from "@/lib/admin-auth";
+import { ANALYTICS_SKIP_COOKIE } from "@/lib/analytics-exclude";
 
 export const runtime = "nodejs";
 
@@ -18,12 +19,13 @@ export async function POST(req: Request) {
   }
   const safeFrom = from.startsWith("/admin") ? from : "/admin";
   const res = NextResponse.redirect(new URL(safeFrom, req.url));
-  res.cookies.set(ADMIN_COOKIE, password, {
-    httpOnly: true,
+  const base = {
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "lax" as const,
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
-  });
+  };
+  res.cookies.set(ADMIN_COOKIE, password, { ...base, httpOnly: true });
+  res.cookies.set(ANALYTICS_SKIP_COOKIE, "1", { ...base, httpOnly: false });
   return res;
 }

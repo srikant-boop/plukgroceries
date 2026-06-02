@@ -4,15 +4,15 @@ import {
   cartCompetitorStores,
 } from "@/lib/cart";
 import { money } from "@/lib/format";
-import { VOILA_STORE, voilaDeliveryNote } from "@/lib/voila";
+import { SOBEYS_STORE, sobeysDeliveryNote } from "@/lib/sobeys";
 
 export function CartSavings({
   items,
-  showVoilaDeliveryNote = false,
+  showSobeysDeliveryNote = false,
 }: {
   items: CartItem[];
-  /** Checkout only — Voilà shelf prices exclude their delivery fee. */
-  showVoilaDeliveryNote?: boolean;
+  /** Checkout only — Sobeys shelf prices exclude their delivery fee. */
+  showSobeysDeliveryNote?: boolean;
 }) {
   if (items.length === 0) return null;
   const stores = cartCompetitorStores(items);
@@ -59,10 +59,10 @@ export function CartSavings({
       <p className="text-[11px] text-muted mt-3 leading-relaxed">
         Same basket priced at each store, using the unit sizes shown on each
         product page.
-        {showVoilaDeliveryNote && stores.includes(VOILA_STORE) && (
+        {showSobeysDeliveryNote && stores.includes(SOBEYS_STORE) && (
           <>
             {" "}
-            {voilaDeliveryNote}
+            {sobeysDeliveryNote}
           </>
         )}
       </p>
