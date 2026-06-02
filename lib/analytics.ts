@@ -124,6 +124,79 @@ function sessionGeoKey(sessionId: string) {
   return `pluk:analytics:geo:session:${sessionId}`;
 }
 
+const GEO_CITY_CACHE_PREFIX = "pluk:analytics:geo:city:v1";
+const GEO_CITY_CACHE_TTL_SECONDS = 180 * 24 * 60 * 60;
+
+function geoCityCacheKey(lat: number, lng: number): string {
+  // ~110m buckets reduce API calls while staying city-accurate.
+  const latBucket = (Math.round(lat * 1000) / 1000).toFixed(3);
+  const lngBucket = (Math.round(lng * 1000) / 1000).toFixed(3);
+  return `${GEO_CITY_CACHE_PREFIX}:${latBucket}:${lngBucket}`;
+}
+
+function isGenericCityLabel(city: string | undefined): boolean {
+  if (!city) return true;
+  const normalized = city.trim().toLowerCase();
+  return (
+    !normalized ||
+    normalized === "unknown" ||
+    normalized === "west gta" ||
+    normalized === "outside west gta" ||
+    normalized === "ontario"
+  );
+}
+
+async function fetchReverseGeocodedCity(
+  lat: number,
+  lng: number,
+): Promise<string | null> {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1500);
+    const url = new URL(
+      "https://api.bigdatacloud.net/data/reverse-geocode-client",
+    );
+    url.searchParams.set("latitude", lat.toString());
+    url.searchParams.set("longitude", lng.toString());
+    url.searchParams.set("localityLanguage", "en");
+    const res = await fetch(url, { signal: controller.signal, cache: "no-store" });
+    clearTimeout(timeoutId);
+    if (!res.ok) return null;
+    const data = (await res.json()) as {
+      city?: string;
+      locality?: string;
+      principalSubdivision?: string;
+    };
+    const raw = data.city ?? data.locality ?? data.principalSubdivision;
+    const city = raw?.trim();
+    return city ? city : null;
+  } catch {
+    return null;
+  }
+}
+
+async function resolveVisitorCityWithApi(
+  kv: Awaited<ReturnType<typeof getKv>>,
+  geo: Pick<VisitorGeo, "lat" | "lng" | "city" | "region">,
+): Promise<string> {
+  const baseCity = resolveVisitorCity(geo);
+  if (!isGenericCityLabel(geo.city) || !isGenericCityLabel(baseCity)) {
+    return isGenericCityLabel(geo.city) ? baseCity : geo.city!.trim();
+  }
+
+  const cacheKey = geoCityCacheKey(geo.lat, geo.lng);
+  const cached = await kv.get(cacheKey);
+  if (cached?.trim()) return cached.trim();
+
+  const fromApi = await fetchReverseGeocodedCity(geo.lat, geo.lng);
+  if (fromApi) {
+    await kv.set(cacheKey, fromApi);
+    await kv.expire(cacheKey, GEO_CITY_CACHE_TTL_SECONDS);
+    return fromApi;
+  }
+  return baseCity;
+}
+
 async function recordSessionGeo(
   kv: Awaited<ReturnType<typeof getKv>>,
   sessionId: string,
@@ -138,7 +211,7 @@ async function recordSessionGeo(
     sessionId,
     lat: geo.lat,
     lng: geo.lng,
-    city: resolveVisitorCity(geo),
+    city: await resolveVisitorCityWithApi(kv, geo),
     region: geo.region,
     at,
   };
@@ -171,7 +244,7 @@ async function readVisitorGeoInWindow(
         continue;
       if (excludeNear && isSameApproxLocation(row, excludeNear)) continue;
       if (!bySession.has(row.sessionId)) {
-        const city = resolveVisitorCity(row);
+        const city = await resolveVisitorCityWithApi(kv, row);
         bySession.set(row.sessionId, { ...row, city, at: score });
         cityCounts.set(city, (cityCounts.get(city) ?? 0) + 1);
       }
