@@ -16,7 +16,7 @@ const steps = [
     sketch: "checkout",
     title: "Pay securely",
     detail:
-      "Stripe checkout — we don't store your card. Cancel anytime before the order window closes. Not happy with the quality when you pick up? Tell us then and we'll refund you on the spot. Can't make Sunday? Cancel in time, or reach out — we can often deliver for a small fee.",
+      "Secure Stripe checkout — we never store your card. Changes in plan? Cancel anytime before the order window closes. Not happy with quality? Tell us at pickup time and get a full refund. Can't make it? We'll deliver for free.",
   },
 ] as const;
 

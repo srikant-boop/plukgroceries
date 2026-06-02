@@ -48,7 +48,7 @@ export default function Home() {
               A weekly drop of good food — a short list of produce, pantry,
               and sometimes something from a neighbour: a jar of honey, a
               bottle you haven&apos;t tried yet. We keep our prices low and show
-              how we compare for each item against the big national chains.
+              how we compare for each item against the major national chains.
             </p>
           </div>
         </div>
