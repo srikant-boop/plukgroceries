@@ -95,7 +95,9 @@ export function VisitorHeatMap({
       }
 
       for (const p of points) {
-        const city = p.city ? ` · ${p.city}` : "";
+        const cityLine = p.city
+          ? `<br><span style="color:#2f3a2a;font-weight:600">${p.city}</span>`
+          : "";
         L.marker([p.lat, p.lng], {
           icon: L.divIcon({
             className: "pluk-session-dot",
@@ -106,7 +108,7 @@ export function VisitorHeatMap({
           interactive: true,
         })
           .bindPopup(
-            `<strong>Approx. browser location</strong><br><span style="color:#6b6b66">One anonymous session${city}</span>`,
+            `<strong>Approx. session location</strong>${cityLine}<br><span style="color:#6b6b66;font-size:11px">IP-based · not GPS · one anonymous session</span>`,
           )
           .addTo(map);
       }
@@ -168,7 +170,8 @@ export function VisitorHeatMap({
               Sunday pickup spot
             </span>
           </span>
-          Oakville &amp; west GTA · approximate IP, one point per session (
+          Oakville &amp; west GTA · approximate IP (city from headers or nearest
+          town from coordinates), one point per session (
           {rangeLabel.toLowerCase()}).
         </p>
       </div>

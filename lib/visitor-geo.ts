@@ -28,6 +28,47 @@ export const VISITOR_MAP_BOUNDS = {
   east: -79.52,
 } as const;
 
+/** City centroids for west GTA — used when Vercel omits x-vercel-ip-city. */
+const WEST_GTA_CITIES = [
+  { name: "Oakville", lat: 43.4675, lng: -79.6877 },
+  { name: "Burlington", lat: 43.3255, lng: -79.799 },
+  { name: "Milton", lat: 43.5183, lng: -79.8774 },
+  { name: "Mississauga", lat: 43.589, lng: -79.6441 },
+  { name: "Toronto", lat: 43.6532, lng: -79.3832 },
+  { name: "Hamilton", lat: 43.2557, lng: -79.8711 },
+  { name: "Brampton", lat: 43.7315, lng: -79.7624 },
+] as const;
+
+/** Max distance from a centroid to accept that city label (IP geo is coarse). */
+const CITY_MATCH_MAX_METERS = 55_000;
+
+/** Nearest west-GTA municipality for approximate IP coordinates. */
+export function cityFromLatLng(lat: number, lng: number): string | undefined {
+  let best: { name: string; dist: number } | undefined;
+  for (const c of WEST_GTA_CITIES) {
+    const dist = geoDistanceMeters({ lat, lng }, c);
+    if (!best || dist < best.dist) best = { name: c.name, dist };
+  }
+  if (!best || best.dist > CITY_MATCH_MAX_METERS) return undefined;
+  return best.name;
+}
+
+/**
+ * Best-effort city label: Vercel header first, then lat/lng → nearest town, then region.
+ * Not street-level — IP geolocation is typically city- or neighborhood-scale.
+ */
+export function resolveVisitorCity(
+  geo: Pick<VisitorGeo, "lat" | "lng" | "city" | "region">,
+): string {
+  const fromHeader = geo.city?.trim();
+  if (fromHeader) return fromHeader;
+  const fromCoords = cityFromLatLng(geo.lat, geo.lng);
+  if (fromCoords) return fromCoords;
+  const region = geo.region?.trim();
+  if (region) return region;
+  return "Unknown";
+}
+
 export function geoFromRequestHeaders(headers: Headers): VisitorGeo | null {
   const lat = Number.parseFloat(headers.get("x-vercel-ip-latitude") ?? "");
   const lng = Number.parseFloat(headers.get("x-vercel-ip-longitude") ?? "");

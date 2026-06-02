@@ -1,7 +1,11 @@
 import { getProductById } from "@/lib/products";
 import { deleteKeys, getKv, isStorageConfigured, listZsetMembers, zremMember } from "@/lib/kv";
 import type { VisitorGeo, VisitorGeoPoint, VisitorGeoSummary } from "@/lib/visitor-geo";
-import { geoDistanceMeters, isSameApproxLocation } from "@/lib/visitor-geo";
+import {
+  geoDistanceMeters,
+  isSameApproxLocation,
+  resolveVisitorCity,
+} from "@/lib/visitor-geo";
 import {
   analyticsRangeLabel,
   analyticsRangeMs,
@@ -134,7 +138,7 @@ async function recordSessionGeo(
     sessionId,
     lat: geo.lat,
     lng: geo.lng,
-    city: geo.city,
+    city: resolveVisitorCity(geo),
     region: geo.region,
     at,
   };
@@ -167,8 +171,8 @@ async function readVisitorGeoInWindow(
         continue;
       if (excludeNear && isSameApproxLocation(row, excludeNear)) continue;
       if (!bySession.has(row.sessionId)) {
-        bySession.set(row.sessionId, { ...row, at: score });
-        const city = row.city?.trim() || "Unknown";
+        const city = resolveVisitorCity(row);
+        bySession.set(row.sessionId, { ...row, city, at: score });
         cityCounts.set(city, (cityCounts.get(city) ?? 0) + 1);
       }
     } catch {
