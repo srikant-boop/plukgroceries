@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { pickupSpots } from "@/lib/pickup";
 
 type FaqItem = {
@@ -90,19 +89,17 @@ const faqs: FaqItem[] = [
     q: "Where do you get the food?",
     a: (
       <>
-        Right now most of the weekly produce list is sourced through{" "}
-        <Link
-          href="/suppliers/terra-freska"
-          className="underline underline-offset-4 hover:text-accent"
-        >
-          Terra Freska
-        </Link>
-        , a wholesaler we buy from at the Ontario Food Terminal — still fewer
-        stops than a big grocery, and we name them on every listing. We&apos;re
-        trying to shift more of the list to named growers over time. The weekly
-        highlight (small-batch honey, pantry finds, and the like) often comes
-        straight from the maker. Every product page shows who supplied that
-        item; open their profile for the full story and links.
+        <p>
+          Most of the weekly produce list comes through wholesalers at the
+          Ontario Food Terminal — still fewer stops than a big grocery, and we
+          name the supplier on every listing. We&apos;re trying to shift more of
+          the list to named growers over time.
+        </p>
+        <p className="mt-3">
+          The weekly highlight (small-batch honey, pantry finds, and the like)
+          often comes straight from the maker. Every product page shows who
+          supplied that item; open their profile for the full story and links.
+        </p>
       </>
     ),
   },
