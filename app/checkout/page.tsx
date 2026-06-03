@@ -18,7 +18,8 @@ export default function CheckoutPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
-  const [invitedBy, setInvitedBy] = useState("");
+  const [invitedNeighbour, setInvitedNeighbour] = useState("");
+  const [invitedByNeighbour, setInvitedByNeighbour] = useState("");
   const [pickupSpotId, setPickupSpotId] = useState<string>(pickupSpots[0].id);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -63,10 +64,20 @@ export default function CheckoutPage() {
     setError(null);
     track("checkout_start", { qty: items.length });
     try {
-      const inviteNote = invitedBy.trim()
-        ? `Invited by: ${invitedBy.trim()} (wholesale pricing request)`
-        : "";
-      const combinedNotes = [notes.trim(), inviteNote].filter(Boolean).join("\n");
+      const inviteNotes: string[] = [];
+      if (invitedNeighbour.trim()) {
+        inviteNotes.push(
+          `Invite — neighbour you invited: ${invitedNeighbour.trim()}`,
+        );
+      }
+      if (invitedByNeighbour.trim()) {
+        inviteNotes.push(
+          `Invite — neighbour who invited you: ${invitedByNeighbour.trim()}`,
+        );
+      }
+      const combinedNotes = [notes.trim(), ...inviteNotes]
+        .filter(Boolean)
+        .join("\n");
 
       const res = await fetch("/api/checkout", {
         method: "POST",
@@ -162,16 +173,23 @@ export default function CheckoutPage() {
 
           <fieldset className="space-y-4">
             <legend className="eyebrow mb-3">Invite a neighbour (optional)</legend>
+            <p className="text-xs text-muted leading-relaxed -mt-1">
+              Add each other&apos;s names so we can match your orders. If you
+              invited someone new, we&apos;ll adjust your order to wholesale
+              prices once theirs is paid.
+            </p>
             <Field
               label="Neighbour you invited (their name)"
-              value={invitedBy}
-              onChange={setInvitedBy}
+              value={invitedNeighbour}
+              onChange={setInvitedNeighbour}
               placeholder="If someone new is ordering because of you"
             />
-            <p className="text-xs text-muted leading-relaxed">
-              If they complete their first order this drop, we&apos;ll adjust
-              your order to wholesale prices after pickup.
-            </p>
+            <Field
+              label="Neighbour who invited you (their name)"
+              value={invitedByNeighbour}
+              onChange={setInvitedByNeighbour}
+              placeholder="If you're ordering because someone told you about Pluk"
+            />
           </fieldset>
 
           <fieldset>

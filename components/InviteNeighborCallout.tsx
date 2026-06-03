@@ -18,9 +18,9 @@ export function InviteNeighborCallout({ variant = "default" }: Props) {
         Invite a neighbour — get wholesale prices on your order
       </p>
       <p className={`text-foreground/75 ${compact ? "mt-1.5" : "mt-2"}`}>
-        If someone new orders this week because you invited them, add their name
-        at checkout. Once their order is paid, we&apos;ll adjust yours to
-        wholesale prices.
+        Inviting someone new? Add their name at checkout. Were you invited? Add
+        your neighbour&apos;s name too. Once their order is paid, we&apos;ll
+        adjust yours to wholesale prices.
       </p>
       <Link
         href="/faq#invite-a-neighbour"
