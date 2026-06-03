@@ -174,9 +174,8 @@ export default function CheckoutPage() {
           <fieldset className="space-y-4">
             <legend className="eyebrow mb-3">Invite a neighbour (optional)</legend>
             <p className="text-xs text-muted leading-relaxed -mt-1">
-              Add each other&apos;s names so we can match your orders. If you
-              invited someone new, we&apos;ll adjust your order to wholesale
-              prices once theirs is paid.
+              Add each other&apos;s names so we can match your orders. Once both
+              orders are paid, we&apos;ll adjust both bags to wholesale prices.
             </p>
             <Field
               label="Neighbour you invited (their name)"
