@@ -458,3 +458,33 @@ export const getProductByUuid = (uuid: string) =>
 
 export const categories = () =>
   Array.from(new Set(storefrontProducts().map((p) => p.category)));
+
+const PRODUCE_CATEGORIES = new Set(["Fruits", "Vegetables"]);
+
+export type StorefrontSection = {
+  id: string;
+  title: string;
+  match: (p: Product) => boolean;
+};
+
+/** Homepage sections — fruits and vegetables share one block. */
+export const storefrontSections = (): StorefrontSection[] => {
+  const cats = categories();
+  const sections: StorefrontSection[] = [];
+  if (cats.some((c) => PRODUCE_CATEGORIES.has(c))) {
+    sections.push({
+      id: "produce",
+      title: "Fruits & vegetables",
+      match: (p) => PRODUCE_CATEGORIES.has(p.category),
+    });
+  }
+  for (const cat of cats) {
+    if (PRODUCE_CATEGORIES.has(cat)) continue;
+    sections.push({
+      id: cat,
+      title: cat,
+      match: (p) => p.category === cat,
+    });
+  }
+  return sections;
+};

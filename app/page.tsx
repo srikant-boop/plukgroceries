@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { products, categories, specialProducts, storefrontProducts } from "@/lib/products";
+import { specialProducts, storefrontProducts, storefrontSections } from "@/lib/products";
 import { getSupplierById } from "@/lib/suppliers";
 import { currentDropNote } from "@/lib/drop";
 import { SITE_TITLE } from "@/lib/site";
@@ -10,7 +10,7 @@ import { InviteNeighborCallout } from "@/components/InviteNeighborCallout";
 import { Leaf } from "@/components/Leaf";
 
 export default function Home() {
-  const cats = categories();
+  const sections = storefrontSections();
   const specials = specialProducts();
   const specialSupplierIds = Array.from(
     new Set(specials.map((p) => p.supplierId).filter(Boolean)),
@@ -92,19 +92,19 @@ export default function Home() {
       )}
 
       <section>
-        {cats.map((cat) => {
+        {sections.map((section) => {
           // Specials are already featured in the Discover section above —
           // don't double-list them in their category section.
           const items = storefrontProducts().filter(
-            (p) => p.category === cat && !p.special,
+            (p) => section.match(p) && !p.special,
           );
           if (items.length === 0) return null;
           return (
-            <div key={cat} className="mb-16">
+            <div key={section.id} className="mb-16">
               <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
                 <div className="flex items-baseline gap-3">
                   <Leaf size={16} className="text-accent" />
-                  <h2 className="text-2xl">{cat}</h2>
+                  <h2 className="text-2xl">{section.title}</h2>
                 </div>
                 <span className="eyebrow">
                   {items.length} {items.length === 1 ? "item" : "items"}
