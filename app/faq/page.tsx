@@ -53,7 +53,7 @@ const faqs: FaqItem[] = [
     ),
   },
   {
-    q: "Can I get 0% markup if I invite someone?",
+    q: "Can I get wholesale prices if I invite someone?",
     anchorId: "invite-a-neighbour",
     a: (
       <>
@@ -61,7 +61,7 @@ const faqs: FaqItem[] = [
           Yes — that&apos;s the idea. If someone new places an order this drop
           because you invited them, add their name at checkout. Once their order
           is paid, we&apos;ll refund the 10% markup on yours so your bag matches
-          wholesale (0% markup).
+          wholesale prices.
         </p>
         <p className="mt-3">
           They need to be genuinely new to Pluk for that drop week. One invite

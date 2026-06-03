@@ -15,13 +15,13 @@ export function InviteNeighborCallout({ variant = "default" }: Props) {
       }`}
     >
       <p className="font-medium text-foreground">
-        Invite a neighbour — get 0% markup on your order
+        Invite a neighbour — get wholesale prices on your order
       </p>
       <p className={`text-foreground/75 ${compact ? "mt-1.5" : "mt-2"}`}>
         We usually add about 10% on wholesale so we can keep the drop running.
         If someone new orders this week because you invited them, add their name
         at checkout — we&apos;ll refund your 10% so your bag matches what we
-        paid (0% markup).
+        paid (wholesale prices).
       </p>
       <Link
         href="/faq#invite-a-neighbour"

@@ -64,7 +64,7 @@ export default function CheckoutPage() {
     track("checkout_start", { qty: items.length });
     try {
       const inviteNote = invitedBy.trim()
-        ? `Invited by: ${invitedBy.trim()} (0% markup request)`
+        ? `Invited by: ${invitedBy.trim()} (wholesale pricing request)`
         : "";
       const combinedNotes = [notes.trim(), inviteNote].filter(Boolean).join("\n");
 
@@ -170,7 +170,7 @@ export default function CheckoutPage() {
             />
             <p className="text-xs text-muted leading-relaxed">
               If they complete their first order this drop, we&apos;ll refund
-              your 10% markup after pickup — your bag at wholesale.
+              your 10% markup after pickup — wholesale prices on your bag.
             </p>
           </fieldset>
 
