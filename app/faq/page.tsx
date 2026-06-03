@@ -104,10 +104,6 @@ const faqs: FaqItem[] = [
     ),
   },
   {
-    q: "What are the extra items on the homepage each week?",
-    a: "Each drop we rotate in one or two small-batch finds — could be a farm jar, a baker's special, a craft, anything healthy and well-priced for what it is. Sometimes from a neighbour up the QEW, sometimes from further afield.",
-  },
-  {
     q: "What if I miss the pickup window?",
     a: "At this scale we can't hold orders or carry them to the next drop — we hand-pack for one pickup window, with no warehousing. If you know you can't make it, cancel before the order window closes (see below). If pickup day passes and you didn't cancel in time, we can often deliver to your home for a small fee — reach out as soon as you can.",
   },
