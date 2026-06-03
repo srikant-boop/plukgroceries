@@ -385,8 +385,8 @@ export const products: Product[] = [
     unit: "1 lb clamshell (454 g)",
     stock: 30,
     wholesalerPrice: 7.25,
-    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
-    ourPrice: 7.98,
+    markupMultiplier: 1,
+    ourPrice: 7.25,
     competitors: [
       { store: "Sobeys", price: 9.99, unit: "454 g", url: "https://voila.ca/products/organic-strawberries-454-g/14837EA", organic: true },
       { store: "Loblaws", price: 8.0, unit: "454 g", url: "https://www.loblaws.ca/en/organic-strawberries-1-lb/p/20313872001_EA?storeId=1011", organic: true },
