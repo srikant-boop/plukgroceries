@@ -18,16 +18,15 @@ export function InviteNeighborCallout({ variant = "default" }: Props) {
         Invite a neighbour — get wholesale prices on your order
       </p>
       <p className={`text-foreground/75 ${compact ? "mt-1.5" : "mt-2"}`}>
-        We usually add about 10% on wholesale so we can keep the drop running.
         If someone new orders this week because you invited them, add their name
-        at checkout — we&apos;ll refund your 10% so your bag matches what we
-        paid (wholesale prices).
+        at checkout. Once their order is paid, we&apos;ll adjust yours to
+        wholesale prices.
       </p>
       <Link
         href="/faq#invite-a-neighbour"
         className="mt-3 inline-block text-xs underline underline-offset-4 hover:text-accent"
       >
-        How invite pricing works →
+        How it works →
       </Link>
     </div>
   );

@@ -40,8 +40,7 @@ const faqs: FaqItem[] = [
         <p>
           We stay as close to the grower, farmer, or maker as we can — fewer
           middlemen, a short weekly list, and pre-orders so we buy only what
-          sold. Shelf prices add about 10% on what we pay wholesale; that
-          covers packing and running the drop, not a grocery-store markup stack.
+          sold. That keeps overhead low compared to a full grocery operation.
         </p>
         <p className="mt-3">
           Most weeks that still lands below premium chains on the items we list.
@@ -60,8 +59,7 @@ const faqs: FaqItem[] = [
         <p>
           Yes — that&apos;s the idea. If someone new places an order this drop
           because you invited them, add their name at checkout. Once their order
-          is paid, we&apos;ll refund the 10% markup on yours so your bag matches
-          wholesale prices.
+          is paid, we&apos;ll adjust your order to wholesale prices.
         </p>
         <p className="mt-3">
           They need to be genuinely new to Pluk for that drop week. One invite

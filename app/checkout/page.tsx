@@ -161,7 +161,7 @@ export default function CheckoutPage() {
           <InviteNeighborCallout variant="compact" />
 
           <fieldset className="space-y-4">
-            <legend className="eyebrow mb-3">Invite pricing (optional)</legend>
+            <legend className="eyebrow mb-3">Invite a neighbour (optional)</legend>
             <Field
               label="Neighbour you invited (their name)"
               value={invitedBy}
@@ -169,8 +169,8 @@ export default function CheckoutPage() {
               placeholder="If someone new is ordering because of you"
             />
             <p className="text-xs text-muted leading-relaxed">
-              If they complete their first order this drop, we&apos;ll refund
-              your 10% markup after pickup — wholesale prices on your bag.
+              If they complete their first order this drop, we&apos;ll adjust
+              your order to wholesale prices after pickup.
             </p>
           </fieldset>
 
