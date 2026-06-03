@@ -51,34 +51,6 @@ const faqs: FaqItem[] = [
     ),
   },
   {
-    q: "Can I get wholesale prices if I invite someone?",
-    anchorId: "invite-a-neighbour",
-    a: (
-      <>
-        <p>
-          Yes — that&apos;s the idea. Place your order, then copy your invite link
-          on the confirmation page and share it. When someone new orders through
-          that link this drop, we&apos;ll adjust your bag to wholesale prices after
-          their order is paid.
-        </p>
-        <p className="mt-3">
-          They need to be genuinely new to Pluk for that drop week. One invite
-          credit per new neighbour per drop. If anything&apos;s unclear, message
-          us in the{" "}
-          <a
-            href="https://www.facebook.com/share/g/1cRmroAoyr/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-4 hover:text-accent"
-          >
-            Oakville group on Facebook
-          </a>{" "}
-          after you check out.
-        </p>
-      </>
-    ),
-  },
-  {
     q: "How do I pay?",
     a: "Credit card at checkout — Visa, Mastercard, AmEx, Discover, Apple Pay, and Google Pay. Card details are handled on Stripe's secure page; this site never sees them.",
   },

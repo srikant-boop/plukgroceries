@@ -2,7 +2,6 @@ import Link from "next/link";
 import { getPickupSpot, pickupSpots } from "@/lib/pickup";
 import { getStripe } from "@/lib/stripe";
 import { ClearCartOnSuccess } from "./ClearCartOnSuccess";
-import { InviteShareLink } from "@/components/InviteShareLink";
 
 type SearchParams = Promise<{ session_id?: string }>;
 
@@ -90,11 +89,7 @@ export default async function CheckoutSuccessPage({
         </ol>
       </div>
 
-      {sessionId?.startsWith("cs_") ? (
-        <InviteShareLink sessionId={sessionId} />
-      ) : null}
-
-      <div className="flex gap-3 justify-center mt-10">
+      <div className="flex gap-3 justify-center">
         <Link href="/" className="btn">
           Back to shop
         </Link>

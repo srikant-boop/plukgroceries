@@ -6,7 +6,6 @@ import { currentDropNote } from "@/lib/drop";
 import { SITE_TITLE } from "@/lib/site";
 import { ProductCard } from "@/components/ProductCard";
 import { HowItWorks } from "@/components/HowItWorks";
-import { InviteNeighborCallout } from "@/components/InviteNeighborCallout";
 import { Leaf } from "@/components/Leaf";
 
 export default function Home() {
@@ -55,9 +54,6 @@ export default function Home() {
         </div>
       </section>
       <HowItWorks />
-      <div className="mb-12">
-        <InviteNeighborCallout />
-      </div>
 
       {specials.length > 0 && (
         <section id="this-week" className="mb-16">

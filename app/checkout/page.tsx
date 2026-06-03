@@ -5,10 +5,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart, hydrateLines, cartTotal } from "@/lib/cart";
 import { money } from "@/lib/format";
 import { CartSavings } from "@/components/CartSavings";
-import { InviteNeighborCallout } from "@/components/InviteNeighborCallout";
 import { pickupSpots, getPickupSpot } from "@/lib/pickup";
 import { track } from "@/lib/analytics-client";
-import { readStoredInviteRef } from "@/lib/invite-client";
 
 export default function CheckoutPage() {
   const lines = useCart((s) => s.lines);
@@ -19,7 +17,6 @@ export default function CheckoutPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
-  const [inviteRef, setInviteRef] = useState<string | null>(null);
   const [pickupSpotId, setPickupSpotId] = useState<string>(pickupSpots[0].id);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,10 +25,6 @@ export default function CheckoutPage() {
   const total = cartTotal(items);
   const spot = getPickupSpot(pickupSpotId);
   const trackedBegin = useRef(false);
-
-  useEffect(() => {
-    setInviteRef(readStoredInviteRef());
-  }, []);
 
   useEffect(() => {
     if (!hydrated || items.length === 0 || trackedBegin.current) return;
@@ -74,7 +67,6 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           customer: { name, email, phone, notes: notes.trim() || undefined },
           pickupSpotId,
-          inviteRef: inviteRef ?? undefined,
           lines: items.map((i) => ({ productId: i.productId, qty: i.qty })),
         }),
       });
@@ -158,15 +150,6 @@ export default function CheckoutPage() {
               </label>
             ))}
           </fieldset>
-
-          <InviteNeighborCallout variant="compact" />
-
-          {inviteRef ? (
-            <p className="text-xs text-muted border border-line bg-surface p-4 leading-relaxed">
-              Invite link applied. Thanks for ordering through a neighbour&apos;s
-              link — we&apos;ll track it automatically.
-            </p>
-          ) : null}
 
           <fieldset>
             <legend className="eyebrow mb-3">Notes (optional)</legend>
