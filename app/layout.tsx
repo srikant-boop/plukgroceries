@@ -4,6 +4,7 @@ import { CartBadge } from "@/components/CartBadge";
 import { Leaf } from "@/components/Leaf";
 import { SocialIcon } from "@/components/SocialIcon";
 import { AnalyticsProvider } from "@/components/AnalyticsProvider";
+import { InviteRefCapture } from "@/components/InviteRefCapture";
 import {
   DEFAULT_DESCRIPTION,
   FACEBOOK_APP_ID,
@@ -68,6 +69,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <AnalyticsProvider>
+        <InviteRefCapture />
         <header className="border-b border-line bg-background">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
             <Link

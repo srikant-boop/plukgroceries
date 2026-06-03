@@ -8,6 +8,7 @@ import { CartSavings } from "@/components/CartSavings";
 import { InviteNeighborCallout } from "@/components/InviteNeighborCallout";
 import { pickupSpots, getPickupSpot } from "@/lib/pickup";
 import { track } from "@/lib/analytics-client";
+import { readStoredInviteRef } from "@/lib/invite-client";
 
 export default function CheckoutPage() {
   const lines = useCart((s) => s.lines);
@@ -18,7 +19,7 @@ export default function CheckoutPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
-  const [invitedNeighbour, setInvitedNeighbour] = useState("");
+  const [inviteRef, setInviteRef] = useState<string | null>(null);
   const [pickupSpotId, setPickupSpotId] = useState<string>(pickupSpots[0].id);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,6 +28,10 @@ export default function CheckoutPage() {
   const total = cartTotal(items);
   const spot = getPickupSpot(pickupSpotId);
   const trackedBegin = useRef(false);
+
+  useEffect(() => {
+    setInviteRef(readStoredInviteRef());
+  }, []);
 
   useEffect(() => {
     if (!hydrated || items.length === 0 || trackedBegin.current) return;
@@ -63,17 +68,13 @@ export default function CheckoutPage() {
     setError(null);
     track("checkout_start", { qty: items.length });
     try {
-      const inviteNote = invitedNeighbour.trim()
-        ? `Invite — neighbour you invited: ${invitedNeighbour.trim()}`
-        : "";
-      const combinedNotes = [notes.trim(), inviteNote].filter(Boolean).join("\n");
-
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer: { name, email, phone, notes: combinedNotes || undefined },
+          customer: { name, email, phone, notes: notes.trim() || undefined },
           pickupSpotId,
+          inviteRef: inviteRef ?? undefined,
           lines: items.map((i) => ({ productId: i.productId, qty: i.qty })),
         }),
       });
@@ -160,19 +161,12 @@ export default function CheckoutPage() {
 
           <InviteNeighborCallout variant="compact" />
 
-          <fieldset className="space-y-4">
-            <legend className="eyebrow mb-3">Invite a neighbour (optional)</legend>
-            <p className="text-xs text-muted leading-relaxed -mt-1">
-              If they complete their first order this drop, we&apos;ll adjust
-              your order to wholesale prices after pickup.
+          {inviteRef ? (
+            <p className="text-xs text-muted border border-line bg-surface p-4 leading-relaxed">
+              Invite link applied. Thanks for ordering through a neighbour&apos;s
+              link — we&apos;ll track it automatically.
             </p>
-            <Field
-              label="Neighbour you invited (their name)"
-              value={invitedNeighbour}
-              onChange={setInvitedNeighbour}
-              placeholder="If someone new is ordering because of you"
-            />
-          </fieldset>
+          ) : null}
 
           <fieldset>
             <legend className="eyebrow mb-3">Notes (optional)</legend>

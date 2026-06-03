@@ -10,6 +10,11 @@ import {
 } from "@/lib/orders";
 import { sendOrderEmail } from "@/lib/email";
 import { recordPurchase } from "@/lib/analytics";
+import {
+  normalizeInviteCode,
+  recordInviteeOrder,
+  registerInviterOrder,
+} from "@/lib/invite-store";
 
 export const runtime = "nodejs";
 
@@ -59,6 +64,8 @@ export async function POST(req: Request) {
   const { subtotal, totalWholesaleCost, totalMargin } = orderLineTotals(lines);
   const total = (session.amount_total ?? Math.round(subtotal * 100)) / 100;
 
+  const inviteRef = normalizeInviteCode(md.inviteRef);
+
   const order: Order = {
     id: session.id,
     createdAt: Date.now(),
@@ -84,10 +91,29 @@ export async function POST(req: Request) {
       typeof session.payment_intent === "string"
         ? session.payment_intent
         : (session.payment_intent?.id ?? undefined),
+    ...(inviteRef ? { inviteRef } : {}),
   };
+
+  if (inviteRef) {
+    const invite = await recordInviteeOrder(
+      inviteRef,
+      order.id,
+      order.customer.email ?? "",
+    );
+    if (invite) {
+      order.invitedByOrderId = invite.inviterOrderId;
+      const note = `Invite link: ${inviteRef}`;
+      order.customer.notes = order.customer.notes
+        ? `${order.customer.notes}\n${note}`
+        : note;
+    }
+  }
 
   try {
     await saveOrder(order);
+    if (order.paid) {
+      await registerInviterOrder(order);
+    }
     await recordPurchase();
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Storage error";

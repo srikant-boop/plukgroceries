@@ -56,9 +56,10 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p>
-          Yes — that&apos;s the idea. If someone new places an order this drop
-          because you invited them, add their name at checkout. Once their
-          order is paid, we&apos;ll adjust your order to wholesale prices.
+          Yes — that&apos;s the idea. Place your order, then copy your invite link
+          on the confirmation page and share it. When someone new orders through
+          that link this drop, we&apos;ll adjust your bag to wholesale prices after
+          their order is paid.
         </p>
         <p className="mt-3">
           They need to be genuinely new to Pluk for that drop week. One invite

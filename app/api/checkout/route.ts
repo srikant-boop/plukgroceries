@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { getPickupSpot } from "@/lib/pickup";
 import { stripeConfigError, validateCheckoutBody } from "@/lib/checkout-api";
+import { getInviteByCode } from "@/lib/invite-store";
 
 export const runtime = "nodejs";
 
@@ -20,10 +21,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: validated.error }, { status: 400 });
   }
 
-  const { customer, pickupSpotId, lines } = validated.value;
+  const { customer, pickupSpotId, lines, inviteRef: rawInviteRef } =
+    validated.value;
   const spot = getPickupSpot(pickupSpotId);
   if (!spot) {
     return NextResponse.json({ error: "Unknown pickup spot." }, { status: 400 });
+  }
+
+  let inviteRef: string | undefined;
+  if (rawInviteRef) {
+    const invite = await getInviteByCode(rawInviteRef);
+    if (invite) inviteRef = invite.code;
   }
 
   const origin =
@@ -57,6 +65,7 @@ export async function POST(req: Request) {
         customerEmail: customer.email,
         customerNotes: customer.notes ?? "",
         pickupSpotId,
+        ...(inviteRef ? { inviteRef } : {}),
         lines: JSON.stringify(
           lines.map((l) => ({ productId: l.product.id, qty: l.qty })),
         ),

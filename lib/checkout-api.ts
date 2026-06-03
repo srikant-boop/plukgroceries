@@ -1,4 +1,5 @@
 import { getStorefrontProductById, type Product } from "./products";
+import { normalizeInviteCode } from "./invite-store";
 
 export type CheckoutLineInput = { productId: string; qty: number };
 
@@ -15,6 +16,7 @@ export function validateCheckoutBody(body: {
   customer?: CheckoutCustomerInput;
   pickupSpotId?: string;
   lines?: CheckoutLineInput[];
+  inviteRef?: string;
 }):
   | {
       ok: true;
@@ -22,6 +24,7 @@ export function validateCheckoutBody(body: {
         lines: Array<{ product: Product; qty: number }>;
         customer: { name: string; phone: string; email: string; notes?: string };
         pickupSpotId: string;
+        inviteRef?: string;
       };
     }
   | { ok: false; error: string } {
@@ -29,6 +32,7 @@ export function validateCheckoutBody(body: {
   const phone = body.customer?.phone?.trim() ?? "";
   const email = body.customer?.email?.trim() ?? "";
   const notes = body.customer?.notes?.trim();
+  const inviteRef = normalizeInviteCode(body.inviteRef) ?? undefined;
 
   if (!name) return { ok: false, error: "Name is required." };
   if (!phone) return { ok: false, error: "Phone is required." };
@@ -74,6 +78,7 @@ export function validateCheckoutBody(body: {
       pickupSpotId: body.pickupSpotId,
       customer: { name, phone, email, notes: notes || undefined },
       lines,
+      inviteRef,
     },
   };
 }

@@ -31,6 +31,10 @@ export type Order = {
   stripePaymentIntentId?: string;
   /** ISO — when catalogue prices were frozen for this order. */
   catalogSnapshotAt: string;
+  /** Invite code used at checkout (invitee). */
+  inviteRef?: string;
+  /** Inviter's Stripe session id when this order came through a ref link. */
+  invitedByOrderId?: string;
 };
 
 const ORDERS_KEY = "pluk:orders";
