@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart, hydrateLines, cartTotal } from "@/lib/cart";
 import { money } from "@/lib/format";
 import { CartSavings } from "@/components/CartSavings";
+import { InviteNeighborCallout } from "@/components/InviteNeighborCallout";
 import { pickupSpots, getPickupSpot } from "@/lib/pickup";
 import { track } from "@/lib/analytics-client";
 
@@ -17,6 +18,7 @@ export default function CheckoutPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
+  const [invitedBy, setInvitedBy] = useState("");
   const [pickupSpotId, setPickupSpotId] = useState<string>(pickupSpots[0].id);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -61,11 +63,16 @@ export default function CheckoutPage() {
     setError(null);
     track("checkout_start", { qty: items.length });
     try {
+      const inviteNote = invitedBy.trim()
+        ? `Invited by: ${invitedBy.trim()} (0% markup request)`
+        : "";
+      const combinedNotes = [notes.trim(), inviteNote].filter(Boolean).join("\n");
+
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer: { name, email, phone, notes },
+          customer: { name, email, phone, notes: combinedNotes || undefined },
           pickupSpotId,
           lines: items.map((i) => ({ productId: i.productId, qty: i.qty })),
         }),
@@ -149,6 +156,22 @@ export default function CheckoutPage() {
                 </div>
               </label>
             ))}
+          </fieldset>
+
+          <InviteNeighborCallout variant="compact" />
+
+          <fieldset className="space-y-4">
+            <legend className="eyebrow mb-3">Invite pricing (optional)</legend>
+            <Field
+              label="Neighbour you invited (their name)"
+              value={invitedBy}
+              onChange={setInvitedBy}
+              placeholder="If someone new is ordering because of you"
+            />
+            <p className="text-xs text-muted leading-relaxed">
+              If they complete their first order this drop, we&apos;ll refund
+              your 10% markup after pickup — your bag at wholesale.
+            </p>
           </fieldset>
 
           <fieldset>

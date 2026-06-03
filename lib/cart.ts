@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { products, type Product } from "./products";
+import { products, isStorefrontProduct, type Product } from "./products";
 
 export type CartLine = {
   productId: string;
@@ -56,7 +56,7 @@ export const hydrateLines = (lines: CartLine[]): CartItem[] =>
   lines
     .map((l) => {
       const product = products.find((p) => p.id === l.productId);
-      return product ? { ...l, product } : null;
+      return product && isStorefrontProduct(product) ? { ...l, product } : null;
     })
     .filter((x): x is CartItem => x !== null);
 

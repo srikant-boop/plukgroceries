@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProduct, products, pricePerLbLabel } from "@/lib/products";
+import { getStorefrontProduct, storefrontProducts, pricePerLbLabel } from "@/lib/products";
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { PriceCompareTable } from "@/components/PriceCompareTable";
@@ -11,7 +11,7 @@ import { ProductViewTracker } from "@/components/ProductViewTracker";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+  return storefrontProducts().map((p) => ({ slug: p.slug }));
 }
 
 export default async function ProductPage({
@@ -20,7 +20,7 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = getStorefrontProduct(slug);
   if (!product) notFound();
 
   const hasCompetitors = product.competitors.length > 0;

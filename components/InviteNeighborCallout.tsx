@@ -1,0 +1,34 @@
+import Link from "next/link";
+
+type Props = {
+  /** Checkout uses a tighter layout above the form. */
+  variant?: "default" | "compact";
+};
+
+export function InviteNeighborCallout({ variant = "default" }: Props) {
+  const compact = variant === "compact";
+
+  return (
+    <div
+      className={`border border-line bg-surface text-sm leading-relaxed ${
+        compact ? "p-4" : "p-5 sm:p-6"
+      }`}
+    >
+      <p className="font-medium text-foreground">
+        Invite a neighbour — get 0% markup on your order
+      </p>
+      <p className={`text-foreground/75 ${compact ? "mt-1.5" : "mt-2"}`}>
+        We usually add about 10% on wholesale so we can keep the drop running.
+        If someone new orders this week because you invited them, add their name
+        at checkout — we&apos;ll refund your 10% so your bag matches what we
+        paid (0% markup).
+      </p>
+      <Link
+        href="/faq#invite-a-neighbour"
+        className="mt-3 inline-block text-xs underline underline-offset-4 hover:text-accent"
+      >
+        How invite pricing works →
+      </Link>
+    </div>
+  );
+}

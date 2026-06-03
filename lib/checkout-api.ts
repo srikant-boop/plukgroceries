@@ -1,4 +1,4 @@
-import { getProductById, type Product } from "./products";
+import { getStorefrontProductById, type Product } from "./products";
 
 export type CheckoutLineInput = { productId: string; qty: number };
 
@@ -48,9 +48,9 @@ export function validateCheckoutBody(body: {
     if (!Number.isFinite(qty) || qty < 1) {
       return { ok: false, error: "Invalid quantity in cart." };
     }
-    const product = getProductById(l.productId);
+    const product = getStorefrontProductById(l.productId);
     if (!product) {
-      return { ok: false, error: `Unknown product: ${l.productId}` };
+      return { ok: false, error: `This item isn't available this drop.` };
     }
     if (qty > product.stock) {
       return {

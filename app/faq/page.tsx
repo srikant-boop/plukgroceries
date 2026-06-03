@@ -4,6 +4,7 @@ import { pickupSpots } from "@/lib/pickup";
 type FaqItem = {
   q: string;
   a: React.ReactNode;
+  anchorId?: string;
 };
 
 const faqs: FaqItem[] = [
@@ -37,31 +38,44 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p>
-          Four levers: a short supply chain, tiny catalog, pre-orders, thin
-          markup.
+          We stay as close to the grower, farmer, or maker as we can — fewer
+          middlemen, a short weekly list, and pre-orders so we buy only what
+          sold. Shelf prices add about 10% on what we pay wholesale; that
+          covers packing and running the drop, not a grocery-store markup stack.
         </p>
         <p className="mt-3">
-          Big national grocers often stack 3–4 markup layers between farm and
-          basket (consolidator → distributor → warehouse → store). For now our
-          weekly
-          produce mostly comes through one wholesaler at the Ontario Food
-          Terminal — one hop, not four — and we&apos;re working on more
-          direct-from-farmer lines as we grow. We keep the catalog
-          deliberately small — Aldi-style, not a wall of SKUs. Right now
-          that&apos;s about a dozen items per drop; we may add a few over
-          time, but the idea stays the same: fewer products, more volume on
-          each. Because everything is pre-ordered before the drop, we
-          buy exactly what was bought — no unsold inventory, no spoilage,
-          no waste markup baked into your price. We add about 20–30% on our
-          wholesale cost — the same ballpark hard discounters like Aldi aim
-          for (they don&apos;t publish an exact number). That compares to
-          roughly 40% stacked markup at many big supermarkets.
+          Most weeks that still lands below premium chains on the items we list.
+          When a major retailer runs a sale we lose — we show the comparison
+          honestly on each product. No membership, no delivery fee on regular
+          pickup.
+        </p>
+      </>
+    ),
+  },
+  {
+    q: "Can I get 0% markup if I invite someone?",
+    anchorId: "invite-a-neighbour",
+    a: (
+      <>
+        <p>
+          Yes — that&apos;s the idea. If someone new places an order this drop
+          because you invited them, add their name at checkout. Once their order
+          is paid, we&apos;ll refund the 10% markup on yours so your bag matches
+          wholesale (0% markup).
         </p>
         <p className="mt-3">
-          Most weeks that lands us 20–40% below premium grocery chains and
-          10–20% below mid-tier ones. When a major retailer runs a sale we
-          lose — we mark it honestly on the page. No membership, no delivery
-          fee.
+          They need to be genuinely new to Pluk for that drop week. One invite
+          credit per new neighbour per drop. If anything&apos;s unclear, message
+          us in the{" "}
+          <a
+            href="https://www.facebook.com/share/g/1cRmroAoyr/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4 hover:text-accent"
+          >
+            Oakville group on Facebook
+          </a>{" "}
+          after you check out.
         </p>
       </>
     ),
@@ -72,7 +86,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "Do you deliver to my house?",
-    a: "Not for regular drops — pickup-only keeps the markup thin and the logistics simple.",
+    a: "Not for regular drops — pickup-only keeps overhead low.",
   },
   {
     q: "Where do you get the food?",
@@ -143,6 +157,7 @@ export default function FAQPage() {
         {faqs.map((item) => (
           <details
             key={item.q}
+            id={item.anchorId}
             className="group border-b border-line"
           >
             <summary className="flex items-center justify-between gap-3 py-5 cursor-pointer list-none hover:text-accent">

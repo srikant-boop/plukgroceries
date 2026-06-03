@@ -53,7 +53,10 @@ export type Product = {
   avgWeightKg?: number;
 };
 
-/** Standard produce markup: cost × 1.20 (Aldi-style ~20% on cost). Internal ops only. */
+/** Standard shelf markup on wholesale cost (internal ops). */
+export const STANDARD_MARKUP_MULTIPLIER = 1.1;
+
+/** Legacy Aldi-style target — internal ops only. */
 export const DEFAULT_MARKUP_MULTIPLIER = 1.2;
 
 /** Derive retail from wholesale cost (round to cents). Internal ops only. */
@@ -117,7 +120,31 @@ export const averageSavingsVsStore = (store: string): number => {
 };
 
 export const specialProducts = (): Product[] =>
-  products.filter((p) => p.special);
+  storefrontProducts().filter((p) => p.special);
+
+/** SKUs listed on the storefront this drop. Others stay in catalogue for admin/orders only. */
+export const STOREFRONT_PRODUCT_IDS = new Set([
+  "strawberries",
+  "english-cucumbers",
+  "broccoli-crowns",
+  "clementines",
+]);
+
+export const isStorefrontProduct = (p: Product) =>
+  STOREFRONT_PRODUCT_IDS.has(p.id);
+
+export const storefrontProducts = (): Product[] =>
+  products.filter(isStorefrontProduct);
+
+export const getStorefrontProduct = (slug: string) => {
+  const p = getProduct(slug);
+  return p && isStorefrontProduct(p) ? p : undefined;
+};
+
+export const getStorefrontProductById = (id: string) => {
+  const p = getProductById(id);
+  return p && isStorefrontProduct(p) ? p : undefined;
+};
 
 // Per-pound price label for items whose `unit` starts with a weight in lb
 // (e.g. "3 lb bag", "1 lb"). Returns null for count-based or volume units.
@@ -153,8 +180,8 @@ export const products: Product[] = [
     unit: "3 lb bag",
     stock: 40,
     wholesalerPrice: 5.75,
-    markupMultiplier: 1,
-    ourPrice: 5.75,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 6.33,
     competitors: [
       { store: "Sobeys", price: 7.99, unit: "3 lb", url: "https://voila.ca/products/organic-potatoes-yellow-1-36-kg/472128EA", organic: true },
       { store: "Loblaws", price: 7.0, unit: "3 lb", url: "https://www.loblaws.ca/en/organic-yellow-potatoes-3lb-bag/p/20075900_EA?storeId=1011", organic: true },
@@ -175,8 +202,8 @@ export const products: Product[] = [
     unit: "4-6 count",
     stock: 40,
     wholesalerPrice: 5.44,
-    markupMultiplier: 1,
-    ourPrice: 5.44,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 5.98,
     competitors: [
       { store: "Sobeys", price: 8.99, unit: "4-6 count", url: "https://voila.ca/products/organic-tomatoes-on-the-vine-4-6-counts/1408309EA", organic: true },
       { store: "Loblaws", price: 7.92, unit: "4-6 count", url: "https://www.loblaws.ca/en/tomato-on-the-vine-red-1-bunch/p/20127917001_KG?storeId=1011", organic: true },
@@ -196,8 +223,8 @@ export const products: Product[] = [
     unit: "1 count",
     stock: 45,
     wholesalerPrice: 2.0,
-    markupMultiplier: 1,
-    ourPrice: 2.0,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 2.2,
     competitors: [
       { store: "Sobeys", price: 4.99, unit: "1 ct", url: "https://voila.ca/products/organic-english-cucumber-1-count/129818EA", organic: true },
       { store: "Loblaws", price: 4.0, unit: "1 ct", url: "https://www.loblaws.ca/en/organic-english-cucumber/p/20080489001_EA?storeId=1011", organic: true },
@@ -218,8 +245,8 @@ export const products: Product[] = [
     unit: "2 lb bag",
     stock: 40,
     wholesalerPrice: 3.08,
-    markupMultiplier: 1,
-    ourPrice: 3.08,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 3.39,
     competitors: [
       { store: "Sobeys", price: 5.99, unit: "2 lb", url: "https://voila.ca/products/organic-carrots-908-g/112284EA", organic: true },
       { store: "Loblaws", price: 5.0, unit: "2 lb", url: "https://www.loblaws.ca/en/organic-carrots-2-lb-bag/p/20053421_EA?storeId=1011", organic: true },
@@ -240,8 +267,8 @@ export const products: Product[] = [
     unit: "3 pack (340 g)",
     stock: 30,
     wholesalerPrice: 9.0,
-    markupMultiplier: 1,
-    ourPrice: 9.0,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 9.9,
     competitors: [
       { store: "Sobeys", price: 8.99, unit: "3 ct", url: "https://voila.ca/products/organic-romaine-hearts-3-count/414489EA", organic: true },
       { store: "Loblaws", price: 9.99, unit: "3 ct", url: "https://www.loblaws.ca/en/organic-romaine-lettuce-hearts/p/20599776001_EA?storeId=1011", organic: true },
@@ -262,8 +289,8 @@ export const products: Product[] = [
     unit: "1 crown",
     stock: 30,
     wholesalerPrice: 3.29,
-    markupMultiplier: 1,
-    ourPrice: 3.29,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 3.62,
     competitors: [
       { store: "Sobeys", price: 8.99, unit: "1 ct", url: "https://voila.ca/products/organic-broccoli-1-count/112808EA", organic: true },
       { store: "Loblaws", price: 7.99, unit: "1 ct", url: "https://www.loblaws.ca/en/broccoli/p/20149635001_EA?storeId=1011", organic: true },
@@ -316,8 +343,8 @@ export const products: Product[] = [
     unit: "3 lb bag",
     stock: 30,
     wholesalerPrice: 7.17,
-    markupMultiplier: 1,
-    ourPrice: 7.17,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 7.89,
     competitors: [
       { store: "Sobeys", price: 8.99, unit: "1.36 kg", url: "https://voila.ca/products/lil-snapper-organic-apples-gala-1-36-kg/674671EA", organic: true },
       { store: "Loblaws", price: 9.5, unit: "3 lb", url: "https://www.loblaws.ca/en/gala-apples-3-lb-bag/p/20606349001_EA?storeId=1011", organic: true },
@@ -337,8 +364,8 @@ export const products: Product[] = [
     unit: "2 lb box (907 g)",
     stock: 30,
     wholesalerPrice: 5.87,
-    markupMultiplier: 1,
-    ourPrice: 5.87,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 6.46,
     competitors: [
       { store: "Sobeys", price: 8.49, unit: "907 g", url: "https://voila.ca/products/organic-clementine-907-g/265759EA", organic: true },
       { store: "Loblaws", price: 8.0, unit: "907 g", url: "https://www.loblaws.ca/en/organic-orange/p/20972628001_EA?storeId=1011", organic: true },
@@ -358,8 +385,8 @@ export const products: Product[] = [
     unit: "1 lb clamshell (454 g)",
     stock: 30,
     wholesalerPrice: 7.25,
-    markupMultiplier: 1,
-    ourPrice: 7.25,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 7.98,
     competitors: [
       { store: "Sobeys", price: 9.99, unit: "454 g", url: "https://voila.ca/products/organic-strawberries-454-g/14837EA", organic: true },
       { store: "Loblaws", price: 8.0, unit: "454 g", url: "https://www.loblaws.ca/en/organic-strawberries-1-lb/p/20313872001_EA?storeId=1011", organic: true },
@@ -387,8 +414,8 @@ export const products: Product[] = [
     stock: 36,
     // Backed By Bees case: $25.89 / 12 cans
     wholesalerPrice: 2.16,
-    markupMultiplier: 1,
-    ourPrice: 2.16,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 2.38,
     competitors: [],
     supplierId: "backed-by-bees",
     special: "Find",
@@ -412,8 +439,8 @@ export const products: Product[] = [
     stock: 24,
     // Backed By Bees case: $103.24 / 12 jars
     wholesalerPrice: 8.6,
-    markupMultiplier: 1,
-    ourPrice: 8.6,
+    markupMultiplier: STANDARD_MARKUP_MULTIPLIER,
+    ourPrice: 9.46,
     competitors: [],
     supplierId: "backed-by-bees",
     special: "Find",
@@ -430,4 +457,4 @@ export const getProductByUuid = (uuid: string) =>
   products.find((p) => p.uuid === uuid);
 
 export const categories = () =>
-  Array.from(new Set(products.map((p) => p.category)));
+  Array.from(new Set(storefrontProducts().map((p) => p.category)));
