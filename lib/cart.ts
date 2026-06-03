@@ -17,6 +17,13 @@ type CartState = {
   clear: () => void;
 };
 
+/** Drop lines for SKUs no longer on the storefront (stale localStorage). */
+export const pruneCartLines = (lines: CartLine[]): CartLine[] =>
+  lines.filter((l) => {
+    const product = products.find((p) => p.id === l.productId);
+    return product != null && isStorefrontProduct(product);
+  });
+
 export const useCart = create<CartState>()(
   persist(
     (set) => ({
@@ -46,7 +53,16 @@ export const useCart = create<CartState>()(
         set((s) => ({ lines: s.lines.filter((l) => l.productId !== productId) })),
       clear: () => set({ lines: [] }),
     }),
-    { name: "pluk-cart" },
+    {
+      name: "pluk-cart",
+      onRehydrateStorage: () => (state, error) => {
+        if (error || !state?.lines?.length) return;
+        const cleaned = pruneCartLines(state.lines);
+        if (JSON.stringify(cleaned) !== JSON.stringify(state.lines)) {
+          useCart.setState({ lines: cleaned });
+        }
+      },
+    },
   ),
 );
 
@@ -64,7 +80,7 @@ export const cartTotal = (items: CartItem[]) =>
   items.reduce((sum, i) => sum + i.product.ourPrice * i.qty, 0);
 
 export const cartCount = (lines: CartLine[]) =>
-  lines.reduce((n, l) => n + l.qty, 0);
+  pruneCartLines(lines).reduce((n, l) => n + l.qty, 0);
 
 // Cart cost if every line had been bought at the named competitor. Lines
 // where that competitor doesn't carry the item fall back to our price (so
