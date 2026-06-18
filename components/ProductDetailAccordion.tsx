@@ -14,7 +14,7 @@ export function ProductDetailAccordion({
       {items.map((item) => (
         <details key={item.id} id={item.id} className="group border-b border-line">
           <summary className="flex items-center justify-between gap-3 py-4 cursor-pointer list-none hover:text-accent">
-            <span className="eyebrow">{item.title}</span>
+            <span className="text-sm font-medium">{item.title}</span>
             <svg
               width="18"
               height="18"

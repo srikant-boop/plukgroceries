@@ -22,6 +22,10 @@ export function generateStaticParams() {
   return storefrontProducts().map((p) => ({ slug: p.slug }));
 }
 
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return <h2 className="text-sm font-medium mb-3">{children}</h2>;
+}
+
 export default async function ProductPage({
   params,
 }: {
@@ -39,84 +43,34 @@ export default async function ProductPage({
 
   const brandName = supplier?.name ?? product.brand ?? "—";
 
-  const detailSections: ProductDetailAccordionItem[] = [
-    {
-      id: "about",
-      title: "About this product",
-      content: (
-        <div className="space-y-5">
-          <div>
-            <p className="eyebrow mb-2">Brand</p>
-            {supplier ? (
-              <Link
-                href={`/suppliers/${supplier.slug}`}
-                className="underline underline-offset-4 hover:text-accent"
-              >
-                {supplier.name}
-              </Link>
-            ) : (
-              <p>{brandName}</p>
-            )}
-          </div>
-          <div>
-            <p className="eyebrow mb-2">Why we selected it</p>
-            <p>{meta.whySelected}</p>
-          </div>
-          {product.longDescription.trim() && (
-            <div>
-              <p className="eyebrow mb-2">Description</p>
-              <p>{product.longDescription}</p>
-            </div>
-          )}
-        </div>
-      ),
-    },
+  const labelSections: ProductDetailAccordionItem[] = [
     {
       id: "ingredients",
-      title: "Ingredients & nutrition",
+      title: "Ingredients",
       content: (
-        <div className="space-y-5">
-          <IngredientsTable
-            sections={meta.ingredientSections}
-            note={meta.ingredientsNote}
-          />
-          <div>
-            <p className="eyebrow mb-2">Allergens</p>
-            <p>{meta.allergens}</p>
-          </div>
-          <div>
-            <p className="eyebrow mb-2">Nutrition highlights</p>
-            <p>{meta.nutritionHighlights}</p>
-          </div>
-        </div>
+        <IngredientsTable
+          sections={meta.ingredientSections}
+          note={meta.ingredientsNote}
+        />
       ),
     },
     {
-      id: "prep",
-      title: "Preparation & storage",
+      id: "warnings",
+      title: "Warnings",
+      content: <p>{meta.allergens}</p>,
+    },
+    {
+      id: "nutrition",
+      title: "Nutrition information",
+      content: <p>{meta.nutritionHighlights}</p>,
+    },
+    {
+      id: "directions",
+      title: "Directions",
       content: (
-        <div className="space-y-5">
-          <div>
-            <p className="eyebrow mb-2">Preparation</p>
-            <p>{meta.preparation}</p>
-          </div>
-          <div>
-            <p className="eyebrow mb-2">Storage</p>
-            <p>{meta.storage}</p>
-          </div>
-          {meta.sourceUrl && (
-            <div>
-              <p className="eyebrow mb-2">Official source</p>
-              <a
-                href={meta.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline underline-offset-4 hover:text-accent"
-              >
-                View on brand website ↗
-              </a>
-            </div>
-          )}
+        <div className="space-y-4">
+          <p>{meta.preparation}</p>
+          <p className="text-muted">{meta.storage}</p>
         </div>
       ),
     },
@@ -185,32 +139,71 @@ export default async function ProductPage({
 
         <AddToCart productId={product.id} />
 
-        <dl className="grid grid-cols-2 gap-4 text-sm border-y border-line py-4">
-          <div>
-            <dt className="eyebrow mb-1">Who it&apos;s for</dt>
-            <dd>{meta.audience.join(", ")}</dd>
+        <section>
+          <SectionHeading>About this item</SectionHeading>
+          <div className="text-sm leading-relaxed text-foreground/85 space-y-4">
+            {product.longDescription.trim() && <p>{product.longDescription}</p>}
+            <p>{meta.whySelected}</p>
           </div>
-          <div>
-            <dt className="eyebrow mb-1">Also good for</dt>
-            <dd>{meta.occasions.join(", ")}</dd>
-          </div>
-          {meta.suggestedAge && (
-            <div>
-              <dt className="eyebrow mb-1">Suggested age</dt>
-              <dd>{meta.suggestedAge}</dd>
-            </div>
-          )}
-          <div>
-            <dt className="eyebrow mb-1">Net weight</dt>
-            <dd>{product.unit}</dd>
-          </div>
-          <div>
-            <dt className="eyebrow mb-1">Country of origin</dt>
-            <dd>{meta.countryOfOrigin}</dd>
-          </div>
-        </dl>
+        </section>
 
-        <ProductDetailAccordion items={detailSections} />
+        <section>
+          <SectionHeading>Specifications</SectionHeading>
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm border-t border-line pt-4">
+            <div>
+              <dt className="text-muted mb-0.5">Brand</dt>
+              <dd>
+                {supplier ? (
+                  <Link
+                    href={`/suppliers/${supplier.slug}`}
+                    className="underline underline-offset-4 hover:text-accent"
+                  >
+                    {supplier.name}
+                  </Link>
+                ) : (
+                  brandName
+                )}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-muted mb-0.5">Net weight</dt>
+              <dd>{product.unit}</dd>
+            </div>
+            <div>
+              <dt className="text-muted mb-0.5">Country of origin</dt>
+              <dd>{meta.countryOfOrigin}</dd>
+            </div>
+            <div>
+              <dt className="text-muted mb-0.5">Who it&apos;s for</dt>
+              <dd>{meta.audience.join(", ")}</dd>
+            </div>
+            {meta.suggestedAge && (
+              <div>
+                <dt className="text-muted mb-0.5">Suggested age</dt>
+                <dd>{meta.suggestedAge}</dd>
+              </div>
+            )}
+            <div>
+              <dt className="text-muted mb-0.5">Also good for</dt>
+              <dd>{meta.occasions.join(", ")}</dd>
+            </div>
+          </dl>
+        </section>
+
+        <ProductDetailAccordion items={labelSections} />
+
+        {meta.sourceUrl && (
+          <p className="text-sm">
+            <a
+              href={meta.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4 hover:text-accent"
+            >
+              Official product source ↗
+            </a>
+          </p>
+        )}
 
         <div className="border border-line bg-surface p-4 text-xs leading-relaxed text-muted space-y-2">
           <p>Final Canadian label review required before sale.</p>
