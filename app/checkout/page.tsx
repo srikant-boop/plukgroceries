@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart, hydrateLines, cartTotal } from "@/lib/cart";
 import { money } from "@/lib/format";
 import { CartSavings } from "@/components/CartSavings";
+import { DeliveryAddressField } from "@/components/DeliveryAddressField";
 import type { PaymentMethod } from "@/lib/checkout-api";
 import { track } from "@/lib/analytics-client";
 
@@ -94,7 +95,13 @@ export default function CheckoutPage() {
         <div className="space-y-8">
           <fieldset className="space-y-4">
             <legend className="eyebrow mb-3">Your details</legend>
-            <Field label="Name" value={name} onChange={setName} required />
+            <Field
+              label="Name"
+              value={name}
+              onChange={setName}
+              required
+              autoComplete="name"
+            />
             <Field
               label="Email"
               value={email}
@@ -102,6 +109,7 @@ export default function CheckoutPage() {
               required
               type="email"
               placeholder="you@example.com"
+              autoComplete="email"
             />
             <Field
               label="Phone"
@@ -110,13 +118,12 @@ export default function CheckoutPage() {
               required
               type="tel"
               placeholder="(905) 555-0123"
+              autoComplete="tel"
             />
-            <Field
-              label="Delivery address"
+            <DeliveryAddressField
               value={deliveryAddress}
               onChange={setDeliveryAddress}
               required
-              placeholder="Street address, Oakville ON"
             />
             <p className="text-xs text-muted leading-relaxed">
               All orders are home delivered in Oakville.
@@ -233,6 +240,7 @@ function Field({
   required,
   type = "text",
   placeholder,
+  autoComplete,
 }: {
   label: string;
   value: string;
@@ -240,6 +248,7 @@ function Field({
   required?: boolean;
   type?: string;
   placeholder?: string;
+  autoComplete?: string;
 }) {
   return (
     <label className="block">
@@ -253,6 +262,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         required={required}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         className="w-full border border-line bg-surface p-3 text-sm focus:outline-none focus:border-foreground"
       />
     </label>
