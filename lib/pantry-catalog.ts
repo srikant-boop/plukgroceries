@@ -754,7 +754,15 @@ export const pantryProducts: PantryProduct[] = [
       countryOfOrigin: "India",
       suggestedAge:
         "For kids and family — supervise young children because of size and crunch.",
-      gallery: ["/products/pantry/superyou-multigrain-protein-chips.jpg"],
+      gallery: [
+        "/products/pantry/superyou-multigrain-protein-chips/gallery-01.jpg",
+        "/products/pantry/superyou-multigrain-protein-chips/gallery-06.jpg",
+        "/products/pantry/superyou-multigrain-protein-chips/gallery-02.jpg",
+        "/products/pantry/superyou-multigrain-protein-chips/gallery-04.jpg",
+        "/products/pantry/superyou-multigrain-protein-chips/gallery-03.jpg",
+        "/products/pantry/superyou-multigrain-protein-chips/gallery-05.jpg",
+        "/products/pantry/superyou-multigrain-protein-chips/gallery-07.jpg",
+      ],
     },
   },
 ];
