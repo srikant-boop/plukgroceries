@@ -167,24 +167,22 @@ export const pantryProducts: PantryProduct[] = [
         {
           rows: [
             {
-              name: "Supergrain blend (sprouted ragi, jowar, rice)",
-              amount: "35%",
+              name: "Multigrain flour blend (sprouted ragi, jowar, rice, oats)",
+              amount: "47%",
             },
-            { name: "Milk solids", amount: "30%" },
-            { name: "Oat flour", amount: "12%" },
+            { name: "Milk solids", amount: "33%" },
             {
-              name: "Fruit blend (banana, strawberry)",
+              name: "Fruit powder blend (banana, strawberry)",
               amount: "10%",
             },
             { name: "Date powder", amount: "9%" },
-            { name: "Skimmed milk powder" },
             { name: "Beet juice powder" },
             { name: "Vitamins and minerals" },
           ],
         },
       ],
       ingredientsNote:
-        "Sweetened with date powder only.",
+        "Contains 23% millets. Sweetened with date powder only.",
       allergens:
         "Contains milk. Not suitable for milk allergy.",
       nutritionHighlights:
@@ -229,11 +227,11 @@ export const pantryProducts: PantryProduct[] = [
         {
           rows: [
             {
-              name: "Supergrain blend (jowar, oat, foxtail millet, ragi flour)",
-              amount: "69%",
+              name: "Multigrain flour blend (jowar, oat, foxtail millet, ragi)",
+              amount: "66%",
             },
-            { name: "Jaggery", amount: "12.5%" },
-            { name: "Raw unrefined sugar", amount: "12.5%" },
+            { name: "Jaggery", amount: "14%" },
+            { name: "Raw unrefined sugar", amount: "14%" },
             { name: "Cocoa powder" },
             { name: "Baking powder" },
             { name: "Raising agent (baking soda, INS 500(ii))" },
@@ -288,19 +286,21 @@ export const pantryProducts: PantryProduct[] = [
       ingredientSections: [
         {
           rows: [
-            { name: "Ragi" },
-            { name: "Jowar" },
-            { name: "Rice" },
-            { name: "Corn" },
-            { name: "Cocoa" },
-            { name: "Raw unrefined sugar" },
+            { name: "Millet flour blend (jowar, ragi)", amount: "24%" },
+            { name: "Unrefined sugar", amount: "22.6%" },
+            { name: "Corn grits", amount: "18%" },
+            { name: "Rice flour", amount: "9.9%" },
+            { name: "Cocoa", amount: "5.7%" },
+            { name: "Rice bran oil" },
+            { name: "Nature-identical flavour" },
+            { name: "Antioxidant (natural tocopherol)" },
           ],
         },
       ],
       ingredientsNote:
-        "No maida, salt, trans fat, palm oil, preservatives, artificial colours, or flavours.",
+        "Contains 24% millets. No maida, salt, trans fat, palm oil, preservatives, artificial colours, or flavours.",
       allergens:
-        "Contains corn and rice. Contains dairy when prepared with milk.",
+        "Made in a facility that processes wheat, milk solids, soy, and nuts. Contains dairy when prepared with milk.",
       nutritionHighlights:
         "30 g cereal with 200 ml cow's milk provides about 66% of daily calcium RDA.",
       preparation:
@@ -341,39 +341,38 @@ export const pantryProducts: PantryProduct[] = [
         "Instant noodles are a real use case in busy households. We carry one millet-based masala noodle — a cleaner alternative to typical maida noodles, without filling the shelf with flavours.",
       ingredientSections: [
         {
-          heading: "Noodles",
+          heading: "Noodles (94%)",
           rows: [
-            { name: "Foxtail millet flour" },
-            { name: "Whole wheat flour" },
-            { name: "Cluster bean powder (natural gum)" },
+            {
+              name: "Multigrain flour blend (whole wheat, foxtail millet)",
+              amount: "93%",
+            },
+            { name: "Thickener (guar gum)", amount: "6.7%" },
             { name: "Salt" },
+            { name: "Antioxidant (natural rosemary)" },
           ],
         },
         {
-          heading: "Spice mix (5%)",
+          heading: "Spice mix (6%)",
           rows: [
-            { name: "Coriander seeds" },
-            { name: "Red chillies" },
-            { name: "Onion powder" },
-            { name: "Garlic powder" },
-            { name: "Ginger powder" },
-            { name: "Turmeric" },
-            { name: "Curry leaves" },
-            { name: "Fennel seeds" },
-            { name: "Black pepper" },
-            { name: "Cassia" },
-            { name: "Fenugreek" },
-            { name: "Star anise" },
-            { name: "Clove" },
-            { name: "Nutmeg" },
+            {
+              name: "Mixed spices (coriander, chilli, black pepper, amchur, turmeric, nutmeg, fennel, cumin, ginger, fenugreek, star anise, allspice, garam masala, clove, cinnamon)",
+            },
+            { name: "Maltodextrin" },
             { name: "Salt" },
-            { name: "Unrefined cane sugar" },
-            { name: "Citric acid (INS 330)" },
+            { name: "Jaggery powder" },
+            { name: "Dehydrated vegetables (onion, garlic)" },
+            { name: "Natural flavouring substances" },
+            { name: "Edible vegetable oil (sunflower)" },
+            { name: "Dehydrated curry leaves" },
+            { name: "Natural colours (paprika extract, turmeric extract)" },
+            { name: "Acidity regulator (citric acid)" },
           ],
         },
       ],
+      ingredientsNote: "Contains 31.2% millets.",
       allergens:
-        "Contains wheat (gluten). Made in a facility that processes nuts — may contain trace amounts.",
+        "Contains wheat. Manufactured in a facility that also processes milk, soy, and nuts.",
       nutritionHighlights:
         "Sun-dried, not fried. Foxtail millet is a source of vitamin A; whole wheat provides B-vitamins and minerals.",
       preparation:
@@ -414,12 +413,19 @@ export const pantryProducts: PantryProduct[] = [
       ingredientSections: [
         {
           rows: [
-            { name: "Foxtail millet" },
-            { name: "Urad dal" },
-            { name: "Chana dal" },
-            { name: "Moong dal" },
-            { name: "Natural spinach powder" },
-            { name: "Mild spices" },
+            {
+              name: "Supergrain blend (foxtail millet flour, rice flour)",
+              amount: "54%",
+            },
+            { name: "Moong dal (green gram)", amount: "16%" },
+            { name: "Urad dal (black gram)", amount: "14%" },
+            { name: "Iodised salt" },
+            { name: "Spinach powder" },
+            {
+              name: "Spices (asafoetida, curry leaves, cumin)",
+            },
+            { name: "Onion flakes" },
+            { name: "Raising agent (baking soda, INS 500(ii))" },
           ],
         },
       ],
@@ -524,11 +530,12 @@ export const pantryProducts: PantryProduct[] = [
             },
             { name: "Rice bran oil", amount: "12%" },
             { name: "Jaggery", amount: "11%" },
-            { name: "Raw unrefined sugar", amount: "11%" },
+            { name: "Unrefined sugar", amount: "11%" },
             { name: "Cocoa powder", amount: "3.5%" },
             { name: "Chocolate chips" },
             { name: "Skimmed milk powder" },
             { name: "Corn flour" },
+            { name: "Nature identical flavouring substances (vanilla)" },
             { name: "Raising agent (baking soda)" },
             { name: "Iodised salt" },
             { name: "Emulsifier (sunflower lecithin)" },

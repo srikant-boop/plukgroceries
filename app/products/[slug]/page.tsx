@@ -6,13 +6,14 @@ import {
   hasPantryMeta,
 } from "@/lib/products";
 import { getProductAssets } from "@/lib/product-assets";
+import { getProductLabelData } from "@/lib/product-label-data";
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
 import { AudienceIcons } from "@/components/AudienceIcons";
 import { BrandLogo } from "@/components/BrandLogo";
 import { IngredientsList } from "@/components/IngredientsList";
-import { LabelImage } from "@/components/LabelImage";
+import { NutritionFactsTable } from "@/components/NutritionFactsTable";
 import { ProductGallery } from "@/components/ProductGallery";
 import {
   ProductDetailAccordion,
@@ -44,6 +45,7 @@ export default async function ProductPage({
     ? getSupplierById(product.supplierId)
     : null;
   const assets = getProductAssets(slug);
+  const labelData = getProductLabelData(slug);
   const gallery = assets?.gallery?.length
     ? assets.gallery
     : meta.gallery?.length
@@ -60,8 +62,6 @@ export default async function ProductPage({
         <IngredientsList
           sections={meta.ingredientSections}
           note={meta.ingredientsNote}
-          labelImage={assets?.ingredientsLabelImage}
-          productName={product.name}
         />
       ),
     },
@@ -73,14 +73,11 @@ export default async function ProductPage({
     {
       id: "nutrition",
       title: "Nutrition information",
-      content: assets?.nutritionLabelImage ? (
-        <div className="space-y-4">
-          <LabelImage
-            src={assets.nutritionLabelImage}
-            alt={`${product.name} nutrition label`}
-          />
-          <p className="text-sm text-muted">{meta.nutritionHighlights}</p>
-        </div>
+      content: labelData?.nutritionFacts ? (
+        <NutritionFactsTable
+          facts={labelData.nutritionFacts}
+          summary={meta.nutritionHighlights}
+        />
       ) : (
         <p>{meta.nutritionHighlights}</p>
       ),
