@@ -182,11 +182,11 @@ export const pantryProducts: PantryProduct[] = [
         },
       ],
       ingredientsNote:
-        "Contains 23% millets. Sweetened with date powder only.",
+        "No hydrogenated fats, preservatives, or artificial colours and flavours. This product contains 23% millets.",
       allergens:
-        "Contains milk. Not suitable for milk allergy.",
+        "Contains oat and milk products. Made in a facility that processes wheat and nuts. May contain trace elements.",
       nutritionHighlights:
-        "Fortified with 13 vitamins and minerals. Ragi has 10× the calcium of wheat and rice; jowar is protein-rich.",
+        "Fortified with 13 vitamins and minerals.",
       preparation:
         "Boil drinking water for 5 minutes; cool to lukewarm. Measure 45 ml (3 tbsp) water into a bowl, add 3 level scoops (20 g) cereal, stir, and feed immediately with a clean spoon. Consume within 30 minutes.",
       storage:

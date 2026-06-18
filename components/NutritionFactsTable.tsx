@@ -13,6 +13,9 @@ export function NutritionFactsTable({
   facts: NutritionFacts;
   summary?: string;
 }) {
+  const perServeLabel =
+    facts.perServeColumnLabel ?? COLUMN_LABELS.perServe;
+
   return (
     <div className="space-y-4">
       <div className="text-sm space-y-1">
@@ -36,25 +39,36 @@ export function NutritionFactsTable({
                   key={col}
                   className="py-2 px-2 font-normal eyebrow text-right whitespace-nowrap"
                 >
-                  {COLUMN_LABELS[col]}
+                  {col === "perServe" ? perServeLabel : COLUMN_LABELS[col]}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {facts.rows.map((row) => (
-              <tr key={row.nutrient} className="border-b border-line/60">
-                <td className="py-2 pr-4 leading-snug">{row.nutrient}</td>
-                {facts.columns.map((col) => (
+            {facts.rows.map((row) =>
+              row.isSection ? (
+                <tr key={row.nutrient} className="border-b border-line/60">
                   <td
-                    key={col}
-                    className="py-2 px-2 text-right tabular-nums text-muted whitespace-nowrap"
+                    colSpan={facts.columns.length + 1}
+                    className="py-2 pr-4 text-xs uppercase tracking-wide text-muted"
                   >
-                    {row[col] ?? ""}
+                    {row.nutrient}
                   </td>
-                ))}
-              </tr>
-            ))}
+                </tr>
+              ) : (
+                <tr key={row.nutrient} className="border-b border-line/60">
+                  <td className="py-2 pr-4 leading-snug">{row.nutrient}</td>
+                  {facts.columns.map((col) => (
+                    <td
+                      key={col}
+                      className="py-2 px-2 text-right tabular-nums text-muted whitespace-nowrap"
+                    >
+                      {row[col] ?? ""}
+                    </td>
+                  ))}
+                </tr>
+              ),
+            )}
           </tbody>
         </table>
       </div>

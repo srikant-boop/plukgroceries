@@ -3,12 +3,16 @@ export type NutritionFactRow = {
   per100g?: string;
   perServe?: string;
   rda?: string;
+  /** Renders as a subheading row (e.g. Vitamins, Minerals). */
+  isSection?: boolean;
 };
 
 export type NutritionFacts = {
   servingSize: string;
   servingsPerPack?: string;
   columns: ("per100g" | "perServe" | "rda")[];
+  /** Defaults to "Per serve" when omitted. */
+  perServeColumnLabel?: string;
   rows: NutritionFactRow[];
   footnotes?: string[];
 };
@@ -42,6 +46,7 @@ export const PRODUCT_LABEL_DATA: Record<
     nutritionFacts: {
       servingSize: "3 scoops (approx. 20 g)",
       servingsPerPack: "10",
+      perServeColumnLabel: "Per 20 g",
       columns: ["per100g", "perServe"],
       rows: [
         { nutrient: "Energy", per100g: "375.9 kcal", perServe: "75.2 kcal" },
@@ -55,8 +60,39 @@ export const PRODUCT_LABEL_DATA: Record<
         { nutrient: "Saturated fat", per100g: "0.9 g", perServe: "0.2 g" },
         { nutrient: "Trans fat", per100g: "0.0 g", perServe: "0.0 g" },
         { nutrient: "Cholesterol", per100g: "0.0 mg", perServe: "0.0 mg" },
+        { nutrient: "Vitamins", isSection: true },
+        { nutrient: "Vitamin A", per100g: "400.0 mcg", perServe: "80.0 mcg" },
+        { nutrient: "Vitamin C", per100g: "40.0 mg", perServe: "8.0 mg" },
+        { nutrient: "Vitamin D", per100g: "5.0 mcg", perServe: "1.0 mcg" },
+        { nutrient: "Vitamin E", per100g: "2.5 mg", perServe: "0.5 mg" },
+        {
+          nutrient: "Vitamin B1 (Thiamine)",
+          per100g: "0.5 mg",
+          perServe: "0.1 mg",
+        },
+        {
+          nutrient: "Vitamin B2 (Riboflavin)",
+          per100g: "0.6 mg",
+          perServe: "0.1 mg",
+        },
+        { nutrient: "Nicotinamide", per100g: "8.0 mg", perServe: "1.6 mg" },
+        {
+          nutrient: "Vitamin B6 (Pyridoxin)",
+          per100g: "0.9 mg",
+          perServe: "0.2 mg",
+        },
+        { nutrient: "Vitamin B12", per100g: "0.6 mcg", perServe: "0.1 mcg" },
+        { nutrient: "Folic acid", per100g: "80.0 mcg", perServe: "16.0 mcg" },
+        { nutrient: "Minerals", isSection: true },
+        { nutrient: "Calcium", per100g: "600.0 mg", perServe: "120.0 mg" },
+        { nutrient: "Iron", per100g: "9.0 mg", perServe: "1.8 mg" },
+        { nutrient: "Zinc", per100g: "5.0 mg", perServe: "1.0 mg" },
       ],
-      footnotes: ["Fortified with 13 vitamins and minerals."],
+      footnotes: [
+        "Contains saturated fat not more than 5%.",
+        "Approx values.",
+        "Total sugar includes naturally occurring sugar from fruit powder.",
+      ],
     },
   },
   "slurrp-farm-millet-pancake-chocolate": {

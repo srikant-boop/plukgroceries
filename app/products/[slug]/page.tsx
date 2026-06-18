@@ -74,10 +74,7 @@ export default async function ProductPage({
       id: "nutrition",
       title: "Nutrition information",
       content: labelData?.nutritionFacts ? (
-        <NutritionFactsTable
-          facts={labelData.nutritionFacts}
-          summary={meta.nutritionHighlights}
-        />
+        <NutritionFactsTable facts={labelData.nutritionFacts} />
       ) : (
         <p>{meta.nutritionHighlights}</p>
       ),
