@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import {
-  formatCanadianAddress,
+  formatNominatimAddress,
   OAKVILLE_VIEWBOX,
   type AddressSuggestion,
+  type NominatimAddress,
 } from "@/lib/address-search";
 
 export async function GET(req: Request) {
@@ -36,11 +37,12 @@ export async function GET(req: Request) {
     const data = (await res.json()) as Array<{
       place_id: number;
       display_name: string;
+      address?: NominatimAddress;
     }>;
 
     const suggestions: AddressSuggestion[] = data.map((item) => ({
       id: String(item.place_id),
-      label: formatCanadianAddress(item.display_name),
+      label: formatNominatimAddress(item.address, item.display_name),
     }));
 
     return NextResponse.json(suggestions);
