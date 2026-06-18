@@ -17,27 +17,36 @@ export function NutritionFactsTable({
     facts.perServeColumnLabel ?? COLUMN_LABELS.perServe;
 
   return (
-    <div className="space-y-4">
-      <div className="text-sm space-y-1">
-        <p>
-          <span className="text-muted">Serving size:</span> {facts.servingSize}
+    <div className="overflow-hidden border border-line bg-surface">
+      <div className="border-b border-line bg-background/80 px-4 py-3 sm:px-5">
+        <p className="text-[11px] uppercase tracking-[0.12em] text-muted mb-2">
+          Nutrition facts
         </p>
-        {facts.servingsPerPack && (
-          <p>
-            <span className="text-muted">Servings per pack:</span>{" "}
-            {facts.servingsPerPack}
-          </p>
-        )}
+        <dl className="grid gap-2 sm:grid-cols-2 text-sm">
+          <div>
+            <dt className="text-muted text-xs mb-0.5">Serving size</dt>
+            <dd className="font-medium">{facts.servingSize}</dd>
+          </div>
+          {facts.servingsPerPack && (
+            <div>
+              <dt className="text-muted text-xs mb-0.5">Servings per pack</dt>
+              <dd className="font-medium">{facts.servingsPerPack}</dd>
+            </div>
+          )}
+        </dl>
       </div>
-      <div className="overflow-x-auto">
+
+      <div className="overflow-x-auto px-4 py-1 sm:px-5">
         <table className="w-full min-w-[280px] text-sm border-collapse">
           <thead>
-            <tr className="border-b border-line text-left">
-              <th className="py-2 pr-4 font-normal eyebrow">Nutrient</th>
+            <tr className="border-b border-line">
+              <th className="py-3 pr-4 text-left text-[11px] uppercase tracking-[0.1em] font-normal text-muted">
+                Nutrient
+              </th>
               {facts.columns.map((col) => (
                 <th
                   key={col}
-                  className="py-2 px-2 font-normal eyebrow text-right whitespace-nowrap"
+                  className="py-3 px-2 text-right text-[11px] uppercase tracking-[0.1em] font-normal text-muted whitespace-nowrap"
                 >
                   {col === "perServe" ? perServeLabel : COLUMN_LABELS[col]}
                 </th>
@@ -45,25 +54,32 @@ export function NutritionFactsTable({
             </tr>
           </thead>
           <tbody>
-            {facts.rows.map((row) =>
+            {facts.rows.map((row, index) =>
               row.isSection ? (
-                <tr key={row.nutrient} className="border-b border-line/60">
+                <tr key={row.nutrient} className="bg-background/60">
                   <td
                     colSpan={facts.columns.length + 1}
-                    className="py-2 pr-4 text-xs uppercase tracking-wide text-muted"
+                    className="py-2.5 pr-4 text-[11px] uppercase tracking-[0.12em] font-medium text-accent/80"
                   >
                     {row.nutrient}
                   </td>
                 </tr>
               ) : (
-                <tr key={row.nutrient} className="border-b border-line/60">
-                  <td className="py-2 pr-4 leading-snug">{row.nutrient}</td>
+                <tr
+                  key={row.nutrient}
+                  className={`border-b border-line/50 last:border-0 ${
+                    index % 2 === 0 ? "" : "bg-background/30"
+                  }`}
+                >
+                  <td className="py-2.5 pr-4 leading-snug text-foreground/90">
+                    {row.nutrient}
+                  </td>
                   {facts.columns.map((col) => (
                     <td
                       key={col}
-                      className="py-2 px-2 text-right tabular-nums text-muted whitespace-nowrap"
+                      className="py-2.5 px-2 text-right tabular-nums font-medium text-foreground/80 whitespace-nowrap"
                     >
-                      {row[col] ?? ""}
+                      {row[col] ?? "—"}
                     </td>
                   ))}
                 </tr>
@@ -72,15 +88,18 @@ export function NutritionFactsTable({
           </tbody>
         </table>
       </div>
-      {facts.footnotes?.map((note) => (
-        <p key={note} className="text-xs text-muted leading-relaxed">
-          {note}
-        </p>
-      ))}
-      {summary && (
-        <p className="text-sm text-muted leading-relaxed border-t border-line pt-3">
-          {summary}
-        </p>
+
+      {(facts.footnotes?.length || summary) && (
+        <div className="border-t border-line bg-background/50 px-4 py-3 sm:px-5 space-y-1.5">
+          {facts.footnotes?.map((note) => (
+            <p key={note} className="text-xs text-muted leading-relaxed">
+              {note}
+            </p>
+          ))}
+          {summary && (
+            <p className="text-xs text-muted leading-relaxed">{summary}</p>
+          )}
+        </div>
       )}
     </div>
   );
