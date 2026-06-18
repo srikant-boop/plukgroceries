@@ -13,8 +13,7 @@ export default function FaqPage() {
       <header className="mb-10">
         <h1 className="text-4xl sm:text-5xl leading-[1.05]">FAQ</h1>
         <p className="mt-4 text-base leading-relaxed text-foreground/80 max-w-2xl">
-          Plain answers about what PLUK is, how preorders work, when to expect
-          delivery, and what to expect when your pantry arrives.
+          Plain answers about PLUK, preorders, delivery, and product labels.
         </p>
       </header>
 
