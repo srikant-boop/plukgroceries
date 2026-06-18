@@ -704,28 +704,29 @@ export const pantryProducts: PantryProduct[] = [
     uuid: "a100000b-0000-4000-8000-00000000000b",
     id: "superyou-multigrain-protein-chips",
     slug: "superyou-multigrain-protein-chips",
-    name: "Multigrain Protein Chips",
+    name: "Pudina Multigrain Protein Chips",
     shortDescription:
-      "Baked multigrain protein chips — 10 g protein per pack, no palm oil or added sugar.",
+      "Baked pudina multigrain protein chips — 10 g protein and 3 g fibre per 40 g pack, no palm oil or added sugar.",
     longDescription:
-      "SuperYou multigrain protein chips — baked (not fried) with urad dal, jowar, chickpea, and soya protein isolate. A lighter savoury snack with 10 g plant protein and 3 g fibre per 40 g pack.",
+      "10 g of pure protein packed into every crunchy bite, made with an innovative blend of multigrains — chickpea, urad dal, jowar, and rice flour — with soya protein isolate. No sugar. No palm oil. Light, crispy, and bursting with bold pudina flavour. All in under 170 kcal per 40 g pack.",
     category: "Snacks",
     collection: "snacks",
     image: "/products/pantry/superyou-multigrain-protein-chips.jpg",
-    imageAlt: "SuperYou Multigrain Protein Chips 40g",
+    imageAlt: "SuperYou Pudina Multigrain Protein Chips 40 g",
     unit: "40 g",
     stock: 50,
-    ...P(2.2, 3.99),
+    ...P(2.0, 2.99),
     competitors: [],
     supplierId: "superyou",
     brand: "SuperYou",
     origin: "India",
     pantry: {
-      roleLine: "Baked multigrain chips with 10 g protein — a lighter savoury snack.",
+      roleLine:
+        "Baked pudina multigrain chips with 10 g protein — a lighter savoury snack.",
       audience: ["Family", "Kids"],
       badges: ["High Protein", "No Palm Oil", "No Added Sugar"],
       whySelected:
-        "Many families want a familiar chip format with more protein and less junk. SuperYou uses a baked multigrain base — one protein chip SKU on the test shelf to see if it earns reorders.",
+        "Many families want a familiar chip format with more protein and less junk. SuperYou’s pudina multigrain chips use a baked base with soya protein isolate — one protein chip SKU on the test shelf to see if it earns reorders.",
       ingredientSections: [
         {
           rows: [
@@ -736,18 +737,20 @@ export const pantryProducts: PantryProduct[] = [
             { name: "Tapioca starch" },
             { name: "Rice bran oil" },
             {
-              name: "Spices and condiments (chilli, onion powder, garlic powder, salt)",
+              name: "Spices and condiments (chilli, turmeric, cumin, ginger, ajwain, dried mango powder, asafoetida, hydrolysed vegetable powder, yeast extract, salt)",
             },
             { name: "Citric acid (INS 330)" },
           ],
         },
       ],
-      ingredientsNote: "Flavour and spice mix varies slightly by variant.",
-      allergens: "Contains soya and milk products. May contain wheat traces.",
-      nutritionHighlights: "",
+      ingredientsNote:
+        "Contains added natural food colour (INS 160c) and added natural and nature-identical flavouring substances.",
+      allergens: "Contains milk and soya products.",
+      nutritionHighlights:
+        "10 g protein and 3 g dietary fibre per 40 g pack; under 170 kcal per pack.",
       preparation: "Ready to eat.",
       storage:
-        "Store in a cool, dry place. Reseal after opening. Best before date on pack.",
+        "Keep away from direct sunlight. Store in a cool, dry, hygienic place at 20–25 °C. Do not buy if the pack is found tampered.",
       countryOfOrigin: "India",
       suggestedAge:
         "For kids and family — supervise young children because of size and crunch.",
