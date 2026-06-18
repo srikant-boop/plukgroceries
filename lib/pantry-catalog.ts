@@ -79,7 +79,7 @@ const P = (cost: number, price: number) => ({
   ourPrice: price,
 });
 
-/** Placeholder landed costs — update when final import pricing is set. */
+/** Landed costs and shelf prices — update when import pricing changes. */
 export const pantryProducts: PantryProduct[] = [
   {
     uuid: "a1000001-0000-4000-8000-000000000001",
@@ -95,7 +95,7 @@ export const pantryProducts: PantryProduct[] = [
     imageAlt: "Early Foods Rice and Moong Khichdi Mix package",
     unit: "200 g pouch",
     stock: 40,
-    ...P(6.5, 8.99),
+    ...P(5.11, 7.99),
     competitors: [],
     supplierId: "early-foods",
     brand: "Early Foods",
@@ -200,7 +200,7 @@ export const pantryProducts: PantryProduct[] = [
     imageAlt: "Slurrp Farm Millet Pancake Chocolate Supergrains mix",
     unit: "150 g",
     stock: 35,
-    ...P(6.0, 8.49),
+    ...P(3.09, 4.99),
     competitors: [],
     supplierId: "slurrp-farm",
     brand: "Slurrp Farm",
@@ -257,7 +257,7 @@ export const pantryProducts: PantryProduct[] = [
     imageAlt: "Slurrp Farm Choco Crunch Ragi Stars and Moons Cereal",
     unit: "250 g",
     stock: 35,
-    ...P(6.5, 8.99),
+    ...P(6.09, 8.99),
     competitors: [],
     supplierId: "slurrp-farm",
     brand: "Slurrp Farm",
@@ -310,7 +310,7 @@ export const pantryProducts: PantryProduct[] = [
     imageAlt: "Slurrp Farm Millet Noodles Classic Masala",
     unit: "192 g",
     stock: 50,
-    ...P(5.5, 7.49),
+    ...P(2.77, 4.49),
     competitors: [],
     supplierId: "slurrp-farm",
     brand: "Slurrp Farm",
@@ -379,7 +379,7 @@ export const pantryProducts: PantryProduct[] = [
     imageAlt: "Slurrp Farm Millet Dosa Spinach Supergrains mix",
     unit: "150 g",
     stock: 40,
-    ...P(5.5, 7.49),
+    ...P(2.85, 4.49),
     competitors: [],
     supplierId: "slurrp-farm",
     brand: "Slurrp Farm",
@@ -436,7 +436,7 @@ export const pantryProducts: PantryProduct[] = [
     imageAlt: "Slurrp Farm Macaroni Pasta",
     unit: "400 g",
     stock: 40,
-    ...P(6.0, 8.49),
+    ...P(7.08, 10.99),
     competitors: [],
     supplierId: "slurrp-farm",
     brand: "Slurrp Farm",
