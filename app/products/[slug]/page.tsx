@@ -11,7 +11,7 @@ import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
 import { AudienceIcons } from "@/components/AudienceIcons";
 import { BrandLogo } from "@/components/BrandLogo";
-import { IngredientsTable } from "@/components/IngredientsTable";
+import { IngredientsList } from "@/components/IngredientsList";
 import {
   ProductDetailAccordion,
   type ProductDetailAccordionItem,
@@ -50,7 +50,7 @@ export default async function ProductPage({
       id: "ingredients",
       title: "Ingredients",
       content: (
-        <IngredientsTable
+        <IngredientsList
           sections={meta.ingredientSections}
           note={meta.ingredientsNote}
         />
