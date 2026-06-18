@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { carriedBrands } from "@/lib/suppliers";
+import { BrandLogo } from "@/components/BrandLogo";
 import { Leaf } from "@/components/Leaf";
 
 export default function BrandsPage() {
@@ -24,8 +25,10 @@ export default function BrandsPage() {
           <li key={b.id}>
             <Link
               href={`/suppliers/${b.slug}`}
-              className="block border border-line p-6 hover:bg-surface transition-colors"
+              className="flex gap-5 border border-line p-6 hover:bg-surface transition-colors"
             >
+              <BrandLogo supplier={b} className="relative h-12 w-24 shrink-0" />
+              <div className="min-w-0">
               <h2 className="text-xl mb-1">{b.name}</h2>
               <p className="text-sm text-muted mb-3">{b.tagline}</p>
               <p className="text-sm text-foreground/80 line-clamp-2">
@@ -34,6 +37,7 @@ export default function BrandsPage() {
               <span className="inline-block mt-3 text-xs underline underline-offset-4">
                 View brand & products →
               </span>
+              </div>
             </Link>
           </li>
         ))}

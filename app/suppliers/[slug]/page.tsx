@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSupplier, suppliers, supplierIntroLabel } from "@/lib/suppliers";
 import { products, isStorefrontProduct } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
+import { BrandLogo } from "@/components/BrandLogo";
 import { SocialIcon } from "@/components/SocialIcon";
 
 /** Short label beside icon — avoids noisy handles in the sidebar. */
@@ -62,17 +62,7 @@ export default async function SupplierPage({
           <p className="text-muted text-lg">{supplier.tagline}</p>
         </div>
         <div className="flex flex-col gap-3 sm:items-end">
-          {supplier.logo && (
-            <div className="relative h-12 w-32 sm:w-40">
-              <Image
-                src={supplier.logo}
-                alt={`${supplier.name} logo`}
-                fill
-                sizes="160px"
-                className="object-contain object-left sm:object-right"
-              />
-            </div>
-          )}
+          <BrandLogo supplier={supplier} className="relative h-14 w-36 sm:h-16 sm:w-44" />
           {supplier.location && (
             <p className="text-sm text-muted sm:text-right">
               {supplier.location}

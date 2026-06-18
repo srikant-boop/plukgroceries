@@ -9,6 +9,8 @@ import {
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
+import { AudienceIcons } from "@/components/AudienceIcons";
+import { BrandLogo } from "@/components/BrandLogo";
 import { IngredientsTable } from "@/components/IngredientsTable";
 import {
   ProductDetailAccordion,
@@ -110,7 +112,10 @@ export default async function ProductPage({
 
       <div className="flex flex-col gap-8">
         <div>
-          {product.brand && (
+          {supplier?.logo && (
+            <BrandLogo supplier={supplier} linked className="relative h-8 w-24 mb-3" />
+          )}
+          {!supplier?.logo && product.brand && (
             <p className="text-xs uppercase tracking-wider text-muted mb-2">
               {product.brand}
             </p>
@@ -174,8 +179,10 @@ export default async function ProductPage({
               <dd>{meta.countryOfOrigin}</dd>
             </div>
             <div>
-              <dt className="text-muted mb-0.5">Who it&apos;s for</dt>
-              <dd>{meta.audience.join(", ")}</dd>
+              <dt className="text-muted mb-1">Who it&apos;s for</dt>
+              <dd>
+                <AudienceIcons audience={meta.audience} />
+              </dd>
             </div>
             {meta.suggestedAge && (
               <div>
@@ -191,19 +198,6 @@ export default async function ProductPage({
         </section>
 
         <ProductDetailAccordion items={labelSections} />
-
-        {meta.sourceUrl && (
-          <p className="text-sm">
-            <a
-              href={meta.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-accent"
-            >
-              Official product source ↗
-            </a>
-          </p>
-        )}
 
         <div className="border border-line bg-surface p-4 text-xs leading-relaxed text-muted space-y-2">
           <p>Final Canadian label review required before sale.</p>

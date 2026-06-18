@@ -24,7 +24,6 @@ export type PantryMeta = {
   storage: string;
   countryOfOrigin: string;
   suggestedAge?: string;
-  sourceUrl: string;
   gallery?: string[];
 };
 
@@ -123,19 +122,18 @@ export const pantryProducts: PantryProduct[] = [
         },
       ],
       ingredientsNote:
-        "No milk powder, salt, sugar, or maltodextrin (per Early Foods).",
+        "No milk powder, salt, sugar, or maltodextrin.",
       allergens:
-        "Free from milk, wheat, nuts, and soy in the ingredient list (per Early Foods).",
+        "Free from milk, wheat, nuts, and soy in the ingredient list.",
       nutritionHighlights:
         "Made with rice, moong dal, and kodo millet. No added sugar, milk powder, or maltodextrin.",
       preparation:
         "Creamy porridge: cook with water or milk until soft (about 5 minutes). Instant dosa/pancake: mix batter with water and spices; cook on a hot tawa. Follow package directions for consistency.",
       storage:
-        "Store in a cool, dry place. Transfer to a clean airtight container after opening. Shelf life is 4 months from manufacturing (per Early Foods).",
+        "Store in a cool, dry place. Transfer to a clean airtight container after opening. Shelf life is 4 months from manufacturing.",
       countryOfOrigin: "India",
       suggestedAge:
-        "Stage 1 — for babies starting solids (per Early Foods).",
-      sourceUrl: "https://www.earlyfoods.com/products/rice-moong-khichdi-mix-200g",
+        "Stage 1 — for babies starting solids.",
       gallery: ["/products/pantry/early-foods-rice-moong-khichdi.png"],
     },
   },
@@ -178,19 +176,17 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote: "Per Slurrp Farm product information.",
       allergens:
-        "Contains milk (whole and skimmed milk powders). No maida, refined sugar, or artificial colours or preservatives (per Slurrp Farm). Not suitable for children with milk allergy.",
+        "Contains milk (whole and skimmed milk powders). No maida, refined sugar, or artificial colours or preservatives. Not suitable for children with milk allergy.",
       nutritionHighlights:
-        "Made with ragi, jowar, rice, and oats. Sweetened with date powder — no refined sugar (per Slurrp Farm). Rich in calcium per brand product information.",
+        "Made with ragi, jowar, rice, and oats. Sweetened with date powder — no refined sugar. Rich in calcium.",
       preparation:
         "Boil drinking water for 5 minutes; cool to lukewarm. Measure 45 ml (3 tbsp) water into a bowl, add 3 level scoops (20 g) cereal, stir, and feed immediately with a clean spoon. Consume within 30 minutes.",
       storage:
         "Keep in a cool, dry place. After opening, store airtight and use within one month or by expiry date, whichever is earlier. Shelf life 12 months (unopened).",
       countryOfOrigin: "India",
       suggestedAge:
-        "For babies and toddlers who have started solids (per Slurrp Farm).",
-      sourceUrl: "https://www.slurrpfarm.com/products/no-refined-sugar-strawberry-ragi-rice-cereal",
+        "For babies and toddlers who have started solids.",
       gallery: ["/products/pantry/slurrp-farm-strawberry-ragi-cereal.jpg"],
     },
   },
@@ -238,19 +234,17 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote: "Per published Slurrp Farm label listings.",
       allergens:
-        "Made in a facility that handles wheat (gluten) and nuts — may contain trace amounts (per Slurrp Farm label listings). Contains oats.",
+        "Made in a facility that handles wheat (gluten) and nuts — may contain trace amounts. Contains oats.",
       nutritionHighlights:
-        "No maida, preservatives, or artificial flavours. Ragi and foxtail millet are naturally gluten-free grains (per Slurrp Farm).",
+        "No maida, preservatives, or artificial flavours. Ragi and foxtail millet are naturally gluten-free grains.",
       preparation:
         "Mix with water or milk per package instructions; pour onto a hot griddle and flip when bubbles form. Ready in minutes.",
       storage:
         "Keep in a cool, dry place. Best before 12 months from date of packaging.",
       countryOfOrigin: "India",
       suggestedAge:
-        "Suitable for kids and adults — quick breakfast or snack (per Slurrp Farm).",
-      sourceUrl: "https://www.slurrpfarm.com/products/millet-pancake-choclate-and-supergrains",
+        "Suitable for kids and adults — quick breakfast or snack.",
       gallery: ["/products/pantry/slurrp-farm-millet-pancake-chocolate.jpg"],
     },
   },
@@ -293,19 +287,18 @@ export const pantryProducts: PantryProduct[] = [
         },
       ],
       ingredientsNote:
-        "No maida, salt, trans fat, palm oil, preservatives, artificial colours, or flavours (per Slurrp Farm).",
+        "No maida, salt, trans fat, palm oil, preservatives, artificial colours, or flavours.",
       allergens:
-        "Contains corn and rice. Typically served with cow's milk — contains dairy when prepared that way. No palm oil or trans fat (per Slurrp Farm).",
+        "Contains corn and rice. Typically served with cow's milk — contains dairy when prepared that way. No palm oil or trans fat.",
       nutritionHighlights:
-        "Made with ragi and jowar. Per Slurrp Farm, 30 g cereal with 200 ml cow's milk provides about 66% of daily calcium RDA.",
+        "Made with ragi and jowar. 30 g cereal with 200 ml cow's milk provides about 66% of daily calcium RDA.",
       preparation:
         "Serve with cold or warm milk, or eat dry as a snack.",
       storage:
         "Keep in a cool, dry place. After opening, transfer to an airtight container and consume within one month. Best before 9 months from packaging.",
       countryOfOrigin: "India",
       suggestedAge:
-        "For toddlers and kids who can chew and swallow this texture — not for babies without teeth (per Slurrp Farm).",
-      sourceUrl: "https://www.slurrpfarm.com/products/millet-crunch-cereal-chocolate-stars-and-moons-healthy-millet-breakfast-300-gm",
+        "For toddlers and kids who can chew and swallow this texture — not for babies without teeth.",
       gallery: ["/products/pantry/slurrp-farm-choco-crunch-ragi-cereal.jpg"],
     },
   },
@@ -368,18 +361,16 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote: "Per Slurrp Farm label listings.",
       allergens:
-        "Contains wheat (gluten). Made in a facility that processes nuts — may contain trace amounts (per Slurrp Farm).",
+        "Contains wheat (gluten). Made in a facility that processes nuts — may contain trace amounts.",
       nutritionHighlights:
-        "Sun-dried, not fried. Foxtail millet is a source of vitamin A; whole wheat provides B-vitamins and minerals (per Slurrp Farm).",
+        "Sun-dried, not fried. Foxtail millet is a source of vitamin A; whole wheat provides B-vitamins and minerals.",
       preparation:
         "Boil noodles, drain, and toss with the masala seasoning sachet per package directions. Also works for stir-fries, hakka-style noodles, or soup.",
       storage: "Store in a cool, dry place.",
       countryOfOrigin: "India",
       suggestedAge:
-        "For kids and family — mild masala, suited to lunchboxes and quick meals (per Slurrp Farm).",
-      sourceUrl: "https://www.slurrpfarm.com/products/classic-masala-serves-2-96-gms",
+        "For kids and family — mild masala, suited to lunchboxes and quick meals.",
       gallery: ["/products/pantry/slurrp-farm-millet-noodles-masala.jpg"],
     },
   },
@@ -422,18 +413,17 @@ export const pantryProducts: PantryProduct[] = [
         },
       ],
       ingredientsNote:
-        "Zero maida, white rice, preservatives, stabilizers, emulsifiers, artificial colours, or flavours (per Slurrp Farm).",
+        "Zero maida, white rice, preservatives, stabilizers, emulsifiers, artificial colours, or flavours.",
       allergens:
-        "Contains legumes (urad, chana, and moong dal). Zero maida or white rice (per Slurrp Farm).",
+        "Contains legumes (urad, chana, and moong dal). Zero maida or white rice.",
       nutritionHighlights:
-        "Foxtail millet provides protein; spinach adds iron, folic acid, and vitamin K1 (per Slurrp Farm).",
+        "Foxtail millet provides protein; spinach adds iron, folic acid, and vitamin K1.",
       preparation:
         "Mix batter per package instructions; spread thin on a hot tawa and cook until crisp.",
       storage: "Keep in a cool, dry place. Best before 12 months from packaging.",
       countryOfOrigin: "India",
       suggestedAge:
-        "For kids and family — everyday dosa mix once child eats regular table foods (per Slurrp Farm).",
-      sourceUrl: "https://www.slurrpfarm.com/products/millet-dosa-supergrains-and-spinach",
+        "For kids and family — everyday dosa mix once child eats regular table foods.",
       gallery: ["/products/pantry/slurrp-farm-millet-dosa-spinach.jpg"],
     },
   },
@@ -473,19 +463,18 @@ export const pantryProducts: PantryProduct[] = [
         },
       ],
       ingredientsNote:
-        "Zero maida/wheat, no trans fats, preservatives, or artificial colours and flavours (per Slurrp Farm).",
+        "Zero maida/wheat, no trans fats, preservatives, or artificial colours and flavours.",
       allergens:
-        "Gluten-free and vegan (per Slurrp Farm). Made in a facility that may handle wheat and other allergens.",
+        "Gluten-free and vegan. Made in a facility that may handle wheat and other allergens.",
       nutritionHighlights:
-        "Source of dietary fibre, B-vitamins, and essential fatty acids. Less than 2 g fat per 100 g serving (per Slurrp Farm).",
+        "Source of dietary fibre, B-vitamins, and essential fatty acids. Less than 2 g fat per 100 g serving.",
       preparation:
         "Boil in salted water 9–10 minutes until tender; drain and serve with sauce, cheese, or vegetables.",
       storage:
         "Cool, dry place. Best before 18 months from date of packaging.",
       countryOfOrigin: "India",
       suggestedAge:
-        "For kids and family — gluten-free pasta for everyday meals (per Slurrp Farm).",
-      sourceUrl: "https://www.slurrpfarm.com/products/macaroni-pasta",
+        "For kids and family — gluten-free pasta for everyday meals.",
       gallery: ["/products/pantry/slurrp-farm-macaroni-pasta.jpg"],
     },
   },
@@ -538,18 +527,17 @@ export const pantryProducts: PantryProduct[] = [
         },
       ],
       ingredientsNote:
-        "No maida, palm oil, or preservatives (per Slurrp Farm label listings).",
+        "No maida, palm oil, or preservatives.",
       allergens:
-        "Contains milk and wheat (gluten). May contain nuts and seeds (per Slurrp Farm).",
+        "Contains milk and wheat (gluten). May contain nuts and seeds.",
       nutritionHighlights:
-        "Multigrain cookies with ragi and jowar. No maida, refined sugar, or palm oil (per Slurrp Farm). High in fibre per brand listing.",
+        "Multigrain cookies with ragi and jowar. No maida, refined sugar, or palm oil. High in fibre.",
       preparation: "Ready to eat.",
       storage:
         "Cool, dry place. After opening, keep airtight and consume within one month or by expiry date, whichever is earlier.",
       countryOfOrigin: "India",
       suggestedAge:
-        "For kids and family — solid snack for children who can chew biscuits safely (per Slurrp Farm).",
-      sourceUrl: "https://www.slurrpfarm.com/products/the-good-cookie-tasty-no-maida-no-refined-sugar-choco-ragi-cookie",
+        "For kids and family — solid snack for children who can chew biscuits safely.",
       gallery: ["/products/pantry/slurrp-farm-choco-ragi-cookies.jpg"],
     },
   },
@@ -609,18 +597,16 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote: "Per Farmley label listings.",
       allergens:
-        "Gluten-free. May contain tree nuts — processed in a facility handling nuts (per Farmley).",
+        "Gluten-free. May contain tree nuts — processed in a facility handling nuts.",
       nutritionHighlights:
-        "Roasted in olive oil, not fried. Low-calorie, gluten-free, cholesterol-free snack with plant protein and fibre (per Farmley).",
+        "Roasted in olive oil, not fried. Low-calorie, gluten-free, cholesterol-free snack with plant protein and fibre.",
       preparation: "Ready to eat.",
       storage:
-        "Cool, dry place away from direct sunlight. Reseal after opening. Shelf life 9 months (per Farmley).",
+        "Cool, dry place away from direct sunlight. Reseal after opening. Shelf life 9 months.",
       countryOfOrigin: "India",
       suggestedAge:
-        "For older kids and adults — supervise young children because of size and crunch (per Farmley family snack positioning).",
-      sourceUrl: "https://www.farmley.com/products/peri-peri-makhana-pack-of-4",
+        "For older kids and adults — supervise young children because of size and crunch.",
       gallery: ["/products/pantry/farmley-makhana.jpg"],
     },
   },
@@ -704,17 +690,15 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote: "Per Timios/FirstCry product listing.",
       allergens:
-        "Contains wheat (gluten) and oats in all four flavours (per Timios).",
+        "Contains wheat (gluten) and oats in all four flavours.",
       nutritionHighlights:
-        "Non-fried, no maida, no preservatives or artificial colours/flavours. Whole grains supply protein, iron, and calcium (per Timios).",
+        "Non-fried, no maida, no preservatives or artificial colours/flavours. Whole grains supply protein, iron, and calcium.",
       preparation:
         "Ready to eat. Supervise young children while eating.",
       storage: "Store in a cool, dry place.",
       countryOfOrigin: "India",
-      suggestedAge: "From 9 months (per Timios).",
-      sourceUrl: "https://www.firstcry.com/timios/timios-melts-non-fried-no-maida-wholegrain-snacks-assorted-pack-of-4-50-g-each/8714198/product-detail",
+      suggestedAge: "From 9 months.",
       gallery: ["/products/pantry/timios-melts-variety.jpg"],
     },
   },
