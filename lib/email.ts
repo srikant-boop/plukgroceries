@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 import type { Order } from "./orders";
 import { orderLineSubtotal } from "./order-snapshot";
-import { getPickupSpot } from "./pickup";
+import { getPickupSpot, HOME_DELIVERY_ID } from "./pickup";
 
 let _resend: Resend | null = null;
 
@@ -23,6 +23,15 @@ export async function sendOrderEmail(order: Order): Promise<void> {
   if (!to) throw new Error("ORDER_NOTIFICATION_EMAIL not set");
 
   const spot = getPickupSpot(order.pickupSpotId);
+  const isDelivery = order.pickupSpotId === HOME_DELIVERY_ID;
+  const paymentLabel =
+    order.paymentMethod === "cod"
+      ? "Cash on delivery"
+      : order.paymentMethod === "etransfer"
+        ? "E-transfer"
+        : order.paid
+          ? "Paid via card (Stripe)"
+          : "Card (pending)";
   const lines = order.lines
     .map(
       (l) =>
@@ -33,7 +42,7 @@ export async function sendOrderEmail(order: Order): Promise<void> {
   const html = `
     <div style="font-family:ui-sans-serif,system-ui,Arial;color:#1a1a1a;max-width:560px">
       <h2 style="font-family:ui-serif,Georgia;font-weight:400;margin-bottom:0">New Pluk order</h2>
-      <p style="color:#6b6b66;margin-top:4px">Paid via Stripe · ${new Date(order.createdAt).toLocaleString("en-CA", { timeZone: "America/Toronto" })}</p>
+      <p style="color:#6b6b66;margin-top:4px">${paymentLabel} · ${new Date(order.createdAt).toLocaleString("en-CA", { timeZone: "America/Toronto" })}</p>
 
       <h3 style="font-family:ui-serif,Georgia;font-weight:400">Customer</h3>
       <p>
@@ -43,11 +52,17 @@ export async function sendOrderEmail(order: Order): Promise<void> {
       </p>
       ${order.customer.notes ? `<p><em>Notes:</em> ${escape(order.customer.notes)}</p>` : ""}
 
-      <h3 style="font-family:ui-serif,Georgia;font-weight:400">Pickup</h3>
+      ${order.customer.deliveryAddress ? `<p><strong>Delivery address:</strong><br>${escape(order.customer.deliveryAddress)}</p>` : ""}
+
+      <h3 style="font-family:ui-serif,Georgia;font-weight:400">${isDelivery ? "Delivery" : "Pickup"}</h3>
       <p>
-        <strong>${escape(spot?.name ?? order.pickupSpotId)}</strong><br>
+        ${
+          isDelivery
+            ? "<strong>Home delivery</strong> — Oakville"
+            : `<strong>${escape(spot?.name ?? order.pickupSpotId)}</strong><br>
         ${escape(spot?.address ?? "")} · ${escape(spot?.postal ?? "")}<br>
-        <span style="color:#2f3a2a">${escape(spot?.slot ?? "")}</span>
+        <span style="color:#2f3a2a">${escape(spot?.slot ?? "")}</span>`
+        }
       </p>
 
       <h3 style="font-family:ui-serif,Georgia;font-weight:400">Items</h3>

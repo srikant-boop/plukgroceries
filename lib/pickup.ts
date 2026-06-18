@@ -1,6 +1,8 @@
 // The two pickup spots Pluk runs each week. Each spot has a fixed weekly
 // window. Update this array when locations or times change.
 
+export const HOME_DELIVERY_ID = "home-delivery";
+
 export type PickupSpot = {
   id: string;
   name: string;
@@ -42,6 +44,7 @@ export const pickupSpots: PickupSpot[] = [
 
 /** Resolve spot by id; `glen-abbey` kept for orders placed before the survey finalised. */
 export const getPickupSpot = (id: string) => {
+  if (id === HOME_DELIVERY_ID) return null;
   if (id === "glen-abbey") return pickupSpots.find((s) => s.id === "sixteen-mile");
   return pickupSpots.find((s) => s.id === id);
 };

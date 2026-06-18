@@ -124,8 +124,8 @@ export default function CartPage() {
               <dd className="tabular-nums">{money(total)}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-muted">Pickup</dt>
-              <dd className="text-muted">Pick spot at checkout · free</dd>
+              <dt className="text-muted">Delivery</dt>
+              <dd className="text-muted">Home delivery in Oakville · free</dd>
             </div>
           </dl>
           <div className="mt-5 pt-5 border-t border-line flex justify-between text-lg">

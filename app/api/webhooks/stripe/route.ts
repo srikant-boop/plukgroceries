@@ -77,8 +77,13 @@ export async function POST(req: Request) {
         session.customer_details?.email ??
         undefined,
       notes: md.customerNotes || undefined,
+      deliveryAddress: md.deliveryAddress || undefined,
     },
     pickupSpotId: md.pickupSpotId ?? "",
+    paymentMethod:
+      md.paymentMethod === "cod" || md.paymentMethod === "etransfer"
+        ? md.paymentMethod
+        : "card",
     lines,
     subtotal,
     total,

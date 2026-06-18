@@ -15,9 +15,9 @@ const steps = [
   },
   {
     sketch: "pickup" as const,
-    title: "Choose pickup or local delivery",
+    title: "Home delivery in Oakville",
     detail:
-      "At checkout, select Oakville pickup or local delivery — options shown when you order.",
+      "Leave your address at checkout — we deliver every order. Prefer pickup? Choose a Sunday spot instead.",
   },
 ];
 

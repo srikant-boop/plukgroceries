@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
-import { getPickupSpot } from "@/lib/pickup";
+import { HOME_DELIVERY_ID, getPickupSpot } from "@/lib/pickup";
 import { stripeConfigError, validateCheckoutBody } from "@/lib/checkout-api";
+import { saveManualCheckoutOrder } from "@/lib/build-checkout-order";
 import { getInviteByCode } from "@/lib/invite-store";
+import { sendOrderEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -21,10 +23,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: validated.error }, { status: 400 });
   }
 
-  const { customer, pickupSpotId, lines, inviteRef: rawInviteRef } =
-    validated.value;
-  const spot = getPickupSpot(pickupSpotId);
-  if (!spot) {
+  const {
+    customer,
+    pickupSpotId,
+    paymentMethod,
+    lines,
+    inviteRef: rawInviteRef,
+  } = validated.value;
+
+  if (pickupSpotId !== HOME_DELIVERY_ID && !getPickupSpot(pickupSpotId)) {
     return NextResponse.json({ error: "Unknown pickup spot." }, { status: 400 });
   }
 
@@ -37,6 +44,34 @@ export async function POST(req: Request) {
   const origin =
     req.headers.get("origin") ??
     `https://${req.headers.get("host") ?? "plukgroceries.vercel.app"}`;
+
+  if (paymentMethod !== "card") {
+    try {
+      const orderId = await saveManualCheckoutOrder({
+        customer,
+        pickupSpotId,
+        paymentMethod,
+        lines,
+        inviteRef,
+      });
+      try {
+        const { getOrder } = await import("@/lib/orders");
+        const order = await getOrder(orderId);
+        if (order) await sendOrderEmail(order);
+      } catch (err) {
+        console.error("[checkout] manual order email failed", err);
+      }
+      return NextResponse.json({
+        url: `${origin}/checkout/success?order_id=${orderId}`,
+      });
+    } catch (err) {
+      console.error("[checkout] manual order failed", err);
+      return NextResponse.json(
+        { error: "Couldn't place order — try again." },
+        { status: 500 },
+      );
+    }
+  }
 
   try {
     const stripe = getStripe();
@@ -64,6 +99,8 @@ export async function POST(req: Request) {
         customerPhone: customer.phone,
         customerEmail: customer.email,
         customerNotes: customer.notes ?? "",
+        deliveryAddress: customer.deliveryAddress ?? "",
+        paymentMethod: "card",
         pickupSpotId,
         ...(inviteRef ? { inviteRef } : {}),
         lines: JSON.stringify(

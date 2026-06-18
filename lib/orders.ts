@@ -17,8 +17,10 @@ export type Order = {
     phone: string;
     email?: string;
     notes?: string;
+    deliveryAddress?: string;
   };
   pickupSpotId: string;
+  paymentMethod?: "card" | "cod" | "etransfer";
   lines: OrderLine[];
   subtotal: number; // CAD — sum of line subtotals
   total: number; // CAD — Stripe amount charged

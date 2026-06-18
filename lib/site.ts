@@ -7,7 +7,7 @@ export const SITE_TITLE =
   "Clean Indian foods for babies, kids, and families in Canada";
 
 export const DEFAULT_DESCRIPTION =
-  "A small à la carte curated Indian baby, kids, and family pantry in Canada — breakfast, snacks, and quick meals from trusted brands. Shop individual products; pickup or local delivery in Oakville.";
+  "A small à la carte curated Indian baby, kids, and family pantry in Canada — breakfast, snacks, and quick meals from trusted brands. Shop individual products; home delivery in Oakville.";
 
 export const OG_IMAGE_PATH = "/og-image.png";
 

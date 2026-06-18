@@ -27,13 +27,16 @@ const faqs: FaqItem[] = [
     a: "Product pages summarize official brand listings. Always read the physical package for the latest ingredients and allergen statements — that is what matters, especially for babies, toddlers, and known allergies.",
   },
   {
-    q: "Pickup and local delivery",
+    q: "Delivery and pickup",
     anchorId: "pickup",
     a: (
       <>
         <p className="mb-3">
-          At checkout, choose pickup or local delivery when available. Oakville
-          pickup spots:
+          All orders are home delivered in Oakville. At checkout, leave your
+          delivery address.
+        </p>
+        <p className="mb-3">
+          Prefer to pick up yourself? You can meet us at either spot on Sunday:
         </p>
         <ul className="ml-5 list-disc space-y-1">
           {pickupSpots.map((s) => (
@@ -48,7 +51,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "How do I pay?",
-    a: "Card at checkout — Visa, Mastercard, AmEx, Discover, Apple Pay, and Google Pay. Stripe handles payment; we never store card details.",
+    a: "Pay by card at checkout, cash on delivery, or e-transfer. For e-transfer or cash, choose that option at checkout — we will confirm payment details before we deliver.",
   },
   {
     q: "Cancellations and other questions",

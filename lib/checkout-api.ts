@@ -1,13 +1,17 @@
 import { getStorefrontProductById, type Product } from "./products";
 import { normalizeInviteCode } from "./invite-store";
+import { HOME_DELIVERY_ID, getPickupSpot } from "./pickup";
 
 export type CheckoutLineInput = { productId: string; qty: number };
+
+export type PaymentMethod = "card" | "cod" | "etransfer";
 
 export type CheckoutCustomerInput = {
   name: string;
   phone: string;
   email: string;
   notes?: string;
+  deliveryAddress?: string;
 };
 
 const METADATA_MAX = 500;
@@ -15,6 +19,7 @@ const METADATA_MAX = 500;
 export function validateCheckoutBody(body: {
   customer?: CheckoutCustomerInput;
   pickupSpotId?: string;
+  paymentMethod?: PaymentMethod;
   lines?: CheckoutLineInput[];
   inviteRef?: string;
 }):
@@ -22,8 +27,15 @@ export function validateCheckoutBody(body: {
       ok: true;
       value: {
         lines: Array<{ product: Product; qty: number }>;
-        customer: { name: string; phone: string; email: string; notes?: string };
+        customer: {
+          name: string;
+          phone: string;
+          email: string;
+          notes?: string;
+          deliveryAddress?: string;
+        };
         pickupSpotId: string;
+        paymentMethod: PaymentMethod;
         inviteRef?: string;
       };
     }
@@ -32,7 +44,9 @@ export function validateCheckoutBody(body: {
   const phone = body.customer?.phone?.trim() ?? "";
   const email = body.customer?.email?.trim() ?? "";
   const notes = body.customer?.notes?.trim();
+  const deliveryAddress = body.customer?.deliveryAddress?.trim();
   const inviteRef = normalizeInviteCode(body.inviteRef) ?? undefined;
+  const paymentMethod = body.paymentMethod ?? "card";
 
   if (!name) return { ok: false, error: "Name is required." };
   if (!phone) return { ok: false, error: "Phone is required." };
@@ -40,8 +54,21 @@ export function validateCheckoutBody(body: {
     return { ok: false, error: "A valid email is required for your receipt." };
   }
   if (!body.pickupSpotId) {
-    return { ok: false, error: "Pick a pickup spot." };
+    return { ok: false, error: "Choose delivery or a pickup spot." };
   }
+
+  const isHomeDelivery = body.pickupSpotId === HOME_DELIVERY_ID;
+  if (isHomeDelivery && !deliveryAddress) {
+    return { ok: false, error: "Delivery address is required." };
+  }
+  if (!isHomeDelivery && !getPickupSpot(body.pickupSpotId)) {
+    return { ok: false, error: "Pick a valid pickup spot." };
+  }
+
+  if (!["card", "cod", "etransfer"].includes(paymentMethod)) {
+    return { ok: false, error: "Choose a payment method." };
+  }
+
   if (!body.lines?.length) {
     return { ok: false, error: "Your cart is empty." };
   }
@@ -76,7 +103,14 @@ export function validateCheckoutBody(body: {
     ok: true,
     value: {
       pickupSpotId: body.pickupSpotId,
-      customer: { name, phone, email, notes: notes || undefined },
+      paymentMethod,
+      customer: {
+        name,
+        phone,
+        email,
+        notes: notes || undefined,
+        deliveryAddress: deliveryAddress || undefined,
+      },
       lines,
       inviteRef,
     },
