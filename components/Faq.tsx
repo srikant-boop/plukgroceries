@@ -1,7 +1,5 @@
 import { FOOTER_COMPLIANCE_NOTE } from "@/lib/site";
 
-const facebookGroupHref = "https://www.facebook.com/share/g/1cRmroAoyr/";
-
 type FaqItem = {
   q: string;
   a: React.ReactNode;
@@ -51,24 +49,6 @@ const faqs: FaqItem[] = [
   {
     q: "How do I pay?",
     a: "Pay by card at checkout, cash on delivery, or e-transfer. For cash or e-transfer, choose that option at checkout — we will confirm payment details before we deliver.",
-  },
-  {
-    q: "How do I cancel or ask something else?",
-    a: (
-      <>
-        Message us in the{" "}
-        <a
-          href={facebookGroupHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline underline-offset-4 hover:text-accent"
-        >
-          Oakville group on Facebook
-        </a>
-        . That is the fastest way to reach us — whether you need to cancel before
-        we pack your order, suggest a product, or ask anything else.
-      </>
-    ),
   },
 ];
 
