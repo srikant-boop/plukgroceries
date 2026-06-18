@@ -68,6 +68,18 @@ export default async function ProductPage({
   const brandName = supplier?.name ?? product.brand ?? "—";
   const ageNote = ageHint(meta.suggestedAge);
 
+  const nutritionContent = labelData?.nutritionFacts ? (
+    <NutritionFactsTable facts={labelData.nutritionFacts} />
+  ) : (
+    <div className="border border-line bg-surface px-4 py-4 sm:px-5 text-sm leading-relaxed text-foreground/85">
+      {meta.nutritionHighlights || (
+        <p className="text-muted">
+          See package label for nutrition information.
+        </p>
+      )}
+    </div>
+  );
+
   const labelSections: ProductDetailAccordionItem[] = [
     {
       id: "ingredients",
@@ -85,6 +97,11 @@ export default async function ProductPage({
       content: <p>{meta.allergens}</p>,
     },
     {
+      id: "nutrition",
+      title: "Nutrition information",
+      content: nutritionContent,
+    },
+    {
       id: "directions",
       title: "Directions",
       content: (
@@ -95,18 +112,6 @@ export default async function ProductPage({
       ),
     },
   ];
-
-  const nutritionContent = labelData?.nutritionFacts ? (
-    <NutritionFactsTable facts={labelData.nutritionFacts} />
-  ) : (
-    <div className="border border-line bg-surface px-4 py-4 sm:px-5 text-sm leading-relaxed text-foreground/85">
-      {meta.nutritionHighlights || (
-        <p className="text-muted">
-          See package label for nutrition information.
-        </p>
-      )}
-    </div>
-  );
 
   return (
     <article className="grid gap-10 lg:grid-cols-2 lg:gap-16">
@@ -195,8 +200,6 @@ export default async function ProductPage({
               <dd>{meta.occasions.join(", ")}</dd>
             </div>
           </dl>
-
-          <div className="mt-6 pt-6 border-t border-line">{nutritionContent}</div>
         </section>
 
         <ProductDetailAccordion items={labelSections} />
