@@ -93,13 +93,9 @@ export default async function ProductPage({
         <IngredientsList
           sections={meta.ingredientSections}
           note={meta.ingredientsNote}
+          allergens={meta.allergens}
         />
       ),
-    },
-    {
-      id: "warnings",
-      title: "Warnings",
-      content: <p>{meta.allergens}</p>,
     },
     {
       id: "directions",

@@ -22,9 +22,11 @@ function SectionProse({ section }: { section: IngredientSection }) {
 export function IngredientsList({
   sections,
   note,
+  allergens,
 }: {
   sections: IngredientSection[];
   note?: string;
+  allergens?: string;
 }) {
   return (
     <div className="space-y-4">
@@ -38,6 +40,14 @@ export function IngredientsList({
         <p className="text-sm leading-relaxed text-muted border-t border-line pt-3">
           {note}
         </p>
+      )}
+      {allergens?.trim() && (
+        <div className="border-t border-line pt-3">
+          <p className="text-xs uppercase tracking-wide text-muted mb-1.5">
+            Allergens
+          </p>
+          <p className="text-sm leading-relaxed">{allergens}</p>
+        </div>
       )}
     </div>
   );
