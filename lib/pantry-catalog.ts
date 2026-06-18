@@ -712,7 +712,7 @@ export const pantryProducts: PantryProduct[] = [
     category: "Snacks",
     collection: "snacks",
     image: "/products/pantry/superyou-multigrain-protein-chips.jpg",
-    imageAlt: "SuperYou Multigrain Protein Chips — Pudina 40 g",
+    imageAlt: "SuperYou Pudina Multigrain Protein Chips 40 g pack",
     unit: "40 g",
     stock: 50,
     ...P(2.0, 2.99),
