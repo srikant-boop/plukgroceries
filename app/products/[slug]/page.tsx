@@ -82,6 +82,11 @@ export default async function ProductPage({
 
   const labelSections: ProductDetailAccordionItem[] = [
     {
+      id: "nutrition",
+      title: "Nutrition information",
+      content: nutritionContent,
+    },
+    {
       id: "ingredients",
       title: "Ingredients",
       content: (
@@ -95,11 +100,6 @@ export default async function ProductPage({
       id: "warnings",
       title: "Warnings",
       content: <p>{meta.allergens}</p>,
-    },
-    {
-      id: "nutrition",
-      title: "Nutrition information",
-      content: nutritionContent,
     },
     {
       id: "directions",
