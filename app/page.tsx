@@ -9,8 +9,22 @@ export default function Home() {
 
   return (
     <div>
-      <section className="relative -mx-6 -mt-10 mb-12 overflow-hidden border-b border-line bg-surface">
-        <div className="px-6 sm:px-10 py-14 sm:py-20 max-w-3xl">
+      <section className="relative -mx-6 -mt-10 mb-12 overflow-hidden border-b border-line">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
+          style={{ backgroundImage: "url('/hero-pantry-bg-mobile.webp')" }}
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 hidden bg-cover bg-[center_40%] bg-no-repeat md:block"
+          style={{ backgroundImage: "url('/hero-pantry-bg.webp')" }}
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-background via-background/92 to-background/35 sm:via-background/88 sm:to-background/20"
+          aria-hidden
+        />
+        <div className="relative px-6 sm:px-10 py-14 sm:py-20 max-w-3xl">
           <p className="eyebrow mb-4 inline-flex items-center gap-2">
             <Leaf size={14} className="text-accent" aria-hidden />
             Curated Indian family pantry · Canada
@@ -29,7 +43,7 @@ export default function Home() {
             </Link>
             <Link
               href="#how-it-works"
-              className="inline-flex items-center px-6 py-3 text-sm border border-line hover:bg-background"
+              className="inline-flex items-center px-6 py-3 text-sm border border-line bg-surface/85 backdrop-blur-sm hover:bg-surface"
             >
               How it works
             </Link>
