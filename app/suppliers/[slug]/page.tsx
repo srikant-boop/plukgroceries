@@ -25,7 +25,7 @@ function linkLabel(href: string, label: string): string {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return suppliers.map((s) => ({ slug: s.slug }));
+  return carriedBrands().map((s) => ({ slug: s.slug }));
 }
 
 const TYPE_LABEL = {

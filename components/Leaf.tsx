@@ -1,3 +1,6 @@
+export const LEAF_PATH =
+  "M14.2 3c2.3.5 4.6 3.5 5.3 7 0.7 2.8-.1 5.5-1.5 7.5-1.3 2-3.6 3.3-5.4 4-.3.8-.45 1.6-.35 2.35-.4-1.15-.5-2.55-.2-3.85-1.8-.7-3.3-2.2-4.1-4.1-1.3-3.2-.7-7 1.7-9.5 1.6-1.7 3.2-2.4 4.75-2.4z";
+
 export function Leaf({
   size = 24,
   className = "",
@@ -14,10 +17,7 @@ export function Leaf({
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M12 3.5c-4.8 3.2-5.8 9.8-2.6 14.8 1 1.5 2.6 2.4 2.6 2.4s1.6-.9 2.6-2.4c3.2-5 2.2-11.6-2.6-14.8z"
-        fill="currentColor"
-      />
+      <path fill="currentColor" d={LEAF_PATH} />
     </svg>
   );
 }
