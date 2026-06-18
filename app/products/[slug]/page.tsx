@@ -113,6 +113,9 @@ export default async function ProductPage({
             ))}
             <AudienceIcons audience={meta.audience} variant="chip" />
           </div>
+          {meta.suggestedAge && (
+            <p className="mt-2 text-sm text-muted">{meta.suggestedAge}</p>
+          )}
         </div>
 
         <div className="border-b border-line pb-6">

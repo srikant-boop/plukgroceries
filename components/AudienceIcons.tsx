@@ -1,4 +1,4 @@
-import { AUDIENCE_CHIP_LABEL } from "@/lib/audience";
+import { AUDIENCE_CHIP_LABEL, AUDIENCE_LABELS } from "@/lib/audience";
 
 export type AudienceLabel =
   | "Baby/Toddler"
@@ -85,22 +85,22 @@ const AUDIENCE_CONFIG: Record<
   { label: string; shortLabel: string; Icon: () => React.ReactElement }
 > = {
   "Baby/Toddler": {
-    label: "Baby & toddler (from 6 months)",
+    label: AUDIENCE_LABELS["Baby/Toddler"],
     shortLabel: AUDIENCE_CHIP_LABEL["Baby/Toddler"],
     Icon: BabyToddlerIcon,
   },
   Toddlers: {
-    label: "Toddlers who can chew this texture",
+    label: AUDIENCE_LABELS.Toddlers,
     shortLabel: AUDIENCE_CHIP_LABEL.Toddlers,
     Icon: ToddlerIcon,
   },
   Kids: {
-    label: "Kids — usually school-age",
+    label: AUDIENCE_LABELS.Kids,
     shortLabel: AUDIENCE_CHIP_LABEL.Kids,
     Icon: KidsIcon,
   },
   Family: {
-    label: "Whole family, including adults",
+    label: AUDIENCE_LABELS.Family,
     shortLabel: AUDIENCE_CHIP_LABEL.Family,
     Icon: FamilyIcon,
   },

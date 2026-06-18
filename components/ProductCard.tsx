@@ -11,6 +11,7 @@ import { cardBadges, type PantryProduct } from "@/lib/pantry-catalog";
 import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
 import { useCart } from "@/lib/cart";
+import { AudienceIcons } from "@/components/AudienceIcons";
 
 export function ProductCard({ product }: { product: Product }) {
   const add = useCart((s) => s.add);
@@ -81,6 +82,16 @@ export function ProductCard({ product }: { product: Product }) {
         {pantry && (
           <p className="mt-1 text-xs text-foreground/75 leading-snug line-clamp-2 min-h-[2.125rem]">
             {pantry.roleLine}
+          </p>
+        )}
+        {pantry && (
+          <div className="mt-2 flex min-h-[1.25rem] flex-wrap gap-1">
+            <AudienceIcons audience={pantry.audience} variant="chip" />
+          </div>
+        )}
+        {pantry?.suggestedAge && (
+          <p className="mt-1.5 text-[11px] text-muted leading-snug line-clamp-2">
+            {pantry.suggestedAge}
           </p>
         )}
         <p className="mt-1 text-xs text-muted leading-none min-h-4">

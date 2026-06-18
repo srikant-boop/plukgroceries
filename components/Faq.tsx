@@ -68,17 +68,23 @@ const faqs: FaqItem[] = [
     q: "Who are these products for?",
     a: (
       <>
+        <p className="mb-3">
+          Every product is tagged on the card — audience chips and a suggested
+          age when we have one from the brand or label.
+        </p>
         <ul className="ml-5 list-disc space-y-1.5">
           <li>
-            <strong>Baby & toddler:</strong> from when a product is marked for
-            starting solids.
+            <strong>Baby & toddler:</strong> starting solids (from 6 months).
           </li>
           <li>
-            <strong>Toddlers & kids:</strong> when the texture and age note fit
-            your child.
+            <strong>Toddlers:</strong> 12 months+ — only on products tagged for
+            them.
           </li>
           <li>
-            <strong>Family:</strong> many items work for the whole household.
+            <strong>Kids:</strong> school-age (3+).
+          </li>
+          <li>
+            <strong>Family:</strong> everyone at the table.
           </li>
         </ul>
       </>

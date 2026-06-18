@@ -251,7 +251,7 @@ export const pantryProducts: PantryProduct[] = [
         "Keep in a cool, dry place. Best before 12 months from date of packaging.",
       countryOfOrigin: "India",
       suggestedAge:
-        "Suitable for kids and adults — quick breakfast or snack.",
+        "Kids and adults — breakfast or snack.",
       gallery: ["/products/pantry/slurrp-farm-millet-pancake-chocolate.jpg"],
     },
   },
@@ -303,8 +303,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Keep in a cool, dry place. After opening, transfer to an airtight container and consume within one month. Best before 9 months from packaging.",
       countryOfOrigin: "India",
-      suggestedAge:
-        "For toddlers and kids who can chew and swallow this texture — not for babies without teeth.",
+      suggestedAge: "12 months+ — toddlers and kids.",
       gallery: ["/products/pantry/slurrp-farm-choco-crunch-ragi-cereal.jpg"],
     },
   },
@@ -372,8 +371,7 @@ export const pantryProducts: PantryProduct[] = [
         "Boil noodles, drain, and toss with the masala seasoning sachet per package directions. Also works for stir-fries, hakka-style noodles, or soup.",
       storage: "Store in a cool, dry place.",
       countryOfOrigin: "India",
-      suggestedAge:
-        "For kids and family — mild masala, suited to lunchboxes and quick meals.",
+      suggestedAge: "Kids and family (3+).",
       gallery: ["/products/pantry/slurrp-farm-millet-noodles-masala.jpg"],
     },
   },
@@ -429,8 +427,7 @@ export const pantryProducts: PantryProduct[] = [
         "Mix batter per package instructions; spread thin on a hot tawa and cook until crisp.",
       storage: "Keep in a cool, dry place. Best before 12 months from packaging.",
       countryOfOrigin: "India",
-      suggestedAge:
-        "For kids and family — everyday dosa mix once child eats regular table foods.",
+      suggestedAge: "Kids and family (3+).",
       gallery: ["/products/pantry/slurrp-farm-millet-dosa-spinach.jpg"],
     },
   },
@@ -477,8 +474,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Cool, dry place. Best before 18 months from date of packaging.",
       countryOfOrigin: "India",
-      suggestedAge:
-        "For kids and family — gluten-free pasta for everyday meals.",
+      suggestedAge: "Kids and family (3+).",
       gallery: ["/products/pantry/slurrp-farm-macaroni-pasta.jpg"],
     },
   },
@@ -754,8 +750,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Keep away from direct sunlight. Store in a cool, dry, hygienic place at 20–25 °C. Do not buy if the pack is found tampered.",
       countryOfOrigin: "India",
-      suggestedAge:
-        "For kids and family — supervise young children because of size and crunch.",
+      suggestedAge: "Kids and family (3+).",
       gallery: [
         "/products/pantry/superyou-multigrain-protein-chips/gallery-01.jpg",
         "/products/pantry/superyou-multigrain-protein-chips/gallery-06.jpg",
