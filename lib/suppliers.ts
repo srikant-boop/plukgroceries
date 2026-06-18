@@ -85,7 +85,7 @@ export const suppliers: Supplier[] = [
     type: "brand",
     tagline: "Protein snacks · India",
     story:
-      "SuperYou makes protein-forward snacks for India — baked multigrain chips, protein wafers, and fermented yeast protein powders. The chips use a multigrain base with soya protein isolate instead of a typical fried potato chip.\n\nWe carry one pudina multigrain protein chips SKU (40 g) on the test shelf.",
+      "SuperYou makes protein-forward snacks for India — baked multigrain chips, protein wafers, and fermented yeast protein powders. The chips use a multigrain base with soya protein isolate instead of a typical fried potato chip.\n\nWe carry SuperYou Multigrain Protein Chips — Pudina (40 g) on the test shelf.",
     logo: "/suppliers/superyou.png",
     links: [{ label: "Website", href: "https://superyou.in/" }],
   },

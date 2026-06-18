@@ -704,7 +704,7 @@ export const pantryProducts: PantryProduct[] = [
     uuid: "a100000b-0000-4000-8000-00000000000b",
     id: "superyou-multigrain-protein-chips",
     slug: "superyou-multigrain-protein-chips",
-    name: "Pudina Multigrain Protein Chips",
+    name: "Multigrain Protein Chips — Pudina",
     shortDescription:
       "Baked pudina multigrain protein chips — 10 g protein and 3 g fibre per 40 g pack, no palm oil or added sugar.",
     longDescription:
@@ -712,7 +712,7 @@ export const pantryProducts: PantryProduct[] = [
     category: "Snacks",
     collection: "snacks",
     image: "/products/pantry/superyou-multigrain-protein-chips.jpg",
-    imageAlt: "SuperYou Pudina Multigrain Protein Chips 40 g",
+    imageAlt: "SuperYou Multigrain Protein Chips — Pudina 40 g",
     unit: "40 g",
     stock: 50,
     ...P(2.0, 2.99),
