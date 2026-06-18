@@ -57,8 +57,7 @@ export function CartSavings({
         })}
       </ul>
       <p className="text-[11px] text-muted mt-3 leading-relaxed">
-        Same basket priced at each store, using the unit sizes shown on each
-        product page.
+        Same basket priced at each store, using the unit sizes on our shelf.
         {showSobeysDeliveryNote && stores.includes(SOBEYS_STORE) && (
           <>
             {" "}

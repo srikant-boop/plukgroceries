@@ -66,10 +66,6 @@ const faqs: FaqItem[] = [
     q: "Who are these products for?",
     a: (
       <>
-        <p className="mb-3">
-          It varies — each product page shows who it is for and suggested age
-          when the brand provides one.
-        </p>
         <ul className="ml-5 list-disc space-y-1.5">
           <li>
             <strong>Baby & toddler:</strong> from when a product is marked for
@@ -88,7 +84,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "How do I check allergens and ingredients?",
-    a: "Each product page has Ingredients and Nutrition sections.",
+    a: "Ingredients and nutrition are listed on every product.",
   },
 ];
 

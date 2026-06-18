@@ -95,7 +95,7 @@ const AUDIENCE_CONFIG: Record<
     Icon: ToddlerIcon,
   },
   Kids: {
-    label: "Kids — usually school-age; see product page",
+    label: "Kids — usually school-age",
     shortLabel: AUDIENCE_CHIP_LABEL.Kids,
     Icon: KidsIcon,
   },

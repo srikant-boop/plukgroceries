@@ -1,10 +1,10 @@
-/** How we label who a product is for — aligned with product-page age notes. */
+/** How we label who a product is for — shown on cards and product detail. */
 
 export const AUDIENCE_LABELS = {
   "Baby/Toddler":
     "From 6 months — starting solids and young toddlers (one meal on our shelf).",
   Toddlers: "Older toddlers who can chew and swallow the texture.",
-  Kids: "School-age children; some items suit older toddlers — check the product page.",
+  Kids: "School-age children; some items suit older toddlers too.",
   Family: "The whole household, including adults.",
 } as const;
 
