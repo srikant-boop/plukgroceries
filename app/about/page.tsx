@@ -21,8 +21,9 @@ export default function AboutPage() {
         </h1>
         <p className="text-base leading-relaxed text-foreground/85 max-w-2xl">
           PLUK is an à la carte Indian baby, kids, and family pantry for Canada
-          — not a full grocery store, not a subscription, and not a limited-time
-          drop. You buy individual products and build your own basket.
+          — a short shelf of breakfast, snack, and quick-meal products, not a
+          full grocery store or subscription box. Buy one item or build your own
+          basket.
         </p>
       </header>
 
