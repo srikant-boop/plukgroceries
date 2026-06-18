@@ -15,17 +15,8 @@ export function Leaf({
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M12 2 C 5 7, 5 17, 12 22 C 19 17, 19 7, 12 2 Z"
+        d="M12 3.5c-4.8 3.2-5.8 9.8-2.6 14.8 1 1.5 2.6 2.4 2.6 2.4s1.6-.9 2.6-2.4c3.2-5 2.2-11.6-2.6-14.8z"
         fill="currentColor"
-      />
-      <line
-        x1="12"
-        y1="5"
-        x2="12"
-        y2="21"
-        stroke="var(--color-background)"
-        strokeOpacity="0.9"
-        strokeWidth="1"
       />
     </svg>
   );

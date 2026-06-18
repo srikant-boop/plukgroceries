@@ -1,13 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="Pluk">
   <rect width="180" height="180" rx="40" fill="#f7f5f0"/>
   <path
-    d="M90 28 C 50 53 50 121 90 152 C 130 121 130 53 90 28 Z"
     fill="#2f3a2a"
-  />
-  <path
-    d="M90 45 L90 145"
-    stroke="#f7f5f0"
-    stroke-width="7"
-    stroke-linecap="round"
+    d="M90 39c-27 18-32.6 55.1-14.6 83.2 5.6 8.4 14.6 13.4 14.6 13.4s9-.9 14.6-13.4c18-28.1 12.4-65.2-14.6-83.2z"
   />
 </svg>

@@ -86,6 +86,7 @@ export const suppliers: Supplier[] = [
     tagline: "Popped chips · India",
     story:
       "BRB makes popped potato, corn, and rice chips — not fried and not baked, but popped with heat and pressure. A lighter crunch than typical fried chips.\n\nWe carry one salt and pepper potato popped chips SKU on the test shelf.",
+    logo: "/suppliers/brb.png",
     links: [{ label: "Website", href: "https://www.brbchips.com/" }],
   },
 ];
