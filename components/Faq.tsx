@@ -11,7 +11,7 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          PLUK is a small, curated Indian pantry for Oakville — trusted
+          PLUK is a small, curated Indian pantry — trusted
           breakfast, snack, and quick-meal brands you can buy one at a time.
         </p>
         <p>
@@ -48,7 +48,7 @@ const faqs: FaqItem[] = [
           Expect your order about{" "}
           <strong>10–20 days after the preorder closes</strong> — ordering from
           India, air freight, customs, and local prep all take time even when the
-          flight leg is quick. We home deliver every order in Oakville.
+          flight leg is quick. We home deliver every order.
         </p>
         <p>
           If timing slips, we will update you. Early tests can shift because of
@@ -60,7 +60,7 @@ const faqs: FaqItem[] = [
   {
     q: "How do I pay?",
     anchorId: "payment",
-    a: "Pay by card at checkout or cash on delivery when we deliver in Oakville.",
+    a: "Pay by card at checkout or cash on delivery.",
   },
   {
     q: "Who are these products for?",
