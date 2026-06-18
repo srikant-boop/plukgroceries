@@ -19,18 +19,12 @@ const steps = [
     detail:
       "At checkout, select Oakville pickup or local delivery — options shown when you order.",
   },
-  {
-    sketch: "reorder" as const,
-    title: "Reorder favourites",
-    detail:
-      "The shelf stays small. Products that families love stay; products that do not reorder get replaced.",
-  },
 ];
 
 function StepSketch({
   kind,
 }: {
-  kind: "choose" | "cart" | "pickup" | "reorder";
+  kind: "choose" | "cart" | "pickup";
 }) {
   const fill = "#fbfbf9";
   const stroke = "#4b5563";
@@ -74,25 +68,6 @@ function StepSketch({
     );
   }
 
-  if (kind === "pickup") {
-    return (
-      <svg viewBox="0 0 320 240" className="h-full w-full" aria-hidden>
-        <rect x="0" y="0" width="320" height="240" fill={fill} />
-        <g
-          stroke={stroke}
-          strokeWidth="2.25"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        >
-          <path d="M160 36c-28 0-50 21-50 49 0 36 50 84 50 84s50-48 50-84c0-28-22-49-50-49Z" />
-          <circle cx="160" cy="85" r="16" />
-          <path d="M85 200h150" />
-        </g>
-      </svg>
-    );
-  }
-
   return (
     <svg viewBox="0 0 320 240" className="h-full w-full" aria-hidden>
       <rect x="0" y="0" width="320" height="240" fill={fill} />
@@ -103,9 +78,9 @@ function StepSketch({
         strokeLinejoin="round"
         fill="none"
       >
-        <path d="M88 160V96l72-40 72 40v64" />
-        <rect x="120" y="120" width="80" height="40" rx="4" />
-        <path d="M160 56v24M140 140h40" />
+        <path d="M160 36c-28 0-50 21-50 49 0 36 50 84 50 84s50-48 50-84c0-28-22-49-50-49Z" />
+        <circle cx="160" cy="85" r="16" />
+        <path d="M85 200h150" />
       </g>
     </svg>
   );
@@ -118,7 +93,7 @@ export function HowItWorks() {
         <Leaf size={15} className="text-accent" />
         <h2 className="text-2xl">How it works</h2>
       </div>
-      <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
+      <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
         {steps.map((step, i) => (
           <li key={step.title} className="group">
             <div className="relative mb-4 aspect-[4/3] overflow-hidden border border-line bg-surface">
