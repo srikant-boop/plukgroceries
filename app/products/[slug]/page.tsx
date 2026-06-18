@@ -10,27 +10,16 @@ import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
 import { IngredientsTable } from "@/components/IngredientsTable";
+import {
+  ProductDetailAccordion,
+  type ProductDetailAccordionItem,
+} from "@/components/ProductDetailAccordion";
 import { ProductViewTracker } from "@/components/ProductViewTracker";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
   return storefrontProducts().map((p) => ({ slug: p.slug }));
-}
-
-function DetailBlock({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <h2 className="eyebrow mb-2">{title}</h2>
-      <div className="text-sm leading-relaxed text-foreground/85">{children}</div>
-    </div>
-  );
 }
 
 export default async function ProductPage({
@@ -47,6 +36,88 @@ export default async function ProductPage({
     ? getSupplierById(product.supplierId)
     : null;
   const gallery = meta.gallery?.length ? meta.gallery : [product.image];
+
+  const brandName = supplier?.name ?? product.brand ?? "—";
+
+  const detailSections: ProductDetailAccordionItem[] = [
+    {
+      id: "brand",
+      title: "Brand",
+      content: supplier ? (
+        <Link
+          href={`/suppliers/${supplier.slug}`}
+          className="underline underline-offset-4 hover:text-accent"
+        >
+          {supplier.name}
+        </Link>
+      ) : (
+        <p>{brandName}</p>
+      ),
+    },
+    {
+      id: "why-selected",
+      title: "Why we selected it",
+      content: <p>{meta.whySelected}</p>,
+    },
+  ];
+
+  if (product.longDescription.trim()) {
+    detailSections.push({
+      id: "about",
+      title: "About this product",
+      content: <p>{product.longDescription}</p>,
+    });
+  }
+
+  detailSections.push(
+    {
+      id: "ingredients",
+      title: "Ingredients",
+      content: (
+        <IngredientsTable
+          sections={meta.ingredientSections}
+          note={meta.ingredientsNote}
+        />
+      ),
+    },
+    {
+      id: "allergens",
+      title: "Allergen information",
+      content: <p>{meta.allergens}</p>,
+    },
+    {
+      id: "nutrition",
+      title: "Nutrition highlights",
+      content: <p>{meta.nutritionHighlights}</p>,
+    },
+    {
+      id: "preparation",
+      title: "Preparation",
+      content: <p>{meta.preparation}</p>,
+    },
+    {
+      id: "storage",
+      title: "Storage",
+      content: <p>{meta.storage}</p>,
+    },
+  );
+
+  if (meta.sourceUrl) {
+    detailSections.push({
+      id: "source",
+      title: "Official product source",
+      content: (
+        <a
+          href={meta.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-4 hover:text-accent"
+        >
+          View on brand website ↗
+        </a>
+      ),
+    });
+  }
 
   return (
     <article className="grid gap-10 lg:grid-cols-2 lg:gap-16">
@@ -134,73 +205,12 @@ export default async function ProductPage({
             <dt className="eyebrow mb-1">Country of origin</dt>
             <dd>{meta.countryOfOrigin}</dd>
           </div>
-          <div>
-            <dt className="eyebrow mb-1">Brand</dt>
-            <dd>
-              {supplier ? (
-                <Link
-                  href={`/suppliers/${supplier.slug}`}
-                  className="underline underline-offset-4 hover:text-accent"
-                >
-                  {supplier.name}
-                </Link>
-              ) : (
-                product.brand ?? "—"
-              )}
-            </dd>
-          </div>
         </dl>
 
-        <DetailBlock title="Why we selected it">
-          <p>{meta.whySelected}</p>
-        </DetailBlock>
-
-        {product.longDescription.trim() && (
-          <DetailBlock title="About this product">
-            <p>{product.longDescription}</p>
-          </DetailBlock>
-        )}
-
-        <DetailBlock title="Ingredients">
-          <IngredientsTable
-            sections={meta.ingredientSections}
-            note={meta.ingredientsNote}
-          />
-        </DetailBlock>
-
-        <DetailBlock title="Allergen information">
-          <p>{meta.allergens}</p>
-        </DetailBlock>
-
-        <DetailBlock title="Nutrition highlights">
-          <p>{meta.nutritionHighlights}</p>
-        </DetailBlock>
-
-        <DetailBlock title="Preparation">
-          <p>{meta.preparation}</p>
-        </DetailBlock>
-
-        <DetailBlock title="Storage">
-          <p>{meta.storage}</p>
-        </DetailBlock>
-
-        {meta.sourceUrl && (
-          <p className="text-sm">
-            <a
-              href={meta.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-4 hover:text-accent"
-            >
-              Official product source ↗
-            </a>
-          </p>
-        )}
+        <ProductDetailAccordion items={detailSections} />
 
         <div className="border border-line bg-surface p-4 text-xs leading-relaxed text-muted space-y-2">
-          <p>
-            Final Canadian label review required before sale.
-          </p>
+          <p>Final Canadian label review required before sale.</p>
           <p>
             Product information is based on official brand/source data where
             available. Always read the package label before use, especially for
