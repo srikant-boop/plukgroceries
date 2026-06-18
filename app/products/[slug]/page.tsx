@@ -31,6 +31,19 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
   return <h2 className="text-sm font-medium mb-3">{children}</h2>;
 }
 
+function ageHint(suggestedAge?: string): string | undefined {
+  if (!suggestedAge) return undefined;
+  const fromMonths = suggestedAge.match(/(?:from|From)\s+(\d+\s+months?\.?)/i);
+  if (fromMonths) return `From ${fromMonths[1].replace(/\.$/, "")}`;
+  if (/^From \d+/i.test(suggestedAge.trim())) {
+    return suggestedAge.trim().replace(/\.$/, "");
+  }
+  if (/not for babies|supervise young children/i.test(suggestedAge)) {
+    return suggestedAge;
+  }
+  return undefined;
+}
+
 export default async function ProductPage({
   params,
 }: {
@@ -53,6 +66,7 @@ export default async function ProductPage({
       : [product.image];
 
   const brandName = supplier?.name ?? product.brand ?? "—";
+  const ageNote = ageHint(meta.suggestedAge);
 
   const labelSections: ProductDetailAccordionItem[] = [
     {
@@ -168,31 +182,21 @@ export default async function ProductPage({
               <dd>{product.unit}</dd>
             </div>
             <div>
-              <dt className="text-muted mb-0.5">Country of origin</dt>
-              <dd>{meta.countryOfOrigin}</dd>
-            </div>
-            <div>
-              <dt className="text-muted mb-1">Who it&apos;s for</dt>
-              <dd>
+              <dt className="text-muted mb-1">Suggested for</dt>
+              <dd className="space-y-1.5">
                 <AudienceIcons audience={meta.audience} />
+                {ageNote && (
+                  <p className="text-xs text-muted leading-snug">{ageNote}</p>
+                )}
               </dd>
             </div>
-            {meta.suggestedAge && (
-              <div>
-                <dt className="text-muted mb-0.5">Suggested age</dt>
-                <dd>{meta.suggestedAge}</dd>
-              </div>
-            )}
             <div>
               <dt className="text-muted mb-0.5">Also good for</dt>
               <dd>{meta.occasions.join(", ")}</dd>
             </div>
           </dl>
-        </section>
 
-        <section>
-          <SectionHeading>Nutrition information</SectionHeading>
-          {nutritionContent}
+          <div className="mt-6 pt-6 border-t border-line">{nutritionContent}</div>
         </section>
 
         <ProductDetailAccordion items={labelSections} />

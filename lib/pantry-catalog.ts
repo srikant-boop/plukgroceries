@@ -106,7 +106,7 @@ export const pantryProducts: PantryProduct[] = [
       roleLine: "Traditional khichdi mix — creamy porridge or instant dosa in minutes.",
       audience: ["Baby/Toddler", "Parents"],
       occasions: ["Lunch/Dinner", "Travel-Friendly"],
-      badges: ["No Sugar", "Stage 1", "Travel-Friendly"],
+      badges: ["No Sugar", "Travel-Friendly"],
       whySelected:
         "Khichdi is a staple comfort food for many Indian families. Early Foods uses a short, transparent ingredient list with no milk powder, salt, or maltodextrin — one khichdi SKU on our shelf instead of multiple porridge variants.",
       ingredientSections: [
@@ -130,8 +130,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Store in a cool, dry place. Transfer to a clean airtight container after opening. Shelf life is 4 months from manufacturing.",
       countryOfOrigin: "India",
-      suggestedAge:
-        "Stage 1 — first solids, typically from 6 months.",
+      suggestedAge: "From 6 months.",
       gallery: ["/products/pantry/early-foods-rice-moong-khichdi.png"],
     },
   },
@@ -188,8 +187,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Keep in a cool, dry place. After opening, store airtight and use within one month or by expiry date, whichever is earlier. Shelf life 12 months (unopened).",
       countryOfOrigin: "India",
-      suggestedAge:
-        "For babies and toddlers who have started solids.",
+      suggestedAge: "From 6 months.",
       gallery: ["/products/pantry/slurrp-farm-strawberry-ragi-cereal.jpg"],
     },
   },
