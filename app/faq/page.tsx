@@ -1,4 +1,5 @@
 import { pickupSpots } from "@/lib/pickup";
+import { FOOTER_COMPLIANCE_NOTE } from "@/lib/site";
 
 type FaqItem = {
   q: string;
@@ -8,12 +9,51 @@ type FaqItem = {
 
 const faqs: FaqItem[] = [
   {
-    q: "Where do I pick up my order?",
+    q: "What is PLUK?",
+    a: "PLUK is a small, curated à la carte Indian baby, kids, and family pantry for Canada. We carry a limited shelf of breakfast, snack, and quick-meal products from trusted Indian brands — buy individual items, not bundles or subscription boxes.",
+  },
+  {
+    q: "Is this a full Indian grocery store?",
+    a: "No. We intentionally keep a short shelf — like an Aldi-style selection, not an ethnic aisle. If you need spices, pickles, or a full range of staples, a traditional Indian grocery is still the right place.",
+  },
+  {
+    q: "Can I buy products individually?",
+    a: "Yes. Every product on the shelf is available à la carte. Add one item or build your own basket.",
+  },
+  {
+    q: "Do I have to buy a bundle?",
+    a: "No. PLUK is à la carte. You can buy one product or build your own basket.",
+  },
+  {
+    q: "Why are there only a few products?",
+    a: "We keep the shelf intentionally small so parents do not have to compare endless options. Each SKU must earn its place.",
+  },
+  {
+    q: "Are these baby products?",
+    a: "Some items are for babies and toddlers (clearly labeled), others are for kids or the whole family. Check each product page for who it is for and always read the package label before use.",
+  },
+  {
+    q: "How do you choose products?",
+    a: "We pick one SKU per meal occasion where we can — a breakfast cereal, a quick noodle, a snack — from brands families already trust. If families reorder it, it stays on the shelf. If not, we replace it.",
+  },
+  {
+    q: "Are the products imported?",
+    a: "Yes. These brands are made in India and imported for sale in Canada. Country of origin is listed on each product page.",
+  },
+  {
+    q: "Are labels reviewed for Canada?",
+    a: "Product details on this site are for convenience. Final Canadian label review is required before sale. Always read the physical package label for ingredients, allergens, and age guidance.",
+  },
+  {
+    q: "How does pickup or local delivery work?",
+    anchorId: "pickup",
     a: (
       <>
-        One of two community spots in Oakville — you pick the one that&apos;s
-        easier for you at checkout:
-        <ul className="mt-2 ml-5 list-disc space-y-1">
+        <p className="mb-3">
+          At checkout you choose pickup or local delivery (when available).
+          Pickup spots in Oakville:
+        </p>
+        <ul className="ml-5 list-disc space-y-1">
           {pickupSpots.map((s) => (
             <li key={s.id}>
               <span className="font-medium">{s.name}</span> — {s.address},{" "}
@@ -25,68 +65,40 @@ const faqs: FaqItem[] = [
     ),
   },
   {
-    q: "How often are drops?",
-    a: "Weekly. Both spots are on Sunday with two pickup windows — pick the time that works for you at checkout.",
-  },
-  {
-    q: "Are these items high quality?",
-    a: "Yes. Every listing features top-grade fresh produce inspected directly on the wholesale floor. We don't buy close-to-expiry inventory or second-rate items. With a shorter path from growers to your pickup bag, we aim for peak freshness at near-wholesale prices. Certified organic options will always be clearly labeled.",
-  },
-  {
-    q: "How do you try to keep prices low?",
+    q: "Can I request a product?",
     a: (
       <>
-        <p>
-          We stay as close to the grower, farmer, or maker as we can — fewer
-          middlemen, a short weekly list, and pre-orders so we buy only what
-          sold. That keeps overhead low compared to a full grocery operation.
-        </p>
-        <p className="mt-3">
-          Most weeks that still lands below premium chains on the items we list.
-          When a major retailer runs a sale we lose — we show the comparison
-          honestly on each product. No membership, no delivery fee on regular
-          pickup.
-        </p>
+        Message us in the{" "}
+        <a
+          href="https://www.facebook.com/share/g/1cRmroAoyr/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-4 hover:text-accent"
+        >
+          Oakville group on Facebook
+        </a>
+        . We consider requests, but the shelf stays small — a new SKU usually
+        replaces one that is not reordering.
       </>
     ),
+  },
+  {
+    q: "What happens if a product does not sell?",
+    a: "We remove it and try something else. The shelf is curated, not a permanent catalogue of every flavour a brand makes.",
+  },
+  {
+    q: "What if my child has allergies?",
+    a: "Always read the package label for allergen statements. Product pages summarize official source data where available, but the physical label is what matters — especially for babies, toddlers, and known allergies.",
   },
   {
     q: "How do I pay?",
-    a: "Credit card at checkout — Visa, Mastercard, AmEx, Discover, Apple Pay, and Google Pay. Card details are handled on Stripe's secure page; this site never sees them.",
-  },
-  {
-    q: "Do you deliver to my house?",
-    a: "Not for regular drops — pickup-only keeps overhead low.",
-  },
-  {
-    q: "Where do you get the food?",
-    a: (
-      <>
-        <p>
-          Most of the weekly produce list comes through wholesalers at the
-          Ontario Food Terminal — still fewer stops than a big grocery, and we
-          name the supplier on every listing. We&apos;re trying to shift more of
-          the list to named growers over time.
-        </p>
-        <p className="mt-3">
-          The weekly highlight (small-batch honey, pantry finds, and the like)
-          often comes straight from the maker. Every product page shows who
-          supplied that item; open their profile for the full story and links.
-        </p>
-      </>
-    ),
-  },
-  {
-    q: "What if I miss the pickup window?",
-    a: "At this scale we can't hold orders or carry them to the next drop — we hand-pack for one pickup window, with no warehousing. If you know you can't make it, cancel before the order window closes (see below). If pickup day passes and you didn't cancel in time, we can often deliver to your home for a small fee — reach out as soon as you can.",
+    a: "Credit card at checkout — Visa, Mastercard, AmEx, Discover, Apple Pay, and Google Pay. Card details are handled on Stripe's secure page; this site never stores them.",
   },
   {
     q: "Can I cancel my order?",
     a: (
       <>
-        Yes — as long as it&apos;s before the order window closes (usually end
-        of day Thursday), so we haven&apos;t bought or packed your bag yet.
-        After you&apos;ve checked out, message us in the{" "}
+        Contact us in the{" "}
         <a
           href="https://www.facebook.com/share/g/1cRmroAoyr/"
           target="_blank"
@@ -95,8 +107,7 @@ const faqs: FaqItem[] = [
         >
           Oakville group on Facebook
         </a>{" "}
-        with your details. We&apos;ll cancel and refund the
-        full amount to your card.
+        as soon as possible if you need to cancel before we pack your order.
       </>
     ),
   },
@@ -105,7 +116,7 @@ const faqs: FaqItem[] = [
 export const metadata = {
   title: "FAQ — Pluk",
   description:
-    "Common questions about Pluk pickup, payment, cancellations, sourcing, and refunds.",
+    "Questions about PLUK — curated Indian family pantry, à la carte shopping, pickup, delivery, and product labels.",
 };
 
 export default function FAQPage() {
@@ -150,7 +161,11 @@ export default function FAQPage() {
         ))}
       </div>
 
-      <p className="mt-12 text-sm text-muted">
+      <p className="mt-12 text-xs text-muted leading-relaxed">
+        {FOOTER_COMPLIANCE_NOTE}
+      </p>
+
+      <p className="mt-6 text-sm text-muted">
         Anything else?{" "}
         <a
           href="https://www.facebook.com/share/g/1cRmroAoyr/"

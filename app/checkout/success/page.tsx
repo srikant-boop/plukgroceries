@@ -27,11 +27,11 @@ export default async function CheckoutSuccessPage({
     <div className="py-16 max-w-xl mx-auto text-center">
       <ClearCartOnSuccess />
 
-      <h1 className="text-4xl mb-4">Thanks — you&apos;re in the next drop.</h1>
+      <h1 className="text-4xl mb-4">Thanks — your order is confirmed.</h1>
       <p className="text-muted text-lg mb-8 leading-relaxed">
         {spot
           ? "We'll see you at your pickup spot below."
-          : "We'll be in touch about pickup."}
+          : "We'll be in touch about pickup or delivery."}
       </p>
 
       {spot && (
@@ -59,7 +59,7 @@ export default async function CheckoutSuccessPage({
         <p className="eyebrow mb-3">What happens next</p>
         <ol className="space-y-3 text-sm leading-relaxed text-foreground/85 list-decimal pl-5">
           <li>
-            We pack your order the morning of the drop, kept cold until pickup.
+            We pack your pantry order before your pickup or delivery window.
           </li>
           <li>
             Bring ID or your phone — we&apos;ll match you against the day&apos;s
@@ -90,8 +90,8 @@ export default async function CheckoutSuccessPage({
       </div>
 
       <div className="flex gap-3 justify-center">
-        <Link href="/" className="btn">
-          Back to shop
+        <Link href="/#pantry" className="btn">
+          Back to pantry
         </Link>
         <Link href="/faq" className="btn btn-ghost">
           Read the FAQ

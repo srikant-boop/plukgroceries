@@ -2,7 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type Product, cheapestCompetitor } from "@/lib/products";
+import {
+  type Product,
+  cheapestCompetitor,
+  hasPantryMeta,
+} from "@/lib/products";
+import { cardBadges, type PantryProduct } from "@/lib/pantry-catalog";
 import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
 import { useCart } from "@/lib/cart";
@@ -14,12 +19,13 @@ export function ProductCard({ product }: { product: Product }) {
     (s) => s.lines.find((l) => l.productId === product.id)?.qty ?? 0,
   );
 
-  // Strike through the CHEAPEST competitor — not the highest — so we only
-  // signal a saving when we beat the most honest peer comparison. When we
-  // lose to the cheapest, show nothing.
   const cheapest = cheapestCompetitor(product);
-  const showCompare =
-    !product.special && cheapest && cheapest.price > product.ourPrice;
+  const showCompare = cheapest && cheapest.price > product.ourPrice;
+
+  const pantry = hasPantryMeta(product) ? product.pantry : null;
+  const badges = pantry
+    ? cardBadges(product as PantryProduct)
+    : [];
 
   const handleAdd = () => {
     add(product.id, 1);
@@ -52,8 +58,13 @@ export function ProductCard({ product }: { product: Product }) {
           />
         </Link>
       </div>
-      <div className="mt-4 flex items-baseline justify-between gap-3">
+      <div className="mt-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
+          {product.brand && (
+            <p className="text-[10px] uppercase tracking-wider text-muted mb-0.5">
+              {product.brand}
+            </p>
+          )}
           <Link
             href={`/products/${product.slug}`}
             className="hover:underline underline-offset-4"
@@ -61,11 +72,23 @@ export function ProductCard({ product }: { product: Product }) {
           >
             <h3 className="text-lg leading-tight">{product.name}</h3>
           </Link>
-          <p className="text-xs text-muted mt-0.5">{product.unit}</p>
-          {product.organic && (
-            <p className="text-[10px] uppercase tracking-wider text-accent mt-1">
-              Organic
+          {pantry && (
+            <p className="text-xs text-foreground/75 mt-1 leading-snug">
+              {pantry.roleLine}
             </p>
+          )}
+          <p className="text-xs text-muted mt-0.5">{product.unit}</p>
+          {badges.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1">
+              {badges.map((b) => (
+                <span
+                  key={b}
+                  className="text-[9px] uppercase tracking-wide border border-line px-1.5 py-0.5 text-muted"
+                >
+                  {b}
+                </span>
+              ))}
+            </div>
           )}
         </div>
         <div className="shrink-0 text-right">

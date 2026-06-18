@@ -54,12 +54,12 @@ export function validateCheckoutBody(body: {
     }
     const product = getStorefrontProductById(l.productId);
     if (!product) {
-      return { ok: false, error: `This item isn't available this drop.` };
+      return { ok: false, error: `This item isn't on the shelf right now.` };
     }
     if (qty > product.stock) {
       return {
         ok: false,
-        error: `Only ${product.stock} of ${product.name} available this drop.`,
+        error: `Only ${product.stock} of ${product.name} available.`,
       };
     }
     lines.push({ product, qty });

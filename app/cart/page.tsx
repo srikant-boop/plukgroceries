@@ -34,10 +34,10 @@ export default function CartPage() {
       <div className="py-20 max-w-md mx-auto text-center">
         <h1 className="text-3xl mb-4">Your cart is empty</h1>
         <p className="text-muted mb-8">
-          Pick a few staples and they&apos;ll show up here.
+          Add individual products from the curated shelf — no bundles required.
         </p>
-        <Link href="/" className="btn">
-          Browse shop
+        <Link href="/#pantry" className="btn">
+          Shop the Pantry
         </Link>
       </div>
     );

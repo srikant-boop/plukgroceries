@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSupplier, suppliers, supplierIntroLabel } from "@/lib/suppliers";
-import { products } from "@/lib/products";
+import { products, isStorefrontProduct } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 import { SocialIcon } from "@/components/SocialIcon";
 
@@ -33,6 +33,7 @@ const TYPE_LABEL = {
   wholesaler: "Wholesaler",
   "farmer-wholesaler": "Farmer & wholesaler",
   maker: "Maker",
+  brand: "Brand",
 } as const;
 
 export default async function SupplierPage({
@@ -44,7 +45,9 @@ export default async function SupplierPage({
   const supplier = getSupplier(slug);
   if (!supplier) notFound();
 
-  const supplied = products.filter((p) => p.supplierId === supplier.id);
+  const supplied = products.filter(
+    (p) => p.supplierId === supplier.id && isStorefrontProduct(p),
+  );
 
   return (
     <article>

@@ -7,12 +7,14 @@ import { AnalyticsProvider } from "@/components/AnalyticsProvider";
 import {
   DEFAULT_DESCRIPTION,
   FACEBOOK_APP_ID,
+  FOOTER_COMPLIANCE_NOTE,
   OG_IMAGE_ALT,
   OG_IMAGE_URL,
   SITE_NAME,
   SITE_TITLE,
   SITE_URL,
 } from "@/lib/site";
+import { PANTRY_COLLECTIONS } from "@/lib/pantry-catalog";
 import "./globals.css";
 
 const OG_IMAGE = {
@@ -69,51 +71,82 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col">
         <AnalyticsProvider>
         <header className="border-b border-line bg-background">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+          <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-5">
             <Link
               href="/"
-              className="flex items-center gap-2.5 text-foreground hover:opacity-80"
-              aria-label="Pluk · Oakville"
+              className="flex shrink-0 items-center gap-2.5 text-foreground hover:opacity-80"
+              aria-label="Pluk"
             >
               <Leaf size={26} className="text-accent" />
               <span className="text-xl tracking-[0.2em] font-medium">
                 PLUK
               </span>
             </Link>
-            <nav className="flex items-center gap-6 text-sm">
-              <Link href="/" className="hover:underline underline-offset-4">
+            <div className="flex items-center gap-2 md:gap-4 min-w-0">
+            <nav className="hidden lg:flex items-center gap-4 text-sm min-w-0 overflow-x-auto">
+              <Link href="/#pantry" className="hover:underline underline-offset-4">
                 Shop
+              </Link>
+              {PANTRY_COLLECTIONS.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/shop/${c.slug}`}
+                  className="hover:underline underline-offset-4 whitespace-nowrap"
+                >
+                  {c.navLabel}
+                </Link>
+              ))}
+              <Link href="/brands" className="hover:underline underline-offset-4">
+                Brands
+              </Link>
+              <Link href="/about" className="hover:underline underline-offset-4">
+                About
               </Link>
               <Link href="/faq" className="hover:underline underline-offset-4">
                 FAQ
               </Link>
-              <Link
-                href="/cart"
-                className="flex items-center gap-1.5 hover:underline underline-offset-4"
-              >
-                Cart <CartBadge />
+            </nav>
+            <nav className="flex lg:hidden items-center gap-3 text-sm">
+              <Link href="/#pantry" className="hover:underline underline-offset-4">
+                Shop
+              </Link>
+              <Link href="/brands" className="hover:underline underline-offset-4">
+                Brands
+              </Link>
+              <Link href="/faq" className="hover:underline underline-offset-4">
+                FAQ
               </Link>
             </nav>
+            <Link
+              href="/cart"
+              className="flex shrink-0 items-center gap-1.5 text-sm hover:underline underline-offset-4"
+            >
+              Cart <CartBadge />
+            </Link>
+            </div>
           </div>
         </header>
         <main className="mx-auto w-full max-w-6xl px-6 py-10 flex-1">
           {children}
         </main>
         <footer className="border-t border-line mt-20">
-          <div className="mx-auto max-w-6xl px-6 py-8 text-xs text-muted flex flex-wrap justify-between gap-3">
-            <span>© Pluk</span>
-            <a
-              href="https://www.facebook.com/share/g/1cRmroAoyr/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-foreground"
-              aria-label="Facebook group"
-            >
-              <SocialIcon
+          <div className="mx-auto max-w-6xl px-6 py-8 text-xs text-muted flex flex-col gap-4">
+            <p className="max-w-2xl leading-relaxed">{FOOTER_COMPLIANCE_NOTE}</p>
+            <div className="flex flex-wrap justify-between gap-3 items-center">
+              <span>© Pluk</span>
+              <a
                 href="https://www.facebook.com/share/g/1cRmroAoyr/"
-                size={20}
-              />
-            </a>
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-foreground"
+                aria-label="Facebook group"
+              >
+                <SocialIcon
+                  href="https://www.facebook.com/share/g/1cRmroAoyr/"
+                  size={20}
+                />
+              </a>
+            </div>
           </div>
         </footer>
         </AnalyticsProvider>

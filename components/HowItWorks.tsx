@@ -2,35 +2,73 @@ import { Leaf } from "@/components/Leaf";
 
 const steps = [
   {
-    sketch: "basket",
-    title: "Shop the list",
-    detail: "Browse this week's drop and add anything that looks good.",
-  },
-  {
-    sketch: "pickup",
-    title: "Pick your spot",
+    sketch: "choose" as const,
+    title: "Choose what you need",
     detail:
-      "During checkout: pick one of our two Oakville Sunday locations and the time that works for you.",
+      "Shop individual products à la carte. No bundles required.",
   },
   {
-    sketch: "checkout",
-    title: "Pay securely",
-    detail: "Stripe handles checkout — we never store your card on our site.",
+    sketch: "cart" as const,
+    title: "Add to cart",
+    detail:
+      "Pick one item or build your own family pantry basket.",
   },
-] as const;
+  {
+    sketch: "pickup" as const,
+    title: "Choose pickup or local delivery",
+    detail:
+      "At checkout, select Oakville pickup or local delivery — options shown when you order.",
+  },
+  {
+    sketch: "reorder" as const,
+    title: "Reorder favourites",
+    detail:
+      "The shelf stays small. Products that families love stay; products that do not reorder get replaced.",
+  },
+];
 
-function StepSketch({ kind }: { kind: "basket" | "pickup" | "checkout" }) {
-  if (kind === "basket") {
+function StepSketch({
+  kind,
+}: {
+  kind: "choose" | "cart" | "pickup" | "reorder";
+}) {
+  const fill = "#fbfbf9";
+  const stroke = "#4b5563";
+
+  if (kind === "choose") {
     return (
       <svg viewBox="0 0 320 240" className="h-full w-full" aria-hidden>
-        <rect x="0" y="0" width="320" height="240" fill="#fbfbf9" />
-        <g stroke="#4b5563" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <rect x="0" y="0" width="320" height="240" fill={fill} />
+        <g
+          stroke={stroke}
+          strokeWidth="2.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        >
+          <rect x="48" y="56" width="88" height="120" rx="6" />
+          <rect x="152" y="72" width="88" height="104" rx="6" />
+          <path d="M68 88h48M68 108h36" />
+          <path d="M172 96h48M172 116h32" />
+        </g>
+      </svg>
+    );
+  }
+
+  if (kind === "cart") {
+    return (
+      <svg viewBox="0 0 320 240" className="h-full w-full" aria-hidden>
+        <rect x="0" y="0" width="320" height="240" fill={fill} />
+        <g
+          stroke={stroke}
+          strokeWidth="2.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        >
           <rect x="72" y="90" width="176" height="108" rx="10" />
           <path d="M100 90V70c0-28 18-46 60-46s60 18 60 46v20" />
-          <path d="M135 118c10 5 16 15 14 26-16 1-27-3-34-12 4-10 11-15 20-14Z" />
-          <ellipse cx="162" cy="138" rx="10" ry="15" />
-          <rect x="182" y="108" width="20" height="34" rx="4" />
-          <path d="M192 98v10" />
+          <rect x="128" y="118" width="64" height="48" rx="4" />
         </g>
       </svg>
     );
@@ -39,13 +77,17 @@ function StepSketch({ kind }: { kind: "basket" | "pickup" | "checkout" }) {
   if (kind === "pickup") {
     return (
       <svg viewBox="0 0 320 240" className="h-full w-full" aria-hidden>
-        <rect x="0" y="0" width="320" height="240" fill="#fbfbf9" />
-        <g stroke="#4b5563" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <rect x="0" y="0" width="320" height="240" fill={fill} />
+        <g
+          stroke={stroke}
+          strokeWidth="2.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        >
           <path d="M160 36c-28 0-50 21-50 49 0 36 50 84 50 84s50-48 50-84c0-28-22-49-50-49Z" />
           <circle cx="160" cy="85" r="16" />
           <path d="M85 200h150" />
-          <rect x="132" y="168" width="56" height="32" rx="4" />
-          <path d="M144 168v-8c0-7 5-12 16-12s16 5 16 12v8" />
         </g>
       </svg>
     );
@@ -53,15 +95,17 @@ function StepSketch({ kind }: { kind: "basket" | "pickup" | "checkout" }) {
 
   return (
     <svg viewBox="0 0 320 240" className="h-full w-full" aria-hidden>
-      <rect x="0" y="0" width="320" height="240" fill="#fbfbf9" />
-      <g stroke="#4b5563" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" fill="none">
-        <rect x="112" y="28" width="96" height="184" rx="16" />
-        <rect x="126" y="50" width="68" height="116" rx="6" />
-        <path d="M147 184h26" />
-        <rect x="42" y="88" width="54" height="34" rx="5" />
-        <path d="M52 102h34M52 112h18" />
-        <circle cx="252" cy="105" r="24" />
-        <path d="m240 105 8 8 16-16" />
+      <rect x="0" y="0" width="320" height="240" fill={fill} />
+      <g
+        stroke={stroke}
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      >
+        <path d="M88 160V96l72-40 72 40v64" />
+        <rect x="120" y="120" width="80" height="40" rx="4" />
+        <path d="M160 56v24M140 140h40" />
       </g>
     </svg>
   );
@@ -69,19 +113,12 @@ function StepSketch({ kind }: { kind: "basket" | "pickup" | "checkout" }) {
 
 export function HowItWorks() {
   return (
-    <section className="mb-12">
+    <section id="how-it-works" className="mb-16">
       <div className="mb-6 flex items-baseline gap-3 border-b border-line pb-3">
         <Leaf size={15} className="text-accent" />
         <h2 className="text-2xl">How it works</h2>
       </div>
-      <p className="mb-6 text-sm leading-relaxed text-foreground/75">
-        Add what looks good, choose your Sunday pickup spot, and check out when
-        you&apos;re ready — it only takes a few minutes. Changes in plan? Cancel
-        before the order window closes. If anything isn&apos;t right at pickup,
-        we&apos;ll make it right with a full refund. Can&apos;t make it on
-        pickup day? We&apos;ll deliver it to you for free.
-      </p>
-      <ol className="grid gap-6 sm:grid-cols-3 sm:gap-5">
+      <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
         {steps.map((step, i) => (
           <li key={step.title} className="group">
             <div className="relative mb-4 aspect-[4/3] overflow-hidden border border-line bg-surface">
@@ -100,6 +137,34 @@ export function HowItWorks() {
           </li>
         ))}
       </ol>
+    </section>
+  );
+}
+
+export function HowWeChoose() {
+  return (
+    <section id="how-we-choose" className="mb-16 border-t border-line pt-12">
+      <div className="mb-6 flex items-baseline gap-3 border-b border-line pb-3">
+        <Leaf size={15} className="text-accent" />
+        <h2 className="text-2xl">How we choose products</h2>
+      </div>
+      <div className="max-w-2xl text-sm leading-relaxed text-foreground/85 space-y-4">
+        <p>
+          The shelf is intentionally small — like an Aldi-style aisle, not a
+          full Indian grocery store. Each SKU must earn its place: a real meal
+          occasion, a trusted brand, and something families actually reorder.
+        </p>
+        <p>
+          If families reorder it, it stays on the shelf. If not, we replace it.
+          We do not force bundles or kits — every product is available à la
+          carte.
+        </p>
+        <p>
+          We focus on cleaner Indian breakfast, snack, and quick-meal options
+          for babies, kids, and parents — without hunting across expensive
+          import sites or comparing endless labels.
+        </p>
+      </div>
     </section>
   );
 }

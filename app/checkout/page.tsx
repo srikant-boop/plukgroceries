@@ -40,8 +40,8 @@ export default function CheckoutPage() {
     return (
       <div className="py-20 max-w-md mx-auto text-center">
         <h1 className="text-3xl mb-4">Nothing to check out</h1>
-        <Link href="/" className="btn">
-          Browse shop
+        <Link href="/#pantry" className="btn">
+          Shop the Pantry
         </Link>
       </div>
     );
