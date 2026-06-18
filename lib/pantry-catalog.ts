@@ -12,7 +12,6 @@ export type IngredientSection = {
 export type PantryMeta = {
   roleLine: string;
   audience: string[];
-  occasions: string[];
   /** Max 3 shown on cards; full list on PDP */
   badges: string[];
   whySelected: string;
@@ -104,7 +103,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Traditional khichdi mix — creamy porridge or instant dosa in minutes.",
       audience: ["Baby/Toddler"],
-      occasions: ["Lunch/Dinner", "Travel-Friendly"],
       badges: ["No Sugar", "Travel-Friendly"],
       whySelected:
         "Khichdi is a staple comfort food for many Indian families. Early Foods uses a short, transparent ingredient list with no milk powder, salt, or maltodextrin — one khichdi SKU on our shelf instead of multiple porridge variants.",
@@ -154,7 +152,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Instant cereal with ragi, strawberry, and milk solids.",
       audience: ["Baby/Toddler"],
-      occasions: ["Breakfast", "Travel-Friendly"],
       badges: ["With Milk", "No Added Sugar", "Ragi"],
       whySelected:
         "Slurrp Farm is a trusted name for millet-based kids' foods in India. This cereal uses ragi and date powder for sweetness — one cereal SKU for families starting solids.",
@@ -211,7 +208,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Fluffy chocolate pancakes from a millet supergrain blend.",
       audience: ["Kids", "Family"],
-      occasions: ["Breakfast", "Snack"],
       badges: ["No Maida", "Millet", "Chocolate"],
       whySelected:
         "Pancakes are an easy win for busy mornings. This mix uses millets and supergrains instead of refined flour — one pancake SKU that works for kids and adults eating together.",
@@ -269,7 +265,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Ragi and jowar cereal shapes with cocoa and unrefined sugar.",
       audience: ["Kids"],
-      occasions: ["Breakfast", "Snack", "Travel-Friendly"],
       badges: ["No Maida", "Ragi", "No Palm Oil"],
       whySelected:
         "Many families want a cereal that feels familiar to kids but uses better grains. This is our one shaped cereal SKU — ragi and jowar based, without stocking multiple flavours.",
@@ -323,7 +318,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Millet noodles with a natural-spice masala sachet — serves 2.",
       audience: ["Kids", "Family"],
-      occasions: ["Lunch/Dinner", "Travel-Friendly"],
       badges: ["No Maida", "Not Fried", "Millet"],
       whySelected:
         "Instant noodles are a real use case in busy households. We carry one millet-based masala noodle — a cleaner alternative to typical maida noodles, without filling the shelf with flavours.",
@@ -393,7 +387,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Spinach millet dosa batter mix — no grinding from scratch.",
       audience: ["Kids", "Family"],
-      occasions: ["Breakfast", "Lunch/Dinner"],
       badges: ["No Maida", "Spinach", "Millet"],
       whySelected:
         "Dosa is a core Indian breakfast. This mix covers that format with millets and spinach in one SKU — faster than homemade batter on a weekday.",
@@ -451,7 +444,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Multigrain macaroni — boil and sauce your way.",
       audience: ["Kids", "Family"],
-      occasions: ["Lunch/Dinner"],
       badges: ["Gluten-Free", "Vegan", "No Maida"],
       whySelected:
         "Pasta is a weekly staple in many homes. We stock one macaroni from Slurrp Farm — enough for lunchboxes and quick dinners without a wall of pasta SKUs.",
@@ -501,7 +493,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Ragi and jowar chocolate cookies — shelf-stable snack.",
       audience: ["Kids", "Family"],
-      occasions: ["Snack", "Travel-Friendly"],
       badges: ["No Maida", "Ragi", "No Preservatives"],
       whySelected:
         "We carry one cookie SKU — choco ragi — instead of a wall of flavours. It covers lunchbox and travel snacking without turning PLUK into a biscuit aisle.",
@@ -563,7 +554,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Roasted peri peri makhana — crunchy, never fried.",
       audience: ["Family", "Kids"],
-      occasions: ["Snack", "Travel-Friendly"],
       badges: ["Gluten-Free", "Roasted", "Makhana"],
       whySelected:
         "Makhana is a familiar Indian snack that works for the whole family. Farmley is a known brand for nuts and makhana — one flavour on the shelf keeps choice simple.",
@@ -632,7 +622,6 @@ export const pantryProducts: PantryProduct[] = [
     pantry: {
       roleLine: "Wholegrain melts that dissolve quickly — four flavours in one pack.",
       audience: ["Baby/Toddler"],
-      occasions: ["Snack", "Travel-Friendly"],
       badges: ["No Maida", "Wholegrain", "Non-Fried"],
       whySelected:
         "Timios is known for kids' snacks in India. Melts are a distinct baby/toddler finger-food format — we carry one variety pack to test demand before expanding.",

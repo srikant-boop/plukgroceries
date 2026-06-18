@@ -192,10 +192,6 @@ export default async function ProductPage({
                 )}
               </dd>
             </div>
-            <div>
-              <dt className="text-muted mb-0.5">Also good for</dt>
-              <dd>{meta.occasions.join(", ")}</dd>
-            </div>
           </dl>
         </section>
 
