@@ -4,7 +4,7 @@ import { HOME_DELIVERY_ID } from "./pickup";
 
 export type CheckoutLineInput = { productId: string; qty: number };
 
-export type PaymentMethod = "card" | "cod" | "etransfer";
+export type PaymentMethod = "card" | "cod";
 
 export type CheckoutCustomerInput = {
   name: string;
@@ -56,7 +56,7 @@ export function validateCheckoutBody(body: {
     return { ok: false, error: "Delivery address is required." };
   }
 
-  if (!["card", "cod", "etransfer"].includes(paymentMethod)) {
+  if (!["card", "cod"].includes(paymentMethod)) {
     return { ok: false, error: "Choose a payment method." };
   }
 

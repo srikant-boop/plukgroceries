@@ -70,7 +70,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "How do I pay?",
-    a: "Pay by card at checkout, cash on delivery, or e-transfer. For cash or e-transfer, choose that option at checkout — we will confirm payment details before we deliver.",
+    a: "Pay by card at checkout or cash on delivery. For cash on delivery, choose that option at checkout — we will confirm timing before we deliver.",
   },
 ];
 

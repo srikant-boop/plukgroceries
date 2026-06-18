@@ -136,7 +136,6 @@ export default function CheckoutPage() {
               [
                 ["card", "Card", "Pay now with Visa, Mastercard, AmEx, Apple Pay, or Google Pay."],
                 ["cod", "Cash on delivery", "Pay when we deliver."],
-                ["etransfer", "E-transfer", "We will confirm e-transfer details after you order."],
               ] as const
             ).map(([value, label, detail]) => (
               <label
