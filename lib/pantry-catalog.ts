@@ -166,16 +166,25 @@ export const pantryProducts: PantryProduct[] = [
       ingredientSections: [
         {
           rows: [
-            { name: "Ragi" },
-            { name: "Jowar" },
-            { name: "Rice" },
-            { name: "Oats" },
-            { name: "Real strawberry powder" },
-            { name: "Milk solids" },
-            { name: "Date powder (natural sweetness)" },
+            {
+              name: "Supergrain blend (sprouted ragi, jowar, rice)",
+              amount: "35%",
+            },
+            { name: "Milk solids", amount: "30%" },
+            { name: "Oat flour", amount: "12%" },
+            {
+              name: "Fruit blend (banana, strawberry)",
+              amount: "10%",
+            },
+            { name: "Date powder", amount: "9%" },
+            { name: "Skimmed milk powder" },
+            { name: "Beet juice powder" },
+            { name: "Vitamins and minerals" },
           ],
         },
       ],
+      ingredientsNote:
+        "No added sugar, maida, salt, trans fat, preservatives, artificial colours, or flavours. Sweetened with date powder.",
       allergens:
         "Contains milk (whole and skimmed milk powders). No maida, refined sugar, or artificial colours or preservatives. Not suitable for children with milk allergy.",
       nutritionHighlights:
