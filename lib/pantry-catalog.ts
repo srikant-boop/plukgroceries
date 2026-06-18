@@ -103,7 +103,7 @@ export const pantryProducts: PantryProduct[] = [
     collection: "khichdi",
     image: "/products/pantry/early-foods-rice-moong-khichdi.png",
     imageAlt: "Early Foods Rice and Moong Khichdi Mix package",
-    unit: "200 g pouch",
+    unit: "200 g",
     stock: 40,
     ...P(5.11, 7.99),
     competitors: [],
