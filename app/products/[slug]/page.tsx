@@ -200,15 +200,6 @@ export default async function ProductPage({
 
         <ProductDetailAccordion items={labelSections} />
 
-        <div className="border border-line bg-surface p-4 text-xs leading-relaxed text-muted space-y-2">
-          <p>Final Canadian label review required before sale.</p>
-          <p>
-            Product information is based on official brand/source data where
-            available. Always read the package label before use, especially for
-            babies, toddlers, allergies, and dietary restrictions.
-          </p>
-        </div>
-
         <Link
           href="/#pantry"
           className="text-sm text-muted hover:text-foreground underline underline-offset-4"

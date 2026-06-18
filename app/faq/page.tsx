@@ -42,7 +42,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "Are labels reviewed for Canada?",
-    a: "Product details on this site are sourced from official brand listings. Final Canadian label review is required before sale. Always read the physical package label for ingredients and allergens.",
+    a: "Product details on this site are sourced from official brand listings. Always read the physical package label for the most up-to-date ingredients and allergen information.",
   },
   {
     q: "How does pickup or local delivery work?",

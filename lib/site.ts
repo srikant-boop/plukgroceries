@@ -17,6 +17,6 @@ export const OG_IMAGE_ALT =
   "Pluk — curated Indian family pantry for Canada";
 
 export const FOOTER_COMPLIANCE_NOTE =
-  "Product details are provided for convenience and must be verified against the final Canadian package label before sale.";
+  "Product details are sourced from official brand listings. Always read the package label for the most up-to-date ingredients and allergen information.";
 
 export const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID?.trim() || undefined;
