@@ -1,4 +1,14 @@
 /** Extended pantry fields — compliance-safe copy from official sources where noted. */
+export type IngredientRow = {
+  name: string;
+  amount?: string;
+};
+
+export type IngredientSection = {
+  heading?: string;
+  rows: IngredientRow[];
+};
+
 export type PantryMeta = {
   roleLine: string;
   audience: string[];
@@ -6,7 +16,8 @@ export type PantryMeta = {
   /** Max 3 shown on cards; full list on PDP */
   badges: string[];
   whySelected: string;
-  ingredients: string;
+  ingredientSections: IngredientSection[];
+  ingredientsNote?: string;
   allergens: string;
   nutritionHighlights: string;
   preparation: string;
@@ -99,8 +110,20 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["No Sugar", "Stage 1", "Travel-Friendly"],
       whySelected:
         "Khichdi is a staple comfort food for many Indian families. Early Foods uses a short, transparent ingredient list with no milk powder, salt, or maltodextrin — one khichdi SKU on our shelf instead of multiple porridge variants.",
-      ingredients:
-        "Hand-pounded Rajamudi red rice (37%), yellow moong dal (37%), kodo millet/kodra (25%), pepper (0.5%), ajwain (0.25%), jeera (0.25%). No milk powder, salt, sugar, or maltodextrin.",
+      ingredientSections: [
+        {
+          rows: [
+            { name: "Hand-pounded Rajamudi red rice", amount: "37%" },
+            { name: "Yellow moong dal", amount: "37%" },
+            { name: "Kodo millet (kodra)", amount: "25%" },
+            { name: "Pepper", amount: "0.5%" },
+            { name: "Ajwain", amount: "0.25%" },
+            { name: "Jeera", amount: "0.25%" },
+          ],
+        },
+      ],
+      ingredientsNote:
+        "No milk powder, salt, sugar, or maltodextrin (per Early Foods).",
       allergens:
         "Free from milk, wheat, nuts, and soy in the ingredient list (per Early Foods).",
       nutritionHighlights:
@@ -142,8 +165,20 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["With Milk", "No Added Sugar", "Ragi"],
       whySelected:
         "Slurrp Farm is a trusted name for millet-based kids' foods in India. This cereal uses ragi and date powder for sweetness — one cereal SKU for families starting solids.",
-      ingredients:
-        "Ragi, jowar, rice, oats, real strawberry powder, milk solids, and date powder (for natural sweetness). Per Slurrp Farm product information.",
+      ingredientSections: [
+        {
+          rows: [
+            { name: "Ragi" },
+            { name: "Jowar" },
+            { name: "Rice" },
+            { name: "Oats" },
+            { name: "Real strawberry powder" },
+            { name: "Milk solids" },
+            { name: "Date powder (natural sweetness)" },
+          ],
+        },
+      ],
+      ingredientsNote: "Per Slurrp Farm product information.",
       allergens:
         "Contains milk (whole and skimmed milk powders). No maida, refined sugar, or artificial colours or preservatives (per Slurrp Farm). Not suitable for children with milk allergy.",
       nutritionHighlights:
@@ -185,8 +220,25 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["No Maida", "Millet", "Chocolate"],
       whySelected:
         "Pancakes are an easy win for busy mornings. This mix uses millets and supergrains instead of refined flour — one pancake SKU that works for kids and adults eating together.",
-      ingredients:
-        "Supergrain blend (69%): jowar flour, oat flour, foxtail millet flour, ragi flour; jaggery (12.5%); raw unrefined sugar (12.5%); cocoa powder; baking powder; raising agent (baking soda, INS 500(ii)); natural flavour; iodised salt; cinnamon powder. Per published Slurrp Farm label listings.",
+      ingredientSections: [
+        {
+          rows: [
+            {
+              name: "Supergrain blend (jowar, oat, foxtail millet, ragi flour)",
+              amount: "69%",
+            },
+            { name: "Jaggery", amount: "12.5%" },
+            { name: "Raw unrefined sugar", amount: "12.5%" },
+            { name: "Cocoa powder" },
+            { name: "Baking powder" },
+            { name: "Raising agent (baking soda, INS 500(ii))" },
+            { name: "Natural flavour" },
+            { name: "Iodised salt" },
+            { name: "Cinnamon powder" },
+          ],
+        },
+      ],
+      ingredientsNote: "Per published Slurrp Farm label listings.",
       allergens:
         "Made in a facility that handles wheat (gluten) and nuts — may contain trace amounts (per Slurrp Farm label listings). Contains oats.",
       nutritionHighlights:
@@ -228,8 +280,20 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["No Maida", "Ragi", "No Palm Oil"],
       whySelected:
         "Many families want a cereal that feels familiar to kids but uses better grains. This is our one shaped cereal SKU — ragi and jowar based, without stocking multiple flavours.",
-      ingredients:
-        "Supergrain blend (ragi, jowar, rice, corn) and cocoa. Sweetened with raw unrefined sugar. No maida, salt, trans fat, palm oil, preservatives, artificial colours, or flavours (per Slurrp Farm).",
+      ingredientSections: [
+        {
+          rows: [
+            { name: "Ragi" },
+            { name: "Jowar" },
+            { name: "Rice" },
+            { name: "Corn" },
+            { name: "Cocoa" },
+            { name: "Raw unrefined sugar" },
+          ],
+        },
+      ],
+      ingredientsNote:
+        "No maida, salt, trans fat, palm oil, preservatives, artificial colours, or flavours (per Slurrp Farm).",
       allergens:
         "Contains corn and rice. Typically served with cow's milk — contains dairy when prepared that way. No palm oil or trans fat (per Slurrp Farm).",
       nutritionHighlights:
@@ -271,8 +335,40 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["No Maida", "Not Fried", "Millet"],
       whySelected:
         "Instant noodles are a real use case in busy households. We carry one millet-based masala noodle — a cleaner alternative to typical maida noodles, without filling the shelf with flavours.",
-      ingredients:
-        "Noodles: foxtail millet flour, whole wheat flour, cluster bean powder (natural gum), salt. Spice mix (5%): coriander seeds, red chillies, onion powder, garlic powder, ginger powder, turmeric, curry leaves, fennel seeds, black pepper, cassia, fenugreek, star anise, clove, nutmeg, salt, unrefined cane sugar, citric acid (INS 330). Per Slurrp Farm label listings.",
+      ingredientSections: [
+        {
+          heading: "Noodles",
+          rows: [
+            { name: "Foxtail millet flour" },
+            { name: "Whole wheat flour" },
+            { name: "Cluster bean powder (natural gum)" },
+            { name: "Salt" },
+          ],
+        },
+        {
+          heading: "Spice mix (5%)",
+          rows: [
+            { name: "Coriander seeds" },
+            { name: "Red chillies" },
+            { name: "Onion powder" },
+            { name: "Garlic powder" },
+            { name: "Ginger powder" },
+            { name: "Turmeric" },
+            { name: "Curry leaves" },
+            { name: "Fennel seeds" },
+            { name: "Black pepper" },
+            { name: "Cassia" },
+            { name: "Fenugreek" },
+            { name: "Star anise" },
+            { name: "Clove" },
+            { name: "Nutmeg" },
+            { name: "Salt" },
+            { name: "Unrefined cane sugar" },
+            { name: "Citric acid (INS 330)" },
+          ],
+        },
+      ],
+      ingredientsNote: "Per Slurrp Farm label listings.",
       allergens:
         "Contains wheat (gluten). Made in a facility that processes nuts — may contain trace amounts (per Slurrp Farm).",
       nutritionHighlights:
@@ -313,8 +409,20 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["No Maida", "Spinach", "Millet"],
       whySelected:
         "Dosa is a core Indian breakfast. This mix covers that format with millets and spinach in one SKU — faster than homemade batter on a weekday.",
-      ingredients:
-        "Blend of supergrains including foxtail millet; urad, chana, and moong dal; natural spinach powder; mild spices. Zero maida, white rice, preservatives, stabilizers, emulsifiers, artificial colours, or flavours (per Slurrp Farm).",
+      ingredientSections: [
+        {
+          rows: [
+            { name: "Foxtail millet" },
+            { name: "Urad dal" },
+            { name: "Chana dal" },
+            { name: "Moong dal" },
+            { name: "Natural spinach powder" },
+            { name: "Mild spices" },
+          ],
+        },
+      ],
+      ingredientsNote:
+        "Zero maida, white rice, preservatives, stabilizers, emulsifiers, artificial colours, or flavours (per Slurrp Farm).",
       allergens:
         "Contains legumes (urad, chana, and moong dal). Zero maida or white rice (per Slurrp Farm).",
       nutritionHighlights:
@@ -355,8 +463,17 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["Gluten-Free", "Vegan", "No Maida"],
       whySelected:
         "Pasta is a weekly staple in many homes. We stock one macaroni from Slurrp Farm — enough for lunchboxes and quick dinners without a wall of pasta SKUs.",
-      ingredients:
-        "Brown rice, white rice, and corn (per Slurrp Farm). Zero maida/wheat, no trans fats, preservatives, or artificial colours and flavours.",
+      ingredientSections: [
+        {
+          rows: [
+            { name: "Brown rice" },
+            { name: "White rice" },
+            { name: "Corn" },
+          ],
+        },
+      ],
+      ingredientsNote:
+        "Zero maida/wheat, no trans fats, preservatives, or artificial colours and flavours (per Slurrp Farm).",
       allergens:
         "Gluten-free and vegan (per Slurrp Farm). Made in a facility that may handle wheat and other allergens.",
       nutritionHighlights:
@@ -398,8 +515,30 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["No Maida", "Ragi", "No Preservatives"],
       whySelected:
         "We carry one cookie SKU — choco ragi — instead of a wall of flavours. It covers lunchbox and travel snacking without turning PLUK into a biscuit aisle.",
-      ingredients:
-        "Multigrain flour blend (46%): whole wheat flour (atta), jowar, ragi (5%); rice bran oil (12%); jaggery (11%); raw unrefined sugar (11%); cocoa powder (3.5%); chocolate chips; skimmed milk powder; corn flour; raising agent (baking soda); iodised salt; emulsifier (sunflower lecithin); thickener (xanthan gum); antioxidant (natural rosemary). No maida, palm oil, or preservatives (per Slurrp Farm label listings).",
+      ingredientSections: [
+        {
+          rows: [
+            {
+              name: "Multigrain flour blend (whole wheat atta, jowar, ragi)",
+              amount: "46%",
+            },
+            { name: "Rice bran oil", amount: "12%" },
+            { name: "Jaggery", amount: "11%" },
+            { name: "Raw unrefined sugar", amount: "11%" },
+            { name: "Cocoa powder", amount: "3.5%" },
+            { name: "Chocolate chips" },
+            { name: "Skimmed milk powder" },
+            { name: "Corn flour" },
+            { name: "Raising agent (baking soda)" },
+            { name: "Iodised salt" },
+            { name: "Emulsifier (sunflower lecithin)" },
+            { name: "Thickener (xanthan gum)" },
+            { name: "Antioxidant (natural rosemary)" },
+          ],
+        },
+      ],
+      ingredientsNote:
+        "No maida, palm oil, or preservatives (per Slurrp Farm label listings).",
       allergens:
         "Contains milk and wheat (gluten). May contain nuts and seeds (per Slurrp Farm).",
       nutritionHighlights:
@@ -440,8 +579,37 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["Gluten-Free", "Roasted", "Makhana"],
       whySelected:
         "Makhana is a familiar Indian snack that works for the whole family. Farmley is a known brand for nuts and makhana — one flavour on the shelf keeps choice simple.",
-      ingredients:
-        "Foxnut (makhana), olive oil, spices and condiments (red chilli, dried garlic, dried onion, cumin, dried mango powder, coriander seeds, dried ginger, turmeric, carom seeds, black pepper, cinnamon, fenugreek seeds, nutmeg, mace), iodised salt, black salt, sugar, citric acid, malic acid, corn starch, paprika extract, flavour enhancer (INS 635). Per Farmley label listings.",
+      ingredientSections: [
+        {
+          rows: [
+            { name: "Foxnut (makhana)" },
+            { name: "Olive oil" },
+            { name: "Red chilli" },
+            { name: "Dried garlic" },
+            { name: "Dried onion" },
+            { name: "Cumin" },
+            { name: "Dried mango powder" },
+            { name: "Coriander seeds" },
+            { name: "Dried ginger" },
+            { name: "Turmeric" },
+            { name: "Carom seeds" },
+            { name: "Black pepper" },
+            { name: "Cinnamon" },
+            { name: "Fenugreek seeds" },
+            { name: "Nutmeg" },
+            { name: "Mace" },
+            { name: "Iodised salt" },
+            { name: "Black salt" },
+            { name: "Sugar" },
+            { name: "Citric acid" },
+            { name: "Malic acid" },
+            { name: "Corn starch" },
+            { name: "Paprika extract" },
+            { name: "Flavour enhancer (INS 635)" },
+          ],
+        },
+      ],
+      ingredientsNote: "Per Farmley label listings.",
       allergens:
         "Gluten-free. May contain tree nuts — processed in a facility handling nuts (per Farmley).",
       nutritionHighlights:
@@ -482,8 +650,61 @@ export const pantryProducts: PantryProduct[] = [
       badges: ["No Maida", "Wholegrain", "Non-Fried"],
       whySelected:
         "Timios is known for kids' snacks in India. Melts are a distinct baby/toddler finger-food format — we carry one variety pack to test demand before expanding.",
-      ingredients:
-        "Blueberry: whole grain (wheat, rice, oats), wheat starch, cane sugar, rice bran oil, apple juice powder, blueberry fruit powder, natural blueberry flavour, mixed tocopherols. Apple & cinnamon: whole grain (wheat, rice, oats), wheat starch, cane sugar, rice bran oil, apple & cinnamon extracts (4%), salt, mixed tocopherols. Carrot & cumin: whole grain (wheat, rice, oats), wheat starch, cane sugar, rice bran oil, carrot & cumin extracts (3%), spices (salt, onion, garlic, coriander, tomato extract, turmeric), mixed tocopherols. Banana & strawberry: whole grain (wheat, rice, oats), wheat starch, cane sugar, rice bran oil, banana and strawberry fruit powders, natural banana flavour, mixed tocopherols. Per Timios/FirstCry product listing.",
+      ingredientSections: [
+        {
+          heading: "Blueberry",
+          rows: [
+            { name: "Whole grain (wheat, rice, oats)" },
+            { name: "Wheat starch" },
+            { name: "Cane sugar" },
+            { name: "Rice bran oil" },
+            { name: "Apple juice powder" },
+            { name: "Blueberry fruit powder" },
+            { name: "Natural blueberry flavour" },
+            { name: "Mixed tocopherols" },
+          ],
+        },
+        {
+          heading: "Apple & cinnamon",
+          rows: [
+            { name: "Whole grain (wheat, rice, oats)" },
+            { name: "Wheat starch" },
+            { name: "Cane sugar" },
+            { name: "Rice bran oil" },
+            { name: "Apple & cinnamon extracts", amount: "4%" },
+            { name: "Salt" },
+            { name: "Mixed tocopherols" },
+          ],
+        },
+        {
+          heading: "Carrot & cumin",
+          rows: [
+            { name: "Whole grain (wheat, rice, oats)" },
+            { name: "Wheat starch" },
+            { name: "Cane sugar" },
+            { name: "Rice bran oil" },
+            { name: "Carrot & cumin extracts", amount: "3%" },
+            {
+              name: "Spices (salt, onion, garlic, coriander, tomato extract, turmeric)",
+            },
+            { name: "Mixed tocopherols" },
+          ],
+        },
+        {
+          heading: "Banana & strawberry",
+          rows: [
+            { name: "Whole grain (wheat, rice, oats)" },
+            { name: "Wheat starch" },
+            { name: "Cane sugar" },
+            { name: "Rice bran oil" },
+            { name: "Banana fruit powder" },
+            { name: "Strawberry fruit powder" },
+            { name: "Natural banana flavour" },
+            { name: "Mixed tocopherols" },
+          ],
+        },
+      ],
+      ingredientsNote: "Per Timios/FirstCry product listing.",
       allergens:
         "Contains wheat (gluten) and oats in all four flavours (per Timios).",
       nutritionHighlights:

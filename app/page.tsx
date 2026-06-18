@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { storefrontProducts, storefrontSections } from "@/lib/products";
+import { storefrontProducts } from "@/lib/products";
 import { carriedBrands } from "@/lib/suppliers";
 import { ProductCard } from "@/components/ProductCard";
 import { HowItWorks, HowWeChoose } from "@/components/HowItWorks";
 import { Leaf } from "@/components/Leaf";
 
 export default function Home() {
-  const sections = storefrontSections();
+  const products = storefrontProducts();
   const brands = carriedBrands();
 
   return (
@@ -49,42 +49,20 @@ export default function Home() {
 
       <HowItWorks />
 
-      <section id="pantry" className="mb-8">
+      <section id="pantry" className="mb-16 scroll-mt-24">
         <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
           <div className="flex items-baseline gap-3">
             <Leaf size={16} className="text-accent" />
-            <h2 className="text-2xl">Curated Indian Family Pantry</h2>
+            <h2 className="text-2xl">Shop the pantry</h2>
           </div>
-          <span className="eyebrow">
-            {storefrontProducts().length} products
-          </span>
+          <span className="eyebrow">{products.length} products</span>
+        </div>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+          {products.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
         </div>
       </section>
-
-      {sections.map((section) => {
-        const items = storefrontProducts().filter((p) => section.match(p));
-        if (items.length === 0) return null;
-        return (
-          <div key={section.id} id={section.id} className="mb-16 scroll-mt-24">
-            <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
-              <div className="flex items-baseline gap-3">
-                <h3 className="text-xl">{section.title}</h3>
-              </div>
-              <Link
-                href={`/shop/${section.id}`}
-                className="text-xs underline underline-offset-4 hover:text-accent"
-              >
-                View all →
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
-              {items.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          </div>
-        );
-      })}
 
       <section id="brands" className="mb-16 scroll-mt-24">
         <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">

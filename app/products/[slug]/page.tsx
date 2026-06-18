@@ -9,6 +9,7 @@ import {
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
+import { IngredientsTable } from "@/components/IngredientsTable";
 import { ProductViewTracker } from "@/components/ProductViewTracker";
 
 export const dynamicParams = false;
@@ -161,7 +162,10 @@ export default async function ProductPage({
         )}
 
         <DetailBlock title="Ingredients">
-          <p>{meta.ingredients}</p>
+          <IngredientsTable
+            sections={meta.ingredientSections}
+            note={meta.ingredientsNote}
+          />
         </DetailBlock>
 
         <DetailBlock title="Allergen information">
