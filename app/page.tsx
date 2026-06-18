@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { storefrontProducts } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
+import { HowItWorks } from "@/components/HowItWorks";
 import { Leaf } from "@/components/Leaf";
 
 export default function Home() {
@@ -27,14 +28,16 @@ export default function Home() {
               Shop the Pantry
             </Link>
             <Link
-              href="/about"
+              href="#how-it-works"
               className="inline-flex items-center px-6 py-3 text-sm border border-line hover:bg-background"
             >
-              How it works & questions
+              How it works
             </Link>
           </div>
         </div>
       </section>
+
+      <HowItWorks />
 
       <section id="pantry" className="mb-16 scroll-mt-24">
         <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">

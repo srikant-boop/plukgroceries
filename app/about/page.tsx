@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { AboutFaq } from "@/components/AboutFaq";
-import { HowItWorks } from "@/components/HowItWorks";
 import { Leaf } from "@/components/Leaf";
 
 export const metadata = {
   title: "About — Pluk",
   description:
-    "About PLUK — curated Indian family pantry, how it works, pickup, delivery, and common questions.",
+    "About PLUK — curated Indian family pantry, pickup, delivery, and common questions.",
 };
 
 export default function AboutPage() {
@@ -26,8 +25,6 @@ export default function AboutPage() {
           drop. You buy individual products and build your own basket.
         </p>
       </header>
-
-      <HowItWorks />
 
       <AboutFaq />
 
