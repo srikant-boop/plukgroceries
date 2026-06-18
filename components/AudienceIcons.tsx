@@ -126,9 +126,7 @@ export function AudienceIcons({
             title={label}
             className={variant === "chip" ? chipClass : defaultClass}
           >
-            <span className={variant === "chip" ? "scale-75" : undefined}>
-              <Icon />
-            </span>
+            {variant !== "chip" && <Icon />}
             <span>{shortLabel}</span>
           </span>
         );
