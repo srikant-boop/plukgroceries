@@ -7,6 +7,7 @@ import {
 } from "@/lib/products";
 import { getProductAssets } from "@/lib/product-assets";
 import { getProductLabelData } from "@/lib/product-label-data";
+import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
 import { AudienceIcons } from "@/components/AudienceIcons";
@@ -39,6 +40,10 @@ export default async function ProductPage({
   if (!product || !hasPantryMeta(product)) notFound();
 
   const meta = product.pantry;
+  const supplier = product.supplierId
+    ? getSupplierById(product.supplierId)
+    : null;
+  const brandName = supplier?.name ?? product.brand;
   const assets = getProductAssets(slug);
   const labelData = getProductLabelData(slug);
   const gallery = assets?.gallery?.length
@@ -115,6 +120,21 @@ export default async function ProductPage({
             <span className="text-4xl tabular-nums">{money(product.ourPrice)}</span>
             <span className="text-sm text-muted">/ {product.unit}</span>
           </div>
+          {brandName && (
+            <p className="mt-2 text-sm text-muted">
+              From{" "}
+              {supplier ? (
+                <Link
+                  href={`/suppliers/${supplier.slug}`}
+                  className="text-foreground/80 hover:text-accent hover:underline underline-offset-4"
+                >
+                  {brandName}
+                </Link>
+              ) : (
+                brandName
+              )}
+            </p>
+          )}
         </div>
 
         <AddToCart productId={product.id} />
