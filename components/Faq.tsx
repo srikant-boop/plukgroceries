@@ -10,35 +10,52 @@ type FaqItem = {
 
 const faqs: FaqItem[] = [
   {
+    q: "What is PLUK?",
+    anchorId: "about",
+    a: (
+      <>
+        <p className="mb-3">
+          PLUK is a small, curated Indian baby, kids, and family pantry for
+          Canada — breakfast, snack, and quick-meal products you can buy one at
+          a time.
+        </p>
+        <p>
+          We are not a full Indian grocery store, a subscription box, or a
+          weekly drop. The shelf stays short on purpose so you are not comparing
+          endless options — pick what you need and build your own basket.
+        </p>
+      </>
+    ),
+  },
+  {
     q: "Who are these products for?",
     a: "Some items are for babies and toddlers, others for kids or the whole family. Each product page shows who it is for and suggested age where the brand provides it.",
   },
   {
-    q: "Why only a few products?",
-    a: "We keep a short shelf on purpose — one strong option per product type instead of dozens of flavours. If families reorder something, it stays. If not, we swap it out. Have a suggestion? Message us in the Oakville Facebook group — we read requests, but a new SKU usually replaces one that is not reordering.",
+    q: "Why is the shelf so small?",
+    a: "We carry one strong option per product type instead of dozens of flavours. If families reorder something, it stays. If not, we swap it out.",
   },
   {
     q: "Where do products come from?",
     a: "These brands are made in India and imported for sale in Canada.",
   },
   {
-    q: "Allergens and label information",
+    q: "How do I check allergens and ingredients?",
     a: "Product pages summarize official brand listings. Always read the physical package for the latest ingredients and allergen statements — that is what matters, especially for babies, toddlers, and known allergies.",
   },
   {
-    q: "Home delivery",
+    q: "How does delivery work?",
     anchorId: "delivery",
-    a: "All orders are home delivered in Oakville. At checkout, leave your delivery address and we will bring your order to you.",
+    a: "Every order is home delivered in Oakville. At checkout, leave your delivery address and we will bring your order to you.",
   },
   {
     q: "How do I pay?",
-    a: "Pay by card at checkout, cash on delivery, or e-transfer. For e-transfer or cash, choose that option at checkout — we will confirm payment details before we deliver.",
+    a: "Pay by card at checkout, cash on delivery, or e-transfer. For cash or e-transfer, choose that option at checkout — we will confirm payment details before we deliver.",
   },
   {
-    q: "Cancellations and other questions",
+    q: "How do I cancel or ask something else?",
     a: (
       <>
-        Need to cancel before we pack your order, or have another question?
         Message us in the{" "}
         <a
           href={facebookGroupHref}
@@ -47,25 +64,23 @@ const faqs: FaqItem[] = [
           className="underline underline-offset-4 hover:text-accent"
         >
           Oakville group on Facebook
-        </a>{" "}
-        — that is the fastest way to reach us.
+        </a>
+        . That is the fastest way to reach us — whether you need to cancel before
+        we pack your order, suggest a product, or ask anything else.
       </>
     ),
   },
 ];
 
-export function AboutFaq() {
+export function Faq() {
   return (
-    <section id="faq" className="scroll-mt-24">
-      <h2 className="text-2xl mb-6 border-b border-line pb-3">
-        Common questions
-      </h2>
+    <>
       <div className="border-t border-line">
         {faqs.map((item) => (
           <details
             key={item.q}
             id={item.anchorId}
-            className="group border-b border-line"
+            className="group border-b border-line scroll-mt-24"
           >
             <summary className="flex items-center justify-between gap-3 py-5 cursor-pointer list-none hover:text-accent">
               <span className="font-medium text-base leading-snug">
@@ -95,6 +110,6 @@ export function AboutFaq() {
       <p className="mt-10 text-xs text-muted leading-relaxed">
         {FOOTER_COMPLIANCE_NOTE}
       </p>
-    </section>
+    </>
   );
 }

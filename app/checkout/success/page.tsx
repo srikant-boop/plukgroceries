@@ -69,8 +69,8 @@ export default async function CheckoutSuccessPage({
         <Link href="/#pantry" className="btn">
           Back to pantry
         </Link>
-        <Link href="/about#faq" className="btn btn-ghost">
-          Common questions
+        <Link href="/faq#delivery" className="btn btn-ghost">
+          FAQ
         </Link>
       </div>
     </div>

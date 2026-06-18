@@ -85,8 +85,8 @@ export default function RootLayout({
             <div className="flex items-center gap-2 md:gap-4 min-w-0">
             <nav className="flex items-center gap-3 md:gap-4 text-sm min-w-0">
               <ShopNav />
-              <Link href="/about" className="hover:underline underline-offset-4">
-                About
+              <Link href="/faq" className="hover:underline underline-offset-4">
+                FAQ
               </Link>
             </nav>
             <Link
