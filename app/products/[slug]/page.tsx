@@ -7,7 +7,6 @@ import {
 } from "@/lib/products";
 import { getProductAssets } from "@/lib/product-assets";
 import { getProductLabelData } from "@/lib/product-label-data";
-import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
 import { AudienceIcons } from "@/components/AudienceIcons";
@@ -30,19 +29,6 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
   return <h2 className="text-sm font-medium mb-3">{children}</h2>;
 }
 
-function ageHint(suggestedAge?: string): string | undefined {
-  if (!suggestedAge) return undefined;
-  const fromMonths = suggestedAge.match(/(?:from|From)\s+(\d+\s+months?\.?)/i);
-  if (fromMonths) return `From ${fromMonths[1].replace(/\.$/, "")}`;
-  if (/^From \d+/i.test(suggestedAge.trim())) {
-    return suggestedAge.trim().replace(/\.$/, "");
-  }
-  if (/not for babies|supervise young children/i.test(suggestedAge)) {
-    return suggestedAge;
-  }
-  return undefined;
-}
-
 export default async function ProductPage({
   params,
 }: {
@@ -53,9 +39,6 @@ export default async function ProductPage({
   if (!product || !hasPantryMeta(product)) notFound();
 
   const meta = product.pantry;
-  const supplier = product.supplierId
-    ? getSupplierById(product.supplierId)
-    : null;
   const assets = getProductAssets(slug);
   const labelData = getProductLabelData(slug);
   const gallery = assets?.gallery?.length
@@ -63,9 +46,6 @@ export default async function ProductPage({
     : meta.gallery?.length
       ? meta.gallery
       : [product.image];
-
-  const brandName = supplier?.name ?? product.brand ?? "—";
-  const ageNote = ageHint(meta.suggestedAge);
 
   const nutritionContent = labelData?.nutritionFacts ? (
     <NutritionFactsTable facts={labelData.nutritionFacts} />
@@ -115,23 +95,9 @@ export default async function ProductPage({
 
       <div className="flex flex-col gap-8">
         <div>
-          {brandName !== "—" && (
-            <p className="text-xs uppercase tracking-wider text-muted mb-2">
-              {supplier ? (
-                <Link
-                  href={`/suppliers/${supplier.slug}`}
-                  className="hover:text-accent hover:underline underline-offset-4"
-                >
-                  {brandName}
-                </Link>
-              ) : (
-                brandName
-              )}
-            </p>
-          )}
           <h1 className="text-3xl sm:text-4xl mb-2">{product.name}</h1>
           <p className="text-muted">{meta.roleLine}</p>
-          <div className="mt-3 flex flex-wrap gap-1.5">
+          <div className="mt-3 flex flex-wrap items-center gap-1.5">
             {meta.badges.map((b) => (
               <span
                 key={b}
@@ -140,6 +106,7 @@ export default async function ProductPage({
                 {b}
               </span>
             ))}
+            <AudienceIcons audience={meta.audience} variant="chip" />
           </div>
         </div>
 
@@ -158,25 +125,6 @@ export default async function ProductPage({
             {product.longDescription.trim() && <p>{product.longDescription}</p>}
             <p>{meta.whySelected}</p>
           </div>
-        </section>
-
-        <section>
-          <SectionHeading>Specifications</SectionHeading>
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm border-t border-line pt-4">
-            <div>
-              <dt className="text-muted mb-0.5">Net weight</dt>
-              <dd>{product.unit}</dd>
-            </div>
-            <div>
-              <dt className="text-muted mb-1">Suggested for</dt>
-              <dd className="space-y-1.5">
-                <AudienceIcons audience={meta.audience} />
-                {ageNote && (
-                  <p className="text-xs text-muted leading-snug">{ageNote}</p>
-                )}
-              </dd>
-            </div>
-          </dl>
         </section>
 
         <ProductDetailAccordion items={labelSections} />

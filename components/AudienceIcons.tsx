@@ -93,16 +93,27 @@ const AUDIENCE_CONFIG: Record<
   Parents: { label: "Parents", shortLabel: "Parents", Icon: ParentsIcon },
 };
 
-export function AudienceIcons({ audience }: { audience: string[] }) {
+export function AudienceIcons({
+  audience,
+  variant = "default",
+}: {
+  audience: string[];
+  variant?: "default" | "chip";
+}) {
+  const chipClass =
+    "inline-flex items-center gap-1 border border-line px-2 py-0.5 text-[9px] uppercase tracking-wide text-muted";
+  const defaultClass =
+    "inline-flex items-center gap-1.5 border border-line bg-surface px-2.5 py-1.5 text-xs text-foreground/90";
+
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-1.5">
       {audience.map((item) => {
         const config = AUDIENCE_CONFIG[item as AudienceLabel];
         if (!config) {
           return (
             <span
               key={item}
-              className="inline-flex items-center border border-line bg-surface px-2.5 py-1.5 text-xs"
+              className={variant === "chip" ? chipClass : defaultClass}
             >
               {item}
             </span>
@@ -113,9 +124,11 @@ export function AudienceIcons({ audience }: { audience: string[] }) {
           <span
             key={item}
             title={label}
-            className="inline-flex items-center gap-1.5 border border-line bg-surface px-2.5 py-1.5 text-xs text-foreground/90"
+            className={variant === "chip" ? chipClass : defaultClass}
           >
-            <Icon />
+            <span className={variant === "chip" ? "scale-75" : undefined}>
+              <Icon />
+            </span>
             <span>{shortLabel}</span>
           </span>
         );
