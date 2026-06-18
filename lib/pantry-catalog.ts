@@ -124,16 +124,16 @@ export const pantryProducts: PantryProduct[] = [
       ingredientsNote:
         "No milk powder, salt, sugar, or maltodextrin.",
       allergens:
-        "Free from milk, wheat, nuts, and soy in the ingredient list.",
+        "Does not contain milk, wheat, nuts, or soy.",
       nutritionHighlights:
-        "Made with rice, moong dal, and kodo millet. No added sugar, milk powder, or maltodextrin.",
+        "Provides protein and fibre from dal and millet.",
       preparation:
         "Creamy porridge: cook with water or milk until soft (about 5 minutes). Instant dosa/pancake: mix batter with water and spices; cook on a hot tawa. Follow package directions for consistency.",
       storage:
         "Store in a cool, dry place. Transfer to a clean airtight container after opening. Shelf life is 4 months from manufacturing.",
       countryOfOrigin: "India",
       suggestedAge:
-        "Stage 1 — for babies starting solids.",
+        "Stage 1 — first solids, typically from 6 months.",
       gallery: ["/products/pantry/early-foods-rice-moong-khichdi.png"],
     },
   },
@@ -184,11 +184,11 @@ export const pantryProducts: PantryProduct[] = [
         },
       ],
       ingredientsNote:
-        "No added sugar, maida, salt, trans fat, preservatives, artificial colours, or flavours. Sweetened with date powder.",
+        "Sweetened with date powder only.",
       allergens:
-        "Contains milk (whole and skimmed milk powders). No maida, refined sugar, or artificial colours or preservatives. Not suitable for children with milk allergy.",
+        "Contains milk. Not suitable for milk allergy.",
       nutritionHighlights:
-        "Made with ragi, jowar, rice, and oats. Sweetened with date powder — no refined sugar. Rich in calcium.",
+        "Fortified with 13 vitamins and minerals. Ragi has 10× the calcium of wheat and rice; jowar is protein-rich.",
       preparation:
         "Boil drinking water for 5 minutes; cool to lukewarm. Measure 45 ml (3 tbsp) water into a bowl, add 3 level scoops (20 g) cereal, stir, and feed immediately with a clean spoon. Consume within 30 minutes.",
       storage:
@@ -243,10 +243,12 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
+      ingredientsNote:
+        "No maida, preservatives, or artificial flavours.",
       allergens:
-        "Made in a facility that handles wheat (gluten) and nuts — may contain trace amounts. Contains oats.",
+        "Contains oats. May contain traces of wheat (gluten) and nuts.",
       nutritionHighlights:
-        "No maida, preservatives, or artificial flavours. Ragi and foxtail millet are naturally gluten-free grains.",
+        "Ragi is rich in calcium; foxtail millet and jowar provide protein.",
       preparation:
         "Mix with water or milk per package instructions; pour onto a hot griddle and flip when bubbles form. Ready in minutes.",
       storage:
@@ -298,9 +300,9 @@ export const pantryProducts: PantryProduct[] = [
       ingredientsNote:
         "No maida, salt, trans fat, palm oil, preservatives, artificial colours, or flavours.",
       allergens:
-        "Contains corn and rice. Typically served with cow's milk — contains dairy when prepared that way. No palm oil or trans fat.",
+        "Contains corn and rice. Contains dairy when prepared with milk.",
       nutritionHighlights:
-        "Made with ragi and jowar. 30 g cereal with 200 ml cow's milk provides about 66% of daily calcium RDA.",
+        "30 g cereal with 200 ml cow's milk provides about 66% of daily calcium RDA.",
       preparation:
         "Serve with cold or warm milk, or eat dry as a snack.",
       storage:
@@ -424,7 +426,7 @@ export const pantryProducts: PantryProduct[] = [
       ingredientsNote:
         "Zero maida, white rice, preservatives, stabilizers, emulsifiers, artificial colours, or flavours.",
       allergens:
-        "Contains legumes (urad, chana, and moong dal). Zero maida or white rice.",
+        "Contains legumes (urad, chana, and moong dal).",
       nutritionHighlights:
         "Foxtail millet provides protein; spinach adds iron, folic acid, and vitamin K1.",
       preparation:
@@ -540,7 +542,7 @@ export const pantryProducts: PantryProduct[] = [
       allergens:
         "Contains milk and wheat (gluten). May contain nuts and seeds.",
       nutritionHighlights:
-        "Multigrain cookies with ragi and jowar. No maida, refined sugar, or palm oil. High in fibre.",
+        "Ragi provides calcium; jowar provides protein. High in fibre.",
       preparation: "Ready to eat.",
       storage:
         "Cool, dry place. After opening, keep airtight and consume within one month or by expiry date, whichever is earlier.",
@@ -607,9 +609,9 @@ export const pantryProducts: PantryProduct[] = [
         },
       ],
       allergens:
-        "Gluten-free. May contain tree nuts — processed in a facility handling nuts.",
+        "May contain tree nuts.",
       nutritionHighlights:
-        "Roasted in olive oil, not fried. Low-calorie, gluten-free, cholesterol-free snack with plant protein and fibre.",
+        "Plant protein and fibre from makhana; roasted in olive oil, not fried.",
       preparation: "Ready to eat.",
       storage:
         "Cool, dry place away from direct sunlight. Reseal after opening. Shelf life 9 months.",
@@ -702,7 +704,7 @@ export const pantryProducts: PantryProduct[] = [
       allergens:
         "Contains wheat (gluten) and oats in all four flavours.",
       nutritionHighlights:
-        "Non-fried, no maida, no preservatives or artificial colours/flavours. Whole grains supply protein, iron, and calcium.",
+        "Whole grains supply protein, iron, and calcium.",
       preparation:
         "Ready to eat. Supervise young children while eating.",
       storage: "Store in a cool, dry place.",
