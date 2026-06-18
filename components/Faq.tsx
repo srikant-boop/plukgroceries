@@ -23,6 +23,90 @@ const faqs: FaqItem[] = [
     ),
   },
   {
+    q: "Are these products in stock right now?",
+    a: (
+      <>
+        <p className="mb-3">
+          No. PLUK is currently running a demand-first preorder test. We are
+          not holding large inventory yet. We will place the order only if
+          enough families reserve products.
+        </p>
+      </>
+    ),
+  },
+  {
+    q: "Why preorder instead of keeping inventory?",
+    a: "We want to keep prices fair and avoid wasting money on products families may not actually want. Preorders help us learn which better Indian family foods people truly want in Canada before we import larger quantities.",
+  },
+  {
+    q: "When will you place the order?",
+    a: "We will place the order after the preorder window closes and the minimum quantity is reached. If the minimum quantity is not reached, we may cancel that test product or move it to a future round.",
+  },
+  {
+    q: "How long will delivery take?",
+    anchorId: "delivery",
+    a: (
+      <>
+        <p className="mb-3">
+          Expected arrival is usually{" "}
+          <strong>10–20 days after the preorder closes</strong>. Every order is
+          home delivered in Oakville once it arrives.
+        </p>
+        <p className="mb-2">This includes:</p>
+        <ul className="ml-5 list-disc space-y-1.5">
+          <li>confirming final quantities</li>
+          <li>ordering from India</li>
+          <li>packing and shipment handoff</li>
+          <li>air shipment to Canada</li>
+          <li>customs and clearance</li>
+          <li>local sorting and delivery preparation</li>
+        </ul>
+      </>
+    ),
+  },
+  {
+    q: "Are you using air or sea shipping?",
+    a: "For the first test batches, we plan to use air shipping because it is faster and better for learning demand. Sea shipping can be cheaper later, but it is too slow for early testing.",
+  },
+  {
+    q: "Why does it still take 10–20 days if it is air shipping?",
+    a: "The flight or air-freight leg may be faster, but the full process includes ordering, packing, handoff, customs, clearance, and local sorting. That is why we give a more realistic customer estimate.",
+  },
+  {
+    q: "What happens if the order is delayed?",
+    a: "We will update customers if there is a delay. Since this is an early preorder test, timing may vary due to supplier availability, courier handoff, customs, or weather and logistics delays.",
+  },
+  {
+    q: "Do I pay now?",
+    anchorId: "payment",
+    a: (
+      <>
+        <p className="mb-3">For the first test, PLUK may collect either:</p>
+        <ul className="ml-5 list-disc space-y-1.5 mb-3">
+          <li>no payment and only an interest reservation, or</li>
+          <li>a small refundable reservation deposit.</li>
+        </ul>
+        <p>
+          Final payment or fulfillment details will be confirmed before the
+          order is placed. At checkout today you can also pay by card or choose
+          cash on delivery for when your order arrives.
+        </p>
+      </>
+    ),
+  },
+  {
+    q: "What if the product cannot be sourced or the final price changes?",
+    a: "If we cannot source the product properly, or if the final landed cost becomes too high, we may cancel that product from the test. Any refundable reservation deposit will be returned.",
+  },
+  {
+    q: "Is this a subscription?",
+    a: "No. PLUK is not a subscription. You can preorder individual products à la carte.",
+  },
+  {
+    q: "Can I suggest products?",
+    a: "Yes. PLUK is built around what Indian families in Canada actually want. You can request products you miss from India or products you want at fairer Canadian prices.",
+  },
+  {
     q: "Who are these products for?",
     a: (
       <>
@@ -62,15 +146,6 @@ const faqs: FaqItem[] = [
   {
     q: "How do I check allergens and ingredients?",
     a: "Product pages summarize official brand listings. Always read the physical package for the latest ingredients and allergen statements — that is what matters, especially for starting solids, toddlers, and known allergies.",
-  },
-  {
-    q: "How does delivery work?",
-    anchorId: "delivery",
-    a: "Every order is home delivered in Oakville. At checkout, leave your delivery address and we will bring your order to you.",
-  },
-  {
-    q: "How do I pay?",
-    a: "Pay by card at checkout or cash on delivery. For cash on delivery, choose that option at checkout — we will confirm timing before we deliver.",
   },
 ];
 
