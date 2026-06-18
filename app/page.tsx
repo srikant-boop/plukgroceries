@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <div>
-      <section className="relative -mx-6 -mt-10 mb-12 overflow-hidden border-b border-line">
+      <section className="relative -mx-6 -mt-10 mb-12 overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
           style={{ backgroundImage: "url('/hero-pantry-bg-mobile.webp')" }}
@@ -24,6 +24,17 @@ export default function Home() {
           className="absolute inset-0 bg-gradient-to-r from-background via-background/92 to-background/35 sm:via-background/88 sm:to-background/20"
           aria-hidden
         />
+        <div className="absolute inset-x-0 bottom-0 h-36 overflow-hidden sm:h-44" aria-hidden>
+          <div
+            className="absolute -inset-x-6 top-0 h-full backdrop-blur-[2px] sm:backdrop-blur-sm"
+            style={{
+              maskImage: "linear-gradient(to bottom, transparent, black 75%)",
+              WebkitMaskImage:
+                "linear-gradient(to bottom, transparent, black 75%)",
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/75 to-background" />
+        </div>
         <div className="relative px-6 sm:px-10 py-14 sm:py-20 max-w-3xl">
           <p className="eyebrow mb-4 inline-flex items-center gap-2">
             <Leaf size={14} className="text-accent" aria-hidden />
