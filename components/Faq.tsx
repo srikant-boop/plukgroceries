@@ -72,15 +72,15 @@ const faqs: FaqItem[] = [
         </p>
         <ul className="ml-5 list-disc space-y-1.5">
           <li>
-            <strong>Baby & toddler (from 6 months):</strong> khichdi for starting
-            solids.
+            <strong>Baby & toddler:</strong> from when a product is marked for
+            starting solids.
           </li>
           <li>
-            <strong>Toddlers & kids:</strong> cereal, noodles, pancakes, and
-            similar.
+            <strong>Toddlers & kids:</strong> when the texture and age note fit
+            your child.
           </li>
           <li>
-            <strong>Family:</strong> most items work for the whole household.
+            <strong>Family:</strong> many items work for the whole household.
           </li>
         </ul>
       </>
