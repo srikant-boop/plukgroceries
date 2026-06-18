@@ -20,7 +20,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "Where do products come from?",
-    a: "These brands are made in India and imported for sale in Canada. Country of origin is on each product page.",
+    a: "These brands are made in India and imported for sale in Canada.",
   },
   {
     q: "Allergens and label information",
