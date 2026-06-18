@@ -79,15 +79,15 @@ export const suppliers: Supplier[] = [
     ],
   },
   {
-    id: "brb",
-    slug: "brb",
-    name: "BRB",
+    id: "superyou",
+    slug: "superyou",
+    name: "SuperYou",
     type: "brand",
-    tagline: "Popped chips · India",
+    tagline: "Protein snacks · India",
     story:
-      "BRB makes popped potato, corn, and rice chips — not fried and not baked, but popped with heat and pressure. A lighter crunch than typical fried chips.\n\nWe carry one salt and pepper potato popped chips SKU on the test shelf.",
-    logo: "/suppliers/brb.png",
-    links: [{ label: "Website", href: "https://www.brbchips.com/" }],
+      "SuperYou makes protein-forward snacks for India — baked multigrain chips, protein wafers, and fermented yeast protein powders. The chips use a multigrain base with soya protein isolate instead of a typical fried potato chip.\n\nWe carry one multigrain protein chips SKU on the test shelf.",
+    logo: "/suppliers/superyou.png",
+    links: [{ label: "Website", href: "https://superyou.in/" }],
   },
 ];
 

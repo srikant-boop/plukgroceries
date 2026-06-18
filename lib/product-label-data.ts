@@ -202,19 +202,19 @@ export const PRODUCT_LABEL_DATA: Record<
       footnotes: ["Values per 100 g dry pasta, from official brand listing."],
     },
   },
-  "brb-popped-chips-salt-pepper": {
+  "superyou-multigrain-protein-chips": {
     nutritionFacts: {
-      servingSize: "25 g",
-      servingsPerPack: "About 2",
+      servingSize: "40 g",
+      servingsPerPack: "1",
       columns: ["per100g", "perServe"],
       rows: [
-        { nutrient: "Energy", per100g: "444 kcal", perServe: "111 kcal" },
-        { nutrient: "Total fat", per100g: "14.0 g", perServe: "3.5 g" },
-        { nutrient: "Total carbohydrate", per100g: "68.8 g", perServe: "17.2 g" },
-        { nutrient: "Protein", per100g: "7.2 g", perServe: "1.8 g" },
-        { nutrient: "Sodium", per100g: "985.6 mg", perServe: "246.4 mg" },
+        { nutrient: "Energy", per100g: "418 kcal", perServe: "167 kcal" },
+        { nutrient: "Protein", per100g: "25 g", perServe: "10 g" },
+        { nutrient: "Carbohydrate", per100g: "62.5 g", perServe: "25 g" },
+        { nutrient: "Total fat", per100g: "6.5 g", perServe: "2.6 g" },
+        { nutrient: "Dietary fibre", per100g: "7.5 g", perServe: "3 g" },
       ],
-      footnotes: ["Per-serve values based on a 25 g serving from official listing."],
+      footnotes: ["Per-serve values based on a 40 g pack from official listing."],
     },
   },
   "slurrp-farm-choco-ragi-cookies": {

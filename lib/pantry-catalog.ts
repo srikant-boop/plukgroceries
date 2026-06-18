@@ -80,7 +80,7 @@ export const TEST_SHELF_PRODUCT_IDS = new Set([
   "slurrp-farm-macaroni-pasta",
   "slurrp-farm-choco-crunch-ragi-cereal",
   "early-foods-rice-moong-khichdi",
-  "brb-popped-chips-salt-pepper",
+  "superyou-multigrain-protein-chips",
 ]);
 
 const P = (cost: number, price: number) => ({
@@ -702,52 +702,56 @@ export const pantryProducts: PantryProduct[] = [
   },
   {
     uuid: "a100000b-0000-4000-8000-00000000000b",
-    id: "brb-popped-chips-salt-pepper",
-    slug: "brb-popped-chips-salt-pepper",
-    name: "Popped Chips — Salt & Pepper",
-    shortDescription: "Not fried, not baked — heat-popped potato chips with salt and pepper.",
+    id: "superyou-multigrain-protein-chips",
+    slug: "superyou-multigrain-protein-chips",
+    name: "Multigrain Protein Chips",
+    shortDescription:
+      "Baked multigrain protein chips — 10 g protein per pack, no palm oil or added sugar.",
     longDescription:
-      "BRB popped potato chips in salt and pepper — made with dehydrated potato and rice bran oil, popped with heat and pressure instead of frying. Light crunch for the whole family.",
+      "SuperYou multigrain protein chips — baked (not fried) with urad dal, jowar, chickpea, and soya protein isolate. A lighter savoury snack with 10 g plant protein and 3 g fibre per 40 g pack.",
     category: "Snacks",
     collection: "snacks",
-    image: "/products/pantry/brb-popped-chips.jpg",
-    imageAlt: "BRB Popped Potato Chips Salt and Pepper 48g",
-    unit: "48 g",
+    image: "/products/pantry/superyou-multigrain-protein-chips.jpg",
+    imageAlt: "SuperYou Multigrain Protein Chips 40g",
+    unit: "40 g",
     stock: 50,
-    ...P(1.41, 2.49),
+    ...P(2.2, 3.99),
     competitors: [],
-    supplierId: "brb",
-    brand: "BRB",
+    supplierId: "superyou",
+    brand: "SuperYou",
     origin: "India",
     pantry: {
-      roleLine: "Heat-popped potato chips — lighter than fried, ready to eat.",
+      roleLine: "Baked multigrain chips with 10 g protein — a lighter savoury snack.",
       audience: ["Family", "Kids"],
-      badges: ["Not Fried", "Gluten-Free", "No Palm Oil"],
+      badges: ["High Protein", "No Palm Oil", "No Added Sugar"],
       whySelected:
-        "Many families want a familiar chip format without deep-frying. BRB uses a popped process — one snack SKU on the test shelf to see if it earns reorders.",
+        "Many families want a familiar chip format with more protein and less junk. SuperYou uses a baked multigrain base — one protein chip SKU on the test shelf to see if it earns reorders.",
       ingredientSections: [
         {
           rows: [
-            { name: "Dehydrated potato" },
-            { name: "Potato starch" },
+            {
+              name: "Multigrain blend (urad dal, rice flour, jowar, chickpea)",
+            },
+            { name: "Soya protein isolate" },
+            { name: "Tapioca starch" },
             { name: "Rice bran oil" },
             {
-              name: "Spices and condiments (salt, black pepper, garlic powder)",
+              name: "Spices and condiments (chilli, onion powder, garlic powder, salt)",
             },
+            { name: "Citric acid (INS 330)" },
           ],
         },
       ],
-      ingredientsNote: undefined,
-      allergens:
-        "Made in a facility that may handle wheat and other allergens.",
+      ingredientsNote: "Flavour and spice mix varies slightly by variant.",
+      allergens: "Contains soya and milk products. May contain wheat traces.",
       nutritionHighlights: "",
       preparation: "Ready to eat.",
       storage:
-        "Store in a cool, dry place. Reseal after opening. Best before 12 months from manufacture.",
+        "Store in a cool, dry place. Reseal after opening. Best before date on pack.",
       countryOfOrigin: "India",
       suggestedAge:
         "For kids and family — supervise young children because of size and crunch.",
-      gallery: ["/products/pantry/brb-popped-chips.jpg"],
+      gallery: ["/products/pantry/superyou-multigrain-protein-chips.jpg"],
     },
   },
 ];
