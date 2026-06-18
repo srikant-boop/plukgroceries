@@ -11,21 +11,45 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          PLUK is a small, curated Indian baby, kids, and family pantry for
-          Canada — breakfast, snack, and quick-meal products you can buy one at
-          a time.
+          PLUK is a small, curated Indian pantry for Oakville — breakfast,
+          snack, and quick-meal brands you can buy one at a time.
         </p>
         <p>
           We are not a full Indian grocery store, a subscription box, or a
-          weekly drop. The shelf stays short on purpose so you are not comparing
-          endless options — pick what you need and build your own basket.
+          weekly drop. The shelf stays short on purpose — pick what you need
+          and build your own basket.
         </p>
       </>
     ),
   },
   {
     q: "Who are these products for?",
-    a: "Some items are for babies and toddlers, others for kids or the whole family. Each product page shows who it is for and suggested age where the brand provides it.",
+    a: (
+      <>
+        <p className="mb-3">
+          It varies by product — each page shows who it is for and a suggested
+          age when the brand provides one.
+        </p>
+        <ul className="ml-5 list-disc space-y-1.5">
+          <li>
+            <strong>Baby & toddler (from 6 months):</strong> our khichdi mix for
+            starting solids.
+          </li>
+          <li>
+            <strong>Toddlers & kids:</strong> cereal, noodles, pancakes, and
+            similar — often from when a child can chew the texture.
+          </li>
+          <li>
+            <strong>Family:</strong> most items work for the whole household,
+            including adults.
+          </li>
+        </ul>
+        <p className="mt-3">
+          We do not use &ldquo;baby&rdquo; and &ldquo;kids&rdquo; to mean the
+          same thing — check the product page if you are unsure.
+        </p>
+      </>
+    ),
   },
   {
     q: "Why is the shelf so small?",
@@ -37,7 +61,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "How do I check allergens and ingredients?",
-    a: "Product pages summarize official brand listings. Always read the physical package for the latest ingredients and allergen statements — that is what matters, especially for babies, toddlers, and known allergies.",
+    a: "Product pages summarize official brand listings. Always read the physical package for the latest ingredients and allergen statements — that is what matters, especially for starting solids, toddlers, and known allergies.",
   },
   {
     q: "How does delivery work?",

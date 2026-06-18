@@ -41,7 +41,7 @@ export default function Home() {
             Oakville · Home delivery
           </p>
           <h1 className="text-3xl sm:text-[2.75rem] leading-[1.08] mb-5">
-            Clean Indian foods for babies, kids, and family.
+            Clean Indian foods — from starting solids to family meals.
           </h1>
           <p className="text-base sm:text-lg leading-relaxed text-foreground/80 mb-8">
             A short à la carte shelf of trusted breakfast, snack, and

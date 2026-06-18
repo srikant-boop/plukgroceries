@@ -274,7 +274,7 @@ export const pantryProducts: PantryProduct[] = [
     origin: "India",
     pantry: {
       roleLine: "Ragi and jowar cereal shapes with cocoa and unrefined sugar.",
-      audience: ["Kids"],
+      audience: ["Toddlers", "Kids"],
       badges: ["No Maida", "Ragi", "No Palm Oil"],
       whySelected:
         "Many families want a cereal that feels familiar to kids but uses better grains. This is our one shaped cereal SKU — ragi and jowar based, without stocking multiple flavours.",
