@@ -41,20 +41,28 @@ export type PantryProduct = {
 };
 
 export type PantryCollection =
-  | "baby-toddler-meals"
-  | "kids-breakfast"
-  | "quick-meals"
-  | "tea-time-snacks";
+  | "khichdi"
+  | "cereals"
+  | "pancakes"
+  | "noodles"
+  | "dosa"
+  | "pasta"
+  | "cookies"
+  | "snacks";
 
 export const PANTRY_COLLECTIONS: {
   slug: PantryCollection;
   title: string;
   navLabel: string;
 }[] = [
-  { slug: "baby-toddler-meals", title: "Baby & Toddler Meals", navLabel: "Baby & Toddler" },
-  { slug: "kids-breakfast", title: "Kids Breakfast", navLabel: "Kids Breakfast" },
-  { slug: "quick-meals", title: "Quick Meals", navLabel: "Quick Meals" },
-  { slug: "tea-time-snacks", title: "Tea-Time & Snacks", navLabel: "Snacks" },
+  { slug: "khichdi", title: "Khichdi", navLabel: "Khichdi" },
+  { slug: "cereals", title: "Cereals", navLabel: "Cereals" },
+  { slug: "pancakes", title: "Pancakes", navLabel: "Pancakes" },
+  { slug: "noodles", title: "Noodles", navLabel: "Noodles" },
+  { slug: "dosa", title: "Dosa", navLabel: "Dosa" },
+  { slug: "pasta", title: "Pasta", navLabel: "Pasta" },
+  { slug: "cookies", title: "Cookies", navLabel: "Cookies" },
+  { slug: "snacks", title: "Snacks", navLabel: "Snacks" },
 ];
 
 const P = (cost: number, price: number) => ({
@@ -70,11 +78,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "early-foods-rice-moong-khichdi",
     slug: "early-foods-rice-moong-khichdi",
     name: "Rice & Moong Khichdi Mix",
-    shortDescription: "Baby/toddler khichdi — lunch, dinner, travel, or comfort meal.",
+    shortDescription: "Rice and moong khichdi mix with pepper, jeera, and ajwain.",
     longDescription:
-      "A simple rice and moong dal khichdi mix from Early Foods — the kind of gentle Indian meal many families reach for when they want something familiar and easy to prepare.",
-    category: "Baby & Toddler Meals",
-    collection: "baby-toddler-meals",
+      "A simple rice and moong dal khichdi mix from Early Foods — hand-pounded rajamudi red rice, yellow moong dal, and kodo millet with mild Indian spices. Sugar-free and made in small batches.",
+    category: "Khichdi",
+    collection: "khichdi",
     image: "/products/pantry/early-foods-rice-moong-khichdi.png",
     imageAlt: "Early Foods Rice and Moong Khichdi Mix package",
     unit: "200 g pouch",
@@ -85,23 +93,25 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Early Foods",
     origin: "India",
     pantry: {
-      roleLine: "Gentle khichdi for baby or toddler meals at home or on the go.",
+      roleLine: "Traditional khichdi mix — creamy porridge or instant dosa in minutes.",
       audience: ["Baby/Toddler", "Parents"],
-      occasions: ["Lunch/Dinner", "Quick Meal", "Travel-Friendly"],
-      badges: ["Baby/Toddler", "Travel-Friendly", "Quick Meal"],
+      occasions: ["Lunch/Dinner", "Travel-Friendly"],
+      badges: ["No Sugar", "Stage 1", "Travel-Friendly"],
       whySelected:
-        "Khichdi is a staple comfort food for many Indian families. Early Foods focuses on simple mixes for young children, and this SKU covers an everyday lunch or dinner use case without adding multiple porridge variants to the shelf.",
+        "Khichdi is a staple comfort food for many Indian families. Early Foods uses a short, transparent ingredient list with no milk powder, salt, or maltodextrin — one khichdi SKU on our shelf instead of multiple porridge variants.",
       ingredients:
-        "Refer to the official product label. Typical khichdi mixes include rice, moong dal (split green gram), and spices suited for young children — verify the exact list on package.",
+        "Hand-pounded Rajamudi red rice (37%), yellow moong dal (37%), kodo millet/kodra (25%), pepper (0.5%), ajwain (0.25%), jeera (0.25%). No milk powder, salt, sugar, or maltodextrin.",
       allergens:
-        "Check the package label for allergen statements. May contain traces depending on manufacturing facility.",
+        "Free from milk, wheat, nuts, and soy in the ingredient list (per Early Foods).",
       nutritionHighlights:
-        "Made with rice and moong dal. Refer to the nutrition facts panel on the package for per-serving values.",
+        "Made with rice, moong dal, and kodo millet. No added sugar, milk powder, or maltodextrin.",
       preparation:
-        "Follow package directions: usually simmer with water until soft and porridge-like. Adjust consistency for your child's age and texture preference.",
-      storage: "Store in a cool, dry place. Reseal after opening.",
+        "Creamy porridge: cook with water or milk until soft (about 5 minutes). Instant dosa/pancake: mix batter with water and spices; cook on a hot tawa. Follow package directions for consistency.",
+      storage:
+        "Store in a cool, dry place. Transfer to a clean airtight container after opening. Shelf life is 4 months from manufacturing (per Early Foods).",
       countryOfOrigin: "India",
-      suggestedAge: "See package for age or stage guidance.",
+      suggestedAge:
+        "Stage 1 — for babies starting solids (per Early Foods).",
       sourceUrl: "https://www.earlyfoods.com/products/rice-moong-khichdi-mix-200g",
       gallery: ["/products/pantry/early-foods-rice-moong-khichdi.png"],
     },
@@ -111,11 +121,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "slurrp-farm-strawberry-ragi-cereal",
     slug: "slurrp-farm-strawberry-ragi-cereal",
     name: "Strawberry, Ragi & Rice Cereal with Milk",
-    shortDescription: "Baby/toddler breakfast cereal with ragi and strawberry.",
+    shortDescription: "Instant ragi, strawberry, and rice cereal with milk.",
     longDescription:
-      "A ragi and rice cereal from Slurrp Farm with strawberry — designed as an easy breakfast option for babies and toddlers when you want something beyond plain rice cereal.",
-    category: "Baby & Toddler Meals",
-    collection: "baby-toddler-meals",
+      "A ragi and rice cereal from Slurrp Farm with real strawberry — sweetened with date powder instead of refined sugar. Mixes with lukewarm water for a quick cereal-style meal.",
+    category: "Cereals",
+    collection: "cereals",
     image: "/products/pantry/slurrp-farm-strawberry-ragi-cereal.jpg",
     imageAlt: "Slurrp Farm Strawberry Ragi and Rice Cereal with Milk",
     unit: "200 g",
@@ -126,22 +136,25 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Slurrp Farm",
     origin: "India",
     pantry: {
-      roleLine: "Warm or cold cereal-style breakfast for babies and toddlers.",
+      roleLine: "Instant cereal with ragi, strawberry, and milk solids.",
       audience: ["Baby/Toddler"],
-      occasions: ["Breakfast"],
-      badges: ["Baby/Toddler", "Breakfast", "Ragi"],
+      occasions: ["Breakfast", "Travel-Friendly"],
+      badges: ["With Milk", "No Added Sugar", "Ragi"],
       whySelected:
-        "Slurrp Farm is a trusted name for millet-based kids' foods in India. This cereal covers the baby breakfast occasion with ragi — a familiar grain for many Indian families — in a single SKU.",
+        "Slurrp Farm is a trusted name for millet-based kids' foods in India. This cereal uses ragi and date powder for sweetness — one cereal SKU for families starting solids.",
       ingredients:
-        "Refer to the official Slurrp Farm product page and package label for the full ingredient list.",
-      allergens: "Contains milk ingredients per product formulation. Check label for full allergen info.",
+        "Ragi, jowar, rice, oats, real strawberry powder, milk solids, and date powder (for natural sweetness). Per Slurrp Farm product information.",
+      allergens:
+        "Contains milk (whole and skimmed milk powders). No maida, refined sugar, or artificial colours or preservatives (per Slurrp Farm). Not suitable for children with milk allergy.",
       nutritionHighlights:
-        "Made with ragi and rice. See package nutrition panel for vitamins, minerals, and sugar content.",
+        "Made with ragi, jowar, rice, and oats. Sweetened with date powder — no refined sugar (per Slurrp Farm). Rich in calcium per brand product information.",
       preparation:
-        "Mix with warm water, milk, or as directed on the package to desired consistency.",
-      storage: "Cool, dry place. Use within recommended time after opening.",
+        "Boil drinking water for 5 minutes; cool to lukewarm. Measure 45 ml (3 tbsp) water into a bowl, add 3 level scoops (20 g) cereal, stir, and feed immediately with a clean spoon. Consume within 30 minutes.",
+      storage:
+        "Keep in a cool, dry place. After opening, store airtight and use within one month or by expiry date, whichever is earlier. Shelf life 12 months (unopened).",
       countryOfOrigin: "India",
-      suggestedAge: "See package for recommended age or stage.",
+      suggestedAge:
+        "For babies and toddlers who have started solids (per Slurrp Farm).",
       sourceUrl: "https://www.slurrpfarm.com/products/no-refined-sugar-strawberry-ragi-rice-cereal",
       gallery: ["/products/pantry/slurrp-farm-strawberry-ragi-cereal.jpg"],
     },
@@ -151,11 +164,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "slurrp-farm-millet-pancake-chocolate",
     slug: "slurrp-farm-millet-pancake-chocolate",
     name: "Millet Pancake Mix — Chocolate Supergrains",
-    shortDescription: "Weekend or weekday breakfast pancakes for kids and family.",
+    shortDescription: "Chocolate millet pancake mix with jowar, ragi, and cocoa.",
     longDescription:
-      "A chocolate millet pancake mix from Slurrp Farm — quick to make and popular as a kids' breakfast or relaxed family morning meal.",
-    category: "Kids Breakfast",
-    collection: "kids-breakfast",
+      "A chocolate millet pancake mix from Slurrp Farm — jowar, oat, foxtail millet, and ragi with cocoa. No maida, preservatives, or artificial flavours.",
+    category: "Pancakes",
+    collection: "pancakes",
     image: "/products/pantry/slurrp-farm-millet-pancake-chocolate.jpg",
     imageAlt: "Slurrp Farm Millet Pancake Chocolate Supergrains mix",
     unit: "150 g",
@@ -166,18 +179,25 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Slurrp Farm",
     origin: "India",
     pantry: {
-      roleLine: "Millet pancakes for kids' breakfast or a family weekend treat.",
-      audience: ["Kids", "Family"],
-      occasions: ["Breakfast"],
-      badges: ["Kids", "Breakfast", "Millet"],
+      roleLine: "Fluffy chocolate pancakes from a millet supergrain blend.",
+      audience: ["Kids", "Family", "Toddlers"],
+      occasions: ["Breakfast", "Snack"],
+      badges: ["No Maida", "Millet", "Chocolate"],
       whySelected:
-        "Pancakes are an easy win for busy mornings. This mix uses millets and supergrains instead of a typical refined-flour pancake — one breakfast SKU that covers kids and parents eating together.",
-      ingredients: "See official Slurrp Farm listing and package for full ingredients.",
-      allergens: "Check package for wheat, milk, nut, and other allergen statements.",
-      nutritionHighlights: "Made with millets and supergrains. Refer to package nutrition facts.",
-      preparation: "Mix with water or milk per package instructions; cook on a griddle or pan.",
-      storage: "Store sealed in a cool, dry place.",
+        "Pancakes are an easy win for busy mornings. This mix uses millets and supergrains instead of refined flour — one pancake SKU that works for kids and adults eating together.",
+      ingredients:
+        "Supergrain blend (69%): jowar flour, oat flour, foxtail millet flour, ragi flour; jaggery (12.5%); raw unrefined sugar (12.5%); cocoa powder; baking powder; raising agent (baking soda, INS 500(ii)); natural flavour; iodised salt; cinnamon powder. Per published Slurrp Farm label listings.",
+      allergens:
+        "Made in a facility that handles wheat (gluten) and nuts — may contain trace amounts (per Slurrp Farm label listings). Contains oats.",
+      nutritionHighlights:
+        "No maida, preservatives, or artificial flavours. Ragi and foxtail millet are naturally gluten-free grains (per Slurrp Farm).",
+      preparation:
+        "Mix with water or milk per package instructions; pour onto a hot griddle and flip when bubbles form. Ready in minutes.",
+      storage:
+        "Keep in a cool, dry place. Best before 12 months from date of packaging.",
       countryOfOrigin: "India",
+      suggestedAge:
+        "Suitable for kids and adults — quick breakfast or snack (per Slurrp Farm).",
       sourceUrl: "https://www.slurrpfarm.com/products/millet-pancake-choclate-and-supergrains",
       gallery: ["/products/pantry/slurrp-farm-millet-pancake-chocolate.jpg"],
     },
@@ -187,11 +207,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "slurrp-farm-choco-crunch-ragi-cereal",
     slug: "slurrp-farm-choco-crunch-ragi-cereal",
     name: "Choco Crunch Ragi Stars & Moons Cereal",
-    shortDescription: "Kids breakfast cereal — with milk or as a dry snack.",
+    shortDescription: "Chocolate ragi stars & moons cereal — bowl or dry snack.",
     longDescription:
-      "A chocolate-flavoured ragi cereal from Slurrp Farm shaped for kids — works in a bowl with milk or as a portable snack.",
-    category: "Kids Breakfast",
-    collection: "kids-breakfast",
+      "A chocolate-flavoured ragi and jowar cereal from Slurrp Farm in star and moon shapes. Works in a bowl with milk or as a dry snack.",
+    category: "Cereals",
+    collection: "cereals",
     image: "/products/pantry/slurrp-farm-choco-crunch-ragi-cereal.jpg",
     imageAlt: "Slurrp Farm Choco Crunch Ragi Stars and Moons Cereal",
     unit: "250 g",
@@ -202,18 +222,25 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Slurrp Farm",
     origin: "India",
     pantry: {
-      roleLine: "Kid-friendly cereal for breakfast bowls or lunchbox snacking.",
-      audience: ["Kids"],
-      occasions: ["Breakfast", "Snack"],
-      badges: ["Kids", "Breakfast", "Ragi"],
+      roleLine: "Ragi and jowar cereal shapes with cocoa and unrefined sugar.",
+      audience: ["Kids", "Toddlers"],
+      occasions: ["Breakfast", "Snack", "Travel-Friendly"],
+      badges: ["No Maida", "Ragi", "No Palm Oil"],
       whySelected:
-        "Many families want a cereal option that feels familiar to kids but uses better grains. This is our one kids' cereal SKU — ragi-based, without stocking multiple flavours.",
-      ingredients: "See Slurrp Farm product page and package label.",
-      allergens: "Check label for gluten, milk, and other allergens.",
-      nutritionHighlights: "Made with ragi and jowar per product formulation. See nutrition panel on package.",
-      preparation: "Serve with cold or warm milk, or eat dry as a snack.",
-      storage: "Cool, dry place; reseal bag after opening.",
+        "Many families want a cereal that feels familiar to kids but uses better grains. This is our one shaped cereal SKU — ragi and jowar based, without stocking multiple flavours.",
+      ingredients:
+        "Supergrain blend (ragi, jowar, rice, corn) and cocoa. Sweetened with raw unrefined sugar. No maida, salt, trans fat, palm oil, preservatives, artificial colours, or flavours (per Slurrp Farm).",
+      allergens:
+        "Contains corn and rice. Typically served with cow's milk — contains dairy when prepared that way. No palm oil or trans fat (per Slurrp Farm).",
+      nutritionHighlights:
+        "Made with ragi and jowar. Per Slurrp Farm, 30 g cereal with 200 ml cow's milk provides about 66% of daily calcium RDA.",
+      preparation:
+        "Serve with cold or warm milk, or eat dry as a snack.",
+      storage:
+        "Keep in a cool, dry place. After opening, transfer to an airtight container and consume within one month. Best before 9 months from packaging.",
       countryOfOrigin: "India",
+      suggestedAge:
+        "For toddlers and kids who can chew and swallow this texture — not for babies without teeth (per Slurrp Farm).",
       sourceUrl: "https://www.slurrpfarm.com/products/millet-crunch-cereal-chocolate-stars-and-moons-healthy-millet-breakfast-300-gm",
       gallery: ["/products/pantry/slurrp-farm-choco-crunch-ragi-cereal.jpg"],
     },
@@ -223,11 +250,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "slurrp-farm-millet-noodles-masala",
     slug: "slurrp-farm-millet-noodles-masala",
     name: "Millet Noodles — Classic Masala",
-    shortDescription: "Quick millet noodles for kids and family lunch or dinner.",
+    shortDescription: "Foxtail millet and whole wheat masala noodles — not fried.",
     longDescription:
-      "Classic masala millet noodles from Slurrp Farm — a familiar quick-meal format many Indian-Canadian families already know, with millet instead of refined wheat noodles.",
-    category: "Quick Meals",
-    collection: "quick-meals",
+      "Classic masala millet noodles from Slurrp Farm — foxtail millet and whole wheat with a separate spice sachet. Not fried; ready in minutes.",
+    category: "Noodles",
+    collection: "noodles",
     image: "/products/pantry/slurrp-farm-millet-noodles-masala.jpg",
     imageAlt: "Slurrp Farm Millet Noodles Classic Masala",
     unit: "192 g",
@@ -238,18 +265,24 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Slurrp Farm",
     origin: "India",
     pantry: {
-      roleLine: "Fast masala noodles for kids or the whole family.",
-      audience: ["Kids", "Family"],
-      occasions: ["Lunch/Dinner", "Quick Meal"],
-      badges: ["Kids", "Quick Meal", "Millet"],
+      roleLine: "Millet noodles with a natural-spice masala sachet — serves 2.",
+      audience: ["Kids", "Family", "Toddlers"],
+      occasions: ["Lunch/Dinner", "Travel-Friendly"],
+      badges: ["No Maida", "Not Fried", "Millet"],
       whySelected:
         "Instant noodles are a real use case in busy households. We carry one millet-based masala noodle — a cleaner alternative to typical maida noodles, without filling the shelf with flavours.",
-      ingredients: "See package and Slurrp Farm listing for noodles, seasoning, and oil content.",
-      allergens: "Check label for gluten, soy, and other allergens.",
-      nutritionHighlights: "Made with millet. See package for fat, sodium, and per-serving nutrition.",
-      preparation: "Boil noodles, drain, mix with masala seasoning per package directions.",
+      ingredients:
+        "Noodles: foxtail millet flour, whole wheat flour, cluster bean powder (natural gum), salt. Spice mix (5%): coriander seeds, red chillies, onion powder, garlic powder, ginger powder, turmeric, curry leaves, fennel seeds, black pepper, cassia, fenugreek, star anise, clove, nutmeg, salt, unrefined cane sugar, citric acid (INS 330). Per Slurrp Farm label listings.",
+      allergens:
+        "Contains wheat (gluten). Made in a facility that processes nuts — may contain trace amounts (per Slurrp Farm).",
+      nutritionHighlights:
+        "Sun-dried, not fried. Foxtail millet is a source of vitamin A; whole wheat provides B-vitamins and minerals (per Slurrp Farm).",
+      preparation:
+        "Boil noodles, drain, and toss with the masala seasoning sachet per package directions. Also works for stir-fries, hakka-style noodles, or soup.",
       storage: "Store in a cool, dry place.",
       countryOfOrigin: "India",
+      suggestedAge:
+        "For kids and family — mild masala, suited to lunchboxes and quick meals (per Slurrp Farm).",
       sourceUrl: "https://www.slurrpfarm.com/products/classic-masala-serves-2-96-gms",
       gallery: ["/products/pantry/slurrp-farm-millet-noodles-masala.jpg"],
     },
@@ -259,11 +292,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "slurrp-farm-millet-dosa-spinach",
     slug: "slurrp-farm-millet-dosa-spinach",
     name: "Millet Dosa — Spinach Supergrains",
-    shortDescription: "Instant dosa mix for breakfast, lunch, or light dinner.",
+    shortDescription: "Spinach multigrain millet dosa mix — pour and cook.",
     longDescription:
-      "Spinach millet dosa mix from Slurrp Farm — pour-and-cook dosas without starting from scratch, useful for Indian breakfasts or a light evening meal.",
-    category: "Quick Meals",
-    collection: "quick-meals",
+      "Spinach millet dosa mix from Slurrp Farm — supergrains, natural spinach powder, and mild spices. No maida or white rice.",
+    category: "Dosa",
+    collection: "dosa",
     image: "/products/pantry/slurrp-farm-millet-dosa-spinach.jpg",
     imageAlt: "Slurrp Farm Millet Dosa Spinach Supergrains mix",
     unit: "150 g",
@@ -274,18 +307,24 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Slurrp Farm",
     origin: "India",
     pantry: {
-      roleLine: "Spinach millet dosas without grinding batter from scratch.",
-      audience: ["Kids", "Family"],
+      roleLine: "Spinach millet dosa batter mix — no grinding from scratch.",
+      audience: ["Kids", "Family", "Toddlers"],
       occasions: ["Breakfast", "Lunch/Dinner"],
-      badges: ["Family", "Millet", "Quick Meal"],
+      badges: ["No Maida", "Spinach", "Millet"],
       whySelected:
-        "Dosa is a core Indian breakfast. This mix covers that occasion with millets and spinach in one SKU — faster than homemade batter on a weekday.",
-      ingredients: "See official product listing for millet flours, spinach, and seasonings.",
-      allergens: "Check package allergen statement.",
-      nutritionHighlights: "Made with millets and spinach. Refer to package nutrition facts.",
-      preparation: "Mix batter per instructions; spread on hot tawa and cook until crisp.",
-      storage: "Cool, dry storage; use within time recommended after opening.",
+        "Dosa is a core Indian breakfast. This mix covers that format with millets and spinach in one SKU — faster than homemade batter on a weekday.",
+      ingredients:
+        "Blend of supergrains including foxtail millet; urad, chana, and moong dal; natural spinach powder; mild spices. Zero maida, white rice, preservatives, stabilizers, emulsifiers, artificial colours, or flavours (per Slurrp Farm).",
+      allergens:
+        "Contains legumes (urad, chana, and moong dal). Zero maida or white rice (per Slurrp Farm).",
+      nutritionHighlights:
+        "Foxtail millet provides protein; spinach adds iron, folic acid, and vitamin K1 (per Slurrp Farm).",
+      preparation:
+        "Mix batter per package instructions; spread thin on a hot tawa and cook until crisp.",
+      storage: "Keep in a cool, dry place. Best before 12 months from packaging.",
       countryOfOrigin: "India",
+      suggestedAge:
+        "For kids and family — everyday dosa mix once child eats regular table foods (per Slurrp Farm).",
       sourceUrl: "https://www.slurrpfarm.com/products/millet-dosa-supergrains-and-spinach",
       gallery: ["/products/pantry/slurrp-farm-millet-dosa-spinach.jpg"],
     },
@@ -295,11 +334,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "slurrp-farm-macaroni-pasta",
     slug: "slurrp-farm-macaroni-pasta",
     name: "Macaroni Pasta",
-    shortDescription: "Kids' pasta for lunch or dinner — sauce it your way.",
+    shortDescription: "Gluten-free multigrain macaroni — brown rice, rice, and corn.",
     longDescription:
-      "Macaroni pasta from Slurrp Farm for simple kids' meals — boil, add sauce or cheese, and serve.",
-    category: "Quick Meals",
-    collection: "quick-meals",
+      "Macaroni pasta from Slurrp Farm made with brown rice, white rice, and corn. Vegan, gluten-free, and cooks in 9–10 minutes.",
+    category: "Pasta",
+    collection: "pasta",
     image: "/products/pantry/slurrp-farm-macaroni-pasta.jpg",
     imageAlt: "Slurrp Farm Macaroni Pasta",
     unit: "400 g",
@@ -310,18 +349,25 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Slurrp Farm",
     origin: "India",
     pantry: {
-      roleLine: "Everyday macaroni for kids' pasta nights.",
-      audience: ["Kids", "Family"],
-      occasions: ["Lunch/Dinner", "Quick Meal"],
-      badges: ["Kids", "Quick Meal", "Family"],
+      roleLine: "Multigrain macaroni — boil and sauce your way.",
+      audience: ["Kids", "Family", "Toddlers"],
+      occasions: ["Lunch/Dinner"],
+      badges: ["Gluten-Free", "Vegan", "No Maida"],
       whySelected:
-        "Pasta is a weekly staple in many homes. We stock one macaroni shape from Slurrp Farm — enough for lunchboxes and quick dinners without a wall of pasta SKUs.",
-      ingredients: "See package for flour type and full ingredient list.",
-      allergens: "Check label for gluten and other allergens.",
-      nutritionHighlights: "See package nutrition panel.",
-      preparation: "Boil in salted water until tender; drain and serve with sauce or vegetables.",
-      storage: "Cool, dry place.",
+        "Pasta is a weekly staple in many homes. We stock one macaroni from Slurrp Farm — enough for lunchboxes and quick dinners without a wall of pasta SKUs.",
+      ingredients:
+        "Brown rice, white rice, and corn (per Slurrp Farm). Zero maida/wheat, no trans fats, preservatives, or artificial colours and flavours.",
+      allergens:
+        "Gluten-free and vegan (per Slurrp Farm). Made in a facility that may handle wheat and other allergens.",
+      nutritionHighlights:
+        "Source of dietary fibre, B-vitamins, and essential fatty acids. Less than 2 g fat per 100 g serving (per Slurrp Farm).",
+      preparation:
+        "Boil in salted water 9–10 minutes until tender; drain and serve with sauce, cheese, or vegetables.",
+      storage:
+        "Cool, dry place. Best before 18 months from date of packaging.",
       countryOfOrigin: "India",
+      suggestedAge:
+        "For kids and family — gluten-free pasta for everyday meals (per Slurrp Farm).",
       sourceUrl: "https://www.slurrpfarm.com/products/macaroni-pasta",
       gallery: ["/products/pantry/slurrp-farm-macaroni-pasta.jpg"],
     },
@@ -331,11 +377,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "slurrp-farm-choco-ragi-cookies",
     slug: "slurrp-farm-choco-ragi-cookies",
     name: "Choco Ragi Cookies",
-    shortDescription: "Tiffin, tea-time, or after-school snack.",
+    shortDescription: "Choco ragi cookies sweetened with jaggery — ready to eat.",
     longDescription:
-      "Chocolate ragi cookies from Slurrp Farm — a shelf-stable snack for lunchboxes, tea-time, or travel.",
-    category: "Tea-Time & Snacks",
-    collection: "tea-time-snacks",
+      "Chocolate ragi cookies from Slurrp Farm — multigrain biscuits with ragi and jowar, sweetened with jaggery and unrefined sugar. No preservatives.",
+    category: "Cookies",
+    collection: "cookies",
     image: "/products/pantry/slurrp-farm-choco-ragi-cookies.jpg",
     imageAlt: "Slurrp Farm Choco Ragi Cookies",
     unit: "75 g",
@@ -346,18 +392,24 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Slurrp Farm",
     origin: "India",
     pantry: {
-      roleLine: "Ragi cookies for tiffin, tea-time, or the car ride home.",
-      audience: ["Kids", "Family"],
-      occasions: ["Snack", "Tea-Time", "Travel-Friendly"],
-      badges: ["Kids", "Snack", "Ragi"],
+      roleLine: "Ragi and jowar chocolate cookies — shelf-stable snack.",
+      audience: ["Kids", "Family", "Toddlers"],
+      occasions: ["Snack", "Travel-Friendly"],
+      badges: ["No Maida", "Ragi", "No Preservatives"],
       whySelected:
-        "We carry one cookie SKU — choco ragi — instead of a wall of flavours. It covers school snack and family tea-time without turning PLUK into a biscuit aisle.",
-      ingredients: "See Slurrp Farm package for flours, cocoa, sweeteners, and fats used.",
-      allergens: "Check label for wheat, milk, nuts, and soy.",
-      nutritionHighlights: "Made with ragi. See package for sugar and per-cookie nutrition.",
+        "We carry one cookie SKU — choco ragi — instead of a wall of flavours. It covers lunchbox and travel snacking without turning PLUK into a biscuit aisle.",
+      ingredients:
+        "Multigrain flour blend (46%): whole wheat flour (atta), jowar, ragi (5%); rice bran oil (12%); jaggery (11%); raw unrefined sugar (11%); cocoa powder (3.5%); chocolate chips; skimmed milk powder; corn flour; raising agent (baking soda); iodised salt; emulsifier (sunflower lecithin); thickener (xanthan gum); antioxidant (natural rosemary). No maida, palm oil, or preservatives (per Slurrp Farm label listings).",
+      allergens:
+        "Contains milk and wheat (gluten). May contain nuts and seeds (per Slurrp Farm).",
+      nutritionHighlights:
+        "Multigrain cookies with ragi and jowar. No maida, refined sugar, or palm oil (per Slurrp Farm). High in fibre per brand listing.",
       preparation: "Ready to eat.",
-      storage: "Store sealed; consume by best-before date on package.",
+      storage:
+        "Cool, dry place. After opening, keep airtight and consume within one month or by expiry date, whichever is earlier.",
       countryOfOrigin: "India",
+      suggestedAge:
+        "For kids and family — solid snack for children who can chew biscuits safely (per Slurrp Farm).",
       sourceUrl: "https://www.slurrpfarm.com/products/the-good-cookie-tasty-no-maida-no-refined-sugar-choco-ragi-cookie",
       gallery: ["/products/pantry/slurrp-farm-choco-ragi-cookies.jpg"],
     },
@@ -367,11 +419,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "farmley-makhana",
     slug: "farmley-makhana",
     name: "Roasted Makhana",
-    shortDescription: "Light roasted makhana for family tea-time or travel.",
+    shortDescription: "Roasted peri peri makhana — never fried.",
     longDescription:
-      "Roasted makhana (fox nuts) from Farmley — a common Indian snack for adults and older kids who enjoy something crunchy and lightly seasoned.",
-    category: "Tea-Time & Snacks",
-    collection: "tea-time-snacks",
+      "Roasted makhana (fox nuts) from Farmley with peri peri seasoning — light, gluten-free, and ready to eat.",
+    category: "Snacks",
+    collection: "snacks",
     image: "/products/pantry/farmley-makhana.jpg",
     imageAlt: "Farmley roasted makhana snack",
     unit: "77 g",
@@ -382,18 +434,24 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Farmley",
     origin: "India",
     pantry: {
-      roleLine: "Roasted makhana for parents and kids at tea-time or on the go.",
+      roleLine: "Roasted peri peri makhana — crunchy, never fried.",
       audience: ["Family", "Parents", "Kids"],
-      occasions: ["Snack", "Tea-Time", "Travel-Friendly"],
-      badges: ["Family", "Snack", "Makhana"],
+      occasions: ["Snack", "Travel-Friendly"],
+      badges: ["Gluten-Free", "Roasted", "Makhana"],
       whySelected:
         "Makhana is a familiar Indian snack that works for the whole family. Farmley is a known brand for nuts and makhana — one flavour on the shelf keeps choice simple.",
-      ingredients: "See Farmley package for makhana, oil, salt, and seasonings.",
-      allergens: "Check label; may be processed in facilities handling nuts.",
-      nutritionHighlights: "Made with makhana (fox nuts). See package nutrition facts.",
+      ingredients:
+        "Foxnut (makhana), olive oil, spices and condiments (red chilli, dried garlic, dried onion, cumin, dried mango powder, coriander seeds, dried ginger, turmeric, carom seeds, black pepper, cinnamon, fenugreek seeds, nutmeg, mace), iodised salt, black salt, sugar, citric acid, malic acid, corn starch, paprika extract, flavour enhancer (INS 635). Per Farmley label listings.",
+      allergens:
+        "Gluten-free. May contain tree nuts — processed in a facility handling nuts (per Farmley).",
+      nutritionHighlights:
+        "Roasted in olive oil, not fried. Low-calorie, gluten-free, cholesterol-free snack with plant protein and fibre (per Farmley).",
       preparation: "Ready to eat.",
-      storage: "Cool, dry place; reseal after opening.",
+      storage:
+        "Cool, dry place away from direct sunlight. Reseal after opening. Shelf life 9 months (per Farmley).",
       countryOfOrigin: "India",
+      suggestedAge:
+        "For older kids and adults — supervise young children because of size and crunch (per Farmley family snack positioning).",
       sourceUrl: "https://www.farmley.com/products/peri-peri-makhana-pack-of-4",
       gallery: ["/products/pantry/farmley-makhana.jpg"],
     },
@@ -403,11 +461,11 @@ export const pantryProducts: PantryProduct[] = [
     id: "timios-melts-variety",
     slug: "timios-melts-variety",
     name: "Melts Variety Pack",
-    shortDescription: "Baby/toddler finger snack — melts in the mouth.",
+    shortDescription: "Wholegrain melts variety pack — four flavours.",
     longDescription:
-      "A variety pack of Timios Melts — small finger-food snacks designed for babies and toddlers learning to self-feed.",
-    category: "Tea-Time & Snacks",
-    collection: "tea-time-snacks",
+      "Timios Melts variety pack — non-fried, wholegrain finger snacks in four fruit and spice flavours. Each inner pack is 50 g.",
+    category: "Snacks",
+    collection: "snacks",
     image: "/products/pantry/timios-melts-variety.jpg",
     imageAlt: "Timios Melts Variety Pack",
     unit: "Variety pack",
@@ -418,19 +476,23 @@ export const pantryProducts: PantryProduct[] = [
     brand: "Timios",
     origin: "India",
     pantry: {
-      roleLine: "Finger-food melts for babies and toddlers — test SKU on our shelf.",
+      roleLine: "Wholegrain melts that dissolve quickly — four flavours in one pack.",
       audience: ["Baby/Toddler"],
       occasions: ["Snack", "Travel-Friendly"],
-      badges: ["Baby/Toddler", "Snack", "Travel-Friendly"],
+      badges: ["No Maida", "Wholegrain", "Non-Fried"],
       whySelected:
         "Timios is known for kids' snacks in India. Melts are a distinct baby/toddler finger-food format — we carry one variety pack to test demand before expanding.",
-      ingredients: "See Timios package for grains, fruit, and other ingredients per flavour.",
-      allergens: "Check each inner pack label for allergen information.",
-      nutritionHighlights: "Made with whole grains per Timios product info. See individual sachet labels.",
-      preparation: "Ready to eat; supervise young children while eating.",
+      ingredients:
+        "Blueberry: whole grain (wheat, rice, oats), wheat starch, cane sugar, rice bran oil, apple juice powder, blueberry fruit powder, natural blueberry flavour, mixed tocopherols. Apple & cinnamon: whole grain (wheat, rice, oats), wheat starch, cane sugar, rice bran oil, apple & cinnamon extracts (4%), salt, mixed tocopherols. Carrot & cumin: whole grain (wheat, rice, oats), wheat starch, cane sugar, rice bran oil, carrot & cumin extracts (3%), spices (salt, onion, garlic, coriander, tomato extract, turmeric), mixed tocopherols. Banana & strawberry: whole grain (wheat, rice, oats), wheat starch, cane sugar, rice bran oil, banana and strawberry fruit powders, natural banana flavour, mixed tocopherols. Per Timios/FirstCry product listing.",
+      allergens:
+        "Contains wheat (gluten) and oats in all four flavours (per Timios).",
+      nutritionHighlights:
+        "Non-fried, no maida, no preservatives or artificial colours/flavours. Whole grains supply protein, iron, and calcium (per Timios).",
+      preparation:
+        "Ready to eat. Supervise young children while eating.",
       storage: "Store in a cool, dry place.",
       countryOfOrigin: "India",
-      suggestedAge: "See package for age guidance.",
+      suggestedAge: "From 9 months (per Timios).",
       sourceUrl: "https://www.firstcry.com/timios/timios-melts-non-fried-no-maida-wholegrain-snacks-assorted-pack-of-4-50-g-each/8714198/product-detail",
       gallery: ["/products/pantry/timios-melts-variety.jpg"],
     },

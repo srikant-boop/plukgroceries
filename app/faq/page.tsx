@@ -30,11 +30,11 @@ const faqs: FaqItem[] = [
   },
   {
     q: "Are these baby products?",
-    a: "Some items are for babies and toddlers (clearly labeled), others are for kids or the whole family. Check each product page for who it is for and always read the package label before use.",
+    a: "Some items are for babies and toddlers (clearly labeled), others are for kids or the whole family. Each product page lists who it is for and suggested age where the brand provides it.",
   },
   {
     q: "How do you choose products?",
-    a: "We pick one SKU per meal occasion where we can — a breakfast cereal, a quick noodle, a snack — from brands families already trust. If families reorder it, it stays on the shelf. If not, we replace it.",
+    a: "We pick one SKU per product type where we can — a cereal, a noodle mix, a snack — from brands families already trust. If families reorder it, it stays on the shelf. If not, we replace it.",
   },
   {
     q: "Are the products imported?",
@@ -42,7 +42,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "Are labels reviewed for Canada?",
-    a: "Product details on this site are for convenience. Final Canadian label review is required before sale. Always read the physical package label for ingredients, allergens, and age guidance.",
+    a: "Product details on this site are sourced from official brand listings. Final Canadian label review is required before sale. Always read the physical package label for ingredients and allergens.",
   },
   {
     q: "How does pickup or local delivery work?",

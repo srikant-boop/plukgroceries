@@ -116,7 +116,7 @@ export default async function ProductPage({
             <dd>{meta.audience.join(", ")}</dd>
           </div>
           <div>
-            <dt className="eyebrow mb-1">Meal occasion</dt>
+            <dt className="eyebrow mb-1">Also good for</dt>
             <dd>{meta.occasions.join(", ")}</dd>
           </div>
           {meta.suggestedAge && (

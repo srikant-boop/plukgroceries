@@ -34,7 +34,7 @@ export const suppliers: Supplier[] = [
     type: "brand",
     tagline: "Millet-based kids' foods · India",
     story:
-      "Slurrp Farm makes millet-forward foods for babies and kids — cereals, noodles, dosa mixes, pancakes, and snacks. Founded by two mothers in India, the brand is widely known for using millets and ragi instead of refined flour in everyday formats families already buy.\n\nWe carry a short list of Slurrp Farm SKUs that cover breakfast, quick meals, and tea-time — each one chosen for a specific meal occasion rather than stocking every flavour they make.",
+      "Slurrp Farm makes millet-forward foods for babies and kids — cereals, noodles, dosa mixes, pancakes, and snacks. Founded by two mothers in India, the brand is widely known for using millets and ragi instead of refined flour in everyday formats families already buy.\n\nWe carry a short list of Slurrp Farm SKUs across product types — cereals, pancakes, noodles, and more — rather than stocking every flavour they make.",
     links: [{ label: "Website", href: "https://www.slurrpfarm.com/" }],
   },
   {
