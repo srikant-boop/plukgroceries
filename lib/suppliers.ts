@@ -45,7 +45,7 @@ export const suppliers: Supplier[] = [
     tagline: "Traditional mixes for babies & toddlers · India",
     story:
       "Early Foods focuses on simple, traditional Indian foods for young children — khichdi mixes, porridges, and gentle staples many Indian families already cook at home.\n\nWe stock their rice and moong khichdi mix as our baby/toddler meal anchor — one SKU that covers lunch, dinner, and travel without filling the shelf with multiple porridge variants.",
-    links: [{ label: "Website", href: "https://earlyfoods.in/" }],
+    links: [{ label: "Website", href: "https://www.earlyfoods.com/" }],
   },
   {
     id: "farmley",
@@ -65,7 +65,12 @@ export const suppliers: Supplier[] = [
     tagline: "Kids' snacks · India",
     story:
       "Timios makes finger foods and snacks designed for babies and toddlers — formats like melts that dissolve easily for young eaters learning to self-feed.\n\nWe carry one Melts variety pack as a test SKU. If families reorder it, it stays on the shelf; if not, we replace it with something that earns its place.",
-    links: [{ label: "Website", href: "https://timios.co/" }],
+    links: [
+      {
+        label: "Shop",
+        href: "https://www.firstcry.com/timios",
+      },
+    ],
   },
 ];
 
