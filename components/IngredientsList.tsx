@@ -1,7 +1,10 @@
 import type { IngredientRow, IngredientSection } from "@/lib/pantry-catalog";
 
-function sectionHasAmounts(section: IngredientSection): boolean {
-  return section.rows.some((row) => Boolean(row.amount));
+function sectionUsesFullTable(section: IngredientSection): boolean {
+  return (
+    section.rows.length > 0 &&
+    section.rows.every((row) => Boolean(row.amount))
+  );
 }
 
 function SectionTable({
@@ -68,11 +71,11 @@ function SectionProse({ section }: { section: IngredientSection }) {
 }
 
 function SectionBlock({ section }: { section: IngredientSection }) {
-  const showAmount = sectionHasAmounts(section);
-  if (showAmount) {
-    return <SectionTable section={section} showAmount />;
-  }
-  return <SectionProse section={section} />;
+  return sectionUsesFullTable(section) ? (
+    <SectionTable section={section} showAmount />
+  ) : (
+    <SectionProse section={section} />
+  );
 }
 
 export function IngredientsList({
