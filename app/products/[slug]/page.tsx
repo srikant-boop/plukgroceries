@@ -75,8 +75,12 @@ export default async function ProductPage({
       title: "Nutrition information",
       content: labelData?.nutritionFacts ? (
         <NutritionFactsTable facts={labelData.nutritionFacts} />
-      ) : (
+      ) : meta.nutritionHighlights ? (
         <p>{meta.nutritionHighlights}</p>
+      ) : (
+        <p className="text-sm text-muted">
+          See package label for nutrition information.
+        </p>
       ),
     },
     {

@@ -121,12 +121,10 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote:
-        "No milk powder, salt, sugar, or maltodextrin.",
+      ingredientsNote: undefined,
       allergens:
         "Does not contain milk, wheat, nuts, or soy.",
-      nutritionHighlights:
-        "Provides protein and fibre from dal and millet.",
+      nutritionHighlights: "",
       preparation:
         "Creamy porridge: cook with water or milk until soft (about 5 minutes). Instant dosa/pancake: mix batter with water and spices; cook on a hot tawa. Follow package directions for consistency.",
       storage:
@@ -181,12 +179,10 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote:
-        "No hydrogenated fats, preservatives, or artificial colours and flavours. This product contains 23% millets.",
+      ingredientsNote: "This product contains 23% millets.",
       allergens:
         "Contains oat and milk products. Made in a facility that processes wheat and nuts. May contain trace elements.",
-      nutritionHighlights:
-        "Fortified with 13 vitamins and minerals.",
+      nutritionHighlights: "",
       preparation:
         "Boil drinking water for 5 minutes; cool to lukewarm. Measure 45 ml (3 tbsp) water into a bowl, add 3 level scoops (20 g) cereal, stir, and feed immediately with a clean spoon. Consume within 30 minutes.",
       storage:
@@ -241,12 +237,10 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote:
-        "No maida, preservatives, or artificial flavours.",
+      ingredientsNote: undefined,
       allergens:
         "Contains oats. May contain traces of wheat (gluten) and nuts.",
-      nutritionHighlights:
-        "Ragi is rich in calcium; foxtail millet and jowar provide protein.",
+      nutritionHighlights: "",
       preparation:
         "Mix with water or milk per package instructions; pour onto a hot griddle and flip when bubbles form. Ready in minutes.",
       storage:
@@ -297,14 +291,12 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote:
-        "Contains 24% millets. No maida, salt, trans fat, palm oil, preservatives, artificial colours, or flavours.",
+      ingredientsNote: "This product contains 24% millets.",
       allergens:
-        "Made in a facility that processes wheat, milk solids, soy, and nuts. Contains dairy when prepared with milk.",
-      nutritionHighlights:
-        "30 g cereal with 200 ml cow's milk provides about 66% of daily calcium RDA.",
+        "Made in a facility that processes wheat, milk solids, soy, and nuts. May contain trace elements.",
+      nutritionHighlights: "",
       preparation:
-        "Serve with cold or warm milk, or eat dry as a snack.",
+        "Serve with cold or warm milk, or eat dry as a snack. Contains dairy when prepared with milk.",
       storage:
         "Keep in a cool, dry place. After opening, transfer to an airtight container and consume within one month. Best before 9 months from packaging.",
       countryOfOrigin: "India",
@@ -370,11 +362,10 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote: "Contains 31.2% millets.",
+      ingredientsNote: "This product contains 31.2% millets.",
       allergens:
         "Contains wheat. Manufactured in a facility that also processes milk, soy, and nuts.",
-      nutritionHighlights:
-        "Sun-dried, not fried. Foxtail millet is a source of vitamin A; whole wheat provides B-vitamins and minerals.",
+      nutritionHighlights: "",
       preparation:
         "Boil noodles, drain, and toss with the masala seasoning sachet per package directions. Also works for stir-fries, hakka-style noodles, or soup.",
       storage: "Store in a cool, dry place.",
@@ -429,12 +420,10 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote:
-        "Zero maida, white rice, preservatives, stabilizers, emulsifiers, artificial colours, or flavours.",
+      ingredientsNote: undefined,
       allergens:
-        "Contains legumes (urad, chana, and moong dal).",
-      nutritionHighlights:
-        "Foxtail millet provides protein; spinach adds iron, folic acid, and vitamin K1.",
+        "Made in a facility that processes wheat and nuts. May contain trace elements.",
+      nutritionHighlights: "",
       preparation:
         "Mix batter per package instructions; spread thin on a hot tawa and cook until crisp.",
       storage: "Keep in a cool, dry place. Best before 12 months from packaging.",
@@ -479,12 +468,11 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote:
-        "Zero maida/wheat, no trans fats, preservatives, or artificial colours and flavours.",
+      ingredientsNote: undefined,
       allergens:
-        "Gluten-free and vegan. Made in a facility that may handle wheat and other allergens.",
+        "Made in a facility that may handle wheat and other allergens.",
       nutritionHighlights:
-        "Source of dietary fibre, B-vitamins, and essential fatty acids. Less than 2 g fat per 100 g serving.",
+        "Less than 2 g fat per 100 g serving. Source of dietary fibre.",
       preparation:
         "Boil in salted water 9–10 minutes until tender; drain and serve with sauce, cheese, or vegetables.",
       storage:
@@ -544,12 +532,10 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote:
-        "No maida, palm oil, or preservatives.",
+      ingredientsNote: undefined,
       allergens:
         "Contains milk and wheat (gluten). May contain nuts and seeds.",
-      nutritionHighlights:
-        "Ragi provides calcium; jowar provides protein. High in fibre.",
+      nutritionHighlights: "",
       preparation: "Ready to eat.",
       storage:
         "Cool, dry place. After opening, keep airtight and consume within one month or by expiry date, whichever is earlier.",
@@ -618,7 +604,7 @@ export const pantryProducts: PantryProduct[] = [
       allergens:
         "May contain tree nuts.",
       nutritionHighlights:
-        "Plant protein and fibre from makhana; roasted in olive oil, not fried.",
+        "See package label for full nutrition facts.",
       preparation: "Ready to eat.",
       storage:
         "Cool, dry place away from direct sunlight. Reseal after opening. Shelf life 9 months.",
@@ -711,7 +697,7 @@ export const pantryProducts: PantryProduct[] = [
       allergens:
         "Contains wheat (gluten) and oats in all four flavours.",
       nutritionHighlights:
-        "Whole grains supply protein, iron, and calcium.",
+        "See package label for full nutrition facts.",
       preparation:
         "Ready to eat. Supervise young children while eating.",
       storage: "Store in a cool, dry place.",

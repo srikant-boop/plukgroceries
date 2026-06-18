@@ -34,7 +34,7 @@ export function IngredientsList({
           section={section}
         />
       ))}
-      {note && (
+      {note?.trim() && (
         <p className="text-sm leading-relaxed text-muted border-t border-line pt-3">
           {note}
         </p>
