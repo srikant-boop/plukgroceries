@@ -128,7 +128,6 @@ export default async function ProductPage({
               {product.brand}
             </p>
           )}
-          <p className="eyebrow mb-3">{product.category}</p>
           <h1 className="text-3xl sm:text-4xl mb-2">{product.name}</h1>
           <p className="text-muted">{meta.roleLine}</p>
           <div className="mt-3 flex flex-wrap gap-1.5">
@@ -163,21 +162,23 @@ export default async function ProductPage({
         <section>
           <SectionHeading>Specifications</SectionHeading>
           <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm border-t border-line pt-4">
-            <div>
-              <dt className="text-muted mb-0.5">Brand</dt>
-              <dd>
-                {supplier ? (
-                  <Link
-                    href={`/suppliers/${supplier.slug}`}
-                    className="underline underline-offset-4 hover:text-accent"
-                  >
-                    {supplier.name}
-                  </Link>
-                ) : (
-                  brandName
-                )}
-              </dd>
-            </div>
+            {!supplier?.logo && (
+              <div>
+                <dt className="text-muted mb-0.5">Brand</dt>
+                <dd>
+                  {supplier ? (
+                    <Link
+                      href={`/suppliers/${supplier.slug}`}
+                      className="underline underline-offset-4 hover:text-accent"
+                    >
+                      {supplier.name}
+                    </Link>
+                  ) : (
+                    brandName
+                  )}
+                </dd>
+              </div>
+            )}
             <div>
               <dt className="text-muted mb-0.5">Net weight</dt>
               <dd>{product.unit}</dd>

@@ -65,7 +65,6 @@ export const PANTRY_COLLECTIONS: {
   title: string;
   navLabel: string;
 }[] = [
-  { slug: "khichdi", title: "Khichdi", navLabel: "Khichdi" },
   { slug: "cereals", title: "Cereals", navLabel: "Cereals" },
   { slug: "pancakes", title: "Pancakes", navLabel: "Pancakes" },
   { slug: "noodles", title: "Noodles", navLabel: "Noodles" },
@@ -91,7 +90,7 @@ export const pantryProducts: PantryProduct[] = [
     shortDescription: "Rice and moong khichdi mix with pepper, jeera, and ajwain.",
     longDescription:
       "A simple rice and moong dal khichdi mix from Early Foods — hand-pounded rajamudi red rice, yellow moong dal, and kodo millet with mild Indian spices. Sugar-free and made in small batches.",
-    category: "Khichdi",
+    category: "Baby meals",
     collection: "khichdi",
     image: "/products/pantry/early-foods-rice-moong-khichdi.png",
     imageAlt: "Early Foods Rice and Moong Khichdi Mix package",
@@ -122,8 +121,7 @@ export const pantryProducts: PantryProduct[] = [
         },
       ],
       ingredientsNote: undefined,
-      allergens:
-        "Does not contain milk, wheat, nuts, or soy.",
+      allergens: "Milk, wheat, nuts, and soy.",
       nutritionHighlights: "",
       preparation:
         "Creamy porridge: cook with water or milk until soft (about 5 minutes). Instant dosa/pancake: mix batter with water and spices; cook on a hot tawa. Follow package directions for consistency.",
