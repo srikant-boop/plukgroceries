@@ -41,83 +41,86 @@ export default async function ProductPage({
 
   const detailSections: ProductDetailAccordionItem[] = [
     {
-      id: "brand",
-      title: "Brand",
-      content: supplier ? (
-        <Link
-          href={`/suppliers/${supplier.slug}`}
-          className="underline underline-offset-4 hover:text-accent"
-        >
-          {supplier.name}
-        </Link>
-      ) : (
-        <p>{brandName}</p>
-      ),
-    },
-    {
-      id: "why-selected",
-      title: "Why we selected it",
-      content: <p>{meta.whySelected}</p>,
-    },
-  ];
-
-  if (product.longDescription.trim()) {
-    detailSections.push({
       id: "about",
       title: "About this product",
-      content: <p>{product.longDescription}</p>,
-    });
-  }
-
-  detailSections.push(
+      content: (
+        <div className="space-y-5">
+          <div>
+            <p className="eyebrow mb-2">Brand</p>
+            {supplier ? (
+              <Link
+                href={`/suppliers/${supplier.slug}`}
+                className="underline underline-offset-4 hover:text-accent"
+              >
+                {supplier.name}
+              </Link>
+            ) : (
+              <p>{brandName}</p>
+            )}
+          </div>
+          <div>
+            <p className="eyebrow mb-2">Why we selected it</p>
+            <p>{meta.whySelected}</p>
+          </div>
+          {product.longDescription.trim() && (
+            <div>
+              <p className="eyebrow mb-2">Description</p>
+              <p>{product.longDescription}</p>
+            </div>
+          )}
+        </div>
+      ),
+    },
     {
       id: "ingredients",
-      title: "Ingredients",
+      title: "Ingredients & nutrition",
       content: (
-        <IngredientsTable
-          sections={meta.ingredientSections}
-          note={meta.ingredientsNote}
-        />
+        <div className="space-y-5">
+          <IngredientsTable
+            sections={meta.ingredientSections}
+            note={meta.ingredientsNote}
+          />
+          <div>
+            <p className="eyebrow mb-2">Allergens</p>
+            <p>{meta.allergens}</p>
+          </div>
+          <div>
+            <p className="eyebrow mb-2">Nutrition highlights</p>
+            <p>{meta.nutritionHighlights}</p>
+          </div>
+        </div>
       ),
     },
     {
-      id: "allergens",
-      title: "Allergen information",
-      content: <p>{meta.allergens}</p>,
-    },
-    {
-      id: "nutrition",
-      title: "Nutrition highlights",
-      content: <p>{meta.nutritionHighlights}</p>,
-    },
-    {
-      id: "preparation",
-      title: "Preparation",
-      content: <p>{meta.preparation}</p>,
-    },
-    {
-      id: "storage",
-      title: "Storage",
-      content: <p>{meta.storage}</p>,
-    },
-  );
-
-  if (meta.sourceUrl) {
-    detailSections.push({
-      id: "source",
-      title: "Official product source",
+      id: "prep",
+      title: "Preparation & storage",
       content: (
-        <a
-          href={meta.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline underline-offset-4 hover:text-accent"
-        >
-          View on brand website ↗
-        </a>
+        <div className="space-y-5">
+          <div>
+            <p className="eyebrow mb-2">Preparation</p>
+            <p>{meta.preparation}</p>
+          </div>
+          <div>
+            <p className="eyebrow mb-2">Storage</p>
+            <p>{meta.storage}</p>
+          </div>
+          {meta.sourceUrl && (
+            <div>
+              <p className="eyebrow mb-2">Official source</p>
+              <a
+                href={meta.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4 hover:text-accent"
+              >
+                View on brand website ↗
+              </a>
+            </div>
+          )}
+        </div>
       ),
-    });
-  }
+    },
+  ];
 
   return (
     <article className="grid gap-10 lg:grid-cols-2 lg:gap-16">
