@@ -17,7 +17,7 @@ export type PantryMeta = {
   whySelected: string;
   ingredientSections: IngredientSection[];
   ingredientsNote?: string;
-  allergens: string;
+  allergens?: string;
   nutritionHighlights: string;
   preparation: string;
   storage: string;
@@ -129,8 +129,9 @@ export const pantryProducts: PantryProduct[] = [
           ],
         },
       ],
-      ingredientsNote: undefined,
-      allergens: "Milk, wheat, nuts, and soy.",
+      ingredientsNote:
+        "No milk powder, salt, or sugar added. Ingredient list only — rice, moong, millet, and spices.",
+      allergens: "",
       nutritionHighlights: "",
       preparation:
         "Creamy porridge: cook with water or milk until soft (about 5 minutes). Instant dosa/pancake: mix batter with water and spices; cook on a hot tawa. Follow package directions for consistency.",

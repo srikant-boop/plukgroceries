@@ -88,7 +88,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "How do I check allergens and ingredients?",
-    a: "Each product page lists ingredients, allergens, and nutrition from the official listing. Always read the physical package when it arrives — that is the final source, especially for starting solids and known allergies.",
+    a: "Open the product page — we list full ingredients, allergen statements, and nutrition from the brand’s official listing, entered and checked before a SKU goes on the shelf.",
   },
 ];
 

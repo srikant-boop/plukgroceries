@@ -20,20 +20,11 @@ function formatAllergenNote(text: string): { text: string; emphasize: boolean } 
     };
   }
 
-  const isFreeFromList =
-    !lower.includes("contains") &&
-    !lower.includes("facility") &&
-    !lower.includes("may contain") &&
-    !lower.includes("manufactured");
-
-  if (isFreeFromList) {
-    return {
-      text: `Free from ${trimmed.charAt(0).toLowerCase()}${trimmed.slice(1)}`,
-      emphasize: false,
-    };
+  if (lower.startsWith("free from")) {
+    return { text: trimmed, emphasize: false };
   }
 
-  return { text: trimmed, emphasize: false };
+  return { text: trimmed, emphasize: trimmed.toLowerCase().startsWith("contains") };
 }
 
 function SectionProse({ section }: { section: IngredientSection }) {
