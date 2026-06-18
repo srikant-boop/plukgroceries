@@ -60,11 +60,6 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="mt-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
-          {product.brand && (
-            <p className="text-[10px] uppercase tracking-wider text-muted mb-0.5">
-              {product.brand}
-            </p>
-          )}
           <Link
             href={`/products/${product.slug}`}
             className="hover:underline underline-offset-4"

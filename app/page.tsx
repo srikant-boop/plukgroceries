@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { storefrontProducts } from "@/lib/products";
-import { carriedBrands } from "@/lib/suppliers";
 import { ProductCard } from "@/components/ProductCard";
 import { HowItWorks, HowWeChoose } from "@/components/HowItWorks";
 import { Leaf } from "@/components/Leaf";
 
 export default function Home() {
   const products = storefrontProducts();
-  const brands = carriedBrands();
 
   return (
     <div>
@@ -60,34 +58,6 @@ export default function Home() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
           {products.map((p) => (
             <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
-      </section>
-
-      <section id="brands" className="mb-16 scroll-mt-24">
-        <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
-          <div className="flex items-baseline gap-3">
-            <Leaf size={16} className="text-accent" />
-            <h2 className="text-2xl">Brands we carry</h2>
-          </div>
-          <Link
-            href="/brands"
-            className="text-xs underline underline-offset-4 hover:text-accent"
-          >
-            All brands →
-          </Link>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {brands.map((b) => (
-            <Link
-              key={b.id}
-              href={`/suppliers/${b.slug}`}
-              className="block border border-line p-6 hover:bg-surface transition-colors"
-            >
-              <p className="eyebrow mb-2">Brand</p>
-              <h3 className="text-lg mb-1">{b.name}</h3>
-              <p className="text-sm text-muted">{b.tagline}</p>
-            </Link>
           ))}
         </div>
       </section>
