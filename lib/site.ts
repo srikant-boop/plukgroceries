@@ -15,3 +15,9 @@ export const OG_IMAGE_URL = `${SITE_URL}${OG_IMAGE_PATH}`;
 export const OG_IMAGE_ALT = "Pluk — curated Indian family pantry";
 
 export const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID?.trim() || undefined;
+
+export const FACEBOOK_GROUP_URL =
+  "https://www.facebook.com/share/g/1cRmroAoyr/";
+
+export const WHATSAPP_GROUP_URL =
+  "https://chat.whatsapp.com/KCRa5rASPpZDF5qWKq5baN";

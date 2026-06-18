@@ -1,3 +1,5 @@
+import { WHATSAPP_GROUP_URL } from "@/lib/site";
+
 type FaqItem = {
   q: string;
   a: React.ReactNode;
@@ -85,6 +87,30 @@ const faqs: FaqItem[] = [
   {
     q: "How do I check allergens and ingredients?",
     a: "Ingredients and nutrition are listed on every product.",
+  },
+  {
+    q: "Request a product",
+    anchorId: "request",
+    a: (
+      <>
+        <p className="mb-3">
+          Looking for a brand or product we do not stock yet? Tell us what you
+          want — we use requests to decide what goes on the shelf next.
+        </p>
+        <p>
+          Contact us on{" "}
+          <a
+            href={WHATSAPP_GROUP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-accent"
+          >
+            WhatsApp
+          </a>
+          .
+        </p>
+      </>
+    ),
   },
 ];
 

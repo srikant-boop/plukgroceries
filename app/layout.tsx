@@ -7,11 +7,13 @@ import { AnalyticsProvider } from "@/components/AnalyticsProvider";
 import {
   DEFAULT_DESCRIPTION,
   FACEBOOK_APP_ID,
+  FACEBOOK_GROUP_URL,
   OG_IMAGE_ALT,
   OG_IMAGE_URL,
   SITE_NAME,
   SITE_TITLE,
   SITE_URL,
+  WHATSAPP_GROUP_URL,
 } from "@/lib/site";
 import { ShopNav } from "@/components/ShopNav";
 import "./globals.css";
@@ -104,18 +106,26 @@ export default function RootLayout({
           <div className="mx-auto max-w-6xl px-6 py-8 text-xs text-muted flex flex-col gap-4">
             <div className="flex flex-wrap justify-between gap-3 items-center">
               <span>© Pluk</span>
-              <a
-                href="https://www.facebook.com/share/g/1cRmroAoyr/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-foreground"
-                aria-label="Facebook group"
-              >
-                <SocialIcon
-                  href="https://www.facebook.com/share/g/1cRmroAoyr/"
-                  size={20}
-                />
-              </a>
+              <div className="flex items-center gap-3">
+                <a
+                  href={WHATSAPP_GROUP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground"
+                  aria-label="WhatsApp group"
+                >
+                  <SocialIcon href={WHATSAPP_GROUP_URL} size={20} />
+                </a>
+                <a
+                  href={FACEBOOK_GROUP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground"
+                  aria-label="Facebook group"
+                >
+                  <SocialIcon href={FACEBOOK_GROUP_URL} size={20} />
+                </a>
+              </div>
             </div>
           </div>
         </footer>
