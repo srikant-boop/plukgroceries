@@ -2,6 +2,7 @@
 
 import {
   PANTRY_COLLECTIONS,
+  TEST_SHELF_PRODUCT_IDS,
   type PantryCollection,
   type PantryMeta,
   pantryProducts,
@@ -106,8 +107,8 @@ export const averageSavingsVsStore = (store: string): number => {
 
 export const products: Product[] = pantryProducts;
 
-/** All pantry SKUs are on the curated shelf. */
-export const STOREFRONT_PRODUCT_IDS = new Set(products.map((p) => p.id));
+/** Curated 7-SKU test shelf. */
+export const STOREFRONT_PRODUCT_IDS = TEST_SHELF_PRODUCT_IDS;
 
 export const isStorefrontProduct = (p: Product) =>
   STOREFRONT_PRODUCT_IDS.has(p.id);

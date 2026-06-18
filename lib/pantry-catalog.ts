@@ -69,9 +69,19 @@ export const PANTRY_COLLECTIONS: {
   { slug: "noodles", title: "Noodles", navLabel: "Noodles" },
   { slug: "dosa", title: "Dosa", navLabel: "Dosa" },
   { slug: "pasta", title: "Pasta", navLabel: "Pasta" },
-  { slug: "cookies", title: "Cookies", navLabel: "Cookies" },
   { slug: "snacks", title: "Snacks", navLabel: "Snacks" },
 ];
+
+/** Curated 7-SKU test shelf — only these appear on the storefront. */
+export const TEST_SHELF_PRODUCT_IDS = new Set([
+  "slurrp-farm-millet-noodles-masala",
+  "slurrp-farm-millet-dosa-spinach",
+  "slurrp-farm-millet-pancake-chocolate",
+  "slurrp-farm-macaroni-pasta",
+  "slurrp-farm-choco-crunch-ragi-cereal",
+  "early-foods-rice-moong-khichdi",
+  "brb-popped-chips-salt-pepper",
+]);
 
 const P = (cost: number, price: number) => ({
   wholesalerPrice: cost,
@@ -310,7 +320,7 @@ export const pantryProducts: PantryProduct[] = [
     imageAlt: "Slurrp Farm Millet Noodles Classic Masala",
     unit: "192 g",
     stock: 50,
-    ...P(2.77, 4.49),
+    ...P(2.77, 4.99),
     competitors: [],
     supplierId: "slurrp-farm",
     brand: "Slurrp Farm",
@@ -691,11 +701,64 @@ export const pantryProducts: PantryProduct[] = [
       gallery: ["/products/pantry/timios-melts-variety.jpg"],
     },
   },
+  {
+    uuid: "a100000b-0000-4000-8000-00000000000b",
+    id: "brb-popped-chips-salt-pepper",
+    slug: "brb-popped-chips-salt-pepper",
+    name: "Popped Chips — Salt & Pepper",
+    shortDescription: "Not fried, not baked — heat-popped potato chips with salt and pepper.",
+    longDescription:
+      "BRB popped potato chips in salt and pepper — made with dehydrated potato and rice bran oil, popped with heat and pressure instead of frying. Light crunch for the whole family.",
+    category: "Snacks",
+    collection: "snacks",
+    image: "/products/pantry/brb-popped-chips.jpg",
+    imageAlt: "BRB Popped Potato Chips Salt and Pepper 48g",
+    unit: "48 g",
+    stock: 50,
+    ...P(1.41, 2.49),
+    competitors: [],
+    supplierId: "brb",
+    brand: "BRB",
+    origin: "India",
+    pantry: {
+      roleLine: "Heat-popped potato chips — lighter than fried, ready to eat.",
+      audience: ["Family", "Kids"],
+      badges: ["Not Fried", "Gluten-Free", "No Palm Oil"],
+      whySelected:
+        "Many families want a familiar chip format without deep-frying. BRB uses a popped process — one snack SKU on the test shelf to see if it earns reorders.",
+      ingredientSections: [
+        {
+          rows: [
+            { name: "Dehydrated potato" },
+            { name: "Potato starch" },
+            { name: "Rice bran oil" },
+            {
+              name: "Spices and condiments (salt, black pepper, garlic powder)",
+            },
+          ],
+        },
+      ],
+      ingredientsNote: undefined,
+      allergens:
+        "Made in a facility that may handle wheat and other allergens.",
+      nutritionHighlights: "",
+      preparation: "Ready to eat.",
+      storage:
+        "Store in a cool, dry place. Reseal after opening. Best before 12 months from manufacture.",
+      countryOfOrigin: "India",
+      suggestedAge:
+        "For kids and family — supervise young children because of size and crunch.",
+      gallery: ["/products/pantry/brb-popped-chips.jpg"],
+    },
+  },
 ];
 
 export function getPantryProduct(slug: string): PantryProduct | undefined {
   return pantryProducts.find((p) => p.slug === slug);
 }
+
+export const testShelfProducts = (): PantryProduct[] =>
+  pantryProducts.filter((p) => TEST_SHELF_PRODUCT_IDS.has(p.id));
 
 export function productsByCollection(collection: PantryCollection): PantryProduct[] {
   return pantryProducts.filter((p) => p.collection === collection);

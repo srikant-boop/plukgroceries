@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getSupplier, suppliers, supplierIntroLabel } from "@/lib/suppliers";
+import { carriedBrands, getSupplier, supplierIntroLabel } from "@/lib/suppliers";
 import { products, isStorefrontProduct } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 import { BrandLogo } from "@/components/BrandLogo";

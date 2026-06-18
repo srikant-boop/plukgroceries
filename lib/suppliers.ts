@@ -1,5 +1,7 @@
 // Brand profiles for the curated Indian family pantry.
 
+import { TEST_SHELF_PRODUCT_IDS, pantryProducts } from "./pantry-catalog";
+
 export type SupplierType =
   | "farmer"
   | "wholesaler"
@@ -76,6 +78,16 @@ export const suppliers: Supplier[] = [
       },
     ],
   },
+  {
+    id: "brb",
+    slug: "brb",
+    name: "BRB",
+    type: "brand",
+    tagline: "Popped chips · India",
+    story:
+      "BRB makes popped potato, corn, and rice chips — not fried and not baked, but popped with heat and pressure. A lighter crunch than typical fried chips.\n\nWe carry one salt and pepper potato popped chips SKU on the test shelf.",
+    links: [{ label: "Website", href: "https://www.brbchips.com/" }],
+  },
 ];
 
 export const getSupplier = (slug: string) =>
@@ -90,5 +102,13 @@ export function supplierIntroLabel(supplier: Supplier): string | null {
   return `About ${supplier.name}`;
 }
 
-/** Brands we currently carry on the curated shelf. */
-export const carriedBrands = () => suppliers;
+/** Brands with at least one SKU on the active test shelf. */
+export const carriedBrands = () => {
+  const activeSupplierIds = new Set(
+    pantryProducts
+      .filter((p) => TEST_SHELF_PRODUCT_IDS.has(p.id))
+      .map((p) => p.supplierId)
+      .filter(Boolean),
+  );
+  return suppliers.filter((s) => activeSupplierIds.has(s.id));
+};
