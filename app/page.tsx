@@ -38,15 +38,15 @@ export default function Home() {
         <div className="relative px-6 sm:px-10 py-14 sm:py-20 max-w-3xl">
           <p className="eyebrow mb-4 inline-flex items-center gap-2">
             <Leaf size={14} className="text-accent" aria-hidden />
-            Curated Indian family pantry · Canada
+            Oakville · Home delivery
           </p>
           <h1 className="text-3xl sm:text-[2.75rem] leading-[1.08] mb-5">
-            Clean Indian foods for babies, kids, and families in Canada.
+            Clean Indian foods for babies, kids, and family.
           </h1>
           <p className="text-base sm:text-lg leading-relaxed text-foreground/80 mb-8">
-            A small à la carte pantry of carefully selected Indian breakfast,
-            snack, and quick-meal products — chosen for parents who want cleaner
-            options without hunting across expensive import sites.
+            A short à la carte shelf of trusted breakfast, snack, and
+            quick-meal brands — buy one product or build your basket. No
+            subscription, no import-site markups.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link href="#pantry" className="btn px-6 py-3 text-sm">
