@@ -88,7 +88,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "How do I check allergens and ingredients?",
-    a: "Product pages summarize official brand listings. Brands are made in India and imported for Canada. Always read the physical package for the latest ingredients and allergens — that is what matters, especially for starting solids and known allergies.",
+    a: "Each product page lists ingredients, allergens, and nutrition from the official listing. Always read the physical package when it arrives — that is the final source, especially for starting solids and known allergies.",
   },
 ];
 
@@ -102,24 +102,8 @@ export function Faq() {
             id={item.anchorId}
             className="group border-b border-line scroll-mt-24"
           >
-            <summary className="flex items-center justify-between gap-3 py-5 cursor-pointer list-none hover:text-accent">
-              <span className="font-medium text-base leading-snug">
-                {item.q}
-              </span>
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="flex-shrink-0 transition-transform group-open:rotate-180"
-                aria-hidden
-              >
-                <path d="M6 9l6 6 6-6" />
-              </svg>
+            <summary className="py-5 cursor-pointer list-none hover:text-accent font-medium text-base leading-snug">
+              {item.q}
             </summary>
             <div className="pb-5 pr-7 text-sm leading-relaxed text-foreground/85">
               {item.a}
