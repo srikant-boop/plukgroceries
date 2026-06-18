@@ -60,7 +60,7 @@ const faqs: FaqItem[] = [
   {
     q: "How do I pay?",
     anchorId: "payment",
-    a: "Pay by card at checkout or cash on delivery. For some test products we may only take an interest reservation or a small refundable deposit first — we will confirm before anything is ordered. If we cannot source an item or the landed cost is too high, any deposit is returned.",
+    a: "Pay by card at checkout or cash on delivery when we deliver in Oakville.",
   },
   {
     q: "Who are these products for?",
