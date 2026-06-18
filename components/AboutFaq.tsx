@@ -21,20 +21,16 @@ const faqs: FaqItem[] = [
     a: "Yes. Every product on the shelf is available à la carte. Add one item or build your own basket.",
   },
   {
-    q: "Do I have to buy a bundle?",
-    a: "No. PLUK is à la carte. You can buy one product or build your own basket.",
+    q: "Why are there only a few products?",
+    a: "We keep the shelf intentionally small so parents do not have to compare endless options. Each SKU must earn its place — if families reorder it, it stays; if not, we replace it.",
   },
   {
-    q: "Why are there only a few products?",
-    a: "We keep the shelf intentionally small so parents do not have to compare endless options. Each SKU must earn its place.",
+    q: "How do you choose products?",
+    a: "We pick one SKU per product type where we can — a cereal, a noodle mix, a snack — from brands families already trust. We focus on cleaner Indian breakfast, snack, and quick-meal options without hunting across expensive import sites.",
   },
   {
     q: "Are these baby products?",
     a: "Some items are for babies and toddlers (clearly labeled), others are for kids or the whole family. Each product page lists who it is for and suggested age where the brand provides it.",
-  },
-  {
-    q: "How do you choose products?",
-    a: "We pick one SKU per product type where we can — a cereal, a noodle mix, a snack — from brands families already trust. If families reorder it, it stays on the shelf. If not, we replace it.",
   },
   {
     q: "Are the products imported?",
@@ -83,10 +79,6 @@ const faqs: FaqItem[] = [
     ),
   },
   {
-    q: "What happens if a product does not sell?",
-    a: "We remove it and try something else. The shelf is curated, not a permanent catalogue of every flavour a brand makes.",
-  },
-  {
     q: "What if my child has allergies?",
     a: "Always read the package label for allergen statements. Product pages summarize official source data where available, but the physical label is what matters — especially for babies, toddlers, and known allergies.",
   },
@@ -113,21 +105,12 @@ const faqs: FaqItem[] = [
   },
 ];
 
-export const metadata = {
-  title: "FAQ — Pluk",
-  description:
-    "Questions about PLUK — curated Indian family pantry, à la carte shopping, pickup, delivery, and product labels.",
-};
-
-export default function FAQPage() {
+export function AboutFaq() {
   return (
-    <article className="max-w-3xl">
-      <header className="mb-12">
-        <h1 className="text-4xl sm:text-5xl leading-[1.05]">
-          Common questions, plain answers.
-        </h1>
-      </header>
-
+    <section id="faq" className="scroll-mt-24">
+      <h2 className="text-2xl mb-6 border-b border-line pb-3">
+        Common questions
+      </h2>
       <div className="border-t border-line">
         {faqs.map((item) => (
           <details
@@ -160,11 +143,9 @@ export default function FAQPage() {
           </details>
         ))}
       </div>
-
-      <p className="mt-12 text-xs text-muted leading-relaxed">
+      <p className="mt-10 text-xs text-muted leading-relaxed">
         {FOOTER_COMPLIANCE_NOTE}
       </p>
-
       <p className="mt-6 text-sm text-muted">
         Anything else?{" "}
         <a
@@ -177,6 +158,6 @@ export default function FAQPage() {
         </a>{" "}
         — fastest way to reach us.
       </p>
-    </article>
+    </section>
   );
 }

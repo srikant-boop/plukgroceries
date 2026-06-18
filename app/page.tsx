@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { storefrontProducts } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
-import { HowItWorks, HowWeChoose } from "@/components/HowItWorks";
 import { Leaf } from "@/components/Leaf";
 
 export default function Home() {
@@ -28,24 +27,14 @@ export default function Home() {
               Shop the Pantry
             </Link>
             <Link
-              href="#how-we-choose"
+              href="/about"
               className="inline-flex items-center px-6 py-3 text-sm border border-line hover:bg-background"
             >
-              How We Choose Products
+              How it works & questions
             </Link>
           </div>
         </div>
       </section>
-
-      <section className="mb-12 text-sm leading-relaxed text-foreground/80 max-w-2xl">
-        <p>
-          Browse a small à la carte shelf — not a full Indian grocery store.
-          Each product is individually purchasable. The shelf is intentionally
-          small so you are not comparing endless options.
-        </p>
-      </section>
-
-      <HowItWorks />
 
       <section id="pantry" className="mb-16 scroll-mt-24">
         <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
@@ -60,18 +49,6 @@ export default function Home() {
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
-      </section>
-
-      <HowWeChoose />
-
-      <section className="mb-8 border-t border-line pt-12">
-        <h2 className="text-xl mb-3">Why this exists</h2>
-        <p className="text-sm leading-relaxed text-foreground/80 max-w-2xl">
-          Indian-Canadian parents often want familiar breakfast and snack options
-          for their kids — without paying import-site premiums or wading through
-          a full ethnic aisle. PLUK is a small pantry: limited selection, trusted
-          brands, buy what you need, one product at a time.
-        </p>
       </section>
     </div>
   );

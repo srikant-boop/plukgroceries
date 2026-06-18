@@ -23,7 +23,7 @@ export function InviteNeighborCallout({ variant = "default" }: Props) {
         adjust your bag to wholesale prices after their order is paid.
       </p>
       <Link
-        href="/faq#invite-a-neighbour"
+        href="/about#faq"
         className="mt-3 inline-block text-xs underline underline-offset-4 hover:text-accent"
       >
         How it works →

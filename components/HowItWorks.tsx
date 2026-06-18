@@ -115,31 +115,3 @@ export function HowItWorks() {
     </section>
   );
 }
-
-export function HowWeChoose() {
-  return (
-    <section id="how-we-choose" className="mb-16 border-t border-line pt-12">
-      <div className="mb-6 flex items-baseline gap-3 border-b border-line pb-3">
-        <Leaf size={15} className="text-accent" />
-        <h2 className="text-2xl">How we choose products</h2>
-      </div>
-      <div className="max-w-2xl text-sm leading-relaxed text-foreground/85 space-y-4">
-        <p>
-          The shelf is intentionally small — like an Aldi-style aisle, not a
-          full Indian grocery store. Each SKU must earn its place: a real meal
-          occasion, a trusted brand, and something families actually reorder.
-        </p>
-        <p>
-          If families reorder it, it stays on the shelf. If not, we replace it.
-          We do not force bundles or kits — every product is available à la
-          carte.
-        </p>
-        <p>
-          We focus on cleaner Indian breakfast, snack, and quick-meal options
-          for babies, kids, and parents — without hunting across expensive
-          import sites or comparing endless labels.
-        </p>
-      </div>
-    </section>
-  );
-}
