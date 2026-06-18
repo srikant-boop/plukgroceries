@@ -14,7 +14,7 @@ import {
   SITE_TITLE,
   SITE_URL,
 } from "@/lib/site";
-import { PANTRY_COLLECTIONS } from "@/lib/pantry-catalog";
+import { ShopNav } from "@/components/ShopNav";
 import "./globals.css";
 
 const OG_IMAGE = {
@@ -83,35 +83,16 @@ export default function RootLayout({
               </span>
             </Link>
             <div className="flex items-center gap-2 md:gap-4 min-w-0">
-            <nav className="hidden lg:flex items-center gap-4 text-sm min-w-0 overflow-x-auto">
-              <Link href="/#pantry" className="hover:underline underline-offset-4">
-                Shop
-              </Link>
-              {PANTRY_COLLECTIONS.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/shop/${c.slug}`}
-                  className="hover:underline underline-offset-4 whitespace-nowrap"
-                >
-                  {c.navLabel}
-                </Link>
-              ))}
+            <nav className="flex items-center gap-3 md:gap-4 text-sm min-w-0">
+              <ShopNav />
               <Link href="/brands" className="hover:underline underline-offset-4">
                 Brands
               </Link>
-              <Link href="/about" className="hover:underline underline-offset-4">
+              <Link
+                href="/about"
+                className="hidden sm:inline hover:underline underline-offset-4"
+              >
                 About
-              </Link>
-              <Link href="/faq" className="hover:underline underline-offset-4">
-                FAQ
-              </Link>
-            </nav>
-            <nav className="flex lg:hidden items-center gap-3 text-sm">
-              <Link href="/#pantry" className="hover:underline underline-offset-4">
-                Shop
-              </Link>
-              <Link href="/brands" className="hover:underline underline-offset-4">
-                Brands
               </Link>
               <Link href="/faq" className="hover:underline underline-offset-4">
                 FAQ
