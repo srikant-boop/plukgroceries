@@ -1,7 +1,6 @@
 import { Resend } from "resend";
 import type { Order } from "./orders";
 import { orderLineSubtotal } from "./order-snapshot";
-import { getPickupSpot, HOME_DELIVERY_ID } from "./pickup";
 
 let _resend: Resend | null = null;
 
@@ -22,8 +21,6 @@ export async function sendOrderEmail(order: Order): Promise<void> {
   const from = process.env.RESEND_FROM_EMAIL ?? "Pluk <onboarding@resend.dev>";
   if (!to) throw new Error("ORDER_NOTIFICATION_EMAIL not set");
 
-  const spot = getPickupSpot(order.pickupSpotId);
-  const isDelivery = order.pickupSpotId === HOME_DELIVERY_ID;
   const paymentLabel =
     order.paymentMethod === "cod"
       ? "Cash on delivery"
@@ -54,15 +51,10 @@ export async function sendOrderEmail(order: Order): Promise<void> {
 
       ${order.customer.deliveryAddress ? `<p><strong>Delivery address:</strong><br>${escape(order.customer.deliveryAddress)}</p>` : ""}
 
-      <h3 style="font-family:ui-serif,Georgia;font-weight:400">${isDelivery ? "Delivery" : "Pickup"}</h3>
+      <h3 style="font-family:ui-serif,Georgia;font-weight:400">Home delivery</h3>
       <p>
-        ${
-          isDelivery
-            ? "<strong>Home delivery</strong> — Oakville"
-            : `<strong>${escape(spot?.name ?? order.pickupSpotId)}</strong><br>
-        ${escape(spot?.address ?? "")} · ${escape(spot?.postal ?? "")}<br>
-        <span style="color:#2f3a2a">${escape(spot?.slot ?? "")}</span>`
-        }
+        <strong>Oakville</strong><br>
+        ${order.customer.deliveryAddress ? escape(order.customer.deliveryAddress) : "Address on file"}
       </p>
 
       <h3 style="font-family:ui-serif,Georgia;font-weight:400">Items</h3>

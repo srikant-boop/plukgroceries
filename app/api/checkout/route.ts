@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
-import { HOME_DELIVERY_ID, getPickupSpot } from "@/lib/pickup";
+import { HOME_DELIVERY_ID } from "@/lib/pickup";
 import { stripeConfigError, validateCheckoutBody } from "@/lib/checkout-api";
 import { saveManualCheckoutOrder } from "@/lib/build-checkout-order";
 import { getInviteByCode } from "@/lib/invite-store";
@@ -31,8 +31,8 @@ export async function POST(req: Request) {
     inviteRef: rawInviteRef,
   } = validated.value;
 
-  if (pickupSpotId !== HOME_DELIVERY_ID && !getPickupSpot(pickupSpotId)) {
-    return NextResponse.json({ error: "Unknown pickup spot." }, { status: 400 });
+  if (pickupSpotId !== HOME_DELIVERY_ID) {
+    return NextResponse.json({ error: "Home delivery only." }, { status: 400 });
   }
 
   let inviteRef: string | undefined;

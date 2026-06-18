@@ -1,4 +1,3 @@
-import { pickupSpots } from "@/lib/pickup";
 import { FOOTER_COMPLIANCE_NOTE } from "@/lib/site";
 
 const facebookGroupHref = "https://www.facebook.com/share/g/1cRmroAoyr/";
@@ -27,27 +26,9 @@ const faqs: FaqItem[] = [
     a: "Product pages summarize official brand listings. Always read the physical package for the latest ingredients and allergen statements — that is what matters, especially for babies, toddlers, and known allergies.",
   },
   {
-    q: "Delivery and pickup",
-    anchorId: "pickup",
-    a: (
-      <>
-        <p className="mb-3">
-          All orders are home delivered in Oakville. At checkout, leave your
-          delivery address.
-        </p>
-        <p className="mb-3">
-          Prefer to pick up yourself? You can meet us at either spot on Sunday:
-        </p>
-        <ul className="ml-5 list-disc space-y-1">
-          {pickupSpots.map((s) => (
-            <li key={s.id}>
-              <span className="font-medium">{s.name}</span> — {s.address},{" "}
-              {s.area} · {s.slot}
-            </li>
-          ))}
-        </ul>
-      </>
-    ),
+    q: "Home delivery",
+    anchorId: "delivery",
+    a: "All orders are home delivered in Oakville. At checkout, leave your delivery address and we will bring your order to you.",
   },
   {
     q: "How do I pay?",

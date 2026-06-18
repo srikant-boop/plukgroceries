@@ -1,6 +1,6 @@
 import { getStorefrontProductById, type Product } from "./products";
 import { normalizeInviteCode } from "./invite-store";
-import { HOME_DELIVERY_ID, getPickupSpot } from "./pickup";
+import { HOME_DELIVERY_ID } from "./pickup";
 
 export type CheckoutLineInput = { productId: string; qty: number };
 
@@ -18,7 +18,6 @@ const METADATA_MAX = 500;
 
 export function validateCheckoutBody(body: {
   customer?: CheckoutCustomerInput;
-  pickupSpotId?: string;
   paymentMethod?: PaymentMethod;
   lines?: CheckoutLineInput[];
   inviteRef?: string;
@@ -32,7 +31,7 @@ export function validateCheckoutBody(body: {
           phone: string;
           email: string;
           notes?: string;
-          deliveryAddress?: string;
+          deliveryAddress: string;
         };
         pickupSpotId: string;
         paymentMethod: PaymentMethod;
@@ -53,16 +52,8 @@ export function validateCheckoutBody(body: {
   if (!email || !email.includes("@")) {
     return { ok: false, error: "A valid email is required for your receipt." };
   }
-  if (!body.pickupSpotId) {
-    return { ok: false, error: "Choose delivery or a pickup spot." };
-  }
-
-  const isHomeDelivery = body.pickupSpotId === HOME_DELIVERY_ID;
-  if (isHomeDelivery && !deliveryAddress) {
+  if (!deliveryAddress) {
     return { ok: false, error: "Delivery address is required." };
-  }
-  if (!isHomeDelivery && !getPickupSpot(body.pickupSpotId)) {
-    return { ok: false, error: "Pick a valid pickup spot." };
   }
 
   if (!["card", "cod", "etransfer"].includes(paymentMethod)) {
@@ -102,14 +93,14 @@ export function validateCheckoutBody(body: {
   return {
     ok: true,
     value: {
-      pickupSpotId: body.pickupSpotId,
+      pickupSpotId: HOME_DELIVERY_ID,
       paymentMethod,
       customer: {
         name,
         phone,
         email,
         notes: notes || undefined,
-        deliveryAddress: deliveryAddress || undefined,
+        deliveryAddress,
       },
       lines,
       inviteRef,

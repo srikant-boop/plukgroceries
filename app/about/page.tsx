@@ -5,7 +5,7 @@ import { Leaf } from "@/components/Leaf";
 export const metadata = {
   title: "About — Pluk",
   description:
-    "About PLUK — curated Indian family pantry, pickup, delivery, and common questions.",
+    "About PLUK — curated Indian family pantry, home delivery, and common questions.",
 };
 
 export default function AboutPage() {

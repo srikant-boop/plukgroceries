@@ -1,5 +1,4 @@
 import { listOrders, type Order } from "@/lib/orders";
-import { getPickupSpot, HOME_DELIVERY_ID } from "@/lib/pickup";
 import { money } from "@/lib/format";
 import { getAdminPassword } from "@/lib/admin-auth";
 import { AdminClearOrders } from "./AdminClearOrders";
@@ -108,8 +107,6 @@ function OrderTable({
       ) : (
         <ul className="border-t border-line">
           {orders.map((o) => {
-            const spot = getPickupSpot(o.pickupSpotId);
-            const isDelivery = o.pickupSpotId === HOME_DELIVERY_ID;
             const paymentLabel =
               o.paymentMethod === "cod"
                 ? "Cash on delivery"
@@ -147,11 +144,7 @@ function OrderTable({
                     </span>
                   </div>
                   <p className="text-sm text-accent mt-1">
-                    {isDelivery
-                      ? "Home delivery"
-                      : `${spot?.name ?? o.pickupSpotId} · ${spot?.slot ?? ""}`}
-                    {" · "}
-                    {paymentLabel}
+                    Home delivery · {paymentLabel}
                   </p>
                   {o.customer.deliveryAddress && (
                     <p className="text-sm text-muted mt-1">

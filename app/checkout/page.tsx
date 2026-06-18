@@ -5,11 +5,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart, hydrateLines, cartTotal } from "@/lib/cart";
 import { money } from "@/lib/format";
 import { CartSavings } from "@/components/CartSavings";
-import {
-  HOME_DELIVERY_ID,
-  pickupSpots,
-  getPickupSpot,
-} from "@/lib/pickup";
 import type { PaymentMethod } from "@/lib/checkout-api";
 import { track } from "@/lib/analytics-client";
 
@@ -23,21 +18,13 @@ export default function CheckoutPage() {
   const [phone, setPhone] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [notes, setNotes] = useState("");
-  const [fulfillment, setFulfillment] = useState<"delivery" | "pickup">(
-    "delivery",
-  );
-  const [pickupSpotId, setPickupSpotId] = useState<string>(pickupSpots[0].id);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const items = useMemo(() => hydrateLines(lines), [lines]);
   const total = cartTotal(items);
-  const spot = getPickupSpot(pickupSpotId);
   const trackedBegin = useRef(false);
-
-  const resolvedPickupSpotId =
-    fulfillment === "delivery" ? HOME_DELIVERY_ID : pickupSpotId;
 
   useEffect(() => {
     if (!hydrated || items.length === 0 || trackedBegin.current) return;
@@ -64,7 +51,7 @@ export default function CheckoutPage() {
     name.trim() &&
     email.trim() &&
     phone.trim() &&
-    (fulfillment === "pickup" ? spot : deliveryAddress.trim()) &&
+    deliveryAddress.trim() &&
     !submitting
   );
 
@@ -82,10 +69,8 @@ export default function CheckoutPage() {
             email,
             phone,
             notes: notes.trim() || undefined,
-            deliveryAddress:
-              fulfillment === "delivery" ? deliveryAddress.trim() : undefined,
+            deliveryAddress: deliveryAddress.trim(),
           },
-          pickupSpotId: resolvedPickupSpotId,
           paymentMethod,
           lines: items.map((i) => ({ productId: i.productId, qty: i.qty })),
         }),
@@ -126,90 +111,16 @@ export default function CheckoutPage() {
               type="tel"
               placeholder="(905) 555-0123"
             />
-          </fieldset>
-
-          <fieldset className="space-y-3">
-            <legend className="eyebrow mb-3">Delivery</legend>
-            <label
-              className={`flex gap-3 border p-4 cursor-pointer transition-colors ${
-                fulfillment === "delivery"
-                  ? "border-foreground bg-surface"
-                  : "border-line hover:border-muted"
-              }`}
-            >
-              <input
-                type="radio"
-                name="fulfillment"
-                checked={fulfillment === "delivery"}
-                onChange={() => setFulfillment("delivery")}
-                className="mt-1"
-              />
-              <div>
-                <span className="font-medium">Home delivery</span>
-                <p className="text-sm text-muted mt-1">
-                  All orders are delivered in Oakville.
-                </p>
-              </div>
-            </label>
-            {fulfillment === "delivery" && (
-              <Field
-                label="Delivery address"
-                value={deliveryAddress}
-                onChange={setDeliveryAddress}
-                required
-                placeholder="Street address, Oakville ON"
-              />
-            )}
-            <label
-              className={`flex gap-3 border p-4 cursor-pointer transition-colors ${
-                fulfillment === "pickup"
-                  ? "border-foreground bg-surface"
-                  : "border-line hover:border-muted"
-              }`}
-            >
-              <input
-                type="radio"
-                name="fulfillment"
-                checked={fulfillment === "pickup"}
-                onChange={() => setFulfillment("pickup")}
-                className="mt-1"
-              />
-              <div>
-                <span className="font-medium">Sunday pickup instead</span>
-                <p className="text-sm text-muted mt-1">
-                  Meet us at a community centre spot below.
-                </p>
-              </div>
-            </label>
-            {fulfillment === "pickup" &&
-              pickupSpots.map((s) => (
-                <label
-                  key={s.id}
-                  className={`ml-6 flex gap-3 border p-4 cursor-pointer transition-colors ${
-                    pickupSpotId === s.id
-                      ? "border-foreground bg-surface"
-                      : "border-line hover:border-muted"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="pickupSpot"
-                    value={s.id}
-                    checked={pickupSpotId === s.id}
-                    onChange={() => setPickupSpotId(s.id)}
-                    className="mt-1"
-                  />
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                      <span className="font-medium">{s.name}</span>
-                      <span className="text-xs text-muted">{s.area}</span>
-                    </div>
-                    <p className="text-sm text-muted mt-1">
-                      {s.address} · {s.slot}
-                    </p>
-                  </div>
-                </label>
-              ))}
+            <Field
+              label="Delivery address"
+              value={deliveryAddress}
+              onChange={setDeliveryAddress}
+              required
+              placeholder="Street address, Oakville ON"
+            />
+            <p className="text-xs text-muted leading-relaxed">
+              All orders are home delivered in Oakville.
+            </p>
           </fieldset>
 
           <fieldset className="space-y-3">
@@ -217,7 +128,7 @@ export default function CheckoutPage() {
             {(
               [
                 ["card", "Card", "Pay now with Visa, Mastercard, AmEx, Apple Pay, or Google Pay."],
-                ["cod", "Cash on delivery", "Pay when we deliver or at pickup."],
+                ["cod", "Cash on delivery", "Pay when we deliver."],
                 ["etransfer", "E-transfer", "We will confirm e-transfer details after you order."],
               ] as const
             ).map(([value, label, detail]) => (
@@ -278,28 +189,12 @@ export default function CheckoutPage() {
             <span className="tabular-nums">{money(total)}</span>
           </div>
           <CartSavings items={items} showSobeysDeliveryNote />
-          <p className="mt-5 text-xs text-muted leading-relaxed">
-            {fulfillment === "delivery" ? (
-              <>
-                Home delivery in Oakville
-                {deliveryAddress.trim() && (
-                  <>
-                    {" "}
-                    to{" "}
-                    <span className="text-foreground">
-                      {deliveryAddress.trim()}
-                    </span>
-                  </>
-                )}
-                .
-              </>
-            ) : spot ? (
-              <>
-                Pickup at <span className="text-foreground">{spot.name}</span>,{" "}
-                <span className="text-foreground">{spot.slot}</span>.
-              </>
-            ) : null}
-          </p>
+          {deliveryAddress.trim() && (
+            <p className="mt-5 text-xs text-muted leading-relaxed">
+              Home delivery to{" "}
+              <span className="text-foreground">{deliveryAddress.trim()}</span>.
+            </p>
+          )}
           <button
             type="button"
             className="btn w-full mt-6"
@@ -322,7 +217,7 @@ export default function CheckoutPage() {
             </p>
           ) : (
             <p className="text-[11px] text-muted mt-3 leading-relaxed">
-              We&apos;ll confirm payment details before we pack your order.
+              We&apos;ll confirm payment details before we deliver.
             </p>
           )}
         </div>
