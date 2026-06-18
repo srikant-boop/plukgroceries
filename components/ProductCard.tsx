@@ -23,9 +23,7 @@ export function ProductCard({ product }: { product: Product }) {
   const showCompare = cheapest && cheapest.price > product.ourPrice;
 
   const pantry = hasPantryMeta(product) ? product.pantry : null;
-  const badges = pantry
-    ? cardBadges(product as PantryProduct)
-    : [];
+  const badges = pantry ? cardBadges(product as PantryProduct) : [];
 
   const handleAdd = () => {
     add(product.id, 1);
@@ -43,7 +41,7 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="group block">
+    <div className="group flex h-full flex-col">
       <div className="relative aspect-[4/5] overflow-hidden bg-surface">
         <Link
           href={`/products/${product.slug}`}
@@ -58,23 +56,25 @@ export function ProductCard({ product }: { product: Product }) {
           />
         </Link>
       </div>
-      <div className="mt-4 flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <Link
-            href={`/products/${product.slug}`}
-            className="hover:underline underline-offset-4"
-            onClick={() => track("product_click", { productId: product.id })}
-          >
-            <h3 className="text-lg leading-tight">{product.name}</h3>
-          </Link>
-          {pantry && (
-            <p className="text-xs text-foreground/75 mt-1 leading-snug">
-              {pantry.roleLine}
-            </p>
-          )}
-          <p className="text-xs text-muted mt-0.5">{product.unit}</p>
-          {badges.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
+      <div className="mt-4 flex flex-1 flex-col">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <Link
+              href={`/products/${product.slug}`}
+              className="hover:underline underline-offset-4"
+              onClick={() => track("product_click", { productId: product.id })}
+            >
+              <h3 className="text-lg leading-tight line-clamp-2 min-h-[2.5rem]">
+                {product.name}
+              </h3>
+            </Link>
+            {pantry && (
+              <p className="text-xs text-foreground/75 mt-1 leading-snug line-clamp-2 min-h-[2.5rem]">
+                {pantry.roleLine}
+              </p>
+            )}
+            <p className="text-xs text-muted mt-0.5 min-h-[1rem]">{product.unit}</p>
+            <div className="mt-2 min-h-[2.75rem] flex flex-wrap content-start gap-1">
               {badges.map((b) => (
                 <span
                   key={b}
@@ -84,50 +84,50 @@ export function ProductCard({ product }: { product: Product }) {
                 </span>
               ))}
             </div>
-          )}
-        </div>
-        <div className="shrink-0 text-right">
-          <p className="text-base tabular-nums whitespace-nowrap">
-            {money(product.ourPrice)}
-          </p>
-          {showCompare && (
-            <p className="text-[11px] text-price-cut line-through tabular-nums">
-              {money(cheapest!.price)}
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="mt-3">
-        {qty <= 0 ? (
-          <button
-            type="button"
-            className="btn h-10 w-full text-sm"
-            onClick={handleAdd}
-            aria-label={`Add ${product.name} to cart`}
-          >
-            Add to cart
-          </button>
-        ) : (
-          <div className="inline-flex h-10 w-full items-center justify-between border border-line bg-surface">
-            <button
-              type="button"
-              className="px-3 py-2 text-lg leading-none hover:bg-background"
-              onClick={decrement}
-              aria-label={`Decrease ${product.name} quantity`}
-            >
-              −
-            </button>
-            <span className="text-sm tabular-nums">{qty}</span>
-            <button
-              type="button"
-              className="px-3 py-2 text-lg leading-none hover:bg-background"
-              onClick={increment}
-              aria-label={`Increase ${product.name} quantity`}
-            >
-              +
-            </button>
           </div>
-        )}
+          <div className="shrink-0 text-right">
+            <p className="text-base tabular-nums whitespace-nowrap">
+              {money(product.ourPrice)}
+            </p>
+            {showCompare && (
+              <p className="text-[11px] text-price-cut line-through tabular-nums">
+                {money(cheapest!.price)}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="mt-3 mt-auto pt-1">
+          {qty <= 0 ? (
+            <button
+              type="button"
+              className="btn h-10 w-full text-sm"
+              onClick={handleAdd}
+              aria-label={`Add ${product.name} to cart`}
+            >
+              Add to cart
+            </button>
+          ) : (
+            <div className="inline-flex h-10 w-full items-center justify-between border border-line bg-surface">
+              <button
+                type="button"
+                className="px-3 py-2 text-lg leading-none hover:bg-background"
+                onClick={decrement}
+                aria-label={`Decrease ${product.name} quantity`}
+              >
+                −
+              </button>
+              <span className="text-sm tabular-nums">{qty}</span>
+              <button
+                type="button"
+                className="px-3 py-2 text-lg leading-none hover:bg-background"
+                onClick={increment}
+                aria-label={`Increase ${product.name} quantity`}
+              >
+                +
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
