@@ -104,7 +104,7 @@ export const pantryProducts: PantryProduct[] = [
     origin: "India",
     pantry: {
       roleLine: "Traditional khichdi mix — creamy porridge or instant dosa in minutes.",
-      audience: ["Baby/Toddler", "Parents"],
+      audience: ["Baby/Toddler"],
       occasions: ["Lunch/Dinner", "Travel-Friendly"],
       badges: ["No Sugar", "Travel-Friendly"],
       whySelected:
@@ -212,7 +212,7 @@ export const pantryProducts: PantryProduct[] = [
     origin: "India",
     pantry: {
       roleLine: "Fluffy chocolate pancakes from a millet supergrain blend.",
-      audience: ["Kids", "Family", "Toddlers"],
+      audience: ["Kids", "Family"],
       occasions: ["Breakfast", "Snack"],
       badges: ["No Maida", "Millet", "Chocolate"],
       whySelected:
@@ -270,7 +270,7 @@ export const pantryProducts: PantryProduct[] = [
     origin: "India",
     pantry: {
       roleLine: "Ragi and jowar cereal shapes with cocoa and unrefined sugar.",
-      audience: ["Kids", "Toddlers"],
+      audience: ["Kids"],
       occasions: ["Breakfast", "Snack", "Travel-Friendly"],
       badges: ["No Maida", "Ragi", "No Palm Oil"],
       whySelected:
@@ -324,7 +324,7 @@ export const pantryProducts: PantryProduct[] = [
     origin: "India",
     pantry: {
       roleLine: "Millet noodles with a natural-spice masala sachet — serves 2.",
-      audience: ["Kids", "Family", "Toddlers"],
+      audience: ["Kids", "Family"],
       occasions: ["Lunch/Dinner", "Travel-Friendly"],
       badges: ["No Maida", "Not Fried", "Millet"],
       whySelected:
@@ -394,7 +394,7 @@ export const pantryProducts: PantryProduct[] = [
     origin: "India",
     pantry: {
       roleLine: "Spinach millet dosa batter mix — no grinding from scratch.",
-      audience: ["Kids", "Family", "Toddlers"],
+      audience: ["Kids", "Family"],
       occasions: ["Breakfast", "Lunch/Dinner"],
       badges: ["No Maida", "Spinach", "Millet"],
       whySelected:
@@ -452,7 +452,7 @@ export const pantryProducts: PantryProduct[] = [
     origin: "India",
     pantry: {
       roleLine: "Multigrain macaroni — boil and sauce your way.",
-      audience: ["Kids", "Family", "Toddlers"],
+      audience: ["Kids", "Family"],
       occasions: ["Lunch/Dinner"],
       badges: ["Gluten-Free", "Vegan", "No Maida"],
       whySelected:
@@ -502,7 +502,7 @@ export const pantryProducts: PantryProduct[] = [
     origin: "India",
     pantry: {
       roleLine: "Ragi and jowar chocolate cookies — shelf-stable snack.",
-      audience: ["Kids", "Family", "Toddlers"],
+      audience: ["Kids", "Family"],
       occasions: ["Snack", "Travel-Friendly"],
       badges: ["No Maida", "Ragi", "No Preservatives"],
       whySelected:
@@ -564,7 +564,7 @@ export const pantryProducts: PantryProduct[] = [
     origin: "India",
     pantry: {
       roleLine: "Roasted peri peri makhana — crunchy, never fried.",
-      audience: ["Family", "Parents", "Kids"],
+      audience: ["Family", "Kids"],
       occasions: ["Snack", "Travel-Friendly"],
       badges: ["Gluten-Free", "Roasted", "Makhana"],
       whySelected:

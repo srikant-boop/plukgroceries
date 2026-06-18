@@ -17,7 +17,6 @@ const SVG_BASE = {
   "aria-hidden": true,
 };
 
-/** Infant — large head, small body, bonnet curve */
 function BabyToddlerIcon() {
   return (
     <svg {...SVG_BASE}>
@@ -31,7 +30,6 @@ function BabyToddlerIcon() {
   );
 }
 
-/** Walking toddler — slightly taller, legs apart */
 function ToddlerIcon() {
   return (
     <svg {...SVG_BASE}>
@@ -44,7 +42,6 @@ function ToddlerIcon() {
   );
 }
 
-/** Child — school-age proportion, arms out */
 function KidsIcon() {
   return (
     <svg {...SVG_BASE}>
@@ -57,7 +54,6 @@ function KidsIcon() {
   );
 }
 
-/** Whole family — adult, child, adult */
 function FamilyIcon() {
   return (
     <svg {...SVG_BASE}>
@@ -71,7 +67,6 @@ function FamilyIcon() {
   );
 }
 
-/** Two adults — taller figures, no child */
 function ParentsIcon() {
   return (
     <svg {...SVG_BASE}>
@@ -98,32 +93,6 @@ const AUDIENCE_CONFIG: Record<
   Parents: { label: "Parents", shortLabel: "Parents", Icon: ParentsIcon },
 };
 
-function AudienceIconTooltip({
-  label,
-  shortLabel,
-  Icon,
-}: {
-  label: string;
-  shortLabel: string;
-  Icon: () => React.ReactElement;
-}) {
-  return (
-    <span
-      className="group/icon relative inline-flex shrink-0"
-      title={shortLabel}
-      aria-label={label}
-    >
-      <Icon />
-      <span
-        role="tooltip"
-        className="pointer-events-none absolute bottom-[calc(100%+6px)] left-1/2 z-10 -translate-x-1/2 whitespace-nowrap border border-line bg-surface px-2 py-1 text-[10px] leading-none text-foreground opacity-0 shadow-sm transition-opacity duration-150 group-hover/icon:opacity-100"
-      >
-        {shortLabel}
-      </span>
-    </span>
-  );
-}
-
 export function AudienceIcons({ audience }: { audience: string[] }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -134,7 +103,6 @@ export function AudienceIcons({ audience }: { audience: string[] }) {
             <span
               key={item}
               className="inline-flex items-center border border-line bg-surface px-2.5 py-1.5 text-xs"
-              title={item}
             >
               {item}
             </span>
@@ -144,14 +112,11 @@ export function AudienceIcons({ audience }: { audience: string[] }) {
         return (
           <span
             key={item}
-            className="inline-flex items-center gap-2 border border-line bg-surface px-2.5 py-1.5 text-xs text-foreground/90"
+            title={label}
+            className="inline-flex items-center gap-1.5 border border-line bg-surface px-2.5 py-1.5 text-xs text-foreground/90"
           >
-            <AudienceIconTooltip
-              label={label}
-              shortLabel={shortLabel}
-              Icon={Icon}
-            />
-            <span>{label}</span>
+            <Icon />
+            <span>{shortLabel}</span>
           </span>
         );
       })}
