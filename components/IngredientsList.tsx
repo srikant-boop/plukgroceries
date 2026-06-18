@@ -1,4 +1,5 @@
 import type { IngredientRow, IngredientSection } from "@/lib/pantry-catalog";
+import { LabelImage } from "@/components/LabelImage";
 
 function formatIngredient(row: IngredientRow): string {
   return row.amount ? `${row.name} ${row.amount}` : row.name;
@@ -71,10 +72,30 @@ function SectionBlock({ section }: { section: IngredientSection }) {
 export function IngredientsList({
   sections,
   note,
+  labelImage,
+  productName,
 }: {
   sections: IngredientSection[];
   note?: string;
+  labelImage?: string;
+  productName: string;
 }) {
+  if (labelImage) {
+    return (
+      <div className="space-y-4">
+        <LabelImage
+          src={labelImage}
+          alt={`${productName} ingredients label`}
+        />
+        {note && (
+          <p className="text-sm leading-relaxed text-muted border-t border-line pt-3">
+            {note}
+          </p>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {sections.map((section, index) => (

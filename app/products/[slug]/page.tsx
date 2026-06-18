@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -6,12 +5,15 @@ import {
   storefrontProducts,
   hasPantryMeta,
 } from "@/lib/products";
+import { getProductAssets } from "@/lib/product-assets";
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
 import { AudienceIcons } from "@/components/AudienceIcons";
 import { BrandLogo } from "@/components/BrandLogo";
 import { IngredientsList } from "@/components/IngredientsList";
+import { LabelImage } from "@/components/LabelImage";
+import { ProductGallery } from "@/components/ProductGallery";
 import {
   ProductDetailAccordion,
   type ProductDetailAccordionItem,
@@ -41,7 +43,12 @@ export default async function ProductPage({
   const supplier = product.supplierId
     ? getSupplierById(product.supplierId)
     : null;
-  const gallery = meta.gallery?.length ? meta.gallery : [product.image];
+  const assets = getProductAssets(slug);
+  const gallery = assets?.gallery?.length
+    ? assets.gallery
+    : meta.gallery?.length
+      ? meta.gallery
+      : [product.image];
 
   const brandName = supplier?.name ?? product.brand ?? "—";
 
@@ -53,6 +60,8 @@ export default async function ProductPage({
         <IngredientsList
           sections={meta.ingredientSections}
           note={meta.ingredientsNote}
+          labelImage={assets?.ingredientsLabelImage}
+          productName={product.name}
         />
       ),
     },
@@ -64,7 +73,17 @@ export default async function ProductPage({
     {
       id: "nutrition",
       title: "Nutrition information",
-      content: <p>{meta.nutritionHighlights}</p>,
+      content: assets?.nutritionLabelImage ? (
+        <div className="space-y-4">
+          <LabelImage
+            src={assets.nutritionLabelImage}
+            alt={`${product.name} nutrition label`}
+          />
+          <p className="text-sm text-muted">{meta.nutritionHighlights}</p>
+        </div>
+      ) : (
+        <p>{meta.nutritionHighlights}</p>
+      ),
     },
     {
       id: "directions",
@@ -82,33 +101,10 @@ export default async function ProductPage({
     <article className="grid gap-10 lg:grid-cols-2 lg:gap-16">
       <ProductViewTracker productId={product.id} />
 
-      <div className="space-y-3">
-        <div className="relative aspect-[4/5] bg-surface">
-          <Image
-            src={gallery[0]!}
-            alt={product.imageAlt ?? product.name}
-            fill
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
-            priority
-          />
-        </div>
-        {gallery.length > 1 && (
-          <div className="grid grid-cols-4 gap-2">
-            {gallery.slice(1, 5).map((src) => (
-              <div key={src} className="relative aspect-square bg-surface">
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  sizes="120px"
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <ProductGallery
+        images={gallery}
+        alt={product.imageAlt ?? product.name}
+      />
 
       <div className="flex flex-col gap-8">
         <div>
