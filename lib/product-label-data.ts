@@ -181,6 +181,42 @@ export const PRODUCT_LABEL_DATA: Record<
       ],
     },
   },
+  "slurrp-farm-macaroni-pasta": {
+    nutritionFacts: {
+      servingSize: "100 g (dry)",
+      servingsPerPack: "4",
+      columns: ["per100g"],
+      rows: [
+        { nutrient: "Energy", per100g: "359 kcal" },
+        { nutrient: "Protein", per100g: "5.7 g" },
+        { nutrient: "Carbohydrate", per100g: "80.4 g" },
+        { nutrient: "Total sugar", per100g: "0.7 g" },
+        { nutrient: "Added sugar", per100g: "0 g" },
+        { nutrient: "Dietary fibre", per100g: "2.9 g" },
+        { nutrient: "Sodium", per100g: "5.3 mg" },
+        { nutrient: "Total fat", per100g: "1.6 g" },
+        { nutrient: "Saturated fat", per100g: "0.3 g" },
+        { nutrient: "Trans fat", per100g: "0 g" },
+        { nutrient: "Cholesterol", per100g: "0 mg" },
+      ],
+      footnotes: ["Values per 100 g dry pasta, from official brand listing."],
+    },
+  },
+  "brb-popped-chips-salt-pepper": {
+    nutritionFacts: {
+      servingSize: "25 g",
+      servingsPerPack: "About 2",
+      columns: ["per100g", "perServe"],
+      rows: [
+        { nutrient: "Energy", per100g: "444 kcal", perServe: "111 kcal" },
+        { nutrient: "Total fat", per100g: "14.0 g", perServe: "3.5 g" },
+        { nutrient: "Total carbohydrate", per100g: "68.8 g", perServe: "17.2 g" },
+        { nutrient: "Protein", per100g: "7.2 g", perServe: "1.8 g" },
+        { nutrient: "Sodium", per100g: "985.6 mg", perServe: "246.4 mg" },
+      ],
+      footnotes: ["Per-serve values based on a 25 g serving from official listing."],
+    },
+  },
   "slurrp-farm-choco-ragi-cookies": {
     nutritionFacts: {
       servingSize: "4 cookies (approx. 16 g)",

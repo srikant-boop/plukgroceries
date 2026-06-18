@@ -70,12 +70,8 @@ export default async function ProductPage({
   const nutritionContent = labelData?.nutritionFacts ? (
     <NutritionFactsTable facts={labelData.nutritionFacts} />
   ) : (
-    <div className="border border-line bg-surface px-4 py-4 sm:px-5 text-sm leading-relaxed text-foreground/85">
-      {meta.nutritionHighlights || (
-        <p className="text-muted">
-          See package label for nutrition information.
-        </p>
-      )}
+    <div className="border border-line bg-surface px-4 py-4 sm:px-5 text-sm leading-relaxed text-muted">
+      <p>See package label for nutrition information.</p>
     </div>
   );
 

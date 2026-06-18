@@ -469,8 +469,7 @@ export const pantryProducts: PantryProduct[] = [
       ingredientsNote: undefined,
       allergens:
         "Made in a facility that may handle wheat and other allergens.",
-      nutritionHighlights:
-        "Less than 2 g fat per 100 g serving. Source of dietary fibre.",
+      nutritionHighlights: "",
       preparation:
         "Boil in salted water 9–10 minutes until tender; drain and serve with sauce, cheese, or vegetables.",
       storage:
