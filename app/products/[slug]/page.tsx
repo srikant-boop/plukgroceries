@@ -11,7 +11,6 @@ import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
 import { AudienceIcons } from "@/components/AudienceIcons";
-import { BrandLogo } from "@/components/BrandLogo";
 import { IngredientsList } from "@/components/IngredientsList";
 import { NutritionFactsTable } from "@/components/NutritionFactsTable";
 import { ProductGallery } from "@/components/ProductGallery";
@@ -120,12 +119,18 @@ export default async function ProductPage({
 
       <div className="flex flex-col gap-8">
         <div>
-          {supplier?.logo && (
-            <BrandLogo supplier={supplier} linked className="relative h-8 w-24 mb-3" />
-          )}
-          {!supplier?.logo && product.brand && (
+          {brandName !== "—" && (
             <p className="text-xs uppercase tracking-wider text-muted mb-2">
-              {product.brand}
+              {supplier ? (
+                <Link
+                  href={`/suppliers/${supplier.slug}`}
+                  className="hover:text-accent hover:underline underline-offset-4"
+                >
+                  {brandName}
+                </Link>
+              ) : (
+                brandName
+              )}
             </p>
           )}
           <h1 className="text-3xl sm:text-4xl mb-2">{product.name}</h1>
@@ -162,23 +167,6 @@ export default async function ProductPage({
         <section>
           <SectionHeading>Specifications</SectionHeading>
           <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm border-t border-line pt-4">
-            {!supplier?.logo && (
-              <div>
-                <dt className="text-muted mb-0.5">Brand</dt>
-                <dd>
-                  {supplier ? (
-                    <Link
-                      href={`/suppliers/${supplier.slug}`}
-                      className="underline underline-offset-4 hover:text-accent"
-                    >
-                      {supplier.name}
-                    </Link>
-                  ) : (
-                    brandName
-                  )}
-                </dd>
-              </div>
-            )}
             <div>
               <dt className="text-muted mb-0.5">Net weight</dt>
               <dd>{product.unit}</dd>
