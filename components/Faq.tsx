@@ -88,7 +88,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "How do I check allergens and ingredients?",
-    a: "Open the product page — we list full ingredients, allergen statements, and nutrition from the brand’s official listing, entered and checked before a SKU goes on the shelf.",
+    a: "Each product page has Ingredients and Nutrition sections.",
   },
 ];
 
