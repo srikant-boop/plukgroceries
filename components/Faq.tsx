@@ -1,5 +1,3 @@
-import { FOOTER_COMPLIANCE_NOTE } from "@/lib/site";
-
 type FaqItem = {
   q: string;
   a: React.ReactNode;
@@ -87,9 +85,6 @@ export function Faq() {
           </details>
         ))}
       </div>
-      <p className="mt-10 text-xs text-muted leading-relaxed">
-        {FOOTER_COMPLIANCE_NOTE}
-      </p>
     </>
   );
 }

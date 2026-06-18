@@ -7,7 +7,6 @@ import { AnalyticsProvider } from "@/components/AnalyticsProvider";
 import {
   DEFAULT_DESCRIPTION,
   FACEBOOK_APP_ID,
-  FOOTER_COMPLIANCE_NOTE,
   OG_IMAGE_ALT,
   OG_IMAGE_URL,
   SITE_NAME,
@@ -103,7 +102,6 @@ export default function RootLayout({
         </main>
         <footer className="border-t border-line mt-20">
           <div className="mx-auto max-w-6xl px-6 py-8 text-xs text-muted flex flex-col gap-4">
-            <p className="max-w-2xl leading-relaxed">{FOOTER_COMPLIANCE_NOTE}</p>
             <div className="flex flex-wrap justify-between gap-3 items-center">
               <span>© Pluk</span>
               <a
