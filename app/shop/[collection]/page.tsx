@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PANTRY_COLLECTIONS } from "@/lib/pantry-catalog";
+import { activePantryCollections, PANTRY_COLLECTIONS } from "@/lib/pantry-catalog";
 import { productsInCollection } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 import { Leaf } from "@/components/Leaf";
@@ -8,7 +8,7 @@ import { Leaf } from "@/components/Leaf";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return PANTRY_COLLECTIONS.map(({ slug }) => ({ collection: slug }));
+  return activePantryCollections().map(({ slug }) => ({ collection: slug }));
 }
 
 export default async function ShopCollectionPage({

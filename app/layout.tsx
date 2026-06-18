@@ -69,7 +69,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <AnalyticsProvider>
-        <header className="border-b border-line bg-background">
+        <header className="relative z-20 border-b border-line bg-background">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-5">
             <Link
               href="/"

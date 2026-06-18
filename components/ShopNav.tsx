@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PANTRY_COLLECTIONS } from "@/lib/pantry-catalog";
+import { activePantryCollections } from "@/lib/pantry-catalog";
 
 function Chevron({ className }: { className?: string }) {
   return (
@@ -27,12 +27,14 @@ function CategoryMenu({
   className?: string;
   linkClassName?: string;
 }) {
+  const collections = activePantryCollections();
+
   return (
     <div className={className}>
       <Link href="/#pantry" className={linkClassName}>
         All products
       </Link>
-      {PANTRY_COLLECTIONS.map((c) => (
+      {collections.map((c) => (
         <Link key={c.slug} href={`/shop/${c.slug}`} className={linkClassName}>
           {c.navLabel}
         </Link>
@@ -43,6 +45,9 @@ function CategoryMenu({
 
 const menuLink =
   "block px-4 py-2 text-sm hover:bg-surface hover:text-accent transition-colors";
+
+const dropdownPanel =
+  "border border-line bg-background py-1 min-w-[11rem] shadow-md";
 
 /** Shop entry with category links in a dropdown — desktop hover, mobile expand. */
 export function ShopNav() {
@@ -56,8 +61,10 @@ export function ShopNav() {
           Shop
           <Chevron className="opacity-60 transition-transform group-hover:rotate-180" />
         </Link>
-        <div className="absolute left-0 top-full z-50 pt-2 opacity-0 invisible pointer-events-none transition-opacity group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto">
-          <div className="border border-line bg-background py-1 min-w-[11rem] shadow-sm">
+        <div className="absolute left-0 top-full z-50 opacity-0 invisible pointer-events-none transition-opacity group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto">
+          {/* Invisible bridge so the menu stays open when moving the cursor down */}
+          <div className="h-2" aria-hidden />
+          <div className={dropdownPanel}>
             <CategoryMenu linkClassName={menuLink} />
           </div>
         </div>
@@ -68,7 +75,7 @@ export function ShopNav() {
           Shop
           <Chevron className="opacity-60" />
         </summary>
-        <div className="absolute left-0 top-full z-50 mt-2 border border-line bg-background py-1 min-w-[11rem] shadow-sm">
+        <div className={`absolute left-0 top-full z-50 mt-1 ${dropdownPanel}`}>
           <CategoryMenu linkClassName={menuLink} />
         </div>
       </details>

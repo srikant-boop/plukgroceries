@@ -64,6 +64,7 @@ export const PANTRY_COLLECTIONS: {
   title: string;
   navLabel: string;
 }[] = [
+  { slug: "khichdi", title: "Khichdi", navLabel: "Khichdi" },
   { slug: "cereals", title: "Cereals", navLabel: "Cereals" },
   { slug: "pancakes", title: "Pancakes", navLabel: "Pancakes" },
   { slug: "noodles", title: "Noodles", navLabel: "Noodles" },
@@ -776,6 +777,16 @@ export const testShelfProducts = (): PantryProduct[] =>
 
 export function productsByCollection(collection: PantryCollection): PantryProduct[] {
   return pantryProducts.filter((p) => p.collection === collection);
+}
+
+/** Collections that have at least one product on the live test shelf. */
+export function activePantryCollections() {
+  const activeSlugs = new Set(
+    pantryProducts
+      .filter((p) => TEST_SHELF_PRODUCT_IDS.has(p.id))
+      .map((p) => p.collection),
+  );
+  return PANTRY_COLLECTIONS.filter((c) => activeSlugs.has(c.slug));
 }
 
 export function cardBadges(p: PantryProduct): string[] {

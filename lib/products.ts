@@ -1,7 +1,7 @@
 // Product schema — one row per SKU. Pantry catalogue in lib/pantry-catalog.ts.
 
 import {
-  PANTRY_COLLECTIONS,
+  activePantryCollections,
   TEST_SHELF_PRODUCT_IDS,
   type PantryCollection,
   type PantryMeta,
@@ -161,7 +161,7 @@ export type StorefrontSection = {
 
 /** Homepage / shop category sections — curated shelf groupings. */
 export const storefrontSections = (): StorefrontSection[] =>
-  PANTRY_COLLECTIONS.map(({ slug, title }) => ({
+  activePantryCollections().map(({ slug, title }) => ({
     id: slug,
     title,
     match: (p) => p.collection === slug,
