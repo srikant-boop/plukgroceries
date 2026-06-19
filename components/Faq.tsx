@@ -69,8 +69,8 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          Every product is tagged on the card — audience chips and a suggested
-          age when we have one from the brand or label.
+          Every product shows audience tags and an age chip on the card when
+          relevant.
         </p>
         <ul className="ml-5 list-disc space-y-1.5">
           <li>

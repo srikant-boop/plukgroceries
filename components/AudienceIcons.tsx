@@ -110,41 +110,44 @@ const AUDIENCE_CONFIG: Record<
 export function AudienceIcons({
   audience,
   variant = "default",
+  inline = false,
 }: {
   audience: string[];
   variant?: "default" | "chip";
+  /** Render chips only — for embedding in a shared flex row. */
+  inline?: boolean;
 }) {
   const chipClass =
-    "inline-flex items-center gap-1 border border-line px-2 py-0.5 text-[9px] uppercase tracking-wide text-muted";
+    "inline-flex items-center gap-1 border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-muted leading-tight";
   const defaultClass =
     "inline-flex items-center gap-1.5 border border-line bg-surface px-2.5 py-1.5 text-xs text-foreground/90";
 
-  return (
-    <div className="flex flex-wrap items-center gap-1.5">
-      {audience.map((item) => {
-        const config = AUDIENCE_CONFIG[item as AudienceLabel];
-        if (!config) {
-          return (
-            <span
-              key={item}
-              className={variant === "chip" ? chipClass : defaultClass}
-            >
-              {item}
-            </span>
-          );
-        }
-        const { Icon, label, shortLabel } = config;
-        return (
-          <span
-            key={item}
-            title={label}
-            className={variant === "chip" ? chipClass : defaultClass}
-          >
-            {variant !== "chip" && <Icon />}
-            <span>{shortLabel}</span>
-          </span>
-        );
-      })}
-    </div>
-  );
+  const chips = audience.map((item) => {
+    const config = AUDIENCE_CONFIG[item as AudienceLabel];
+    if (!config) {
+      return (
+        <span
+          key={item}
+          className={variant === "chip" ? chipClass : defaultClass}
+        >
+          {item}
+        </span>
+      );
+    }
+    const { Icon, label, shortLabel } = config;
+    return (
+      <span
+        key={item}
+        title={label}
+        className={variant === "chip" ? chipClass : defaultClass}
+      >
+        {variant !== "chip" && <Icon />}
+        <span>{shortLabel}</span>
+      </span>
+    );
+  });
+
+  if (inline) return <>{chips}</>;
+
+  return <div className="flex flex-wrap items-center gap-1.5">{chips}</div>;
 }

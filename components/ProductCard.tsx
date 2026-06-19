@@ -11,7 +11,7 @@ import { cardBadges, type PantryProduct } from "@/lib/pantry-catalog";
 import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
 import { useCart } from "@/lib/cart";
-import { AudienceIcons } from "@/components/AudienceIcons";
+import { ProductMetaChips } from "@/components/ProductMetaChips";
 
 export function ProductCard({ product }: { product: Product }) {
   const add = useCart((s) => s.add);
@@ -80,42 +80,22 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
         {pantry && (
-          <p className="mt-1 text-xs text-foreground/75 leading-snug line-clamp-2 min-h-[2.125rem]">
-            {pantry.roleLine}
-          </p>
+          <>
+            <p className="mt-1 text-xs text-foreground/75 leading-snug line-clamp-2">
+              {pantry.roleLine}
+            </p>
+            <p className="mt-1 text-xs text-muted">{product.unit}</p>
+            <div className="mt-2">
+              <ProductMetaChips
+                audience={pantry.audience}
+                ageLabel={pantry.ageLabel}
+                badges={badges}
+              />
+            </div>
+          </>
         )}
-        {pantry && (
-          <div className="mt-2 flex min-h-[1.25rem] flex-wrap gap-1">
-            <AudienceIcons audience={pantry.audience} variant="chip" />
-          </div>
-        )}
-        {pantry?.suggestedAge && (
-          <p className="mt-1.5 text-[11px] text-muted leading-snug line-clamp-2">
-            {pantry.suggestedAge}
-          </p>
-        )}
-        <p className="mt-1 text-xs text-muted leading-none min-h-4">
-          {product.unit}
-        </p>
-        {pantry && (
-          <div className="mt-2 flex min-h-[2.75rem] flex-wrap content-start gap-1">
-            {Array.from({ length: 3 }, (_, i) => {
-              const badge = badges[i];
-              return (
-                <span
-                  key={badge ?? `badge-slot-${i}`}
-                  className={
-                    badge
-                      ? "text-[9px] uppercase tracking-wide border border-line px-1.5 py-0.5 text-muted leading-tight"
-                      : "invisible border border-transparent px-1.5 py-0.5 text-[9px] uppercase tracking-wide leading-tight"
-                  }
-                  aria-hidden={!badge}
-                >
-                  {badge ?? "Millet"}
-                </span>
-              );
-            })}
-          </div>
+        {!pantry && (
+          <p className="mt-1 text-xs text-muted">{product.unit}</p>
         )}
         <div className="mt-3 mt-auto pt-1">
           {qty <= 0 ? (

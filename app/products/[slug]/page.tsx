@@ -10,7 +10,7 @@ import { getProductLabelData } from "@/lib/product-label-data";
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
-import { AudienceIcons } from "@/components/AudienceIcons";
+import { ProductMetaChips } from "@/components/ProductMetaChips";
 import { IngredientsList } from "@/components/IngredientsList";
 import { NutritionFactsTable } from "@/components/NutritionFactsTable";
 import { ProductGallery } from "@/components/ProductGallery";
@@ -102,20 +102,13 @@ export default async function ProductPage({
         <div>
           <h1 className="text-3xl sm:text-4xl mb-2">{product.name}</h1>
           <p className="text-muted">{meta.roleLine}</p>
-          <div className="mt-3 flex flex-wrap items-center gap-1.5">
-            {meta.badges.map((b) => (
-              <span
-                key={b}
-                className="text-[9px] uppercase tracking-wide border border-line px-2 py-0.5 text-muted"
-              >
-                {b}
-              </span>
-            ))}
-            <AudienceIcons audience={meta.audience} variant="chip" />
+          <div className="mt-3">
+            <ProductMetaChips
+              audience={meta.audience}
+              ageLabel={meta.ageLabel}
+              badges={meta.badges}
+            />
           </div>
-          {meta.suggestedAge && (
-            <p className="mt-2 text-sm text-muted">{meta.suggestedAge}</p>
-          )}
         </div>
 
         <div className="border-b border-line pb-6">

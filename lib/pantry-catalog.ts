@@ -22,7 +22,8 @@ export type PantryMeta = {
   preparation: string;
   storage: string;
   countryOfOrigin: string;
-  suggestedAge?: string;
+  /** Short age chip — e.g. "6 months+", "3+". Omitted when audience tags are enough. */
+  ageLabel?: string;
   gallery?: string[];
 };
 
@@ -138,7 +139,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Store in a cool, dry place. Transfer to a clean airtight container after opening. Shelf life is 4 months from manufacturing.",
       countryOfOrigin: "India",
-      suggestedAge: "From 6 months.",
+      ageLabel: "6 months+",
       gallery: ["/products/pantry/early-foods-rice-moong-khichdi.png"],
     },
   },
@@ -194,7 +195,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Keep in a cool, dry place. After opening, store airtight and use within one month or by expiry date, whichever is earlier. Shelf life 12 months (unopened).",
       countryOfOrigin: "India",
-      suggestedAge: "From 6 months.",
+      ageLabel: "6 months+",
       gallery: ["/products/pantry/slurrp-farm-strawberry-ragi-cereal.jpg"],
     },
   },
@@ -250,8 +251,6 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Keep in a cool, dry place. Best before 12 months from date of packaging.",
       countryOfOrigin: "India",
-      suggestedAge:
-        "Kids and adults — breakfast or snack.",
       gallery: ["/products/pantry/slurrp-farm-millet-pancake-chocolate.jpg"],
     },
   },
@@ -303,7 +302,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Keep in a cool, dry place. After opening, transfer to an airtight container and consume within one month. Best before 9 months from packaging.",
       countryOfOrigin: "India",
-      suggestedAge: "12 months+ — toddlers and kids.",
+      ageLabel: "12 months+",
       gallery: ["/products/pantry/slurrp-farm-choco-crunch-ragi-cereal.jpg"],
     },
   },
@@ -371,7 +370,7 @@ export const pantryProducts: PantryProduct[] = [
         "Boil noodles, drain, and toss with the masala seasoning sachet per package directions. Also works for stir-fries, hakka-style noodles, or soup.",
       storage: "Store in a cool, dry place.",
       countryOfOrigin: "India",
-      suggestedAge: "Kids and family (3+).",
+      ageLabel: "3+",
       gallery: ["/products/pantry/slurrp-farm-millet-noodles-masala.jpg"],
     },
   },
@@ -427,7 +426,7 @@ export const pantryProducts: PantryProduct[] = [
         "Mix batter per package instructions; spread thin on a hot tawa and cook until crisp.",
       storage: "Keep in a cool, dry place. Best before 12 months from packaging.",
       countryOfOrigin: "India",
-      suggestedAge: "Kids and family (3+).",
+      ageLabel: "3+",
       gallery: ["/products/pantry/slurrp-farm-millet-dosa-spinach.jpg"],
     },
   },
@@ -474,7 +473,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Cool, dry place. Best before 18 months from date of packaging.",
       countryOfOrigin: "India",
-      suggestedAge: "Kids and family (3+).",
+      ageLabel: "3+",
       gallery: ["/products/pantry/slurrp-farm-macaroni-pasta.jpg"],
     },
   },
@@ -534,8 +533,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Cool, dry place. After opening, keep airtight and consume within one month or by expiry date, whichever is earlier.",
       countryOfOrigin: "India",
-      suggestedAge:
-        "For kids and family — solid snack for children who can chew biscuits safely.",
+      ageLabel: "3+",
       gallery: ["/products/pantry/slurrp-farm-choco-ragi-cookies.jpg"],
     },
   },
@@ -602,8 +600,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Cool, dry place away from direct sunlight. Reseal after opening. Shelf life 9 months.",
       countryOfOrigin: "India",
-      suggestedAge:
-        "For older kids and adults — supervise young children because of size and crunch.",
+      ageLabel: "3+",
       gallery: ["/products/pantry/farmley-makhana.jpg"],
     },
   },
@@ -694,7 +691,7 @@ export const pantryProducts: PantryProduct[] = [
         "Ready to eat. Supervise young children while eating.",
       storage: "Store in a cool, dry place.",
       countryOfOrigin: "India",
-      suggestedAge: "From 9 months.",
+      ageLabel: "9 months+",
       gallery: ["/products/pantry/timios-melts-variety.jpg"],
     },
   },
@@ -750,7 +747,7 @@ export const pantryProducts: PantryProduct[] = [
       storage:
         "Keep away from direct sunlight. Store in a cool, dry, hygienic place at 20–25 °C. Do not buy if the pack is found tampered.",
       countryOfOrigin: "India",
-      suggestedAge: "Kids and family (3+).",
+      ageLabel: "3+",
       gallery: [
         "/products/pantry/superyou-multigrain-protein-chips/gallery-01.jpg",
         "/products/pantry/superyou-multigrain-protein-chips/gallery-06.jpg",
