@@ -20,17 +20,11 @@ function Chevron({ className }: { className?: string }) {
   );
 }
 
-function CategoryMenu({
-  className,
-  linkClassName,
-}: {
-  className?: string;
-  linkClassName?: string;
-}) {
+function CategoryMenu({ linkClassName }: { linkClassName?: string }) {
   const collections = activePantryCollections();
 
   return (
-    <div className={className}>
+    <>
       <Link href="/#pantry" className={linkClassName}>
         All products
       </Link>
@@ -39,38 +33,47 @@ function CategoryMenu({
           {c.navLabel}
         </Link>
       ))}
-    </div>
+    </>
   );
 }
 
 const menuLink =
   "block whitespace-nowrap px-3 py-1.5 text-sm hover:bg-surface hover:text-accent transition-colors";
 
+const dropdownPanel =
+  "border border-line bg-background py-1 shadow-md w-max min-w-[9.5rem]";
+
 /** Shop entry with category links in a dropdown — desktop hover, mobile expand. */
 export function ShopNav() {
   return (
     <>
-      <div className="relative group hidden lg:block">
-        <Link
-          href="/#pantry"
-          className="inline-flex items-center gap-1 hover:underline underline-offset-4"
+      <div className="relative hidden lg:inline-block">
+        <div className="group peer">
+          <Link
+            href="/#pantry"
+            className="inline-flex items-center gap-1 hover:underline underline-offset-4"
+          >
+            Shop
+            <Chevron className="opacity-60 transition-transform group-hover:rotate-180" />
+          </Link>
+        </div>
+        <div
+          className="absolute left-0 top-full z-50 pt-2 opacity-0 invisible pointer-events-none transition-opacity peer-hover:opacity-100 peer-hover:visible peer-hover:pointer-events-auto peer-focus-within:opacity-100 peer-focus-within:visible peer-focus-within:pointer-events-auto hover:opacity-100 hover:visible hover:pointer-events-auto focus-within:opacity-100 focus-within:visible focus-within:pointer-events-auto"
+          role="menu"
+          aria-label="Shop categories"
         >
-          Shop
-          <Chevron className="opacity-60 transition-transform group-hover:rotate-180" />
-        </Link>
-        <div className="absolute left-0 top-full z-50 w-max pt-1 opacity-0 invisible pointer-events-none transition-opacity group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:visible group-focus-within:pointer-events-auto before:absolute before:inset-x-0 before:-top-1 before:h-2 before:content-['']">
-          <div className="border border-line bg-background py-1 shadow-sm">
+          <div className={dropdownPanel}>
             <CategoryMenu linkClassName={menuLink} />
           </div>
         </div>
       </div>
 
-      <details className="lg:hidden relative">
+      <details className="relative lg:hidden w-fit">
         <summary className="inline-flex items-center gap-1 cursor-pointer list-none hover:underline underline-offset-4 [&::-webkit-details-marker]:hidden">
           Shop
           <Chevron className="opacity-60" />
         </summary>
-        <div className="absolute left-0 top-full z-50 mt-1 w-max border border-line bg-background py-1 shadow-sm">
+        <div className={`absolute left-0 top-full z-50 pt-2 ${dropdownPanel}`}>
           <CategoryMenu linkClassName={menuLink} />
         </div>
       </details>

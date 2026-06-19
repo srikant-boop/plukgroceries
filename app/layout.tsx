@@ -71,7 +71,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <AnalyticsProvider>
-        <header className="relative z-20 border-b border-line bg-background">
+        <header className="relative z-30 border-b border-line bg-background overflow-visible">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-5">
             <Link
               href="/"
@@ -84,7 +84,7 @@ export default function RootLayout({
               </span>
             </Link>
             <div className="flex items-center gap-2 md:gap-4 min-w-0">
-            <nav className="flex items-center gap-3 md:gap-4 text-sm min-w-0">
+            <nav className="flex items-center gap-3 md:gap-4 text-sm min-w-0 overflow-visible">
               <ShopNav />
               <Link href="/faq" className="hover:underline underline-offset-4">
                 FAQ
