@@ -109,7 +109,7 @@ export function ProductGallery({
               key={src}
               type="button"
               onClick={() => setActive(index)}
-              className={`relative aspect-square bg-surface border transition-colors ${
+              className={`relative aspect-square bg-background border transition-colors ${
                 index === active ? "border-foreground" : "border-line"
               }`}
               aria-label={`View image ${index + 1} of ${count}`}
