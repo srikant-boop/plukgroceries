@@ -10,7 +10,7 @@ import {
 import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
 import { useCart } from "@/lib/cart";
-import { ProductMetaLine } from "@/components/ProductMetaChips";
+import { ProductCardMeta } from "@/components/ProductMetaChips";
 
 export function ProductCard({ product }: { product: Product }) {
   const add = useCart((s) => s.add);
@@ -83,12 +83,10 @@ export function ProductCard({ product }: { product: Product }) {
               {pantry.roleLine}
             </p>
             <p className="mt-1 text-xs text-muted">{product.unit}</p>
-            <div className="mt-1.5">
-              <ProductMetaLine
+            <div className="mt-2">
+              <ProductCardMeta
                 audience={pantry.audience}
-                ageLabel={pantry.ageLabel}
                 badges={pantry.badges}
-                maxHighlights={2}
               />
             </div>
           </>

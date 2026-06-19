@@ -111,11 +111,14 @@ export function AudienceIcons({
   audience,
   variant = "default",
   inline = false,
+  ageHint,
 }: {
   audience: string[];
   variant?: "default" | "chip";
   /** Render chips only — for embedding in a shared flex row. */
   inline?: boolean;
+  /** Product page — shown on hover (native title tooltip). */
+  ageHint?: string;
 }) {
   const chipClass =
     "inline-flex items-center gap-1 border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-muted leading-tight";
@@ -128,6 +131,7 @@ export function AudienceIcons({
       return (
         <span
           key={item}
+          title={ageHint ? `${item} · ${ageHint}` : item}
           className={variant === "chip" ? chipClass : defaultClass}
         >
           {item}
@@ -135,10 +139,11 @@ export function AudienceIcons({
       );
     }
     const { Icon, label, shortLabel } = config;
+    const tip = ageHint ? `${label} · ${ageHint}` : label;
     return (
       <span
         key={item}
-        title={label}
+        title={tip}
         className={variant === "chip" ? chipClass : defaultClass}
       >
         {variant !== "chip" && <Icon />}

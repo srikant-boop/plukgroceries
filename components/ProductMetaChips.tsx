@@ -1,46 +1,85 @@
-import { AUDIENCE_CHIP_LABEL } from "@/lib/audience";
-import { productHighlights } from "@/lib/product-highlights";
+import { AudienceIcons } from "@/components/AudienceIcons";
+import { highlightLabel, productHighlights } from "@/lib/product-highlights";
 
-export function formatProductMetaLine(
-  audience: string[],
-  ageLabel: string | undefined,
-  badges: string[],
-  { maxHighlights = 2 }: { maxHighlights?: number } = {},
-): string | null {
-  const parts: string[] = [];
+export const META_CHIP_CLASS =
+  "inline-flex items-center border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-muted leading-tight";
 
-  for (const item of audience) {
-    parts.push(AUDIENCE_CHIP_LABEL[item] ?? item);
-  }
-  if (ageLabel) parts.push(ageLabel);
-
-  parts.push(
-    ...productHighlights(badges, {
-      max: maxHighlights,
-      forCard: maxHighlights <= 2,
-    }),
+export function ProductBadgeChips({
+  badges = [],
+  max = badges.length,
+  forCard = false,
+}: {
+  badges?: string[];
+  max?: number;
+  forCard?: boolean;
+}) {
+  const labels = productHighlights(badges, { max, forCard });
+  if (labels.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-1">
+      {labels.map((badge) => (
+        <span key={badge} className={META_CHIP_CLASS}>
+          {badge}
+        </span>
+      ))}
+    </div>
   );
-
-  return parts.length > 0 ? parts.join(" · ") : null;
 }
 
-export function ProductMetaLine({
+/** Homepage / shop grid — audience + highlight chips, no age. */
+export function ProductCardMeta({
+  audience,
+  badges = [],
+}: {
+  audience: string[];
+  badges?: string[];
+}) {
+  const hasAudience = audience.length > 0;
+  const highlightLabels = productHighlights(badges, { max: 3, forCard: true });
+  if (!hasAudience && highlightLabels.length === 0) return null;
+
+  return (
+    <div className="flex flex-wrap gap-1">
+      {hasAudience && <AudienceIcons audience={audience} variant="chip" inline />}
+      {highlightLabels.map((badge) => (
+        <span key={badge} className={META_CHIP_CLASS}>
+          {badge}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/** Product page — age shows on hover via native tooltip on audience chips. */
+export function ProductDetailMeta({
   audience,
   ageLabel,
   badges = [],
-  maxHighlights = 2,
 }: {
   audience: string[];
   ageLabel?: string;
   badges?: string[];
-  /** Cards: 2 highlights max. Product page: pass a higher number for the full set. */
-  maxHighlights?: number;
 }) {
-  const line = formatProductMetaLine(audience, ageLabel, badges, {
-    maxHighlights,
-  });
-  if (!line) return null;
+  const hasAudience = audience.length > 0;
+  const highlightLabels = productHighlights(badges, { max: badges.length });
+
+  if (!hasAudience && highlightLabels.length === 0) return null;
+
   return (
-    <p className="text-[11px] text-muted leading-snug line-clamp-2">{line}</p>
+    <div className="flex flex-wrap items-center gap-1.5">
+      {hasAudience && (
+        <AudienceIcons
+          audience={audience}
+          variant="chip"
+          ageHint={ageLabel}
+        />
+      )}
+      {highlightLabels.length > 0 && (
+        <ProductBadgeChips badges={badges} max={badges.length} />
+      )}
+    </div>
   );
 }
+
+// Re-export for any legacy imports
+export { highlightLabel };

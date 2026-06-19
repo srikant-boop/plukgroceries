@@ -10,7 +10,7 @@ import { getProductLabelData } from "@/lib/product-label-data";
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
-import { ProductMetaLine } from "@/components/ProductMetaChips";
+import { ProductDetailMeta } from "@/components/ProductMetaChips";
 import { IngredientsList } from "@/components/IngredientsList";
 import { NutritionFactsTable } from "@/components/NutritionFactsTable";
 import { ProductGallery } from "@/components/ProductGallery";
@@ -102,12 +102,11 @@ export default async function ProductPage({
         <div>
           <h1 className="text-3xl sm:text-4xl mb-2">{product.name}</h1>
           <p className="text-muted">{meta.roleLine}</p>
-          <div className="mt-2">
-            <ProductMetaLine
+          <div className="mt-3">
+            <ProductDetailMeta
               audience={meta.audience}
               ageLabel={meta.ageLabel}
               badges={meta.badges}
-              maxHighlights={6}
             />
           </div>
         </div>
