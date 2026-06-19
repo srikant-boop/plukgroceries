@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type Product, cheapestCompetitor } from "@/lib/products";
+import { type Product, cheapestCompetitor, hasPantryMeta } from "@/lib/products";
 import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
 import { useCart } from "@/lib/cart";
+import { ProductCardMeta } from "@/components/ProductMetaChips";
 
 export function ProductCard({ product }: { product: Product }) {
   const add = useCart((s) => s.add);
@@ -16,6 +17,8 @@ export function ProductCard({ product }: { product: Product }) {
 
   const cheapest = cheapestCompetitor(product);
   const showCompare = cheapest && cheapest.price > product.ourPrice;
+
+  const pantry = hasPantryMeta(product) ? product.pantry : null;
 
   const handleAdd = () => {
     add(product.id, 1);
@@ -71,6 +74,9 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
         <p className="mt-1.5 text-xs text-muted">{product.unit}</p>
+        {pantry && (
+          <ProductCardMeta audience={pantry.audience} badges={pantry.badges} />
+        )}
         <div className="mt-auto pt-4">
           {qty <= 0 ? (
             <button

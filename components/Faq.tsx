@@ -69,8 +69,8 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          Cards show name, size, and price — open a product for audience,
-          highlights, ingredients, and nutrition.
+          Cards show name, size, price, and a few tags — open a product for
+          full details, ingredients, and suggested age.
         </p>
         <ul className="ml-5 list-disc space-y-1.5">
           <li>
