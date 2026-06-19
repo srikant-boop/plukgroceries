@@ -7,6 +7,9 @@ import {
   cheapestCompetitor,
   hasPantryMeta,
 } from "@/lib/products";
+import { money } from "@/lib/format";
+import { track } from "@/lib/analytics-client";
+import { useCart } from "@/lib/cart";
 import { ProductMetaLine } from "@/components/ProductMetaChips";
 
 export function ProductCard({ product }: { product: Product }) {
