@@ -134,7 +134,7 @@ export default function CartPage() {
           </div>
           <CartSavings items={items} />
           <Link href="/checkout" className="btn w-full mt-6">
-            Checkout
+            Reserve preorder
           </Link>
           <Link
             href="/"

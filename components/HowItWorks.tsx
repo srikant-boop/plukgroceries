@@ -15,9 +15,9 @@ const steps = [
   },
   {
     sketch: "pickup" as const,
-    title: "Home delivery",
+    title: "Reserve & delivery",
     detail:
-      "Leave your address at checkout — we deliver once your order arrives.",
+      "Reserve your basket — pay by e-transfer or cash only after we confirm the preorder goes ahead.",
   },
 ];
 

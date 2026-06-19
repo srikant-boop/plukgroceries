@@ -19,7 +19,7 @@ export default function CheckoutPage() {
   const [phone, setPhone] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [notes, setNotes] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("etransfer");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +40,7 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="py-20 max-w-md mx-auto text-center">
-        <h1 className="text-3xl mb-4">Nothing to check out</h1>
+        <h1 className="text-3xl mb-4">Nothing to reserve</h1>
         <Link href="/#pantry" className="btn">
           Shop the Pantry
         </Link>
@@ -78,7 +78,7 @@ export default function CheckoutPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.url) {
-        throw new Error(data.error ?? "Couldn't place order");
+        throw new Error(data.error ?? "Couldn't place reservation");
       }
       window.location.href = data.url;
     } catch (err) {
@@ -90,7 +90,11 @@ export default function CheckoutPage() {
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
       <section>
-        <h1 className="text-3xl mb-8">Checkout</h1>
+        <h1 className="text-3xl mb-3">Reserve your preorder</h1>
+        <p className="text-sm text-muted leading-relaxed mb-8 max-w-lg">
+          This holds your spot while we test demand. Nothing is charged now — we
+          only ask for payment after we confirm the preorder is going ahead.
+        </p>
 
         <div className="space-y-8">
           <fieldset className="space-y-4">
@@ -131,11 +135,25 @@ export default function CheckoutPage() {
           </fieldset>
 
           <fieldset className="space-y-3">
-            <legend className="eyebrow mb-3">Payment</legend>
+            <legend className="eyebrow mb-3">
+              Preferred payment (if we go ahead)
+            </legend>
+            <p className="text-sm text-muted leading-relaxed -mt-1 mb-2">
+              Pick how you would pay later. No e-transfer, cash, or card is
+              collected until we finalize the preorder.
+            </p>
             {(
               [
-                ["card", "Card", "Pay now with Visa, Mastercard, AmEx, Apple Pay, or Google Pay."],
-                ["cod", "Cash on delivery", "Pay when we deliver."],
+                [
+                  "etransfer",
+                  "E-transfer",
+                  "We will send payment details by email or text once the round is confirmed.",
+                ],
+                [
+                  "cod",
+                  "Cash on delivery",
+                  "Pay when we home deliver — after the preorder is confirmed.",
+                ],
               ] as const
             ).map(([value, label, detail]) => (
               <label
@@ -177,7 +195,7 @@ export default function CheckoutPage() {
 
       <aside className="lg:sticky lg:top-10 lg:self-start">
         <div className="border border-line p-6 bg-surface">
-          <h2 className="text-xl mb-5">Order</h2>
+          <h2 className="text-xl mb-5">Reservation</h2>
           <ul className="space-y-2 text-sm mb-4">
             {items.map((i) => (
               <li key={i.productId} className="flex justify-between gap-3">
@@ -191,9 +209,13 @@ export default function CheckoutPage() {
             ))}
           </ul>
           <div className="pt-4 border-t border-line flex justify-between text-lg">
-            <span>Total</span>
+            <span>Estimated total</span>
             <span className="tabular-nums">{money(total)}</span>
           </div>
+          <p className="text-[11px] text-muted mt-2 leading-relaxed">
+            Not billed today. Total may adjust slightly if import costs shift
+            before we confirm.
+          </p>
           <CartSavings items={items} showSobeysDeliveryNote />
           {deliveryAddress.trim() && (
             <p className="mt-5 text-xs text-muted leading-relaxed">
@@ -207,25 +229,15 @@ export default function CheckoutPage() {
             disabled={!canPlace}
             onClick={handlePlace}
           >
-            {submitting
-              ? "Processing…"
-              : paymentMethod === "card"
-                ? "Pay with card"
-                : "Place order"}
+            {submitting ? "Saving…" : "Reserve preorder"}
           </button>
           {error && (
             <p className="text-xs text-price-cut mt-3">{error}</p>
           )}
-          {paymentMethod === "card" ? (
-            <p className="text-[11px] text-muted mt-3 leading-relaxed">
-              You&apos;ll pay on Stripe&apos;s secure checkout. No card details
-              touch this site.
-            </p>
-          ) : (
-            <p className="text-[11px] text-muted mt-3 leading-relaxed">
-              We&apos;ll confirm payment details before we deliver.
-            </p>
-          )}
+          <p className="text-[11px] text-muted mt-3 leading-relaxed">
+            We will email you when the preorder window closes and whether your
+            items are going ahead.
+          </p>
         </div>
       </aside>
     </div>

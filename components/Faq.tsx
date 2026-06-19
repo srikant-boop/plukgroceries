@@ -62,7 +62,7 @@ const faqs: FaqItem[] = [
   {
     q: "How do I pay?",
     anchorId: "payment",
-    a: "Pay by card at checkout or cash on delivery.",
+    a: "Choose e-transfer or cash on delivery when you reserve — nothing is collected until we confirm the preorder is going ahead.",
   },
   {
     q: "Who are these products for?",

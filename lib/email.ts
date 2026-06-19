@@ -23,12 +23,12 @@ export async function sendOrderEmail(order: Order): Promise<void> {
 
   const paymentLabel =
     order.paymentMethod === "cod"
-      ? "Cash on delivery"
+      ? "Cash on delivery (when confirmed)"
       : order.paymentMethod === "etransfer"
-        ? "E-transfer"
+        ? "E-transfer (when confirmed)"
         : order.paid
           ? "Paid via card (Stripe)"
-          : "Card (pending)";
+          : "Reservation — unpaid";
   const lines = order.lines
     .map(
       (l) =>
@@ -38,7 +38,7 @@ export async function sendOrderEmail(order: Order): Promise<void> {
 
   const html = `
     <div style="font-family:ui-sans-serif,system-ui,Arial;color:#1a1a1a;max-width:560px">
-      <h2 style="font-family:ui-serif,Georgia;font-weight:400;margin-bottom:0">New Pluk order</h2>
+      <h2 style="font-family:ui-serif,Georgia;font-weight:400;margin-bottom:0">New Pluk reservation</h2>
       <p style="color:#6b6b66;margin-top:4px">${paymentLabel} · ${new Date(order.createdAt).toLocaleString("en-CA", { timeZone: "America/Toronto" })}</p>
 
       <h3 style="font-family:ui-serif,Georgia;font-weight:400">Customer</h3>
@@ -76,7 +76,7 @@ export async function sendOrderEmail(order: Order): Promise<void> {
   await getResend().emails.send({
     from,
     to,
-    subject: `New Pluk order — ${order.customer.name} (${money(order.total)})`,
+    subject: `New Pluk reservation — ${order.customer.name} (${money(order.total)})`,
     html,
   });
 }

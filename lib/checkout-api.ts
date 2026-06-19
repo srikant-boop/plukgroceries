@@ -4,7 +4,7 @@ import { HOME_DELIVERY_ID } from "./pickup";
 
 export type CheckoutLineInput = { productId: string; qty: number };
 
-export type PaymentMethod = "card" | "cod";
+export type PaymentMethod = "etransfer" | "cod";
 
 export type CheckoutCustomerInput = {
   name: string;
@@ -45,7 +45,7 @@ export function validateCheckoutBody(body: {
   const notes = body.customer?.notes?.trim();
   const deliveryAddress = body.customer?.deliveryAddress?.trim();
   const inviteRef = normalizeInviteCode(body.inviteRef) ?? undefined;
-  const paymentMethod = body.paymentMethod ?? "card";
+  const paymentMethod = body.paymentMethod ?? "etransfer";
 
   if (!name) return { ok: false, error: "Name is required." };
   if (!phone) return { ok: false, error: "Phone is required." };
@@ -56,8 +56,8 @@ export function validateCheckoutBody(body: {
     return { ok: false, error: "Delivery address is required." };
   }
 
-  if (!["card", "cod"].includes(paymentMethod)) {
-    return { ok: false, error: "Choose a payment method." };
+  if (!["etransfer", "cod"].includes(paymentMethod)) {
+    return { ok: false, error: "Choose how you would like to pay later." };
   }
 
   if (!body.lines?.length) {
@@ -87,7 +87,7 @@ export function validateCheckoutBody(body: {
     lines.map((l) => ({ productId: l.product.id, qty: l.qty })),
   );
   if (metadataLines.length > METADATA_MAX) {
-    return { ok: false, error: "Cart is too large for checkout — try fewer items." };
+    return { ok: false, error: "Cart is too large — try fewer items." };
   }
 
   return {
