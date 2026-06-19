@@ -48,18 +48,18 @@ export function ProductCard({ product }: { product: Product }) {
           />
         </Link>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 flex flex-1 flex-col">
         <div className="flex items-start justify-between gap-3">
           <Link
             href={`/products/${product.slug}`}
             className="min-w-0 flex-1 hover:underline underline-offset-4"
             onClick={() => track("product_click", { productId: product.id })}
           >
-            <h3 className="text-lg leading-snug line-clamp-2">
+            <h3 className="text-lg leading-snug line-clamp-2 min-h-[2.875rem]">
               {product.name}
             </h3>
           </Link>
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right min-h-[2.875rem]">
             <p className="text-base tabular-nums whitespace-nowrap">
               {money(product.ourPrice)}
             </p>
@@ -71,7 +71,7 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
         <p className="mt-1.5 text-xs text-muted">{product.unit}</p>
-        <div className="mt-3">
+        <div className="mt-auto pt-4">
           {qty <= 0 ? (
             <button
               type="button"
