@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 import type { Order } from "./orders";
 import { orderLineSubtotal } from "./order-snapshot";
-import { SITE_URL } from "./site";
+import { SITE_URL, WHATSAPP_GROUP_URL } from "./site";
 
 let _resend: Resend | null = null;
 
@@ -143,6 +143,15 @@ export async function sendCustomerReservationEmail(order: Order): Promise<void> 
         <li>${escape(paymentNextStep)}</li>
         <li>Expect delivery about 10–20 days after the preorder closes (import + customs + local prep).</li>
       </ol>
+
+      <h3 style="font-family:ui-serif,Georgia;font-weight:400">Help bring prices down</h3>
+      <p style="font-size:14px;line-height:1.6">
+        More reservations mean a bigger import batch and lower prices on the next round.
+        Know another family who would want clean Indian food? Share
+        <a href="${SITE_URL}"> Pluk </a>
+        or invite them to our
+        <a href="${WHATSAPP_GROUP_URL}"> WhatsApp group </a>.
+      </p>
 
       <p style="margin-top:24px">
         <a href="${SITE_URL}/#pantry">Back to pantry</a>

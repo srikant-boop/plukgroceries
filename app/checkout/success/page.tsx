@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getOrder } from "@/lib/orders";
+import { SITE_URL, WHATSAPP_GROUP_URL } from "@/lib/site";
 import { ClearCartOnSuccess } from "./ClearCartOnSuccess";
 
 type SearchParams = Promise<{ session_id?: string; order_id?: string }>;
@@ -65,6 +66,31 @@ export default async function CheckoutSuccessPage({
             customs + local prep).
           </li>
         </ol>
+      </div>
+
+      <div className="border border-line bg-surface p-6 text-left mb-10">
+        <p className="eyebrow mb-2">Help bring prices down</p>
+        <p className="text-sm leading-relaxed text-foreground/85">
+          More reservations mean a bigger import batch and lower prices on the
+          next round. Know another family who would want clean Indian food?
+          Share{" "}
+          <a
+            href={SITE_URL}
+            className="underline underline-offset-2 hover:text-accent"
+          >
+            Pluk
+          </a>{" "}
+          or invite them to our{" "}
+          <a
+            href={WHATSAPP_GROUP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-accent"
+          >
+            WhatsApp group
+          </a>
+          .
+        </p>
       </div>
 
       <div className="flex gap-3 justify-center">

@@ -1,4 +1,4 @@
-import { WHATSAPP_GROUP_URL } from "@/lib/site";
+import { SITE_URL, WHATSAPP_GROUP_URL } from "@/lib/site";
 
 type FaqItem = {
   q: string;
@@ -60,18 +60,27 @@ const faqs: FaqItem[] = [
           sake — we want clean Indian food at the lowest fair price we can offer
           at this volume.
         </p>
-        <p className="mb-3">
-          Compare us to other <strong>clean kids&apos; food</strong> (millet,
-          no refined sugar, better ingredients) — organic cereals, pouches,
-          better-for-you snacks — not the cheapest commodity aisle. Against that
-          peer set, these prices are reasonable for a small import run.
-        </p>
         <p>
           <strong>Prices should drop as more people join.</strong> When enough
           families reserve the same product, we import a larger batch — fixed
           costs spread across more units and the next round can come in lower.
-          That is why preordering matters: your reservation helps unlock better
-          pricing for everyone, including you on future drops.
+          Know another family who would want this? Share{" "}
+          <a
+            href={SITE_URL}
+            className="underline underline-offset-2 hover:text-accent"
+          >
+            Pluk
+          </a>{" "}
+          or bring them into our{" "}
+          <a
+            href={WHATSAPP_GROUP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:text-accent"
+          >
+            WhatsApp group
+          </a>
+          . Every reservation helps.
         </p>
       </>
     ),
