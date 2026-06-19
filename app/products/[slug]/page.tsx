@@ -10,7 +10,7 @@ import { getProductLabelData } from "@/lib/product-label-data";
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
-import { ProductMetaChips } from "@/components/ProductMetaChips";
+import { ProductAudienceLine, ProductBadgeChips } from "@/components/ProductMetaChips";
 import { IngredientsList } from "@/components/IngredientsList";
 import { NutritionFactsTable } from "@/components/NutritionFactsTable";
 import { ProductGallery } from "@/components/ProductGallery";
@@ -102,13 +102,17 @@ export default async function ProductPage({
         <div>
           <h1 className="text-3xl sm:text-4xl mb-2">{product.name}</h1>
           <p className="text-muted">{meta.roleLine}</p>
-          <div className="mt-3">
-            <ProductMetaChips
+          <div className="mt-2">
+            <ProductAudienceLine
               audience={meta.audience}
               ageLabel={meta.ageLabel}
-              badges={meta.badges}
             />
           </div>
+          {meta.badges.length > 0 && (
+            <div className="mt-3">
+              <ProductBadgeChips badges={meta.badges} />
+            </div>
+          )}
         </div>
 
         <div className="border-b border-line pb-6">
