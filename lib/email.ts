@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import type { Order } from "./orders";
 import { orderLineSubtotal } from "./order-snapshot";
+import { SITE_URL } from "./site";
 
 let _resend: Resend | null = null;
 
@@ -77,6 +78,84 @@ export async function sendOrderEmail(order: Order): Promise<void> {
     from,
     to,
     subject: `New Pluk reservation — ${order.customer.name} (${money(order.total)})`,
+    html,
+  });
+}
+
+function isValidCustomerEmail(email: string | undefined): email is string {
+  const trimmed = email?.trim() ?? "";
+  return trimmed.length > 0 && trimmed.includes("@");
+}
+
+export async function sendCustomerReservationEmail(order: Order): Promise<void> {
+  if (!isValidCustomerEmail(order.customer.email)) return;
+
+  const from = process.env.RESEND_FROM_EMAIL ?? "Pluk <onboarding@resend.dev>";
+  const to = order.customer.email.trim();
+
+  const paymentLabel =
+    order.paymentMethod === "cod"
+      ? "Cash on delivery — pay when we bring your order"
+      : "E-transfer — we will send payment details only after we confirm the preorder";
+
+  const paymentNextStep =
+    order.paymentMethod === "cod"
+      ? "You chose cash on delivery — pay when we bring your order."
+      : "You chose e-transfer — we will send payment details only after we confirm the preorder.";
+
+  const lines = order.lines
+    .map(
+      (l) =>
+        `<tr><td>${l.qty}× ${escape(l.name)}</td><td>${escape(l.unit)}</td><td style="text-align:right;font-variant-numeric:tabular-nums">${money(orderLineSubtotal(l))}</td></tr>`,
+    )
+    .join("");
+
+  const html = `
+    <div style="font-family:ui-sans-serif,system-ui,Arial;color:#1a1a1a;max-width:560px">
+      <h2 style="font-family:ui-serif,Georgia;font-weight:400;margin-bottom:0">Thanks — your reservation is in.</h2>
+      <p style="color:#6b6b66;margin-top:4px">
+        Hi ${escape(order.customer.name)}, we received your Pluk reservation on
+        ${new Date(order.createdAt).toLocaleString("en-CA", { timeZone: "America/Toronto" })}.
+        You are not charged today — we will confirm with you before any payment.
+      </p>
+
+      <p style="margin-top:16px">
+        We will home deliver in Oakville once the preorder is confirmed and your order arrives.
+      </p>
+
+      ${order.customer.deliveryAddress ? `<p><strong>Delivery address:</strong><br>${escape(order.customer.deliveryAddress)}</p>` : ""}
+
+      <h3 style="font-family:ui-serif,Georgia;font-weight:400">Your items</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        ${lines}
+        <tr><td colspan="2" style="border-top:1px solid #e6e2d8;padding-top:8px"><strong>Estimated total</strong></td>
+            <td style="border-top:1px solid #e6e2d8;padding-top:8px;text-align:right;font-variant-numeric:tabular-nums"><strong>${money(order.total)}</strong></td></tr>
+      </table>
+      <p style="font-size:12px;color:#6b6b66;margin-top:8px">Final total may adjust slightly if catalogue prices change before the preorder closes.</p>
+
+      <h3 style="font-family:ui-serif,Georgia;font-weight:400">Payment preference</h3>
+      <p>${escape(paymentLabel)}</p>
+
+      <h3 style="font-family:ui-serif,Georgia;font-weight:400">What happens next</h3>
+      <ol style="padding-left:20px;line-height:1.6;font-size:14px">
+        <li>We watch reservations until the preorder window closes — nothing is imported yet.</li>
+        <li>If the round goes ahead, we will email or text you to confirm before any payment.</li>
+        <li>${escape(paymentNextStep)}</li>
+        <li>Expect delivery about 10–20 days after the preorder closes (import + customs + local prep).</li>
+      </ol>
+
+      <p style="margin-top:24px">
+        <a href="${SITE_URL}/#pantry">Back to pantry</a>
+        ·
+        <a href="${SITE_URL}/faq#delivery">Delivery FAQ</a>
+      </p>
+    </div>
+  `;
+
+  await getResend().emails.send({
+    from,
+    to,
+    subject: `Your Pluk reservation is in — ${order.customer.name}`,
     html,
   });
 }

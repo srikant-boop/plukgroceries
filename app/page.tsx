@@ -43,17 +43,9 @@ export default function Home() {
             A short à la carte shelf of trusted breakfast, snack, and quick-meal
             brands — preorder one product or build your basket.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="#pantry" className="btn px-6 py-3 text-sm">
-              Shop the Pantry
-            </Link>
-            <Link
-              href="#how-it-works"
-              className="inline-flex items-center px-6 py-3 text-sm border border-line bg-surface/85 backdrop-blur-sm hover:bg-surface"
-            >
-              How it works
-            </Link>
-          </div>
+          <Link href="#pantry" className="btn px-6 py-3 text-sm">
+            Shop the Pantry
+          </Link>
         </div>
       </section>
 

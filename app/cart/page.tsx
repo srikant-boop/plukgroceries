@@ -117,7 +117,7 @@ export default function CartPage() {
 
       <aside className="lg:sticky lg:top-10 lg:self-start">
         <div className="border border-line p-6 bg-surface">
-          <h2 className="text-xl mb-5">Order summary</h2>
+          <h2 className="text-xl mb-5">Reservation summary</h2>
           <dl className="space-y-2 text-sm">
             <div className="flex justify-between">
               <dt className="text-muted">Subtotal</dt>
@@ -129,9 +129,13 @@ export default function CartPage() {
             </div>
           </dl>
           <div className="mt-5 pt-5 border-t border-line flex justify-between text-lg">
-            <span>Total</span>
+            <span>Estimated total</span>
             <span className="tabular-nums">{money(total)}</span>
           </div>
+          <p className="text-[11px] text-muted mt-2 leading-relaxed">
+            Not billed today. Total may adjust slightly if import costs shift
+            before we confirm.
+          </p>
           <CartSavings items={items} />
           <Link href="/checkout" className="btn w-full mt-6">
             Reserve preorder

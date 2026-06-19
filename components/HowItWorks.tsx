@@ -88,7 +88,7 @@ function StepSketch({
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="mb-16">
+    <section id="how-it-works" className="mb-16 scroll-mt-24">
       <div className="mb-6 flex items-baseline gap-3 border-b border-line pb-3">
         <Leaf size={15} className="text-accent" />
         <h2 className="text-2xl">How it works</h2>

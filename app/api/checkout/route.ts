@@ -3,7 +3,7 @@ import { HOME_DELIVERY_ID } from "@/lib/pickup";
 import { validateCheckoutBody } from "@/lib/checkout-api";
 import { saveManualCheckoutOrder } from "@/lib/build-checkout-order";
 import { getInviteByCode } from "@/lib/invite-store";
-import { sendOrderEmail } from "@/lib/email";
+import { sendCustomerReservationEmail, sendOrderEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -55,7 +55,18 @@ export async function POST(req: Request) {
     try {
       const { getOrder } = await import("@/lib/orders");
       const order = await getOrder(orderId);
-      if (order) await sendOrderEmail(order);
+      if (order) {
+        try {
+          await sendOrderEmail(order);
+        } catch (err) {
+          console.error("[checkout] admin reservation email failed", err);
+        }
+        try {
+          await sendCustomerReservationEmail(order);
+        } catch (err) {
+          console.error("[checkout] customer reservation email failed", err);
+        }
+      }
     } catch (err) {
       console.error("[checkout] reservation email failed", err);
     }
