@@ -47,37 +47,31 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          We are not a conventional grocery aisle — and these are not commodity
-          boxes. You are comparing clean, millet-based, no-refined-sugar kids&apos;
-          food to other{" "}
-          <strong>clean and premium</strong> options (organic cereals, pouches,
-          better-for-you snacks), which often sit around $6–12. Against that
-          shelf, our prices are in line. Measuring against the cheapest pancake
-          mix or pasta at a big-box store is the one comparison we cannot win —
-          and we do not try.
+          Early prices are higher because we are{" "}
+          <strong>importing in small batches</strong>. This is a demand-first
+          test — we expect low order counts at first, so freight, customs, and
+          handling land on fewer units. That is the main reason a box costs more
+          here than in India, not a big retail markup.
         </p>
         <p className="mb-3">
-          If you know what these brands cost in India, the Canada price can look
-          steep. That gap is real — but most of it is not markup for its own
-          sake. You are paying for the product{" "}
-          <strong>here</strong>: vetted for clean ingredients, flown in, cleared
-          through customs, handled locally, and home delivered from someone in
-          your community. Freight and duty do not disappear when the batch is
-          small.
+          Our model is closer to <strong>Aldi than a specialty store</strong>:
+          keep the shelf short, negotiate hard, take a thin margin, and pass
+          savings through. We are not trying to charge premium for premium&apos;s
+          sake — we want clean Indian food at the lowest fair price we can offer
+          at this volume.
         </p>
         <p className="mb-3">
-          We would rather be open about that than hide it. Diaspora buyers
-          usually accept that imported goods cost more in Canada. What erodes
-          trust is feeling gouged — so we keep the shelf short, drop items we
-          cannot defend at this price, and only stock what is worth the premium.
+          Compare us to other <strong>clean kids&apos; food</strong> (millet,
+          no refined sugar, better ingredients) — organic cereals, pouches,
+          better-for-you snacks — not the cheapest commodity aisle. Against that
+          peer set, these prices are reasonable for a small import run.
         </p>
         <p>
-          <strong>More families in a round helps everyone.</strong> When enough
-          people reserve the same product, we import a larger batch — freight,
-          duty, and handling get spread across more units, and future rounds can
-          come in lower. That is exactly why we run demand-first preorders
-          instead of guessing inventory. Reserve what you want; if people come
-          back for it, we know the price works and we keep going.
+          <strong>Prices should drop as more people join.</strong> When enough
+          families reserve the same product, we import a larger batch — fixed
+          costs spread across more units and the next round can come in lower.
+          That is why preordering matters: your reservation helps unlock better
+          pricing for everyone, including you on future drops.
         </p>
       </>
     ),
