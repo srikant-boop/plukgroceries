@@ -69,7 +69,8 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          Every product page shows who it is for and a suggested age.
+          Every product page lists who it is for and key highlights in one
+          plain line — no separate marketing badges.
         </p>
         <ul className="ml-5 list-disc space-y-1.5">
           <li>

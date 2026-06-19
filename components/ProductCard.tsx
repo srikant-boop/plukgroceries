@@ -7,11 +7,7 @@ import {
   cheapestCompetitor,
   hasPantryMeta,
 } from "@/lib/products";
-import { cardBadges, type PantryProduct } from "@/lib/pantry-catalog";
-import { money } from "@/lib/format";
-import { track } from "@/lib/analytics-client";
-import { useCart } from "@/lib/cart";
-import { ProductBadgeChips } from "@/components/ProductMetaChips";
+import { ProductMetaLine } from "@/components/ProductMetaChips";
 
 export function ProductCard({ product }: { product: Product }) {
   const add = useCart((s) => s.add);
@@ -24,7 +20,6 @@ export function ProductCard({ product }: { product: Product }) {
   const showCompare = cheapest && cheapest.price > product.ourPrice;
 
   const pantry = hasPantryMeta(product) ? product.pantry : null;
-  const badges = pantry ? cardBadges(product as PantryProduct) : [];
 
   const handleAdd = () => {
     add(product.id, 1);
@@ -85,11 +80,14 @@ export function ProductCard({ product }: { product: Product }) {
               {pantry.roleLine}
             </p>
             <p className="mt-1 text-xs text-muted">{product.unit}</p>
-            {badges.length > 0 && (
-              <div className="mt-2">
-                <ProductBadgeChips badges={badges} />
-              </div>
-            )}
+            <div className="mt-1.5">
+              <ProductMetaLine
+                audience={pantry.audience}
+                ageLabel={pantry.ageLabel}
+                badges={pantry.badges}
+                maxHighlights={2}
+              />
+            </div>
           </>
         )}
         {!pantry && (

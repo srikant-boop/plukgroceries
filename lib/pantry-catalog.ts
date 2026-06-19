@@ -719,7 +719,7 @@ export const pantryProducts: PantryProduct[] = [
       roleLine:
         "Baked pudina multigrain chips with 10 g protein — a lighter savoury snack.",
       audience: ["Family", "Kids"],
-      badges: ["High Protein", "No Palm Oil", "No Added Sugar"],
+      badges: ["Baked", "No Palm Oil", "No Added Sugar"],
       whySelected:
         "Many families want a familiar chip format with more protein and less junk. SuperYou’s pudina multigrain chips use a baked base with soya protein isolate — one protein chip SKU on the test shelf to see if it earns reorders.",
       ingredientSections: [
@@ -780,8 +780,4 @@ export function activePantryCollections() {
       .map((p) => p.collection),
   );
   return PANTRY_COLLECTIONS.filter((c) => activeSlugs.has(c.slug));
-}
-
-export function cardBadges(p: PantryProduct): string[] {
-  return p.pantry.badges.slice(0, 3);
 }

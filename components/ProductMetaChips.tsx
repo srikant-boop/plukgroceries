@@ -1,43 +1,46 @@
 import { AUDIENCE_CHIP_LABEL } from "@/lib/audience";
+import { productHighlights } from "@/lib/product-highlights";
 
-export const META_CHIP_CLASS =
-  "inline-flex items-center border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-muted leading-tight";
-
-export function formatAudienceLine(
+export function formatProductMetaLine(
   audience: string[],
-  ageLabel?: string,
+  ageLabel: string | undefined,
+  badges: string[],
+  { maxHighlights = 2 }: { maxHighlights?: number } = {},
 ): string | null {
-  if (audience.length === 0 && !ageLabel) return null;
-  const who = audience
-    .map((item) => AUDIENCE_CHIP_LABEL[item] ?? item)
-    .join(" · ");
-  if (!ageLabel) return who || null;
-  return who ? `${who} · ${ageLabel}` : ageLabel;
+  const parts: string[] = [];
+
+  for (const item of audience) {
+    parts.push(AUDIENCE_CHIP_LABEL[item] ?? item);
+  }
+  if (ageLabel) parts.push(ageLabel);
+
+  parts.push(
+    ...productHighlights(badges, {
+      max: maxHighlights,
+      forCard: maxHighlights <= 2,
+    }),
+  );
+
+  return parts.length > 0 ? parts.join(" · ") : null;
 }
 
-export function ProductAudienceLine({
+export function ProductMetaLine({
   audience,
   ageLabel,
+  badges = [],
+  maxHighlights = 2,
 }: {
   audience: string[];
   ageLabel?: string;
+  badges?: string[];
+  /** Cards: 2 highlights max. Product page: pass a higher number for the full set. */
+  maxHighlights?: number;
 }) {
-  const line = formatAudienceLine(audience, ageLabel);
+  const line = formatProductMetaLine(audience, ageLabel, badges, {
+    maxHighlights,
+  });
   if (!line) return null;
   return (
-    <p className="text-[11px] text-muted leading-snug">{line}</p>
-  );
-}
-
-export function ProductBadgeChips({ badges = [] }: { badges?: string[] }) {
-  if (badges.length === 0) return null;
-  return (
-    <div className="flex flex-wrap gap-1">
-      {badges.map((badge) => (
-        <span key={badge} className={META_CHIP_CLASS}>
-          {badge}
-        </span>
-      ))}
-    </div>
+    <p className="text-[11px] text-muted leading-snug line-clamp-2">{line}</p>
   );
 }
