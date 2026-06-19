@@ -47,22 +47,20 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          Early prices are higher because we are{" "}
-          <strong>importing in small batches</strong>. This is a demand-first
-          test — we expect low order counts at first, so freight, customs, and
-          handling land on fewer units. That is the main reason a box costs more
-          here than in India.
-        </p>
-        <p className="mb-3">
           Our model is closer to <strong>Aldi than a specialty store</strong>:
           keep the shelf short, negotiate hard, take a thin margin, and pass
-          savings through. We are not trying to charge premium for premium&apos;s
-          sake — we want clean Indian food at the lowest fair price we can offer
-          at this volume.
+          savings through. We want clean Indian food at the lowest fair price we
+          can offer — not premium for premium&apos;s sake.
+        </p>
+        <p className="mb-3">
+          This is a demand-first test. We import in small batches from
+          reservations, so freight, customs, and handling land on fewer units
+          at first. That is why a box may cost more here than in India today — and
+          why those prices <strong>can come down</strong> as more families join
+          the same round.
         </p>
         <p>
-          <strong>Prices should drop as more people join.</strong> When enough
-          families reserve the same product, we import a larger batch — fixed
+          When enough people reserve a product, we import a larger batch — fixed
           costs spread across more units and the next round can come in lower.
           Know another family who would want this? Share{" "}
           <a
