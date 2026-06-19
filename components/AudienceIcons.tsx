@@ -121,7 +121,7 @@ export function AudienceIcons({
   ageHint?: string;
 }) {
   const chipClass =
-    "inline-flex items-center gap-1 border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-muted leading-tight";
+    "inline-flex items-center gap-1 border border-line px-2 py-0.5 text-[9px] uppercase tracking-wide text-muted leading-normal";
   const defaultClass =
     "inline-flex items-center gap-1.5 border border-line bg-surface px-2.5 py-1.5 text-xs text-foreground/90";
 

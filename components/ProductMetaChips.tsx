@@ -2,7 +2,7 @@ import { AudienceIcons } from "@/components/AudienceIcons";
 import { highlightLabel, productHighlights } from "@/lib/product-highlights";
 
 export const META_CHIP_CLASS =
-  "inline-flex items-center border border-line px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-muted leading-tight";
+  "inline-flex items-center border border-line px-2 py-0.5 text-[9px] uppercase tracking-wide text-muted leading-normal";
 
 export function ProductBadgeChips({
   badges = [],
@@ -16,7 +16,7 @@ export function ProductBadgeChips({
   const labels = productHighlights(badges, { max, forCard });
   if (labels.length === 0) return null;
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex flex-wrap gap-x-1.5 gap-y-1.5">
       {labels.map((badge) => (
         <span key={badge} className={META_CHIP_CLASS}>
           {badge}
@@ -35,11 +35,11 @@ export function ProductCardMeta({
   badges?: string[];
 }) {
   const hasAudience = audience.length > 0;
-  const highlightLabels = productHighlights(badges, { max: 3, forCard: true });
+  const highlightLabels = productHighlights(badges, { max: 2, forCard: true });
   if (!hasAudience && highlightLabels.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex flex-wrap gap-x-1.5 gap-y-1.5">
       {hasAudience && <AudienceIcons audience={audience} variant="chip" inline />}
       {highlightLabels.map((badge) => (
         <span key={badge} className={META_CHIP_CLASS}>

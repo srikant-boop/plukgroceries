@@ -40,7 +40,7 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="group flex h-full flex-col">
+    <div className="group flex flex-col">
       <div className="relative aspect-[4/5] overflow-hidden bg-surface">
         <Link
           href={`/products/${product.slug}`}
@@ -55,14 +55,14 @@ export function ProductCard({ product }: { product: Product }) {
           />
         </Link>
       </div>
-      <div className="mt-4 flex flex-1 flex-col">
-        <div className="flex items-start justify-between gap-3">
+      <div className="mt-4 flex flex-col gap-2">
+        <div className="flex items-start justify-between gap-4">
           <Link
             href={`/products/${product.slug}`}
             className="min-w-0 flex-1 hover:underline underline-offset-4"
             onClick={() => track("product_click", { productId: product.id })}
           >
-            <h3 className="text-lg leading-tight line-clamp-2 min-h-[2.75rem]">
+            <h3 className="text-lg leading-snug line-clamp-2">
               {product.name}
             </h3>
           </Link>
@@ -79,22 +79,20 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         {pantry && (
           <>
-            <p className="mt-1 text-xs text-foreground/75 leading-snug line-clamp-2">
+            <p className="text-xs text-foreground/75 leading-relaxed line-clamp-2">
               {pantry.roleLine}
             </p>
-            <p className="mt-1 text-xs text-muted">{product.unit}</p>
-            <div className="mt-2">
-              <ProductCardMeta
-                audience={pantry.audience}
-                badges={pantry.badges}
-              />
-            </div>
+            <p className="text-xs text-muted">{product.unit}</p>
+            <ProductCardMeta
+              audience={pantry.audience}
+              badges={pantry.badges}
+            />
           </>
         )}
         {!pantry && (
-          <p className="mt-1 text-xs text-muted">{product.unit}</p>
+          <p className="text-xs text-muted">{product.unit}</p>
         )}
-        <div className="mt-3 mt-auto pt-1">
+        <div className="mt-2">
           {qty <= 0 ? (
             <button
               type="button"
