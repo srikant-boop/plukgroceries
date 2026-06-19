@@ -68,7 +68,7 @@ export function ProductGallery({
 
   return (
     <div className="space-y-3">
-      <div className="relative aspect-[4/5] bg-surface group">
+      <div className="relative aspect-[4/5] border border-line bg-background group">
         <Image
           key={current}
           src={current}
@@ -83,7 +83,7 @@ export function ProductGallery({
             <button
               type="button"
               onClick={goPrev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center border border-line bg-surface/95 text-foreground shadow-sm transition-opacity hover:bg-surface"
+              className="absolute left-2 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center border border-line bg-background/95 text-foreground shadow-sm transition-opacity hover:bg-background"
               aria-label="Previous image"
             >
               <ChevronLeft />
@@ -91,12 +91,12 @@ export function ProductGallery({
             <button
               type="button"
               onClick={goNext}
-              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center border border-line bg-surface/95 text-foreground shadow-sm transition-opacity hover:bg-surface"
+              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center border border-line bg-background/95 text-foreground shadow-sm transition-opacity hover:bg-background"
               aria-label="Next image"
             >
               <ChevronRight />
             </button>
-            <p className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs tabular-nums bg-surface/90 border border-line px-2 py-0.5">
+            <p className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs tabular-nums bg-background/90 border border-line px-2 py-0.5">
               {active + 1} / {count}
             </p>
           </>
