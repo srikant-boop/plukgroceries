@@ -2,15 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  type Product,
-  cheapestCompetitor,
-  hasPantryMeta,
-} from "@/lib/products";
+import { type Product, cheapestCompetitor } from "@/lib/products";
 import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
 import { useCart } from "@/lib/cart";
-import { ProductCardMeta } from "@/components/ProductMetaChips";
 
 export function ProductCard({ product }: { product: Product }) {
   const add = useCart((s) => s.add);
@@ -21,8 +16,6 @@ export function ProductCard({ product }: { product: Product }) {
 
   const cheapest = cheapestCompetitor(product);
   const showCompare = cheapest && cheapest.price > product.ourPrice;
-
-  const pantry = hasPantryMeta(product) ? product.pantry : null;
 
   const handleAdd = () => {
     add(product.id, 1);
@@ -40,7 +33,7 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="group flex flex-col">
+    <div className="group flex h-full flex-col">
       <div className="relative aspect-[4/5] overflow-hidden bg-surface">
         <Link
           href={`/products/${product.slug}`}
@@ -55,44 +48,34 @@ export function ProductCard({ product }: { product: Product }) {
           />
         </Link>
       </div>
-      <div className="mt-4 flex flex-col gap-2">
-        <div className="flex items-start justify-between gap-4">
+      <div className="mt-4 flex flex-1 flex-col">
+        <div className="flex items-start justify-between gap-3">
           <Link
             href={`/products/${product.slug}`}
             className="min-w-0 flex-1 hover:underline underline-offset-4"
             onClick={() => track("product_click", { productId: product.id })}
           >
-            <h3 className="text-lg leading-snug line-clamp-2">
+            <h3 className="text-lg leading-snug line-clamp-2 min-h-[2.875rem]">
               {product.name}
             </h3>
           </Link>
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-right min-h-[2.875rem]">
             <p className="text-base tabular-nums whitespace-nowrap">
               {money(product.ourPrice)}
             </p>
-            {showCompare && (
+            {showCompare ? (
               <p className="text-[11px] text-price-cut line-through tabular-nums">
                 {money(cheapest!.price)}
               </p>
+            ) : (
+              <span className="block text-[11px] invisible" aria-hidden>
+                —
+              </span>
             )}
           </div>
         </div>
-        {pantry && (
-          <>
-            <p className="text-xs text-foreground/75 leading-relaxed line-clamp-2">
-              {pantry.roleLine}
-            </p>
-            <p className="text-xs text-muted">{product.unit}</p>
-            <ProductCardMeta
-              audience={pantry.audience}
-              badges={pantry.badges}
-            />
-          </>
-        )}
-        {!pantry && (
-          <p className="text-xs text-muted">{product.unit}</p>
-        )}
-        <div className="mt-2">
+        <p className="mt-1.5 text-xs text-muted">{product.unit}</p>
+        <div className="mt-auto pt-4">
           {qty <= 0 ? (
             <button
               type="button"

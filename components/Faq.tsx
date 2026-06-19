@@ -69,8 +69,8 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          Every product page shows audience and highlight chips; hover an
-          audience chip to see the suggested age for that product.
+          Cards show name, size, and price — open a product for audience,
+          highlights, ingredients, and nutrition.
         </p>
         <ul className="ml-5 list-disc space-y-1.5">
           <li>

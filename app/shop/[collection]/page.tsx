@@ -35,7 +35,7 @@ export default async function ShopCollectionPage({
         </p>
       </header>
 
-      <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 items-stretch gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
         {items.map((p) => (
           <ProductCard key={p.id} product={p} />
         ))}

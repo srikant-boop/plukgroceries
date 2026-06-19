@@ -26,30 +26,6 @@ export function ProductBadgeChips({
   );
 }
 
-/** Homepage / shop grid — audience + highlight chips, no age. */
-export function ProductCardMeta({
-  audience,
-  badges = [],
-}: {
-  audience: string[];
-  badges?: string[];
-}) {
-  const hasAudience = audience.length > 0;
-  const highlightLabels = productHighlights(badges, { max: 2, forCard: true });
-  if (!hasAudience && highlightLabels.length === 0) return null;
-
-  return (
-    <div className="flex flex-wrap gap-x-1.5 gap-y-1.5">
-      {hasAudience && <AudienceIcons audience={audience} variant="chip" inline />}
-      {highlightLabels.map((badge) => (
-        <span key={badge} className={META_CHIP_CLASS}>
-          {badge}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 /** Product page — age shows on hover via native tooltip on audience chips. */
 export function ProductDetailMeta({
   audience,
