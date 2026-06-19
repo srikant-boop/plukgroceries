@@ -70,7 +70,7 @@ const faqs: FaqItem[] = [
       <>
         <p className="mb-3">
           Every product page shows audience and highlight chips; hover an
-          audience chip for the suggested age.
+          audience chip to see the suggested age for that product.
         </p>
         <ul className="ml-5 list-disc space-y-1.5">
           <li>

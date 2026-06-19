@@ -131,7 +131,7 @@ export function AudienceIcons({
       return (
         <span
           key={item}
-          title={ageHint ? `${item} · ${ageHint}` : item}
+          title={ageHint ?? item}
           className={variant === "chip" ? chipClass : defaultClass}
         >
           {item}
@@ -139,7 +139,7 @@ export function AudienceIcons({
       );
     }
     const { Icon, label, shortLabel } = config;
-    const tip = ageHint ? `${label} · ${ageHint}` : label;
+    const tip = ageHint ?? label;
     return (
       <span
         key={item}
