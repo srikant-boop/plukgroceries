@@ -51,7 +51,7 @@ const faqs: FaqItem[] = [
           <strong>importing in small batches</strong>. This is a demand-first
           test — we expect low order counts at first, so freight, customs, and
           handling land on fewer units. That is the main reason a box costs more
-          here than in India, not a big retail markup.
+          here than in India.
         </p>
         <p className="mb-3">
           Our model is closer to <strong>Aldi than a specialty store</strong>:
