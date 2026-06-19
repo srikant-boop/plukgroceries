@@ -42,6 +42,47 @@ const faqs: FaqItem[] = [
     ),
   },
   {
+    q: "Why do prices cost what they do?",
+    anchorId: "pricing",
+    a: (
+      <>
+        <p className="mb-3">
+          We are not a conventional grocery aisle — and these are not commodity
+          boxes. You are comparing clean, millet-based, no-refined-sugar kids&apos;
+          food to other{" "}
+          <strong>clean and premium</strong> options (organic cereals, pouches,
+          better-for-you snacks), which often sit around $6–12. Against that
+          shelf, our prices are in line. Measuring against the cheapest pancake
+          mix or pasta at a big-box store is the one comparison we cannot win —
+          and we do not try.
+        </p>
+        <p className="mb-3">
+          If you know what these brands cost in India, the Canada price can look
+          steep. That gap is real — but most of it is not markup for its own
+          sake. You are paying for the product{" "}
+          <strong>here</strong>: vetted for clean ingredients, flown in, cleared
+          through customs, handled locally, and home delivered from someone in
+          your community. Freight and duty do not disappear when the batch is
+          small.
+        </p>
+        <p className="mb-3">
+          We would rather be open about that than hide it. Diaspora buyers
+          usually accept that imported goods cost more in Canada. What erodes
+          trust is feeling gouged — so we keep the shelf short, drop items we
+          cannot defend at this price, and only stock what is worth the premium.
+        </p>
+        <p>
+          <strong>More families in a round helps everyone.</strong> When enough
+          people reserve the same product, we import a larger batch — freight,
+          duty, and handling get spread across more units, and future rounds can
+          come in lower. That is exactly why we run demand-first preorders
+          instead of guessing inventory. Reserve what you want; if people come
+          back for it, we know the price works and we keep going.
+        </p>
+      </>
+    ),
+  },
+  {
     q: "How does delivery work?",
     anchorId: "delivery",
     a: (
