@@ -36,10 +36,6 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/75 to-background" />
         </div>
         <div className="relative px-6 sm:px-10 py-14 sm:py-20 max-w-3xl">
-          <p className="eyebrow mb-4 inline-flex items-center gap-2">
-            <Leaf size={14} className="text-accent" aria-hidden />
-            Home delivery
-          </p>
           <h1 className="text-3xl sm:text-[2.75rem] leading-[1.08] mb-5">
             Clean Indian foods for the whole family.
           </h1>
