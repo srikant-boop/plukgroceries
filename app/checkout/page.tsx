@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart, hydrateLines, cartTotal } from "@/lib/cart";
 import { money } from "@/lib/format";
-import { CartSavings } from "@/components/CartSavings";
 import { DeliveryAddressField } from "@/components/DeliveryAddressField";
 import type { PaymentMethod } from "@/lib/checkout-api";
 import { track } from "@/lib/analytics-client";

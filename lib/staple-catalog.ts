@@ -85,10 +85,6 @@ export const stapleProducts: PantryProduct[] = [
     roleLine: "India's #1 atta — weekly roti staple.",
     whySelected: "Price-memorized atta — at wholesale, 0% markup.",
     badges: ["KVI"],
-    competitors: [
-      { store: "Walmart", price: 22.48, unit: "20 lb" },
-      { store: "Swadesh", price: 24.29, unit: "20 lb" },
-    ],
   }),
   staple({
     id: "basmati-rice-10lb",

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type Product, cheapestCompetitor, hasPantryMeta } from "@/lib/products";
+import { type Product, hasPantryMeta } from "@/lib/products";
 import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
 import { useCart } from "@/lib/cart";
@@ -15,9 +15,6 @@ export function ProductCard({ product }: { product: Product }) {
   const qty = useCart(
     (s) => s.lines.find((l) => l.productId === product.id)?.qty ?? 0,
   );
-
-  const cheapest = cheapestCompetitor(product);
-  const showCompare = cheapest && cheapest.price > product.ourPrice;
 
   const pantry = hasPantryMeta(product) ? product.pantry : null;
 
@@ -67,11 +64,6 @@ export function ProductCard({ product }: { product: Product }) {
             <p className="text-base tabular-nums whitespace-nowrap">
               {money(product.ourPrice)}
             </p>
-            {showCompare && (
-              <p className="text-[11px] text-price-cut line-through tabular-nums">
-                {money(cheapest!.price)}
-              </p>
-            )}
           </div>
         </div>
         <p className="mt-1.5 text-xs text-muted">{product.unit}</p>

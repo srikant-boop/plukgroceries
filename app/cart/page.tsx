@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart, hydrateLines, cartTotal } from "@/lib/cart";
 import { money } from "@/lib/format";
-import { CartSavings } from "@/components/CartSavings";
 import { track } from "@/lib/analytics-client";
 
 export default function CartPage() {
@@ -136,7 +135,6 @@ export default function CartPage() {
             Not billed today. Each item ships only if its group-buy case fills;
             total may adjust slightly if import costs shift before we confirm.
           </p>
-          <CartSavings items={items} />
           <Link href="/checkout" className="btn w-full mt-6">
             Reserve preorder
           </Link>
