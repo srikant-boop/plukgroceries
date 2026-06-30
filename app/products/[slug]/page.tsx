@@ -12,7 +12,6 @@ import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
 import { GroupBuyCounter } from "@/components/GroupBuyCounter";
 import { getGroupBuyProgressMap } from "@/lib/group-buy";
-import { ProductDetailMeta } from "@/components/ProductMetaChips";
 import { IngredientsList } from "@/components/IngredientsList";
 import { NutritionFactsTable } from "@/components/NutritionFactsTable";
 import { ProductGallery } from "@/components/ProductGallery";
@@ -106,13 +105,6 @@ export default async function ProductPage({
         <div>
           <h1 className="text-3xl sm:text-4xl mb-2">{product.name}</h1>
           <p className="text-muted">{meta.roleLine}</p>
-          <div className="mt-3">
-            <ProductDetailMeta
-              audience={meta.audience}
-              ageLabel={meta.ageLabel}
-              badges={meta.badges}
-            />
-          </div>
         </div>
 
         <div className="border-b border-line pb-6 space-y-4">

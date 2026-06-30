@@ -215,7 +215,6 @@ export default function CheckoutPage() {
             Not billed today. Total may adjust slightly if import costs shift
             before we confirm.
           </p>
-          <CartSavings items={items} showSobeysDeliveryNote />
           {deliveryAddress.trim() && (
             <p className="mt-5 text-xs text-muted leading-relaxed">
               Home delivery to{" "}

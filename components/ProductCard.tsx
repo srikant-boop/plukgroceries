@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { type Product, hasPantryMeta } from "@/lib/products";
+import { type Product } from "@/lib/products";
 import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
 import { useCart } from "@/lib/cart";
-import { ProductCardMeta } from "@/components/ProductMetaChips";
 import { GroupBuyCounter } from "@/components/GroupBuyCounter";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -15,8 +14,6 @@ export function ProductCard({ product }: { product: Product }) {
   const qty = useCart(
     (s) => s.lines.find((l) => l.productId === product.id)?.qty ?? 0,
   );
-
-  const pantry = hasPantryMeta(product) ? product.pantry : null;
 
   const handleAdd = () => {
     add(product.id, 1);
@@ -67,9 +64,6 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
         <p className="mt-1.5 text-xs text-muted">{product.unit}</p>
-        {pantry && (
-          <ProductCardMeta audience={pantry.audience} badges={pantry.badges} />
-        )}
         {product.groupBuyTarget != null && (
           <GroupBuyCounter
             productId={product.id}

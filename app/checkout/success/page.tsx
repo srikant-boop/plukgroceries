@@ -72,7 +72,7 @@ export default async function CheckoutSuccessPage({
         <p className="eyebrow mb-2">Help bring prices down</p>
         <p className="text-sm leading-relaxed text-foreground/85">
           More reservations mean a bigger import batch and lower prices on the
-          next round. Know another family who would want clean Indian food?
+          next round. Know someone else who would want Indian staples?
           Share{" "}
           <a
             href={SITE_URL}

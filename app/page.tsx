@@ -40,7 +40,7 @@ export default function Home() {
             Indian grocery, Aldi-style.
           </h1>
           <p className="text-base sm:text-lg leading-relaxed text-foreground/80 mb-8">
-            33 staples diaspora families buy every week — atta, rice, dal, spices,
+            33 weekly staples for Indian home cooking — atta, rice, dal, spices,
             and everyday pantry. Thin margins on what you price-check, home delivered.
           </p>
           <Link href="#pantry" className="btn px-6 py-3 text-sm">

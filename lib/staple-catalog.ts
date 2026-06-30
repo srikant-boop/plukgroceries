@@ -55,7 +55,7 @@ function staple(s: StapleSpec): PantryProduct {
     origin: "India",
     pantry: {
       roleLine: s.roleLine,
-      audience: ["Family"],
+      audience: [],
       badges: s.badges ?? [],
       whySelected: s.whySelected,
       pricingRole,
@@ -84,7 +84,6 @@ export const stapleProducts: PantryProduct[] = [
     category: "Flour & grains",
     roleLine: "India's #1 atta — weekly roti staple.",
     whySelected: "Price-memorized atta — at wholesale, 0% markup.",
-    badges: ["KVI"],
   }),
   staple({
     id: "basmati-rice-10lb",
@@ -99,7 +98,6 @@ export const stapleProducts: PantryProduct[] = [
     category: "Flour & grains",
     roleLine: "Long-grain basmati for biryani and everyday meals.",
     whySelected: "Price-memorized rice — at wholesale, 0% markup.",
-    badges: ["KVI"],
   }),
   staple({
     id: "sona-masoori-rice-10lb",
@@ -114,7 +112,6 @@ export const stapleProducts: PantryProduct[] = [
     category: "Flour & grains",
     roleLine: "High-frequency everyday rice.",
     whySelected: "Everyday rice — at wholesale, 0% markup.",
-    badges: ["KVI"],
   }),
   staple({
     id: "toor-dal-10lb",

@@ -11,7 +11,7 @@ const steps = [
     sketch: "cart" as const,
     title: "Add to cart",
     detail:
-      "Pick one item or build your own family pantry basket.",
+      "Pick one item or build your own pantry basket.",
   },
   {
     sketch: "pickup" as const,

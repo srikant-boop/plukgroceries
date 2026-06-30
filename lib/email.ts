@@ -147,7 +147,7 @@ export async function sendCustomerReservationEmail(order: Order): Promise<void> 
       <h3 style="font-family:ui-serif,Georgia;font-weight:400">Help bring prices down</h3>
       <p style="font-size:14px;line-height:1.6">
         More reservations mean a bigger import batch and lower prices on the next round.
-        Know another family who would want clean Indian food? Share
+        Know someone else who would want Indian staples? Share
         <a href="${SITE_URL}"> Pluk </a>
         or invite them to our
         <a href="${WHATSAPP_GROUP_URL}"> WhatsApp group </a>.

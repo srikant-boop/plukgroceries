@@ -13,7 +13,7 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          PLUK is Aldi-style Indian grocery for diaspora families — a short shelf
+          PLUK is Aldi-style Indian grocery for the diaspora — a short shelf
           of 33 staples (atta, rice, dal, spices, and everyday pantry), not a
           full store.
         </p>
@@ -31,12 +31,12 @@ const faqs: FaqItem[] = [
         <p className="mb-3">
           We are running a demand-first test — nothing is sitting in a warehouse
           yet. We place the order after the preorder window closes and enough
-          families reserve a product. If the minimum is not reached, we may
+          people reserve a product. If the minimum is not reached, we may
           cancel that item or try it in a later round.
         </p>
         <p>
-          Preorders keep prices fair and help us learn what Indian families in
-          Canada actually want before we import larger quantities.
+          Preorders keep prices fair and help us learn what Oakville shoppers
+          actually want before we import larger quantities.
         </p>
       </>
     ),
@@ -49,10 +49,10 @@ const faqs: FaqItem[] = [
         <p className="mb-3">
           Our model is closer to <strong>Aldi than a specialty store</strong>:
           keep the shelf short, negotiate hard, and pass savings through.{" "}
-          <strong>Atta and rice are at wholesale (0% markup)</strong> — families
+          <strong>Atta and rice are at wholesale (0% markup)</strong> — you
           know those prices by heart. Everything else carries a{" "}
-          <strong>20% margin</strong>, and only locks in once enough families
-          reserve the same case.
+          <strong>20% margin</strong>, and only locks in once enough orders
+          fill the same case.
         </p>
         <p className="mb-3">
           This is a demand-first group buy. We import after the preorder window
@@ -64,7 +64,7 @@ const faqs: FaqItem[] = [
         <p>
           When enough people reserve a product, we import a larger batch — fixed
           costs spread across more units and the next round can come in lower.
-          Know another family who would want this? Share{" "}
+          Know someone else who would want this? Share{" "}
           <a
             href={SITE_URL}
             className="underline underline-offset-2 hover:text-accent"
@@ -110,29 +110,7 @@ const faqs: FaqItem[] = [
   },
   {
     q: "Who are these products for?",
-    a: (
-      <>
-        <p className="mb-3">
-          Cards show name, size, price, and a few tags — open a product for
-          full details, ingredients, and suggested age.
-        </p>
-        <ul className="ml-5 list-disc space-y-1.5">
-          <li>
-            <strong>Baby & toddler:</strong> starting solids (from 6 months).
-          </li>
-          <li>
-            <strong>Toddlers:</strong> 12 months+ — only on products tagged for
-            them.
-          </li>
-          <li>
-            <strong>Kids:</strong> school-age (3+).
-          </li>
-          <li>
-            <strong>Family:</strong> everyone at the table.
-          </li>
-        </ul>
-      </>
-    ),
+    a: "Everyday Indian pantry staples — atta, rice, dal, spices, and cooking essentials for home kitchens in Oakville.",
   },
   {
     q: "How do I check allergens and ingredients?",
