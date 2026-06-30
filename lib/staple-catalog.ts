@@ -1,7 +1,44 @@
 import type { PantryProduct, PantryCollection } from "./pantry-catalog";
+import { EVEREST_UNIT_COSTS } from "./everest-wholesale";
 import { priceFromCost, type PricingRule } from "./staple-pricing";
 
 const PLACEHOLDER = "/products/staples/placeholder.svg";
+
+/** Downloaded pack shots — falls back to placeholder when missing. */
+const HAS_IMAGE = new Set([
+  "aashirvaad-atta-20lb",
+  "basmati-rice-10lb",
+  "besan-2kg",
+  "chana-dal-10lb",
+  "coriander-100g",
+  "cumin-100g",
+  "indian-pickle",
+  "lays-chips",
+  "maggi-noodles",
+  "makhana",
+  "masoor-dal-10lb",
+  "moong-dal-10lb",
+  "mustard-oil-1l",
+  "nanak-ghee",
+  "paneer",
+  "papad",
+  "parle-g-biscuits",
+  "poha",
+  "rajma-10lb",
+  "rava-sooji-2kg",
+  "red-label-tea",
+  "salt-2kg",
+  "sona-masoori-rice-10lb",
+  "sugar-2kg",
+  "sunflower-oil-1l",
+  "toor-dal-10lb",
+  "turmeric-100g",
+  "urad-dal-10lb",
+]);
+
+function stapleImage(id: string): string {
+  return HAS_IMAGE.has(id) ? `/products/staples/${id}.jpg` : PLACEHOLDER;
+}
 
 type CompetitorEntry = {
   store: string;
@@ -38,7 +75,7 @@ function staple(s: StapleSpec): PantryProduct {
     longDescription: s.shortDescription,
     category: s.category,
     collection: s.collection,
-    image: PLACEHOLDER,
+    image: stapleImage(s.id),
     imageAlt: s.name,
     unit: s.unit,
     stock: 50,
@@ -57,6 +94,7 @@ function staple(s: StapleSpec): PantryProduct {
       preparation: "See package label.",
       storage: "Store in a cool, dry place.",
       countryOfOrigin: "India",
+      gallery: [stapleImage(s.id)],
     },
   };
 }
@@ -88,7 +126,7 @@ export const stapleProducts: PantryProduct[] = [
     name: "Basmati Rice",
     shortDescription: "Premium branded basmati rice — 10 lb.",
     unit: "10 lb",
-    cost: 11.0,
+    cost: EVEREST_UNIT_COSTS.basmati10lb,
     rule: "kvi-thin",
     pricingRole: "kvi",
     collection: "staples",
@@ -133,7 +171,7 @@ export const stapleProducts: PantryProduct[] = [
     name: "Masoor Dal",
     shortDescription: "Red lentils — 10 lb.",
     unit: "10 lb",
-    cost: 8.29,
+    cost: EVEREST_UNIT_COSTS.masoor10lb,
     rule: "kvi-thin",
     pricingRole: "kvi",
     collection: "dal",
@@ -299,17 +337,17 @@ export const stapleProducts: PantryProduct[] = [
   staple({
     id: "mdh-masala",
     uuid: "b2000011-0000-4000-8000-000000000011",
-    name: "MDH Blended Masala",
-    shortDescription: "MDH blended spice mix.",
-    brand: "MDH",
+    name: "Badshah Punjabi Garam Masala",
+    shortDescription: "Badshah Punjabi garam masala — 100 g.",
+    brand: "Badshah",
     unit: "100 g",
-    cost: 3.5,
+    cost: EVEREST_UNIT_COSTS.badshahMasala100g,
     rule: "margin-strong",
     pricingRole: "margin",
     collection: "spices",
     category: "Spices",
-    roleLine: "Brand-locked blended masala.",
-    whySelected: "Brand-locked blended masala — strong markup.",
+    roleLine: "Brand-locked Punjabi garam masala.",
+    whySelected: "Brand-locked blended masala — strong markup (Everest wholesale).",
   }),
   staple({
     id: "nanak-ghee",
@@ -403,7 +441,7 @@ export const stapleProducts: PantryProduct[] = [
     shortDescription: "Brooke Bond Red Label tea.",
     brand: "Red Label",
     unit: "900 g",
-    cost: 7.5,
+    cost: EVEREST_UNIT_COSTS.redLabelTea900g,
     rule: "margin",
     pricingRole: "margin",
     collection: "cooking",
@@ -414,11 +452,11 @@ export const stapleProducts: PantryProduct[] = [
   staple({
     id: "maggi-noodles",
     uuid: "b2000019-0000-4000-8000-000000000019",
-    name: "Maggi Noodles",
-    shortDescription: "Maggi 2-Minute Masala noodles.",
+    name: "Maggi Masala Noodles",
+    shortDescription: "Maggi 2-Minute Masala noodles — 280 g.",
     brand: "Maggi",
-    unit: "4-pack",
-    cost: 1.2,
+    unit: "280 g",
+    cost: EVEREST_UNIT_COSTS.maggi280g,
     rule: "margin",
     pricingRole: "margin",
     collection: "snacks",
@@ -432,7 +470,7 @@ export const stapleProducts: PantryProduct[] = [
     name: "Mustard Oil",
     shortDescription: "Kachi ghani mustard oil — 1 L.",
     unit: "1 L",
-    cost: 7.5,
+    cost: EVEREST_UNIT_COSTS.mustardOil1L,
     rule: "margin-moderate",
     pricingRole: "margin",
     collection: "cooking",
@@ -487,11 +525,11 @@ export const stapleProducts: PantryProduct[] = [
   staple({
     id: "lays-chips",
     uuid: "b200001e-0000-4000-8000-00000000001e",
-    name: "Lays Chips",
-    shortDescription: "Classic salted potato chips.",
+    name: "Lays Magic Masala",
+    shortDescription: "Lays Magic Masala potato chips.",
     brand: "Lays",
-    unit: "170 g",
-    cost: 2.0,
+    unit: "52 g",
+    cost: EVEREST_UNIT_COSTS.lays55g,
     rule: "margin",
     pricingRole: "margin",
     collection: "snacks",
