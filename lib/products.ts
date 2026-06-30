@@ -107,7 +107,7 @@ export const averageSavingsVsStore = (store: string): number => {
 
 export const products: Product[] = pantryProducts;
 
-/** Curated 7-SKU test shelf. */
+/** Curated staples test shelf. */
 export const STOREFRONT_PRODUCT_IDS = TEST_SHELF_PRODUCT_IDS;
 
 export const isStorefrontProduct = (p: Product) =>

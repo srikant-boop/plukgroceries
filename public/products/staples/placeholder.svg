@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500" fill="none">
+  <rect width="400" height="500" fill="#F5F0E8"/>
+  <path d="M200 140c-28 0-50 22-50 50 0 20 12 37 29 45-17 8-29 25-29 45 0 28 22 50 50 50s50-22 50-50c0-20-12-37-29-45 17-8 29-25 29-45 0-28-22-50-50-50z" fill="#C8D5BC" opacity="0.6"/>
+  <text x="200" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#8A8578" letter-spacing="0.08em">STAPLE</text>
+</svg>

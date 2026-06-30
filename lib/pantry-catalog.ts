@@ -1,3 +1,5 @@
+import { stapleProducts } from "./staple-catalog";
+
 /** Extended pantry fields — compliance-safe copy from official sources where noted. */
 export type IngredientRow = {
   name: string;
@@ -14,6 +16,8 @@ export type PantryMeta = {
   audience: string[];
   /** Max 3 shown on cards; full list on PDP */
   badges: string[];
+  /** KVI vs margin pricing strategy for staples shelf. */
+  pricingRole?: "kvi" | "margin" | "mild-kvi";
   whySelected: string;
   ingredientSections: IngredientSection[];
   ingredientsNote?: string;
@@ -42,12 +46,19 @@ export type PantryProduct = {
   wholesalerPrice: number;
   markupMultiplier: number;
   ourPrice: number;
-  competitors: [];
+  competitors: PantryCompetitor[];
   supplierId?: string;
   brand?: string;
   origin?: string;
   pantry: PantryMeta;
   collection: PantryCollection;
+};
+
+export type PantryCompetitor = {
+  store: string;
+  price: number;
+  unit: string;
+  url?: string;
 };
 
 export type PantryCollection =
@@ -58,7 +69,12 @@ export type PantryCollection =
   | "dosa"
   | "pasta"
   | "cookies"
-  | "snacks";
+  | "snacks"
+  | "staples"
+  | "dal"
+  | "spices"
+  | "dairy"
+  | "cooking";
 
 export const PANTRY_COLLECTIONS: {
   slug: PantryCollection;
@@ -72,18 +88,17 @@ export const PANTRY_COLLECTIONS: {
   { slug: "dosa", title: "Dosa", navLabel: "Dosa" },
   { slug: "pasta", title: "Pasta", navLabel: "Pasta" },
   { slug: "snacks", title: "Snacks", navLabel: "Snacks" },
+  { slug: "staples", title: "Staples", navLabel: "Staples" },
+  { slug: "dal", title: "Dal & Legumes", navLabel: "Dal" },
+  { slug: "spices", title: "Spices", navLabel: "Spices" },
+  { slug: "dairy", title: "Dairy", navLabel: "Dairy" },
+  { slug: "cooking", title: "Cooking Essentials", navLabel: "Cooking" },
 ];
 
-/** Curated 7-SKU test shelf — only these appear on the storefront. */
-export const TEST_SHELF_PRODUCT_IDS = new Set([
-  "slurrp-farm-millet-noodles-masala",
-  "slurrp-farm-millet-dosa-spinach",
-  "slurrp-farm-millet-pancake-chocolate",
-  "slurrp-farm-macaroni-pasta",
-  "slurrp-farm-choco-crunch-ragi-cereal",
-  "early-foods-rice-moong-khichdi",
-  "superyou-multigrain-protein-chips",
-]);
+/** Indian grocery staples test shelf — only these appear on the storefront. */
+export const TEST_SHELF_PRODUCT_IDS = new Set(
+  stapleProducts.map((p) => p.id),
+);
 
 const P = (cost: number, price: number) => ({
   wholesalerPrice: cost,
@@ -759,6 +774,7 @@ export const pantryProducts: PantryProduct[] = [
       ],
     },
   },
+  ...stapleProducts,
 ];
 
 export function getPantryProduct(slug: string): PantryProduct | undefined {
