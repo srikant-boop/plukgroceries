@@ -31,6 +31,9 @@ WALMART_FALLBACKS: dict[str, list[str]] = {
         "https://i5.walmartimages.com/seo/Parle-G-Gold-Biscuits-1-KG-10-pack-of-100g_45ca1170-fe2e-4f6f-92bf-818c8f2d3c73.680d13d1e5cac5ae7105b0f0b08b7ed9.jpeg",
         "https://i5.walmartimages.com/asr/024fa08f-57b5-4526-b90c-56e7b8aa5e78.7d6a1898516b25aa49218a95a271635e.jpeg",
     ],
+    "maggi-noodles": [
+        "https://i5.walmartimages.com/asr/3d403be0-a800-4c66-8c07-0907931cdb5f.6a1c622059e0f010b83c1a211b5dc377.jpeg",
+    ],
 }
 
 # A1 product slugs — pack size must match staple-catalog.ts unit.
@@ -59,7 +62,6 @@ A1_SLUGS: dict[str, str] = {
     "makhana": "apna-lotus-seeds-phool-makhana",
     "poha": "apna-pressed-rice-thin-poha",
     "red-label-tea": "brooke-bond-red-label-black-tea",
-    "maggi-noodles": "maggi-noodles-spicy-masala",
     "mustard-oil-1l": "apna-mustard-oil",
     "sunflower-oil-1l": "the-king-sunflower-oil",
     "salt-2kg": "windsor-salt",

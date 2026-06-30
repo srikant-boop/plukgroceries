@@ -3,7 +3,7 @@
  * Images are scraped from the matching product page (og:image).
  */
 export type A1StapleSource = {
-  slug: string;
+  slug?: string;
   unit: string;
   notes?: string;
 };
@@ -45,7 +45,10 @@ export const A1_STAPLE_SOURCES: Record<string, A1StapleSource> = {
   "makhana": { slug: "apna-lotus-seeds-phool-makhana", unit: "2 lb" },
   "poha": { slug: "apna-pressed-rice-thin-poha", unit: "4 lb" },
   "red-label-tea": { slug: "brooke-bond-red-label-black-tea", unit: "900 g" },
-  "maggi-noodles": { slug: "maggi-noodles-spicy-masala", unit: "70 g", notes: "A1 single pack" },
+  "maggi-noodles": {
+    unit: "4-pack (280 g)",
+    notes: "Everest Jan 2026: $40/case × 24×280 g; Walmart image (A1 only has 70 g singles)",
+  },
   "mustard-oil-1l": { slug: "apna-mustard-oil", unit: "1 L" },
   "sunflower-oil-1l": { slug: "the-king-sunflower-oil", unit: "3 L", notes: "Closest A1 retail size" },
   "salt-2kg": { slug: "windsor-salt", unit: "1 kg" },
