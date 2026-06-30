@@ -37,11 +37,11 @@ export default function Home() {
         </div>
         <div className="relative px-6 sm:px-10 py-14 sm:py-20 max-w-3xl">
           <h1 className="text-3xl sm:text-[2.75rem] leading-[1.08] mb-5">
-            Clean Indian foods for the whole family.
+            Indian grocery, Aldi-style.
           </h1>
           <p className="text-base sm:text-lg leading-relaxed text-foreground/80 mb-8">
-            A short à la carte shelf of trusted breakfast, snack, and quick-meal
-            brands — preorder one product or build your basket.
+            33 staples diaspora families buy every week — atta, rice, dal, spices,
+            and everyday pantry. Thin margins on what you price-check, home delivered.
           </p>
           <Link href="#pantry" className="btn px-6 py-3 text-sm">
             Shop the Pantry
@@ -55,7 +55,7 @@ export default function Home() {
         <div className="mb-6 flex items-baseline justify-between border-b border-line pb-3">
           <div className="flex items-baseline gap-3">
             <Leaf size={16} className="text-accent" />
-            <h2 className="text-2xl">Shop the pantry</h2>
+            <h2 className="text-2xl">Shop staples</h2>
           </div>
           <span className="eyebrow">{products.length} products</span>
         </div>

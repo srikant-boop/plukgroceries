@@ -3,9 +3,9 @@ import { Leaf } from "@/components/Leaf";
 const steps = [
   {
     sketch: "choose" as const,
-    title: "Choose what you need",
+    title: "Choose your staples",
     detail:
-      "Shop individual products à la carte. No bundles required.",
+      "Atta, rice, dal, spices — shop what your kitchen needs. No full grocery store.",
   },
   {
     sketch: "cart" as const,

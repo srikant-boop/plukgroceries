@@ -3,16 +3,16 @@ export const SITE_URL = "https://plukgroceries.vercel.app";
 
 export const SITE_NAME = "Pluk";
 
-export const SITE_TITLE = "Clean Indian foods for the whole family";
+export const SITE_TITLE = "Indian grocery, Aldi-style";
 
 export const DEFAULT_DESCRIPTION =
-  "A short à la carte shelf of trusted Indian breakfast, snack, and quick-meal brands — preorder one product or build your basket.";
+  "33 diaspora staples — atta, rice, dal, spices, and everyday Indian grocery. Thin margins on what you price-check, home delivered in Oakville.";
 
 export const OG_IMAGE_PATH = "/og-image.png";
 
 export const OG_IMAGE_URL = `${SITE_URL}${OG_IMAGE_PATH}`;
 
-export const OG_IMAGE_ALT = "Pluk — curated Indian family pantry";
+export const OG_IMAGE_ALT = "Pluk — Indian grocery for the diaspora";
 
 export const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID?.trim() || undefined;
 

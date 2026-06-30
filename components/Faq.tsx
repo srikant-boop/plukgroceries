@@ -13,13 +13,13 @@ const faqs: FaqItem[] = [
     a: (
       <>
         <p className="mb-3">
-          PLUK is a small, curated Indian pantry — trusted
-          breakfast, snack, and quick-meal brands you can buy one at a time.
+          PLUK is Aldi-style Indian grocery for diaspora families — a short shelf
+          of 33 staples (atta, rice, dal, spices, and everyday pantry), not a
+          full store.
         </p>
         <p>
-          Not a full grocery store, subscription box, or weekly drop. The shelf
-          stays short on purpose — one strong pick per product type. Want
-          something we do not carry? Tell us.
+          We keep margins thin on price-memorized items like atta and toor dal,
+          and home deliver in Oakville. Want something we do not carry? Tell us.
         </p>
       </>
     ),
@@ -49,8 +49,8 @@ const faqs: FaqItem[] = [
         <p className="mb-3">
           Our model is closer to <strong>Aldi than a specialty store</strong>:
           keep the shelf short, negotiate hard, take a thin margin, and pass
-          savings through. We want clean Indian food at the lowest fair price we
-          can offer — not premium for premium&apos;s sake.
+          savings through. Atta, rice, and toor dal are priced as hooks — close
+          to wholesale — because diaspora families know those prices by heart.
         </p>
         <p className="mb-3">
           This is a demand-first test. We import in small batches from

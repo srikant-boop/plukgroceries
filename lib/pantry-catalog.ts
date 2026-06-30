@@ -1,4 +1,5 @@
 import { stapleProducts } from "./staple-catalog";
+import { CURATED_SHELF_IDS } from "./staple-shelf";
 
 /** Extended pantry fields — compliance-safe copy from official sources where noted. */
 export type IngredientRow = {
@@ -95,10 +96,8 @@ export const PANTRY_COLLECTIONS: {
   { slug: "cooking", title: "Cooking Essentials", navLabel: "Cooking" },
 ];
 
-/** Indian grocery staples test shelf — only these appear on the storefront. */
-export const TEST_SHELF_PRODUCT_IDS = new Set(
-  stapleProducts.map((p) => p.id),
-);
+/** Aldi-style diaspora staples — curated 33-item plan (32 SKUs). */
+export const TEST_SHELF_PRODUCT_IDS = new Set<string>(CURATED_SHELF_IDS);
 
 const P = (cost: number, price: number) => ({
   wholesalerPrice: cost,
