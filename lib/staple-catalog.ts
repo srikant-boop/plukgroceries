@@ -1,48 +1,9 @@
 import type { PantryProduct, PantryCollection } from "./pantry-catalog";
 import { EVEREST_UNIT_COSTS } from "./everest-wholesale";
+import { CURATED_SHELF_IDS, type CuratedShelfId } from "./staple-shelf";
 import { priceFromCost, type PricingRule } from "./staple-pricing";
 
 const PLACEHOLDER = "/products/staples/placeholder.svg";
-
-/** Downloaded pack shots — falls back to placeholder when missing. */
-const HAS_IMAGE = new Set([
-  "aashirvaad-atta-20lb",
-  "basmati-rice-10lb",
-  "besan-2kg",
-  "chana-dal-10lb",
-  "coriander-100g",
-  "cumin-100g",
-  "dahi",
-  "indian-pickle",
-  "kabuli-chana-10lb",
-  "lays-chips",
-  "maggi-noodles",
-  "makhana",
-  "masoor-dal-10lb",
-  "mdh-masala",
-  "moong-dal-10lb",
-  "mustard-oil-1l",
-  "nanak-ghee",
-  "paneer",
-  "papad",
-  "parle-g-biscuits",
-  "poha",
-  "rajma-10lb",
-  "rava-sooji-2kg",
-  "red-chilli-100g",
-  "red-label-tea",
-  "salt-2kg",
-  "sona-masoori-rice-10lb",
-  "sugar-2kg",
-  "sunflower-oil-1l",
-  "toor-dal-10lb",
-  "turmeric-100g",
-  "urad-dal-10lb",
-]);
-
-function stapleImage(id: string): string {
-  return HAS_IMAGE.has(id) ? `/products/staples/${id}.jpg` : PLACEHOLDER;
-}
 
 type CompetitorEntry = {
   store: string;
@@ -66,10 +27,12 @@ type StapleSpec = {
   whySelected: string;
   badges?: string[];
   competitors?: CompetitorEntry[];
+  image?: string;
 };
 
 function staple(s: StapleSpec): PantryProduct {
   const pricing = priceFromCost(s.cost, s.rule);
+  const image = s.image ?? PLACEHOLDER;
   return {
     uuid: s.uuid,
     id: s.id,
@@ -79,7 +42,7 @@ function staple(s: StapleSpec): PantryProduct {
     longDescription: s.shortDescription,
     category: s.category,
     collection: s.collection,
-    image: stapleImage(s.id),
+    image,
     imageAlt: s.name,
     unit: s.unit,
     stock: 50,
@@ -98,7 +61,7 @@ function staple(s: StapleSpec): PantryProduct {
       preparation: "See package label.",
       storage: "Store in a cool, dry place.",
       countryOfOrigin: "India",
-      gallery: [stapleImage(s.id)],
+      gallery: s.image ? [s.image] : [PLACEHOLDER],
     },
   };
 }
@@ -106,6 +69,7 @@ function staple(s: StapleSpec): PantryProduct {
 export const stapleProducts: PantryProduct[] = [
   staple({
     id: "aashirvaad-atta-20lb",
+    image: "/products/staples/aashirvaad-atta-20lb.jpg",
     uuid: "b2000001-0000-4000-8000-000000000001",
     name: "Aashirvaad Atta",
     shortDescription: "Whole wheat atta — 20 lb bag.",
@@ -126,6 +90,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "basmati-rice-10lb",
+    image: "/products/staples/basmati-rice-10lb.jpg",
     uuid: "b2000002-0000-4000-8000-000000000002",
     name: "Basmati Rice",
     shortDescription: "Premium branded basmati rice — 10 lb.",
@@ -141,6 +106,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "sona-masoori-rice-10lb",
+    image: "/products/staples/sona-masoori-rice-10lb.jpg",
     uuid: "b2000003-0000-4000-8000-000000000003",
     name: "Sona Masoori Rice",
     shortDescription: "Everyday sona masoori rice — 10 lb.",
@@ -156,6 +122,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "toor-dal-10lb",
+    image: "/products/staples/toor-dal-10lb.jpg",
     uuid: "b2000004-0000-4000-8000-000000000004",
     name: "Toor Dal",
     shortDescription: "Split pigeon peas — 10 lb.",
@@ -171,11 +138,12 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "masoor-dal-10lb",
+    image: "/products/staples/masoor-dal-10lb.jpg",
     uuid: "b2000005-0000-4000-8000-000000000005",
     name: "Masoor Dal",
     shortDescription: "Red lentils — 10 lb.",
     unit: "10 lb",
-    cost: EVEREST_UNIT_COSTS.masoor10lb,
+    cost: 8.29,
     rule: "kvi-thin",
     pricingRole: "kvi",
     collection: "dal",
@@ -186,6 +154,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "urad-dal-10lb",
+    image: "/products/staples/urad-dal-10lb.jpg",
     uuid: "b2000006-0000-4000-8000-000000000006",
     name: "Urad Dal",
     shortDescription: "Split black gram — 10 lb.",
@@ -200,6 +169,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "chana-dal-10lb",
+    image: "/products/staples/chana-dal-10lb.jpg",
     uuid: "b2000007-0000-4000-8000-000000000007",
     name: "Chana Dal",
     shortDescription: "Split Bengal gram — 10 lb.",
@@ -214,6 +184,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "moong-dal-10lb",
+    image: "/products/staples/moong-dal-10lb.jpg",
     uuid: "b2000008-0000-4000-8000-000000000008",
     name: "Moong Dal",
     shortDescription: "Split green gram — 10 lb.",
@@ -228,6 +199,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "rajma-10lb",
+    image: "/products/staples/rajma-10lb.jpg",
     uuid: "b2000009-0000-4000-8000-000000000009",
     name: "Rajma",
     shortDescription: "Kidney beans — 10 lb.",
@@ -242,6 +214,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "kabuli-chana-10lb",
+    image: "/products/staples/kabuli-chana-10lb.jpg",
     uuid: "b200000a-0000-4000-8000-00000000000a",
     name: "Kabuli Chana",
     shortDescription: "Chickpeas — 10 lb.",
@@ -256,6 +229,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "besan-2kg",
+    image: "/products/staples/besan-2kg.jpg",
     uuid: "b200000b-0000-4000-8000-00000000000b",
     name: "Besan",
     shortDescription: "Gram flour — 2 kg.",
@@ -270,6 +244,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "rava-sooji-2kg",
+    image: "/products/staples/rava-sooji-2kg.jpg",
     uuid: "b200000c-0000-4000-8000-00000000000c",
     name: "Rava / Sooji",
     shortDescription: "Semolina — 2 kg.",
@@ -284,6 +259,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "turmeric-100g",
+    image: "/products/staples/turmeric-100g.jpg",
     uuid: "b200000d-0000-4000-8000-00000000000d",
     name: "Turmeric Powder",
     shortDescription: "Ground turmeric — 100 g.",
@@ -298,6 +274,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "red-chilli-100g",
+    image: "/products/staples/red-chilli-100g.jpg",
     uuid: "b200000e-0000-4000-8000-00000000000e",
     name: "Red Chilli Powder",
     shortDescription: "Ground red chilli — 100 g.",
@@ -312,6 +289,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "cumin-100g",
+    image: "/products/staples/cumin-100g.jpg",
     uuid: "b200000f-0000-4000-8000-00000000000f",
     name: "Cumin Powder",
     shortDescription: "Ground cumin — 100 g.",
@@ -326,6 +304,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "coriander-100g",
+    image: "/products/staples/coriander-100g.jpg",
     uuid: "b2000010-0000-4000-8000-000000000010",
     name: "Coriander Powder",
     shortDescription: "Ground coriander — 100 g.",
@@ -340,21 +319,23 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "mdh-masala",
+    image: "/products/staples/mdh-masala.jpg",
     uuid: "b2000011-0000-4000-8000-000000000011",
-    name: "Badshah Punjabi Garam Masala",
-    shortDescription: "Badshah Punjabi garam masala — 100 g.",
-    brand: "Badshah",
+    name: "MDH Blended Masala",
+    shortDescription: "MDH blended spice mix — 100 g.",
+    brand: "MDH",
     unit: "100 g",
-    cost: EVEREST_UNIT_COSTS.badshahMasala100g,
+    cost: 3.5,
     rule: "margin-strong",
     pricingRole: "margin",
     collection: "spices",
     category: "Spices",
-    roleLine: "Brand-locked Punjabi garam masala.",
-    whySelected: "Brand-locked blended masala — strong markup (Everest wholesale).",
+    roleLine: "Brand-locked blended masala.",
+    whySelected: "Brand-locked blended masala — strong markup.",
   }),
   staple({
     id: "nanak-ghee",
+    image: "/products/staples/nanak-ghee.jpg",
     uuid: "b2000012-0000-4000-8000-000000000012",
     name: "Nanak Ghee",
     shortDescription: "Clarified butter — Nanak brand.",
@@ -370,6 +351,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "paneer",
+    image: "/products/staples/paneer.jpg",
     uuid: "b2000013-0000-4000-8000-000000000013",
     name: "Paneer",
     shortDescription: "Fresh Indian cottage cheese.",
@@ -384,6 +366,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "dahi",
+    image: "/products/staples/dahi.jpg",
     uuid: "b2000014-0000-4000-8000-000000000014",
     name: "Dahi",
     shortDescription: "Fresh Indian-style yogurt.",
@@ -398,6 +381,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "indian-pickle",
+    image: "/products/staples/indian-pickle.jpg",
     uuid: "b2000015-0000-4000-8000-000000000015",
     name: "Indian Pickle",
     shortDescription: "Mixed vegetable achar.",
@@ -412,6 +396,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "makhana",
+    image: "/products/staples/makhana.jpg",
     uuid: "b2000016-0000-4000-8000-000000000016",
     name: "Makhana",
     shortDescription: "Fox nuts — plain roasted.",
@@ -426,6 +411,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "poha",
+    image: "/products/staples/poha.jpg",
     uuid: "b2000017-0000-4000-8000-000000000017",
     name: "Poha",
     shortDescription: "Flattened rice — thick.",
@@ -440,6 +426,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "red-label-tea",
+    image: "/products/staples/red-label-tea.jpg",
     uuid: "b2000018-0000-4000-8000-000000000018",
     name: "Red Label Tea",
     shortDescription: "Brooke Bond Red Label tea.",
@@ -455,12 +442,13 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "maggi-noodles",
+    image: "/products/staples/maggi-noodles.jpg",
     uuid: "b2000019-0000-4000-8000-000000000019",
-    name: "Maggi Masala Noodles",
-    shortDescription: "Maggi 2-Minute Masala noodles — 280 g.",
+    name: "Maggi Noodles",
+    shortDescription: "Maggi 2-Minute Masala noodles — 4-pack.",
     brand: "Maggi",
-    unit: "280 g",
-    cost: EVEREST_UNIT_COSTS.maggi280g,
+    unit: "4-pack",
+    cost: 4.0,
     rule: "margin",
     pricingRole: "margin",
     collection: "snacks",
@@ -470,6 +458,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "mustard-oil-1l",
+    image: "/products/staples/mustard-oil-1l.jpg",
     uuid: "b200001a-0000-4000-8000-00000000001a",
     name: "Mustard Oil",
     shortDescription: "Kachi ghani mustard oil — 1 L.",
@@ -484,6 +473,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "sunflower-oil-1l",
+    image: "/products/staples/sunflower-oil-1l.jpg",
     uuid: "b200001b-0000-4000-8000-00000000001b",
     name: "Sunflower Oil",
     shortDescription: "Refined sunflower oil — 1 L.",
@@ -498,6 +488,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "salt-2kg",
+    image: "/products/staples/salt-2kg.jpg",
     uuid: "b200001c-0000-4000-8000-00000000001c",
     name: "Salt",
     shortDescription: "Iodised salt — 2 kg.",
@@ -513,6 +504,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "sugar-2kg",
+    image: "/products/staples/sugar-2kg.jpg",
     uuid: "b200001d-0000-4000-8000-00000000001d",
     name: "Sugar",
     shortDescription: "Granulated sugar — 2 kg.",
@@ -528,12 +520,13 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "lays-chips",
+    image: "/products/staples/lays-chips.jpg",
     uuid: "b200001e-0000-4000-8000-00000000001e",
-    name: "Lays Magic Masala",
-    shortDescription: "Lays Magic Masala potato chips.",
+    name: "Lays Chips",
+    shortDescription: "Classic potato chips.",
     brand: "Lays",
-    unit: "52 g",
-    cost: EVEREST_UNIT_COSTS.lays55g,
+    unit: "170 g",
+    cost: 2.0,
     rule: "margin",
     pricingRole: "margin",
     collection: "snacks",
@@ -543,6 +536,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "papad",
+    image: "/products/staples/papad.jpg",
     uuid: "b200001f-0000-4000-8000-00000000001f",
     name: "Papad",
     shortDescription: "Roasted urad papad.",
@@ -557,6 +551,7 @@ export const stapleProducts: PantryProduct[] = [
   }),
   staple({
     id: "parle-g-biscuits",
+    image: "/products/staples/parle-g-biscuits.jpg",
     uuid: "b2000020-0000-4000-8000-000000000020",
     name: "Parle-G Biscuits",
     shortDescription: "Parle-G glucose biscuits.",
@@ -571,3 +566,15 @@ export const stapleProducts: PantryProduct[] = [
     whySelected: "Impulse snack — healthy markup.",
   }),
 ];
+
+if (stapleProducts.length !== CURATED_SHELF_IDS.length) {
+  throw new Error(
+    `staple catalog must have ${CURATED_SHELF_IDS.length} SKUs, got ${stapleProducts.length}`,
+  );
+}
+const shelfIdSet = new Set(CURATED_SHELF_IDS);
+for (const p of stapleProducts) {
+  if (!shelfIdSet.has(p.id as CuratedShelfId)) {
+    throw new Error(`unexpected staple SKU on shelf: ${p.id}`);
+  }
+}
