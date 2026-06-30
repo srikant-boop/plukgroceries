@@ -133,8 +133,8 @@ export default function CartPage() {
             <span className="tabular-nums">{money(total)}</span>
           </div>
           <p className="text-[11px] text-muted mt-2 leading-relaxed">
-            Not billed today. Total may adjust slightly if import costs shift
-            before we confirm.
+            Not billed today. Each item ships only if its group-buy case fills;
+            total may adjust slightly if import costs shift before we confirm.
           </p>
           <CartSavings items={items} />
           <Link href="/checkout" className="btn w-full mt-6">

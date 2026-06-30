@@ -18,7 +18,7 @@ export type PantryMeta = {
   /** Max 3 shown on cards; full list on PDP */
   badges: string[];
   /** KVI vs margin pricing strategy for staples shelf. */
-  pricingRole?: "kvi" | "margin" | "mild-kvi";
+  pricingRole?: "kvi" | "margin";
   whySelected: string;
   ingredientSections: IngredientSection[];
   ingredientsNote?: string;
@@ -44,6 +44,8 @@ export type PantryProduct = {
   imageAlt?: string;
   unit: string;
   stock: number;
+  /** Units needed across all reservations to lock wholesale case price. */
+  groupBuyTarget?: number;
   wholesalerPrice: number;
   markupMultiplier: number;
   ourPrice: number;

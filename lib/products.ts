@@ -29,6 +29,7 @@ export type Product = {
   imageAlt?: string;
   unit: string;
   stock: number;
+  groupBuyTarget?: number;
   wholesalerPrice: number;
   markupMultiplier: number;
   ourPrice: number;

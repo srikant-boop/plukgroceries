@@ -10,6 +10,8 @@ import { getProductLabelData } from "@/lib/product-label-data";
 import { getSupplierById } from "@/lib/suppliers";
 import { money } from "@/lib/format";
 import { AddToCart } from "@/components/AddToCart";
+import { GroupBuyCounter } from "@/components/GroupBuyCounter";
+import { getGroupBuyProgressMap } from "@/lib/group-buy";
 import { ProductDetailMeta } from "@/components/ProductMetaChips";
 import { IngredientsList } from "@/components/IngredientsList";
 import { NutritionFactsTable } from "@/components/NutritionFactsTable";
@@ -46,6 +48,8 @@ export default async function ProductPage({
   const brandName = supplier?.name ?? product.brand;
   const assets = getProductAssets(slug);
   const labelData = getProductLabelData(slug);
+  const groupBuyMap = await getGroupBuyProgressMap();
+  const groupBuy = groupBuyMap[product.id];
   const gallery = assets?.gallery?.length
     ? assets.gallery
     : meta.gallery?.length
@@ -111,11 +115,23 @@ export default async function ProductPage({
           </div>
         </div>
 
-        <div className="border-b border-line pb-6">
+        <div className="border-b border-line pb-6 space-y-4">
           <div className="flex items-baseline gap-3 flex-wrap">
             <span className="text-4xl tabular-nums">{money(product.ourPrice)}</span>
             <span className="text-sm text-muted">/ {product.unit}</span>
           </div>
+          <p className="text-xs text-muted leading-relaxed">
+            {product.wholesalerPrice === product.ourPrice
+              ? "At wholesale — 0% markup on atta and rice."
+              : "20% margin — applies when the group-buy case fills."}
+          </p>
+          {product.groupBuyTarget != null && (
+            <GroupBuyCounter
+              productId={product.id}
+              target={product.groupBuyTarget}
+              initial={groupBuy}
+            />
+          )}
           {brandName && (
             <p className="mt-2 text-sm text-muted">
               From{" "}

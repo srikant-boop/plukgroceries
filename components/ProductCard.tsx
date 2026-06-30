@@ -7,6 +7,7 @@ import { money } from "@/lib/format";
 import { track } from "@/lib/analytics-client";
 import { useCart } from "@/lib/cart";
 import { ProductCardMeta } from "@/components/ProductMetaChips";
+import { GroupBuyCounter } from "@/components/GroupBuyCounter";
 
 export function ProductCard({ product }: { product: Product }) {
   const add = useCart((s) => s.add);
@@ -76,6 +77,13 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="mt-1.5 text-xs text-muted">{product.unit}</p>
         {pantry && (
           <ProductCardMeta audience={pantry.audience} badges={pantry.badges} />
+        )}
+        {product.groupBuyTarget != null && (
+          <GroupBuyCounter
+            productId={product.id}
+            target={product.groupBuyTarget}
+            compact
+          />
         )}
         <div className="mt-auto pt-4">
           {qty <= 0 ? (

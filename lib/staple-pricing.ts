@@ -1,20 +1,24 @@
-export type PricingRule =
-  | "kvi-near"
-  | "kvi-thin"
-  | "mild-kvi"
-  | "margin"
-  | "margin-strong"
-  | "margin-moderate";
+/** Retail margin on shelf price — price = cost / (1 - margin). */
+export const STANDARD_MARGIN = 0.2;
 
-/** Margin on retail price → price = cost / (1 - marginPct). */
-const MARGIN_ON_PRICE: Record<PricingRule, number> = {
-  "kvi-near": 0.1,
-  "kvi-thin": 0.15,
-  "mild-kvi": 0.12,
-  margin: 0.35,
-  "margin-strong": 0.45,
-  "margin-moderate": 0.25,
-};
+/** Atta and rice — pass wholesale through at 0% margin. */
+export const KVI_MARGIN = 0;
+
+export type PricingTier = "kvi" | "standard";
+
+export const ZERO_MARGIN_PRODUCT_IDS = new Set([
+  "aashirvaad-atta-20lb",
+  "basmati-rice-10lb",
+  "sona-masoori-rice-10lb",
+]);
+
+export function pricingTierForProduct(productId: string): PricingTier {
+  return ZERO_MARGIN_PRODUCT_IDS.has(productId) ? "kvi" : "standard";
+}
+
+export function marginForTier(tier: PricingTier): number {
+  return tier === "kvi" ? KVI_MARGIN : STANDARD_MARGIN;
+}
 
 /** Round up to nearest .49 or .99 retail ending. */
 export function roundRetail(price: number): number {
@@ -27,15 +31,19 @@ export function roundRetail(price: number): number {
 
 export function priceFromCost(
   cost: number,
-  rule: PricingRule,
+  tier: PricingTier,
 ): { wholesalerPrice: number; ourPrice: number; markupMultiplier: number } {
-  const marginPct = MARGIN_ON_PRICE[rule];
-  const rawPrice = cost / (1 - marginPct);
-  const ourPrice = roundRetail(rawPrice);
+  const marginPct = marginForTier(tier);
   const wholesalerPrice = Math.round(cost * 100) / 100;
+  const rawPrice = marginPct === 0 ? wholesalerPrice : cost / (1 - marginPct);
+  const ourPrice =
+    marginPct === 0 ? wholesalerPrice : roundRetail(rawPrice);
   const markupMultiplier =
     wholesalerPrice > 0
       ? Math.round((ourPrice / wholesalerPrice) * 1000) / 1000
       : 1;
   return { wholesalerPrice, ourPrice, markupMultiplier };
 }
+
+/** @deprecated Legacy rule names — map to new tiers for any old references. */
+export type PricingRule = "kvi" | "standard";

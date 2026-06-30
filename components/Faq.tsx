@@ -48,16 +48,18 @@ const faqs: FaqItem[] = [
       <>
         <p className="mb-3">
           Our model is closer to <strong>Aldi than a specialty store</strong>:
-          keep the shelf short, negotiate hard, take a thin margin, and pass
-          savings through. Atta, rice, and toor dal are priced as hooks — close
-          to wholesale — because diaspora families know those prices by heart.
+          keep the shelf short, negotiate hard, and pass savings through.{" "}
+          <strong>Atta and rice are at wholesale (0% markup)</strong> — families
+          know those prices by heart. Everything else carries a{" "}
+          <strong>20% margin</strong>, and only locks in once enough families
+          reserve the same case.
         </p>
         <p className="mb-3">
-          This is a demand-first test. We import in small batches from
-          reservations, so freight, customs, and handling land on fewer units
-          at first. That is why a box may cost more here than in India today — and
-          why those prices <strong>can come down</strong> as more families join
-          the same round.
+          This is a demand-first group buy. We import after the preorder window
+          closes and a product hits its case minimum — that is when we get
+          distributor pricing from Everest Traders and A1 Cash and Carry. Freight,
+          customs, and handling land on fewer units at first, which is why a box
+          may cost more here than in India today.
         </p>
         <p>
           When enough people reserve a product, we import a larger batch — fixed
