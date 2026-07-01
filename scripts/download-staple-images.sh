@@ -34,7 +34,7 @@ while IFS='|' read -r id url; do
   [[ "$id" =~ ^#.*$ || -z "$id" ]] && continue
   download "$id" "$url" || true
 done <<'URLS'
-aashirvaad-atta-20lb|https://i5.walmartimages.com/asr/45ece694-be11-470f-8858-e679fb3550b4.d2be918855eaf3bb76d7c5206c2b1104.jpeg
+aashirvaad-atta-20lb|https://www.a1cashandcarry.com/cdn/shop/files/Flr082.jpg?v=1715200546
 basmati-rice-10lb|https://spiceboxgrocery.com/cdn/shop/files/Royal_basmati_10lb_1024x.png
 sona-masoori-rice-10lb|https://i5.walmartimages.com/asr/be7b6fa8-580b-4ba8-8ac5-1c1ef1cd3c5c.a31ac5130eb737a9de66781688b35fe7.jpeg
 toor-dal-10lb|https://images.openfoodfacts.org/images/products/081/052/403/0007/front_en.full.jpg
