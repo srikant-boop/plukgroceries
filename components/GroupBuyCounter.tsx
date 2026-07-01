@@ -9,6 +9,8 @@ type Props = {
   target?: number;
   initial?: GroupBuyProgress;
   compact?: boolean;
+  /** Single row: bar + count beside unit on product cards */
+  inline?: boolean;
 };
 
 function GroupBuyBar({
@@ -51,6 +53,7 @@ export function GroupBuyCounter({
   target,
   initial,
   compact = false,
+  inline = false,
 }: Props) {
   const live = useGroupBuyLive();
   const liveProgress = live?.getProgress(productId);
@@ -105,6 +108,25 @@ export function GroupBuyCounter({
       return () => window.clearTimeout(id);
     }
   }, [reserved]);
+
+  if (inline) {
+    return (
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <GroupBuyBar
+          pct={pct}
+          filled={filled}
+          pulse={pulse}
+          compact
+          reserved={reserved}
+          resolvedTarget={resolvedTarget}
+        />
+        <span className="shrink-0 tabular-nums text-[11px] text-muted">
+          {reserved}/{resolvedTarget}
+          {filled ? " ✓" : ""}
+        </span>
+      </div>
+    );
+  }
 
   if (compact) {
     return (

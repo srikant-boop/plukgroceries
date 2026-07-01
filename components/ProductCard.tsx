@@ -63,14 +63,21 @@ export function ProductCard({ product }: { product: Product }) {
             </p>
           </div>
         </div>
-        <p className="mt-1.5 text-xs text-muted">{product.unit}</p>
-        {product.groupBuyTarget != null && (
-          <GroupBuyCounter
-            productId={product.id}
-            target={product.groupBuyTarget}
-            compact
-          />
-        )}
+        <div className="mt-1.5 flex min-w-0 items-center gap-2 text-xs text-muted">
+          <span className="shrink-0">{product.unit}</span>
+          {product.groupBuyTarget != null && (
+            <>
+              <span className="shrink-0 text-line" aria-hidden>
+                ·
+              </span>
+              <GroupBuyCounter
+                productId={product.id}
+                target={product.groupBuyTarget}
+                inline
+              />
+            </>
+          )}
+        </div>
         <div className="mt-auto pt-4">
           {qty <= 0 ? (
             <button
