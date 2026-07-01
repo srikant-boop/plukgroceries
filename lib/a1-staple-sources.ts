@@ -78,8 +78,4 @@ export const A1_STAPLE_SOURCES: Record<string, A1StapleSource> = {
   "salt-1kg": { slug: "windsor-salt", unit: "1 kg", notes: "Windsor iodised salt @ $1.79" },
   "sugar-2kg": { slug: "redpath-sugar-1", unit: "2 kg" },
   "papad": { slug: "jeera-papad-swad", unit: "200 g" },
-  "parle-g-biscuits": {
-    unit: "799 g",
-    notes: "Parle-G Original gluco family pack; A2Z $45.99/case × 14 (not on A1)",
-  },
 };

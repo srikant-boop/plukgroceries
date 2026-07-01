@@ -1,5 +1,5 @@
 /**
- * Curated diaspora staple shelf — 32 SKUs.
+ * Curated diaspora staple shelf — 31 SKUs.
  * KVI hooks: atta, basmati, sona masoori, toor, masoor.
  * Everything else: margin / mild-KVI per pricing rules.
  */
@@ -35,7 +35,6 @@ export const CURATED_SHELF_IDS = [
   "sugar-2kg",
   "lays-chips",
   "papad",
-  "parle-g-biscuits",
 ] as const;
 
 export type CuratedShelfId = (typeof CURATED_SHELF_IDS)[number];

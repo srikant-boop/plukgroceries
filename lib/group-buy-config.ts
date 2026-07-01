@@ -31,7 +31,6 @@ export const GROUP_BUY_TARGETS: Record<string, number> = {
   "sugar-2kg": 12,
   "lays-chips": 70,
   "papad": 24,
-  "parle-g-biscuits": 14,
 };
 
 export const DEFAULT_GROUP_BUY_TARGET = 12;

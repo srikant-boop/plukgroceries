@@ -98,7 +98,7 @@ export const PANTRY_COLLECTIONS: {
   { slug: "cooking", title: "Cooking Essentials", navLabel: "Cooking" },
 ];
 
-/** Aldi-style diaspora staples — 32 curated SKUs. */
+/** Aldi-style diaspora staples — 31 curated SKUs. */
 export const TEST_SHELF_PRODUCT_IDS = new Set<string>(CURATED_SHELF_IDS);
 
 const P = (cost: number, price: number) => ({

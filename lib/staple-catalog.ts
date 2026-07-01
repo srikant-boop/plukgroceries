@@ -501,20 +501,6 @@ export const stapleProducts: PantryProduct[] = [
     roleLine: "Crispy side with meals.",
     whySelected: "Impulse side — healthy markup.",
   }),
-  staple({
-    id: "parle-g-biscuits",
-    image: "/products/staples/parle-g-biscuits.jpg",
-    uuid: "b2000020-0000-4000-8000-000000000020",
-    name: "Parle-G Original",
-    shortDescription: "Parle-G original gluco biscuits — 799 g family pack.",
-    brand: "Parle-G",
-    unit: "799 g",
-    cost: A1_UNIT_COSTS.parleGOriginal799g,
-    collection: "snacks",
-    category: "Snacks",
-    roleLine: "Classic original Parle-G — not the Gold line.",
-    whySelected: "A2Z wholesale ref $45.99/case × 14 — original gluco family pack.",
-  }),
 ];
 
 if (stapleProducts.length !== CURATED_SHELF_IDS.length) {
