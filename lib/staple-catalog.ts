@@ -1,6 +1,5 @@
 import type { PantryProduct, PantryCollection } from "./pantry-catalog";
 import {
-  A1_GHEE_750ML,
   A1_UNIT_COSTS,
   EVEREST_UNIT_COSTS,
 } from "./everest-wholesale";
@@ -333,15 +332,14 @@ export const stapleProducts: PantryProduct[] = [
     image: "/products/staples/nanak-ghee.jpg",
     uuid: "b2000012-0000-4000-8000-000000000012",
     name: "Nanak Ghee",
-    shortDescription: "Pure desi ghee — 750 ml jar.",
+    shortDescription: "Pure desi ghee — 1.6 kg tub.",
     brand: "Nanak",
-    unit: "750 ml",
-    cost: A1_GHEE_750ML,
+    unit: "1.6 kg",
+    cost: A1_UNIT_COSTS.nanakGhee1_6kg,
     collection: "dairy",
     category: "Dairy",
     roleLine: "Trusted ghee for roti and rice.",
-    whySelected:
-      "750 ml priced from min A1 desi ghee ($27.49/1.6 kg Modhani, prorated) — not full-tub walk-in.",
+    whySelected: "Nanak 1.6 kg on A1 @ $27.79 walk-in (verified Jun 2026).",
   }),
   staple({
     id: "paneer",

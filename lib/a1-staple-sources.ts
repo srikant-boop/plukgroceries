@@ -60,8 +60,8 @@ export const A1_STAPLE_SOURCES: Record<string, A1StapleSource> = {
   "mdh-masala": { slug: "mdh-spare-code-3", unit: "100 g", notes: "MDH Kitchen King; A1 $21.49/case × 10" },
   "nanak-ghee": {
     slug: "nanak-pure-desi-ghee",
-    unit: "750 ml",
-    notes: "Shelf 750 ml; A1 min desi ghee Modhani $27.49/1.6 kg prorated",
+    unit: "1.6 kg",
+    notes: "Nanak Pure Desi Ghee — A1 $27.79/1.6 kg walk-in",
   },
   "paneer": {
     slug: "apna-malai-paneer-retail-pack",

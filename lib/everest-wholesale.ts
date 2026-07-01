@@ -108,12 +108,10 @@ export const A1_UNIT_COSTS = {
   kabuliChana10lb: 8.99,
   /** Cheapest desi ghee 1.6 kg tub on A1 (Modhani); Nanak is $27.79. */
   desiGhee1_6kg: 27.49,
+  /** Nanak Pure Desi Ghee 1.6 kg — A1 walk-in (products/nanak-pure-desi-ghee.json). */
   nanakGhee1_6kg: 27.79,
   /** Retail-pack malai paneer — lowest paneer walk-in on A1. */
   apnaPaneer300g: 4.99,
   apnaPaneer1_6kg: 21.99,
   dahi1_8kg: 7.29,
 } as const;
-
-/** 750 ml shelf unit — prorated from cheapest 1.6 kg desi ghee on A1. */
-export const A1_GHEE_750ML = proratePackCost(A1_UNIT_COSTS.desiGhee1_6kg, 1600, 750);
