@@ -1,6 +1,6 @@
 /** Wholesale case MOQ — price from distributor only locks when this many units are reserved. */
 export const GROUP_BUY_TARGETS: Record<string, number> = {
-  "aashirvaad-atta-20lb": 10,
+  "aashirvaad-atta-20lb": 2,
   "basmati-rice-10lb": 15,
   "sona-masoori-rice-20lb": 10,
   "toor-dal-10lb": 10,

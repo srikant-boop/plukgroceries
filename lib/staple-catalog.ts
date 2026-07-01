@@ -34,6 +34,8 @@ type StapleSpec = {
   image?: string;
   /** Retail = cost × this (e.g. 1.2 = 20% markup on in-store cost). */
   markupOnCost?: number;
+  /** Fixed shelf price — bypasses cost-based rounding (KVI hooks). */
+  retailOurPrice?: number;
   ingredientsNote?: string;
   preparation?: string;
   storage?: string;
@@ -52,6 +54,12 @@ function staple(s: StapleSpec): PantryProduct {
         wholesalerPrice > 0
           ? Math.round((ourPrice / wholesalerPrice) * 1000) / 1000
           : 1,
+    };
+  } else if (s.retailOurPrice != null) {
+    pricing = {
+      wholesalerPrice: s.retailOurPrice,
+      ourPrice: s.retailOurPrice,
+      markupMultiplier: 1,
     };
   }
   const image = s.image ?? PLACEHOLDER;
@@ -100,7 +108,8 @@ export const stapleProducts: PantryProduct[] = [
     shortDescription: "Whole wheat atta — 20 lb bag.",
     brand: "Aashirvaad",
     unit: "20 lb",
-    cost: 16.79,
+    cost: 15.395,
+    retailOurPrice: 15.395,
     pricingRole: "kvi",
     collection: "staples",
     category: "Flour & grains",
