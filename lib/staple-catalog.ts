@@ -505,15 +505,15 @@ export const stapleProducts: PantryProduct[] = [
     id: "parle-g-biscuits",
     image: "/products/staples/parle-g-biscuits.jpg",
     uuid: "b2000020-0000-4000-8000-000000000020",
-    name: "Parle-G Biscuits",
-    shortDescription: "Parle-G glucose biscuits.",
+    name: "Parle-G Original",
+    shortDescription: "Parle-G original glucose biscuits — 800 g family pack.",
     brand: "Parle-G",
     unit: "800 g",
     cost: 1.5,
     collection: "snacks",
     category: "Snacks",
     roleLine: "Classic tea-time biscuit.",
-    whySelected: "Impulse snack — healthy markup.",
+    whySelected: "Original Parle-G (not Gold) — NEEDS QUOTE for wholesale cost.",
   }),
 ];
 

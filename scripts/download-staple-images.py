@@ -28,8 +28,8 @@ WALMART_FALLBACKS: dict[str, list[str]] = {
         "https://i5.walmartimages.com/asr/e37f4e84-fff6-40c1-98cf-c462e979f446.e1fddc76b8468139a05f79c830a27619f.jpeg",
     ],
     "parle-g-biscuits": [
-        "https://i5.walmartimages.com/seo/Parle-G-Gold-Biscuits-1-KG-10-pack-of-100g_45ca1170-fe2e-4f6f-92bf-818c8f2d3c73.680d13d1e5cac5ae7105b0f0b08b7ed9.jpeg",
-        "https://i5.walmartimages.com/asr/024fa08f-57b5-4526-b90c-56e7b8aa5e78.7d6a1898516b25aa49218a95a271635e.jpeg",
+        "https://i5.walmartimages.com/asr/5c84f020-0fbf-4df8-9b16-32fb3a2a45c3.51ad7664f0c62d836a42e3f891c32995.jpeg",
+        "https://i5.walmartimages.com/asr/034a721a-2bab-439c-a48a-71e13f1d4c81.839819ed7857a25ed3dc4ce68ddd5e40.jpeg",
     ],
     "maggi-noodles": [
         "https://i5.walmartimages.com/asr/3d403be0-a800-4c66-8c07-0907931cdb5f.6a1c622059e0f010b83c1a211b5dc377.jpeg",
