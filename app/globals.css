@@ -89,3 +89,31 @@ h1, h2, h3 {
 .group-buy-bar-pulse {
   animation: group-buy-bar-pulse 0.7s ease-in-out;
 }
+
+.group-buy-track {
+  height: 0.5rem;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: var(--line);
+  border: 1px solid color-mix(in srgb, var(--foreground) 12%, var(--line));
+}
+
+.group-buy-track--compact {
+  height: 0.375rem;
+}
+
+.group-buy-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.5s ease;
+  min-width: 0;
+}
+
+.group-buy-fill--active {
+  background: color-mix(in srgb, var(--accent) 88%, var(--foreground));
+}
+
+.group-buy-fill--filled {
+  background: var(--accent);
+}

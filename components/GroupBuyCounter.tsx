@@ -11,6 +11,41 @@ type Props = {
   compact?: boolean;
 };
 
+function GroupBuyBar({
+  pct,
+  filled,
+  pulse,
+  compact,
+  reserved,
+  resolvedTarget,
+}: {
+  pct: number;
+  filled: boolean;
+  pulse: boolean;
+  compact: boolean;
+  reserved: number;
+  resolvedTarget: number;
+}) {
+  const showSliver = reserved > 0 && pct < 4;
+  const width = showSliver ? 4 : pct;
+
+  return (
+    <div
+      className={`group-buy-track ${compact ? "group-buy-track--compact" : ""} ${pulse ? "group-buy-bar-pulse" : ""}`}
+      role="progressbar"
+      aria-valuenow={pct}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={`${reserved} of ${resolvedTarget} reserved`}
+    >
+      <div
+        className={`group-buy-fill ${filled ? "group-buy-fill--filled" : "group-buy-fill--active"}`}
+        style={{ width: `${width}%` }}
+      />
+    </div>
+  );
+}
+
 export function GroupBuyCounter({
   productId,
   target,
@@ -73,7 +108,7 @@ export function GroupBuyCounter({
 
   if (compact) {
     return (
-      <div className="mt-2 space-y-1">
+      <div className="mt-2 space-y-1.5">
         <div className="flex items-center justify-between gap-2 text-[11px] text-muted">
           <span>Group buy</span>
           <span className="tabular-nums">
@@ -81,19 +116,14 @@ export function GroupBuyCounter({
             {filled ? " · locked" : ""}
           </span>
         </div>
-        <div
-          className={`h-1 w-full bg-background ${pulse ? "group-buy-bar-pulse" : ""}`}
-          role="progressbar"
-          aria-valuenow={pct}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label={`${reserved} of ${resolvedTarget} reserved`}
-        >
-          <div
-            className={`h-full transition-all duration-500 ${filled ? "bg-accent" : "bg-foreground/40"}`}
-            style={{ width: `${pct}%` }}
-          />
-        </div>
+        <GroupBuyBar
+          pct={pct}
+          filled={filled}
+          pulse={pulse}
+          compact
+          reserved={reserved}
+          resolvedTarget={resolvedTarget}
+        />
       </div>
     );
   }
@@ -107,18 +137,14 @@ export function GroupBuyCounter({
           <span className="text-muted"> / {resolvedTarget} reserved</span>
         </p>
       </div>
-      <div
-        className={`h-2 w-full bg-background ${pulse ? "group-buy-bar-pulse" : ""}`}
-        role="progressbar"
-        aria-valuenow={pct}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      >
-        <div
-          className={`h-full transition-all duration-500 ${filled ? "bg-accent" : "bg-foreground/50"}`}
-          style={{ width: `${pct}%` }}
-        />
-      </div>
+      <GroupBuyBar
+        pct={pct}
+        filled={filled}
+        pulse={pulse}
+        compact={false}
+        reserved={reserved}
+        resolvedTarget={resolvedTarget}
+      />
       <p className="text-xs text-muted leading-relaxed">
         {filled
           ? "Case minimum reached — wholesale price is locked for this round."
