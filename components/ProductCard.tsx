@@ -53,13 +53,15 @@ export function ProductCard({ product }: { product: Product }) {
             className="min-w-0 flex-1 hover:underline underline-offset-4"
             onClick={() => track("product_click", { productId: product.id })}
           >
-            <h3 className="text-lg leading-snug line-clamp-2 min-h-[2.875rem]">
+            <h3 className="text-base leading-snug line-clamp-2 min-h-[2.5rem]">
               {product.name}{" "}
-              <span className="text-muted font-normal">({product.unit})</span>
+              <span className="text-sm text-muted font-normal">
+                ({product.unit})
+              </span>
             </h3>
           </Link>
-          <div className="shrink-0 text-right min-h-[2.875rem]">
-            <p className="text-base tabular-nums whitespace-nowrap">
+          <div className="shrink-0 text-right min-h-[2.5rem]">
+            <p className="text-sm tabular-nums whitespace-nowrap">
               {money(product.ourPrice)}
             </p>
           </div>
