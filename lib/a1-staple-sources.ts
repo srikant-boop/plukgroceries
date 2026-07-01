@@ -9,7 +9,11 @@ export type A1StapleSource = {
 };
 
 export const A1_STAPLE_SOURCES: Record<string, A1StapleSource> = {
-  "aashirvaad-atta-20lb": { slug: "aashirvaad-atta-whole-wheat-flour", unit: "20 lb" },
+  "aashirvaad-atta-20lb": {
+    slug: "aashirvaad-atta-whole-wheat-flour",
+    unit: "20 lb",
+    notes: "A1 FLR082 — case 2×20 lb $30.79 ($15.395/bag); each $16.79 walk-in",
+  },
   "basmati-rice-10lb": {
     unit: "10 lb",
     notes: "Royal Basmati — Everest Traders $13.50/10 lb (not on A1 walk-in)",

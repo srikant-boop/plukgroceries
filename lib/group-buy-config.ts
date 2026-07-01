@@ -1,5 +1,6 @@
 /** Wholesale case MOQ — price from distributor only locks when this many units are reserved. */
 export const GROUP_BUY_TARGETS: Record<string, number> = {
+  /** A1 FLR082 ships as case 2×20 lb @ $30.79 */
   "aashirvaad-atta-20lb": 2,
   "basmati-rice-10lb": 15,
   "sona-masoori-rice-20lb": 10,

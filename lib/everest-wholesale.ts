@@ -94,6 +94,8 @@ export function minUnitCost(
  * Dals use min(A1, Everest) when Everest lists an equivalent pack.
  */
 export const A1_UNIT_COSTS = {
+  /** A1 FLR082 — case 2×20 lb @ $30.79 ($15.395/bag); walk-in each $16.79. */
+  aashirvaadAtta20lb: 15.395,
   mustardOil1L: 4.49,
   sonaMasoori20lb: 24.19,
   sugar2kg: 3.449,

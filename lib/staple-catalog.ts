@@ -108,13 +108,14 @@ export const stapleProducts: PantryProduct[] = [
     shortDescription: "Whole wheat atta — 20 lb bag.",
     brand: "Aashirvaad",
     unit: "20 lb",
-    cost: 15.395,
-    retailOurPrice: 15.395,
+    cost: A1_UNIT_COSTS.aashirvaadAtta20lb,
+    retailOurPrice: A1_UNIT_COSTS.aashirvaadAtta20lb,
     pricingRole: "kvi",
     collection: "staples",
     category: "Flour & grains",
     roleLine: "India's #1 atta — weekly roti staple.",
-    whySelected: "Price-memorized atta — at wholesale, 0% markup.",
+    whySelected:
+      "A1 case FLR082 — $30.79 for 2×20 lb ($15.395/bag), 0% markup KVI; walk-in each $16.79.",
   }),
   staple({
     id: "basmati-rice-10lb",
