@@ -5,8 +5,13 @@ const nextConfig: NextConfig = {
     return [
       { source: "/about", destination: "/faq", permanent: true },
       {
-        source: "/products/brb-popped-chips-salt-pepper",
-        destination: "/products/superyou-multigrain-protein-chips",
+        source: "/products/sona-masoori-rice-10lb",
+        destination: "/products/sona-masoori-rice-20lb",
+        permanent: true,
+      },
+      {
+        source: "/products/salt-2kg",
+        destination: "/products/salt-1kg",
         permanent: true,
       },
       {

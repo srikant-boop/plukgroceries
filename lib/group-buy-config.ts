@@ -2,7 +2,7 @@
 export const GROUP_BUY_TARGETS: Record<string, number> = {
   "aashirvaad-atta-20lb": 10,
   "basmati-rice-10lb": 15,
-  "sona-masoori-rice-10lb": 10,
+  "sona-masoori-rice-20lb": 10,
   "toor-dal-10lb": 10,
   "masoor-dal-10lb": 10,
   "urad-dal-10lb": 10,
@@ -27,7 +27,7 @@ export const GROUP_BUY_TARGETS: Record<string, number> = {
   "maggi-noodles": 24,
   "mustard-oil-1l": 12,
   "sunflower-oil-1l": 6,
-  "salt-2kg": 12,
+  "salt-1kg": 12,
   "sugar-2kg": 12,
   "lays-chips": 70,
   "papad": 24,

@@ -17,6 +17,7 @@ type StapleSpec = {
   uuid: string;
   name: string;
   shortDescription: string;
+  longDescription?: string;
   brand?: string;
   unit: string;
   cost: number;
@@ -28,6 +29,9 @@ type StapleSpec = {
   badges?: string[];
   competitors?: CompetitorEntry[];
   image?: string;
+  ingredientsNote?: string;
+  preparation?: string;
+  storage?: string;
 };
 
 function staple(s: StapleSpec): PantryProduct {
@@ -41,7 +45,7 @@ function staple(s: StapleSpec): PantryProduct {
     slug: s.id,
     name: s.name,
     shortDescription: s.shortDescription,
-    longDescription: s.shortDescription,
+    longDescription: s.longDescription ?? s.shortDescription,
     category: s.category,
     collection: s.collection,
     image,
@@ -60,9 +64,10 @@ function staple(s: StapleSpec): PantryProduct {
       whySelected: s.whySelected,
       pricingRole,
       ingredientSections: [{ rows: [{ name: "See package label" }] }],
+      ingredientsNote: s.ingredientsNote,
       nutritionHighlights: "See package label.",
-      preparation: "See package label.",
-      storage: "Store in a cool, dry place.",
+      preparation: s.preparation ?? "See package label.",
+      storage: s.storage ?? "Store in a cool, dry place.",
       countryOfOrigin: "India",
       gallery: s.image ? [s.image] : [PLACEHOLDER],
     },
@@ -100,18 +105,19 @@ export const stapleProducts: PantryProduct[] = [
     whySelected: "Price-memorized rice — at wholesale, 0% markup.",
   }),
   staple({
-    id: "sona-masoori-rice-10lb",
-    image: "/products/staples/sona-masoori-rice-10lb.jpg",
+    id: "sona-masoori-rice-20lb",
+    image: "/products/staples/sona-masoori-rice-20lb.jpg",
     uuid: "b2000003-0000-4000-8000-000000000003",
     name: "Sona Masoori Rice",
-    shortDescription: "Everyday sona masoori rice — 20 lb.",
+    shortDescription: "Apna sona masoori rice — 20 lb bag.",
+    brand: "Apna",
     unit: "20 lb",
     cost: A1_UNIT_COSTS.sonaMasoori20lb,
     pricingRole: "kvi",
     collection: "staples",
     category: "Flour & grains",
     roleLine: "High-frequency everyday rice.",
-    whySelected: "Everest Royal 20 lb — A1 ref $24.19 until distributor quote.",
+    whySelected: "Apna 20 lb on A1 @ $24.19 — at wholesale, 0% markup.",
   }),
   staple({
     id: "toor-dal-10lb",
@@ -209,26 +215,30 @@ export const stapleProducts: PantryProduct[] = [
     image: "/products/staples/besan-2kg.jpg",
     uuid: "b200000b-0000-4000-8000-00000000000b",
     name: "Besan",
-    shortDescription: "Bambino gram flour — 2 kg.",
+    shortDescription: "Bambino gram flour (besan) — 2 kg.",
+    brand: "Bambino",
     unit: "2 kg",
-    cost: 6.06,
+    cost: 6.93,
     collection: "cooking",
     category: "Cooking essentials",
     roleLine: "Base for pakoras, kadhi, and sweets.",
-    whySelected: "Everest Bambino 2 kg — provisional cost until quote.",
+    whySelected:
+      "Everest Bambino 2 kg — cost scaled from Sher 4 lb @ $6.29 on A1 until quote.",
   }),
   staple({
     id: "rava-sooji-2kg",
     image: "/products/staples/rava-sooji-2kg.jpg",
     uuid: "b200000c-0000-4000-8000-00000000000c",
     name: "Rava / Sooji",
-    shortDescription: "Bambino semolina — 2 kg.",
+    shortDescription: "Bambino semolina (rava/sooji) — 2 kg.",
+    brand: "Bambino",
     unit: "2 kg",
-    cost: 3.03,
+    cost: 2.65,
     collection: "cooking",
     category: "Cooking essentials",
     roleLine: "Upma, halwa, and idli rava.",
-    whySelected: "Everest Bambino 2 kg — provisional cost until quote.",
+    whySelected:
+      "Everest Bambino 2 kg — cost scaled from P&H 20 kg @ $26.49 on A1 until quote.",
   }),
   staple({
     id: "turmeric-100g",
@@ -398,28 +408,30 @@ export const stapleProducts: PantryProduct[] = [
     image: "/products/staples/maggi-noodles.jpg",
     uuid: "b2000019-0000-4000-8000-000000000019",
     name: "Maggi Noodles",
-    shortDescription: "Maggi 2-Minute Masala noodles — 4-pack (280 g).",
+    shortDescription: "Maggi 2-Minute Masala — 4 × 70 g (280 g total).",
     brand: "Maggi",
-    unit: "4-pack (280 g)",
+    unit: "4 × 70 g (280 g total)",
     cost: EVEREST_UNIT_COSTS.maggi280g,
     collection: "snacks",
     category: "Snacks",
-    roleLine: "Brand impulse snack.",
-    whySelected: "Brand impulse item — healthy markup.",
+    roleLine: "Four single-serve masala noodle cakes in one pack.",
+    whySelected: "Everest case 24 × 280 g @ $40 — four 70 g cakes per pack.",
   }),
   staple({
     id: "mustard-oil-1l",
     image: "/products/staples/mustard-oil-1l.jpg",
     uuid: "b200001a-0000-4000-8000-00000000001a",
-    name: "Mustard Oil",
-    shortDescription: "Apna kachi ghani mustard oil — 1 L.",
+    name: "Apna Mustard Oil",
+    shortDescription: "Apna kachi ghani mustard oil — 1 L bottle.",
     brand: "Apna",
     unit: "1 L",
     cost: A1_UNIT_COSTS.mustardOil1L,
     collection: "cooking",
     category: "Cooking essentials",
-    roleLine: "Traditional cooking oil for tadka.",
-    whySelected: "Apna 1 L on A1 — cheaper than Tez Everest case.",
+    roleLine: "Traditional mustard oil for tadka and cooking.",
+    whySelected: "Apna 1 L on A1 @ $4.49 — cheaper than Tez Everest case.",
+    ingredientsNote:
+      "Some Indian mustard oils imported to Canada carry a CFIA-required “for external use only” label on the bottle. This is a common labeling requirement for certain import classifications — check your bottle.",
   }),
   staple({
     id: "sunflower-oil-1l",
@@ -435,17 +447,18 @@ export const stapleProducts: PantryProduct[] = [
     whySelected: "Some price-awareness — moderate markup.",
   }),
   staple({
-    id: "salt-2kg",
-    image: "/products/staples/salt-2kg.jpg",
+    id: "salt-1kg",
+    image: "/products/staples/salt-1kg.jpg",
     uuid: "b200001c-0000-4000-8000-00000000001c",
     name: "Salt",
-    shortDescription: "Iodised table salt — 1 kg.",
+    shortDescription: "Windsor iodised table salt — 1 kg.",
+    brand: "Windsor",
     unit: "1 kg",
     cost: A1_UNIT_COSTS.salt1kg,
     collection: "cooking",
     category: "Cooking essentials",
     roleLine: "Cheap everyday staple.",
-    whySelected: "Windsor salt on A1 — Everest PK quote pending.",
+    whySelected: "Windsor 1 kg on A1 @ $1.79 — Everest PK quote pending.",
   }),
   staple({
     id: "sugar-2kg",

@@ -1,4 +1,5 @@
 import { SITE_URL, WHATSAPP_GROUP_URL } from "@/lib/site";
+import { CURATED_SHELF_COUNT } from "@/lib/staple-shelf";
 
 type FaqItem = {
   q: string;
@@ -14,11 +15,11 @@ const faqs: FaqItem[] = [
       <>
         <p className="mb-3">
           PLUK is Aldi-style Indian grocery for the diaspora — a short shelf
-          of 33 staples (atta, rice, dal, spices, and everyday pantry), not a
+          of {CURATED_SHELF_COUNT} staples (atta, rice, dal, spices, and everyday pantry), not a
           full store.
         </p>
         <p>
-          We keep margins thin on price-memorized items like atta and toor dal,
+          We keep margins thin on price-memorized items like atta and rice,
           and home deliver in Oakville. Want something we do not carry? Tell us.
         </p>
       </>

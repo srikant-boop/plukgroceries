@@ -1,5 +1,5 @@
 import { stapleProducts } from "./staple-catalog";
-import { CURATED_SHELF_IDS } from "./staple-shelf";
+import { CURATED_SHELF_COUNT, CURATED_SHELF_IDS } from "./staple-shelf";
 
 /** Extended pantry fields — compliance-safe copy from official sources where noted. */
 export type IngredientRow = {
@@ -98,7 +98,7 @@ export const PANTRY_COLLECTIONS: {
   { slug: "cooking", title: "Cooking Essentials", navLabel: "Cooking" },
 ];
 
-/** Aldi-style diaspora staples — curated 33-item plan (32 SKUs). */
+/** Aldi-style diaspora staples — 32 curated SKUs. */
 export const TEST_SHELF_PRODUCT_IDS = new Set<string>(CURATED_SHELF_IDS);
 
 const P = (cost: number, price: number) => ({

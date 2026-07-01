@@ -1,13 +1,12 @@
 /**
- * Curated shelf — 33-item plan (32 SKUs: four single spices, three snacks).
+ * Curated diaspora staple shelf — 32 SKUs.
  * KVI hooks: atta, basmati, sona masoori, toor, masoor.
  * Everything else: margin / mild-KVI per pricing rules.
- * No Everest extras, no kids' products — Aldi-style diaspora staples only.
  */
 export const CURATED_SHELF_IDS = [
   "aashirvaad-atta-20lb",
   "basmati-rice-10lb",
-  "sona-masoori-rice-10lb",
+  "sona-masoori-rice-20lb",
   "toor-dal-10lb",
   "masoor-dal-10lb",
   "urad-dal-10lb",
@@ -32,7 +31,7 @@ export const CURATED_SHELF_IDS = [
   "maggi-noodles",
   "mustard-oil-1l",
   "sunflower-oil-1l",
-  "salt-2kg",
+  "salt-1kg",
   "sugar-2kg",
   "lays-chips",
   "papad",
@@ -40,3 +39,5 @@ export const CURATED_SHELF_IDS = [
 ] as const;
 
 export type CuratedShelfId = (typeof CURATED_SHELF_IDS)[number];
+
+export const CURATED_SHELF_COUNT = CURATED_SHELF_IDS.length;

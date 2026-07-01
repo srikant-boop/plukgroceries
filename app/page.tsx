@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { storefrontProducts } from "@/lib/products";
+import { CURATED_SHELF_COUNT } from "@/lib/staple-shelf";
 import { ProductCard } from "@/components/ProductCard";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Leaf } from "@/components/Leaf";
@@ -40,7 +41,7 @@ export default function Home() {
             Indian grocery, Aldi-style.
           </h1>
           <p className="text-base sm:text-lg leading-relaxed text-foreground/80 mb-8">
-            33 weekly staples for Indian home cooking — atta, rice, dal, spices,
+            {CURATED_SHELF_COUNT} weekly staples for Indian home cooking — atta, rice, dal, spices,
             and everyday pantry. Thin margins on what you price-check, home delivered.
           </p>
           <Link href="#pantry" className="btn px-6 py-3 text-sm">

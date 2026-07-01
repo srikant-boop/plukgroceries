@@ -9,7 +9,7 @@ export type PricingTier = "kvi" | "standard";
 export const ZERO_MARGIN_PRODUCT_IDS = new Set([
   "aashirvaad-atta-20lb",
   "basmati-rice-10lb",
-  "sona-masoori-rice-10lb",
+  "sona-masoori-rice-20lb",
 ]);
 
 export function pricingTierForProduct(productId: string): PricingTier {

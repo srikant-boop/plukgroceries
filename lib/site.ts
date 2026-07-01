@@ -5,8 +5,10 @@ export const SITE_NAME = "Pluk";
 
 export const SITE_TITLE = "Indian grocery, Aldi-style";
 
+import { CURATED_SHELF_COUNT } from "./staple-shelf";
+
 export const DEFAULT_DESCRIPTION =
-  "33 diaspora staples — atta, rice, dal, spices, and everyday Indian grocery. Thin margins on what you price-check, home delivered in Oakville.";
+  `${CURATED_SHELF_COUNT} diaspora staples — atta, rice, dal, spices, and everyday Indian grocery. Thin margins on what you price-check, home delivered in Oakville.`;
 
 export const OG_IMAGE_PATH = "/og-image.png";
 
