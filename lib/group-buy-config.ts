@@ -29,7 +29,7 @@ export const GROUP_BUY_TARGETS: Record<string, number> = {
   "sunflower-oil-1l": 6,
   "salt-2kg": 12,
   "sugar-2kg": 12,
-  "lays-chips": 24,
+  "lays-chips": 70,
   "papad": 24,
   "parle-g-biscuits": 10,
 };

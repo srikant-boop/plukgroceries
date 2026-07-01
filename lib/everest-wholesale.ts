@@ -42,7 +42,7 @@ export const EVEREST_WHOLESALE: EverestLine[] = [
   { name: "Tata Gold Tea", casePrice: 155, unitsPerCase: 24, unitLabel: "500 g" },
   { name: "Tata Gold Tea", casePrice: 146, unitsPerCase: 12, unitLabel: "1 kg" },
   { name: "Brooke Bond Taaza Tea", casePrice: 104, unitsPerCase: 18, unitLabel: "1 kg" },
-  { name: "Lays Magic Masala", casePrice: 54, unitsPerCase: 70, unitLabel: "~52 g" },
+  { name: "Lays Magic Masala", casePrice: 54, unitsPerCase: 70, unitLabel: "50–55 g" },
   { name: "Kurkure Masala Munch", casePrice: 55, unitsPerCase: 70, unitLabel: "~85 g" },
   { name: "Bingo Mad Angle Masala", casePrice: 42, unitsPerCase: 56, unitLabel: "~67 g" },
   { name: "Badshah Chana Masala", casePrice: 44, unitsPerCase: 24, unitLabel: "100 g" },
@@ -57,11 +57,23 @@ export const EVEREST_WHOLESALE: EverestLine[] = [
 /** Per-unit costs used on the live shelf (Everest case ÷ units). */
 export const EVEREST_UNIT_COSTS = {
   basmati10lb: 13.5,
-  masoorPerLb: unitCostFromCase(40, 10) / 4,
-  masoor10lb: unitCostFromCase(40, 10) / 4 * 10,
-  redLabelTea900g: unitCostFromCase(122, 12),
-  mustardOil1L: unitCostFromCase(70, 12),
+  /** 24 × 450 g case @ $129 → $5.38/450 g; 900 g ≈ 2 × 450 g */
+  redLabelTea450g: unitCostFromCase(129, 24),
+  redLabelTea900g: unitCostFromCase(129, 24) * 2,
+  /** Tez 12 × 946 ml — shelf uses cheaper Apna 1 L @ A1 instead */
+  tezMustard946ml: unitCostFromCase(70, 12),
   maggi280g: unitCostFromCase(40, 24),
+  /** 70 × 50–55 g @ $54 case */
   lays55g: unitCostFromCase(54, 70),
   badshahMasala100g: unitCostFromCase(44, 24),
+} as const;
+
+/** A1 Cash & Carry verified unit costs (when cheaper or Everest quote pending). */
+export const A1_UNIT_COSTS = {
+  mustardOil1L: 4.49,
+  sonaMasoori20lb: 24.19,
+  nanakGhee1_6kg: 27.79,
+  nanakPaneer1_6kg: 24.29,
+  sugar2kg: 3.89,
+  salt1kg: 1.79,
 } as const;
