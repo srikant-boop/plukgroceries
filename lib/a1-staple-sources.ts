@@ -62,9 +62,9 @@ export const A1_STAPLE_SOURCES: Record<string, A1StapleSource> = {
   "paneer": { slug: "nanak-paneer", unit: "1.6 kg" },
   "dahi": { slug: "elegant-dahi-yougart-3-26", unit: "1.8 kg", notes: "Elegant retail tub" },
   "indian-pickle": {
-    slug: "national-mix-pickle",
-    unit: "1 kg",
-    notes: "National mixed achar; A1 $28.79/case × 6",
+    slug: "deep-pickle-hot-mango",
+    unit: "700 g",
+    notes: "Deep Hot Mango; A1 $51.49/case × 12",
   },
   "makhana": { slug: "apna-lotus-seeds-phool-makhana", unit: "2 lb" },
   "poha": { slug: "apna-pressed-rice-thin-poha", unit: "4 lb" },

@@ -20,7 +20,7 @@ export const GROUP_BUY_TARGETS: Record<string, number> = {
   "nanak-ghee": 12,
   "paneer": 12,
   "dahi": 12,
-  "indian-pickle": 6,
+  "indian-pickle": 12,
   "makhana": 12,
   "poha": 12,
   "red-label-tea": 12,
