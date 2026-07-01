@@ -35,7 +35,7 @@ while IFS='|' read -r id url; do
   download "$id" "$url" || true
 done <<'URLS'
 aashirvaad-atta-20lb|https://i5.walmartimages.com/asr/45ece694-be11-470f-8858-e679fb3550b4.d2be918855eaf3bb76d7c5206c2b1104.jpeg
-basmati-rice-10lb|https://images.openfoodfacts.org/images/products/069/022/510/1103/front_en.full.jpg
+basmati-rice-10lb|https://i5.walmartimages.com/seo/Authentic-Royal-Basmati-White-Rice-10-lbs_faefa135-f02b-4f32-a4c3-d246d9ef02da.672347143876aaf590f7ed02c16e4491.jpeg
 sona-masoori-rice-10lb|https://i5.walmartimages.com/asr/be7b6fa8-580b-4ba8-8ac5-1c1ef1cd3c5c.a31ac5130eb737a9de66781688b35fe7.jpeg
 toor-dal-10lb|https://images.openfoodfacts.org/images/products/081/052/403/0007/front_en.full.jpg
 masoor-dal-10lb|https://images.openfoodfacts.org/images/products/501/353/162/0864/front_en.full.jpg
