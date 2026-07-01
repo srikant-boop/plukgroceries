@@ -58,8 +58,16 @@ export const A1_STAPLE_SOURCES: Record<string, A1StapleSource> = {
     notes: "Apna dhania — MDH plain coriander not on A1",
   },
   "mdh-masala": { slug: "mdh-spare-code-3", unit: "100 g", notes: "MDH Kitchen King; A1 $21.49/case × 10" },
-  "nanak-ghee": { slug: "nanak-pure-desi-ghee", unit: "1.6 kg" },
-  "paneer": { slug: "nanak-paneer", unit: "1.6 kg" },
+  "nanak-ghee": {
+    slug: "nanak-pure-desi-ghee",
+    unit: "750 ml",
+    notes: "Shelf 750 ml; A1 min desi ghee Modhani $27.49/1.6 kg prorated",
+  },
+  "paneer": {
+    slug: "apna-malai-paneer-retail-pack",
+    unit: "300 g",
+    notes: "Apna malai paneer retail pack — A1 $4.99/300 g (min walk-in)",
+  },
   "dahi": { slug: "elegant-dahi-yougart-3-26", unit: "1.8 kg", notes: "Elegant retail tub" },
   "indian-pickle": {
     slug: "deep-pickle-hot-mango",

@@ -68,13 +68,52 @@ export const EVEREST_UNIT_COSTS = {
   badshahMasala100g: unitCostFromCase(44, 24),
 } as const;
 
-/** A1 Cash & Carry verified unit costs (when cheaper or Everest quote pending). */
+/** Prorate a verified pack cost to a different retail size (same product). */
+export function proratePackCost(
+  costForSize: number,
+  sizeAmount: number,
+  targetAmount: number,
+): number {
+  return Math.round(((costForSize * targetAmount) / sizeAmount) * 100) / 100;
+}
+
+/** Lower of A1 walk-in and Everest case ÷ units (optional scale, e.g. 4 lb → 10 lb). */
+export function minUnitCost(
+  a1WalkIn: number,
+  everestCase?: { casePrice: number; unitsPerCase: number; scale?: number },
+): number {
+  if (!everestCase) return a1WalkIn;
+  const scale = everestCase.scale ?? 1;
+  const fromEverest =
+    unitCostFromCase(everestCase.casePrice, everestCase.unitsPerCase) * scale;
+  return Math.round(Math.min(a1WalkIn, fromEverest) * 100) / 100;
+}
+
+/**
+ * A1 Cash & Carry walk-in prices — verified Jun 2026 via products/*.json.
+ * Dals use min(A1, Everest) when Everest lists an equivalent pack.
+ */
 export const A1_UNIT_COSTS = {
   mustardOil1L: 4.49,
   sonaMasoori20lb: 24.19,
-  nanakGhee1_6kg: 27.79,
-  nanakPaneer1_6kg: 24.29,
   sugar2kg: 3.449,
   salt1kg: 1.79,
   deepHotMangoPickle700g: 4.79,
+  toorDal10lb: 18.19,
+  masoorDal10lb: minUnitCost(8.29, { casePrice: 40, unitsPerCase: 10, scale: 2.5 }),
+  uradDal10lb: 16.79,
+  chanaDal10lb: 12.29,
+  moongDal10lb: 14.99,
+  rajma10lb: 17.59,
+  kabuliChana10lb: 8.99,
+  /** Cheapest desi ghee 1.6 kg tub on A1 (Modhani); Nanak is $27.79. */
+  desiGhee1_6kg: 27.49,
+  nanakGhee1_6kg: 27.79,
+  /** Retail-pack malai paneer — lowest paneer walk-in on A1. */
+  apnaPaneer300g: 4.99,
+  apnaPaneer1_6kg: 21.99,
+  dahi1_8kg: 7.29,
 } as const;
+
+/** 750 ml shelf unit — prorated from cheapest 1.6 kg desi ghee on A1. */
+export const A1_GHEE_750ML = proratePackCost(A1_UNIT_COSTS.desiGhee1_6kg, 1600, 750);
