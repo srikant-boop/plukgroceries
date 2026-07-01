@@ -70,7 +70,7 @@ export const A1_STAPLE_SOURCES: Record<string, A1StapleSource> = {
   "poha": { slug: "apna-pressed-rice-thin-poha", unit: "4 lb" },
   "red-label-tea": { slug: "brooke-bond-red-label-black-tea", unit: "900 g" },
   "maggi-noodles": {
-    unit: "4 × 70 g (280 g total)",
+    unit: "280 g",
     notes: "Everest Jan 2026: $40/case × 24×280 g; Walmart image (A1 only has 70 g singles)",
   },
   "mustard-oil-1l": { slug: "apna-mustard-oil", unit: "1 L" },
