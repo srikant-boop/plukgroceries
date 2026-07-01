@@ -58,7 +58,7 @@ A1_SLUGS: dict[str, str] = {
     "nanak-ghee": "nanak-pure-desi-ghee",
     "paneer": "nanak-paneer",
     "dahi": "elegant-dahi-yougart-3-26",
-    "indian-pickle": "national-mixed-pickle-large",
+    "indian-pickle": "national-mix-pickle",
     "makhana": "apna-lotus-seeds-phool-makhana",
     "poha": "apna-pressed-rice-thin-poha",
     "red-label-tea": "brooke-bond-red-label-black-tea",

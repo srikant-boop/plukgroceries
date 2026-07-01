@@ -76,4 +76,5 @@ export const A1_UNIT_COSTS = {
   nanakPaneer1_6kg: 24.29,
   sugar2kg: 3.89,
   salt1kg: 1.79,
+  nationalPickle1kg: 5.49,
 } as const;
