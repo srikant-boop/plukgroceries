@@ -64,7 +64,7 @@ export const A1_STAPLE_SOURCES: Record<string, A1StapleSource> = {
   "nanak-ghee": {
     slug: "nanak-pure-desi-ghee",
     unit: "1.6 kg",
-    notes: "Nanak Pure Desi Ghee 1.6 kg — $26.74 cost × 1.2 retail",
+    notes: "Nanak Pure Desi Ghee 1.6 kg — A1 $26.74, 0% markup",
   },
   "paneer": {
     slug: "apna-malai-paneer-retail-pack",

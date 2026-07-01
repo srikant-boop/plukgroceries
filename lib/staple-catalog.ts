@@ -347,11 +347,11 @@ export const stapleProducts: PantryProduct[] = [
     brand: "Nanak",
     unit: "1.6 kg",
     cost: A1_UNIT_COSTS.nanakGhee1_6kg,
-    markupOnCost: 1.2,
+    pricingRole: "kvi",
     collection: "dairy",
     category: "Dairy",
     roleLine: "Trusted ghee for roti and rice.",
-    whySelected: "Nanak 1.6 kg — $26.74 in-store cost × 1.2 → $32.09 retail.",
+    whySelected: "Nanak 1.6 kg — A1 $26.74 in-store, 0% markup pass-through.",
   }),
   staple({
     id: "paneer",

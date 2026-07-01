@@ -110,7 +110,7 @@ export const A1_UNIT_COSTS = {
   kabuliChana10lb: 8.99,
   /** Cheapest desi ghee 1.6 kg tub on A1 (Modhani); Nanak is $27.79. */
   desiGhee1_6kg: 27.49,
-  /** Nanak Pure Desi Ghee 1.6 kg — in-store cost for 20% markup (cost × 1.2). */
+  /** Nanak Pure Desi Ghee 1.6 kg — A1 walk-in cost, 0% markup retail. */
   nanakGhee1_6kg: 26.74,
   /** Retail-pack malai paneer — lowest paneer walk-in on A1. */
   apnaPaneer300g: 4.99,
