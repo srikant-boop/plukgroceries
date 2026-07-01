@@ -4,6 +4,7 @@ import { validateCheckoutBody } from "@/lib/checkout-api";
 import { saveManualCheckoutOrder } from "@/lib/build-checkout-order";
 import { getInviteByCode } from "@/lib/invite-store";
 import { sendCustomerReservationEmail, sendOrderEmail } from "@/lib/email";
+import { recordGroupBuyReservation } from "@/lib/group-buy-activity";
 
 export const runtime = "nodejs";
 
@@ -56,6 +57,11 @@ export async function POST(req: Request) {
       const { getOrder } = await import("@/lib/orders");
       const order = await getOrder(orderId);
       if (order) {
+        try {
+          await recordGroupBuyReservation(order);
+        } catch (err) {
+          console.error("[checkout] group-buy activity failed", err);
+        }
         try {
           await sendOrderEmail(order);
         } catch (err) {

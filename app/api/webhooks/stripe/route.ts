@@ -9,6 +9,7 @@ import {
   type Order,
 } from "@/lib/orders";
 import { sendOrderEmail } from "@/lib/email";
+import { recordGroupBuyReservation } from "@/lib/group-buy-activity";
 import { recordPurchase } from "@/lib/analytics";
 import {
   normalizeInviteCode,
@@ -116,6 +117,11 @@ export async function POST(req: Request) {
 
   try {
     await saveOrder(order);
+    try {
+      await recordGroupBuyReservation(order);
+    } catch (err) {
+      console.error("[stripe webhook] group-buy activity failed", err);
+    }
     if (order.paid) {
       await registerInviterOrder(order);
     }

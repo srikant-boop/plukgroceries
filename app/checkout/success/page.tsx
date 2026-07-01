@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { getOrder } from "@/lib/orders";
 import { SITE_URL, WHATSAPP_GROUP_URL } from "@/lib/site";
 import { ClearCartOnSuccess } from "./ClearCartOnSuccess";
@@ -25,7 +26,9 @@ export default async function CheckoutSuccessPage({
 
   return (
     <div className="py-16 max-w-xl mx-auto text-center">
-      <ClearCartOnSuccess />
+      <Suspense fallback={null}>
+        <ClearCartOnSuccess />
+      </Suspense>
 
       <h1 className="text-4xl mb-4">Thanks — your reservation is in.</h1>
       <p className="text-muted text-lg mb-8 leading-relaxed">

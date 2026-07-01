@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useGroupBuyLive } from "@/components/group-buy-live-context";
 import type { GroupBuyProgress } from "@/lib/group-buy-config";
 
 type Props = {
@@ -16,11 +17,18 @@ export function GroupBuyCounter({
   initial,
   compact = false,
 }: Props) {
-  const [progress, setProgress] = useState<GroupBuyProgress | null>(
-    initial ?? null,
-  );
+  const live = useGroupBuyLive();
+  const liveProgress = live?.getProgress(productId);
+  const [local, setLocal] = useState<GroupBuyProgress | null>(initial ?? null);
+  const [pulse, setPulse] = useState(false);
+  const prevReserved = useRef<number | null>(null);
 
   useEffect(() => {
+    if (liveProgress) {
+      setLocal(liveProgress);
+      return;
+    }
+
     let cancelled = false;
 
     async function load() {
@@ -30,7 +38,7 @@ export function GroupBuyCounter({
         });
         if (!res.ok) return;
         const data = (await res.json()) as { progress?: GroupBuyProgress };
-        if (!cancelled && data.progress) setProgress(data.progress);
+        if (!cancelled && data.progress) setLocal(data.progress);
       } catch {
         /* ignore */
       }
@@ -42,12 +50,26 @@ export function GroupBuyCounter({
       cancelled = true;
       window.clearInterval(id);
     };
-  }, [productId]);
+  }, [productId, liveProgress]);
 
+  const progress = liveProgress ?? local;
   const resolvedTarget = progress?.target ?? target ?? 12;
   const reserved = progress?.reserved ?? 0;
   const pct = progress?.pct ?? 0;
   const filled = progress?.filled ?? reserved >= resolvedTarget;
+
+  useEffect(() => {
+    if (prevReserved.current == null) {
+      prevReserved.current = reserved;
+      return;
+    }
+    if (reserved !== prevReserved.current) {
+      prevReserved.current = reserved;
+      setPulse(true);
+      const id = window.setTimeout(() => setPulse(false), 700);
+      return () => window.clearTimeout(id);
+    }
+  }, [reserved]);
 
   if (compact) {
     return (
@@ -60,7 +82,7 @@ export function GroupBuyCounter({
           </span>
         </div>
         <div
-          className="h-1 w-full bg-background"
+          className={`h-1 w-full bg-background ${pulse ? "group-buy-bar-pulse" : ""}`}
           role="progressbar"
           aria-valuenow={pct}
           aria-valuemin={0}
@@ -68,7 +90,7 @@ export function GroupBuyCounter({
           aria-label={`${reserved} of ${resolvedTarget} reserved`}
         >
           <div
-            className={`h-full transition-all ${filled ? "bg-accent" : "bg-foreground/40"}`}
+            className={`h-full transition-all duration-500 ${filled ? "bg-accent" : "bg-foreground/40"}`}
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -86,14 +108,14 @@ export function GroupBuyCounter({
         </p>
       </div>
       <div
-        className="h-2 w-full bg-background"
+        className={`h-2 w-full bg-background ${pulse ? "group-buy-bar-pulse" : ""}`}
         role="progressbar"
         aria-valuenow={pct}
         aria-valuemin={0}
         aria-valuemax={100}
       >
         <div
-          className={`h-full transition-all ${filled ? "bg-accent" : "bg-foreground/50"}`}
+          className={`h-full transition-all duration-500 ${filled ? "bg-accent" : "bg-foreground/50"}`}
           style={{ width: `${pct}%` }}
         />
       </div>

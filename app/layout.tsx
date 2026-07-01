@@ -4,6 +4,7 @@ import { CartBadge } from "@/components/CartBadge";
 import { Leaf } from "@/components/Leaf";
 import { SocialIcon } from "@/components/SocialIcon";
 import { AnalyticsProvider } from "@/components/AnalyticsProvider";
+import { GroupBuyLiveShell } from "@/components/GroupBuyLiveShell";
 import {
   DEFAULT_DESCRIPTION,
   FACEBOOK_APP_ID,
@@ -71,6 +72,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <AnalyticsProvider>
+        <GroupBuyLiveShell>
         <header className="relative z-30 border-b border-line bg-background overflow-visible">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-5">
             <Link
@@ -129,6 +131,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        </GroupBuyLiveShell>
         </AnalyticsProvider>
       </body>
     </html>
