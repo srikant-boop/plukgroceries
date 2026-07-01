@@ -21,11 +21,11 @@ export function formatActivityHeadline(event: GroupBuyActivityEvent): string {
     const fill = line.filled
       ? " — case filled!"
       : ` — ${line.reserved}/${line.target} reserved`;
-    return `${event.label} reserved ${line.qty}× ${line.name}${fill}`;
+    return `${event.label} reserved ${line.name} (${line.qty})${fill}`;
   }
   const names = event.lines
     .slice(0, 2)
-    .map((l) => `${l.qty}× ${l.name}`)
+    .map((l) => `${l.name} (${l.qty})`)
     .join(", ");
   const extra =
     event.lines.length > 2 ? ` +${event.lines.length - 2} more` : "";

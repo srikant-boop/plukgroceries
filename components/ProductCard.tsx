@@ -54,7 +54,8 @@ export function ProductCard({ product }: { product: Product }) {
             onClick={() => track("product_click", { productId: product.id })}
           >
             <h3 className="text-lg leading-snug line-clamp-2 min-h-[2.875rem]">
-              {product.name}
+              {product.name}{" "}
+              <span className="text-muted font-normal">({product.unit})</span>
             </h3>
           </Link>
           <div className="shrink-0 text-right min-h-[2.875rem]">
@@ -63,21 +64,13 @@ export function ProductCard({ product }: { product: Product }) {
             </p>
           </div>
         </div>
-        <div className="mt-1.5 flex min-w-0 items-center gap-2 text-xs text-muted">
-          <span className="shrink-0">{product.unit}</span>
-          {product.groupBuyTarget != null && (
-            <>
-              <span className="shrink-0 text-line" aria-hidden>
-                ·
-              </span>
-              <GroupBuyCounter
-                productId={product.id}
-                target={product.groupBuyTarget}
-                inline
-              />
-            </>
-          )}
-        </div>
+        {product.groupBuyTarget != null && (
+          <GroupBuyCounter
+            productId={product.id}
+            target={product.groupBuyTarget}
+            compact
+          />
+        )}
         <div className="mt-auto pt-4">
           {qty <= 0 ? (
             <button
