@@ -2,7 +2,7 @@ import type { PantryProduct, PantryCollection } from "./pantry-catalog";
 import { A1_UNIT_COSTS, EVEREST_UNIT_COSTS } from "./everest-wholesale";
 import { CURATED_SHELF_IDS, type CuratedShelfId } from "./staple-shelf";
 import { getGroupBuyTarget } from "./group-buy-config";
-import { priceFromCost, pricingTierForProduct } from "./staple-pricing";
+import { priceFromCost, pricingTierForProduct, roundRetail } from "./staple-pricing";
 
 const PLACEHOLDER = "/products/staples/placeholder.svg";
 
@@ -29,6 +29,8 @@ type StapleSpec = {
   badges?: string[];
   competitors?: CompetitorEntry[];
   image?: string;
+  /** Retail = cost × this (e.g. 1.2 = 20% markup on in-store cost). */
+  markupOnCost?: number;
   ingredientsNote?: string;
   preparation?: string;
   storage?: string;
@@ -36,7 +38,19 @@ type StapleSpec = {
 
 function staple(s: StapleSpec): PantryProduct {
   const tier = pricingTierForProduct(s.id);
-  const pricing = priceFromCost(s.cost, tier);
+  let pricing = priceFromCost(s.cost, tier);
+  if (s.markupOnCost != null) {
+    const wholesalerPrice = Math.round(s.cost * 100) / 100;
+    const ourPrice = roundRetail(s.cost * s.markupOnCost);
+    pricing = {
+      wholesalerPrice,
+      ourPrice,
+      markupMultiplier:
+        wholesalerPrice > 0
+          ? Math.round((ourPrice / wholesalerPrice) * 1000) / 1000
+          : 1,
+    };
+  }
   const image = s.image ?? PLACEHOLDER;
   const pricingRole = s.pricingRole ?? (tier === "kvi" ? "kvi" : "margin");
   return {
@@ -466,13 +480,15 @@ export const stapleProducts: PantryProduct[] = [
     image: "/products/staples/sugar-2kg.jpg",
     uuid: "b200001d-0000-4000-8000-00000000001d",
     name: "Sugar",
-    shortDescription: "Granulated sugar — 2 kg.",
+    shortDescription: "Redpath granulated sugar — 2 kg.",
+    brand: "Redpath",
     unit: "2 kg",
     cost: A1_UNIT_COSTS.sugar2kg,
+    markupOnCost: 1.2,
     collection: "cooking",
     category: "Cooking essentials",
     roleLine: "Cheap everyday staple.",
-    whySelected: "Redpath sugar on A1 — Everest PK quote pending.",
+    whySelected: "Redpath 2 kg @ A1 in-store $3.449 — retail at 20% markup.",
   }),
   staple({
     id: "lays-chips",

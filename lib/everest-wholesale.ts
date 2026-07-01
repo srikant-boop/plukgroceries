@@ -74,7 +74,7 @@ export const A1_UNIT_COSTS = {
   sonaMasoori20lb: 24.19,
   nanakGhee1_6kg: 27.79,
   nanakPaneer1_6kg: 24.29,
-  sugar2kg: 3.89,
+  sugar2kg: 3.449,
   salt1kg: 1.79,
   deepHotMangoPickle700g: 4.79,
 } as const;
