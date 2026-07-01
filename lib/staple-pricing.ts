@@ -20,13 +20,9 @@ export function marginForTier(tier: PricingTier): number {
   return tier === "kvi" ? KVI_MARGIN : STANDARD_MARGIN;
 }
 
-/** Round up to nearest .49 or .99 retail ending. */
+/** Round up to the nearest cent at or above the target price. */
 export function roundRetail(price: number): number {
-  const whole = Math.floor(price);
-  const candidates = [whole + 0.49, whole + 0.99, whole + 1.49, whole + 1.99];
-  const above = candidates.filter((c) => c >= price - 0.001);
-  const pick = above.length > 0 ? above[0] : candidates[candidates.length - 1];
-  return Math.round(pick * 100) / 100;
+  return Math.ceil(price * 100) / 100;
 }
 
 export function priceFromCost(
