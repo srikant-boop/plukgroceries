@@ -77,4 +77,6 @@ export const A1_UNIT_COSTS = {
   sugar2kg: 3.89,
   salt1kg: 1.79,
   deepHotMangoPickle700g: 4.79,
+  /** A2Z Cash & Carry case 14×799 g @ $45.99 — not listed on A1 */
+  parleGOriginal799g: Math.round((45.99 / 14) * 100) / 100,
 } as const;
