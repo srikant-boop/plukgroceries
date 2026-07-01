@@ -11,9 +11,8 @@ export type A1StapleSource = {
 export const A1_STAPLE_SOURCES: Record<string, A1StapleSource> = {
   "aashirvaad-atta-20lb": { slug: "aashirvaad-atta-whole-wheat-flour", unit: "20 lb" },
   "basmati-rice-10lb": {
-    slug: "chandni-chowk-basmati-rice-extra-long",
     unit: "10 lb",
-    notes: "Chandni Chowk extra-long basmati; Everest Royal 10 lb pricing",
+    notes: "Royal Basmati — Everest Traders $13.50/10 lb (not on A1 walk-in)",
   },
   "sona-masoori-rice-20lb": {
     slug: "apna-rice-sona-massori",

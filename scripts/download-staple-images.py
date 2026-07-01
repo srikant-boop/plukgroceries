@@ -39,7 +39,7 @@ WALMART_FALLBACKS: dict[str, list[str]] = {
 # A1 product slugs — pack size must match staple-catalog.ts unit.
 A1_SLUGS: dict[str, str] = {
     "aashirvaad-atta-20lb": "aashirvaad-atta-whole-wheat-flour",
-    "basmati-rice-10lb": "chandni-chowk-basmati-rice-extra-long",
+    "basmati-rice-10lb": None,  # Royal — Everest pricing; not on A1 walk-in
     "sona-masoori-rice-20lb": "apna-rice-sona-massori",
     "toor-dal-10lb": "toor-daal-split-pigeon-pea-yellow-lentils-daalt110",
     "masoor-dal-10lb": "masoor-daal-wash-red-lentil-split",

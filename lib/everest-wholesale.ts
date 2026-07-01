@@ -56,7 +56,7 @@ export const EVEREST_WHOLESALE: EverestLine[] = [
 
 /** Per-unit costs used on the live shelf (Everest case ÷ units). */
 export const EVEREST_UNIT_COSTS = {
-  basmati10lb: 13.5,
+  basmati10lb: 13.5, // Royal Basmati Rice — Everest $13.50/case × 1 × 10 lb
   /** 24 × 450 g case @ $129 → $5.38/450 g; 900 g ≈ 2 × 450 g */
   redLabelTea450g: unitCostFromCase(129, 24),
   redLabelTea900g: unitCostFromCase(129, 24) * 2,
